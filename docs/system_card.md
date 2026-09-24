@@ -2,7 +2,7 @@
 
 ## System and current capability
 
-The current implementation runs deterministic expression ranking, reproduces a limited TRANSCRIPT external benchmark, and packages a LUAD screening case with source hashes, quality checks, an identity audit, per-candidate evidence ledgers, a trace, and an external-model cost record. It is a research prototype. An optional [Jev adapter](jev_integration.md) exists but has no live results or account access; no general LLM planner is active. The benchmark strict mode reads item and user expression features for ranking; the benchmark adapter sees labels only through its training fold.
+The current implementation accepts a natural-language research request, produces a validated allow-listed tool plan, runs deterministic expression ranking, reproduces a limited TRANSCRIPT external benchmark, and packages a LUAD screening case with source hashes, quality checks, an identity audit, per-candidate evidence ledgers, a trace, and an external-model cost record. It is a research prototype. The default planner is a deterministic fallback; a provider-neutral structured-LLM adapter exists but has no live result. An optional [Jev adapter](jev_integration.md) also exists without live results or account access. The benchmark strict mode reads item and user expression features for ranking; the planner never receives matrices or labels, and the benchmark adapter sees labels only through its training fold.
 
 ## Inputs and outputs
 
@@ -18,4 +18,4 @@ The LUAD case validation rejects changed hashes, non-finite scores, broken ranks
 
 ## Known gaps
 
-Required before a clinical evidence report or full project completion: compound-level reconciliation, target/pathway and full literature review with support and conflict evidence (two context abstracts have been triaged), larger internal Eval suite, complete benchmark tuning and ablations, Jev access or documented fallback comparison, and the course-specific report, slides, and demo after the assignment PDF is supplied. No clinical deployment is supported.
+Required before a clinical evidence report or full project completion: compound-level reconciliation, target/pathway and full literature review with support and conflict evidence (two context abstracts have been triaged), larger internal Eval suite, complete benchmark tuning and ablations, live LLM/Jev evaluation or a documented fallback comparison, and regenerated course slides after the latest Agent changes. No clinical deployment is supported.

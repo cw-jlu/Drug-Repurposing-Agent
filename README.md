@@ -2,7 +2,9 @@
 
 An auditable agent for transcriptomic drug repurposing, biomedical evidence retrieval, and structured decision routing with Jev.
 
-The repository contains a deterministic expression-ranking core, a strict-mode CLI, a RECeSS-compatible five-method adapter, three direct benchmark baselines, a bounded LUAD A549 expression screen, and internal contract tests. The planned clinical evidence study and course deliverables are not yet complete.
+The first comparison baseline is frozen as `v0.1.0`; its scope, metrics, API boundaries, and comparison rules are recorded in [the release note](docs/releases/v0.1.0.md).
+
+The repository contains a controlled natural-language task router, a deterministic expression-ranking core, a strict-mode CLI, a RECeSS-compatible five-method adapter, three direct benchmark baselines, a bounded LUAD A549 expression screen, and internal contract tests. The planned clinical evidence study and final course deliverables are not yet complete.
 
 A pilot check on TRANSCRIPT (`pilot_transcript/`, our own simplified evaluation, not the official RECeSS protocol) found that pure signature reversal scores AUC ≈ 0.48, no better than random, while a training-fold drug popularity baseline scores ≈ 0.73. Section 23 of the plan covers these results and the revised benchmark strategy.
 
@@ -24,10 +26,24 @@ Download the official TRANSCRIPT v2.0.0 archive from [Zenodo](https://zenodo.org
 
 Run `python -m pytest -q` for the internal contract suite. See [evaluation protocol](docs/evaluation_protocol.md), [initial benchmark results](docs/benchmark_results.md), and [limitations](docs/limitations.md) before interpreting results. The benchmark runner additionally needs `stanscofi` 2.0.1 and its plotting/UMAP dependencies in a Python 3.10 environment with NumPy 1.26; its legacy `cute-ranking` dependency is incompatible with NumPy 2.
 
+## Run the controlled Agent
+
+The same CLI accepts a natural-language request and routes it through an allow-listed tool schema. The default planner is a deterministic, offline fallback; `StructuredPlanner` is the tested adapter boundary for an external LLM that returns JSON tool calls. Benchmark labels and file paths are never exposed to the planner.
+
+```powershell
+python -m drug_repurposing_agent `
+  --question "请根据转录组筛选候选药物" `
+  --items data/raw/TRANSCRIPT_dataset_v2.0.0/items.csv `
+  --users data/raw/TRANSCRIPT_dataset_v2.0.0/users.csv `
+  --output artifacts/agent_run
+```
+
+The Agent writes `agent_run.json` with the validated plan, every tool transition, missing-input or failure state, and output references. Use `--mode research_open` for the frozen LUAD case; strict mode blocks research-only tools.
+
 On Windows with Python 3.10, `scripts/setup_benchmark.ps1` installs the tested environment from [the pinned dependency file](requirements-benchmark.lock) and runs the contract suite.
 
 The LUAD disease-signature tool processed GSE32863/GPL6884 and identified [57 verifiable tumor/normal pairs](docs/luad_data_audit.md), with two unmatched samples excluded. A verified EH3226 A549 subset produced a [Top-10 transcriptomic screening report](docs/luad_screening_report.md). Its candidates have insufficient independent evidence and several unresolved drug identities.
 
 For the LUAD audit, `python scripts/fetch_luad_inputs.py` retrieves the GEO sources; `python scripts/process_gse32863.py` builds the paired disease signature; `python scripts/run_limma_sensitivity.py` runs the optional paired R/limma verification; `python scripts/filter_lincs_a549.py` freezes the A549 metadata; `python scripts/fetch_eh3226.py` retrieves the 2.46 GB expression subset; `python scripts/rank_luad_eh3226.py` ranks the candidates; `python scripts/fetch_broad_annotations.py` and `python scripts/audit_luad_identity.py` check Broad sample annotations; `python scripts/search_luad_pubmed.py` retrieves literature leads; `python scripts/curate_luad_literature.py` adds two carefully scoped context records; and `python scripts/build_luad_case.py` validates and packages the case report and trace. Install the `lincs` extra for the EH3226 step. The full 21.3 GB GEO Level 5 archive is unnecessary for this bounded screen.
 
-The editable [course report draft](deliverables/药物重定位Agent_课程设计报告草稿.docx) and [nine-slide defense draft](deliverables/药物重定位Agent_答辩草稿_v2.pptx) summarize the verified results. Both await the missing course-assignment PDF for final structure and formatting. See [project status](docs/project_status.md), [delivery audit](docs/completion_audit.md), [data card](docs/data_card.md), [system card](docs/system_card.md), and the [optional Jev adapter notes](docs/jev_integration.md) for completed work and remaining deliverables.
+The editable [course report draft](deliverables/药物重定位Agent_课程设计报告草稿.docx) and [nine-slide defense deck](deliverables/药物重定位Agent_答辩稿_v3.pptx) summarize the verified results and the controlled Agent flow. The assignment has been reviewed and mapped in [assignment alignment](docs/assignment_alignment.md); both deliverables were regenerated and visually checked after the Agent changes. See [project status](docs/project_status.md), [delivery audit](docs/completion_audit.md), [data card](docs/data_card.md), [system card](docs/system_card.md), and the [optional Jev adapter notes](docs/jev_integration.md) for completed work and remaining deliverables.

@@ -5,13 +5,19 @@ import pandas as pd
 import pytest
 from scipy.sparse import coo_array
 
+from drug_repurposing_agent.agent import (
+    AgentInputs,
+    RulePlanner,
+    StructuredPlanner,
+    run_agent_task,
+)
 from drug_repurposing_agent.benchmark import TranscriptBaseline
 from drug_repurposing_agent.data import ExpressionData
 from drug_repurposing_agent.differential_expression import paired_deg
 from drug_repurposing_agent.evidence import CandidateLedger, Citation
 from drug_repurposing_agent.pubmed import PubMedClient
 from drug_repurposing_agent.ranking import _rrf, connectivity_gene_sets, score_expressions
-from drug_repurposing_agent.workflow import run_expression_workflow
+from drug_repurposing_agent.workflow import Mode, run_expression_workflow
 
 
 def example_data():
@@ -78,6 +84,54 @@ def test_workflow_never_needs_ratings_and_writes_provenance(tmp_path: Path):
     assert manifest["qc"]["genes"] == 6
     assert len(manifest["input"]["items"]["sha256"]) == 64
     assert (tmp_path / "out" / "rrf.csv").exists()
+
+
+def test_natural_language_agent_routes_and_executes_label_free_workflow(tmp_path: Path):
+    data = example_data()
+    items, users = tmp_path / "items.csv", tmp_path / "users.csv"
+    data.drugs.to_csv(items)
+    data.diseases.to_csv(users)
+    result = run_agent_task(
+        "请根据转录组筛选候选药物",
+        AgentInputs(items=items, users=users),
+        tmp_path / "agent",
+        planner=RulePlanner(top_k=2),
+    )
+    assert result["status"] == "completed"
+    assert result["plan"]["calls"][0]["name"] == "rank_transcriptome"
+    assert result["plan"]["calls"][0]["arguments"]["top_k"] == 2
+    assert (tmp_path / "agent" / "agent_run.json").exists()
+    assert (tmp_path / "agent" / "expression_ranking" / "rrf.csv").exists()
+    assert [event["stage"] for event in result["trace"]][-1] == "run_completed"
+
+
+def test_agent_stops_for_missing_inputs(tmp_path: Path):
+    result = run_agent_task("筛选候选药物", AgentInputs(), tmp_path / "agent")
+    assert result["status"] == "needs_input"
+    assert result["missing_inputs"] == ["items", "users"]
+
+
+def test_external_planner_cannot_escape_tool_allowlist(tmp_path: Path):
+    planner = StructuredPlanner(lambda _: {
+        "task": "unsafe", "rationale": "test",
+        "calls": [{"name": "delete_files", "arguments": {}}],
+    })
+    result = run_agent_task("do it", AgentInputs(), tmp_path / "agent", planner=planner)
+    assert result["status"] == "blocked"
+    assert "not allow-listed" in result["error"]["message"]
+
+
+def test_strict_mode_blocks_research_only_tool(tmp_path: Path):
+    planner = StructuredPlanner(lambda _: {
+        "task": "luad_case", "rationale": "test",
+        "calls": [{"name": "package_luad_case", "arguments": {}}],
+    })
+    result = run_agent_task(
+        "LUAD", AgentInputs(), tmp_path / "agent",
+        mode=Mode.BENCHMARK_STRICT, planner=planner,
+    )
+    assert result["status"] == "blocked"
+    assert "not permitted" in result["error"]["message"]
 
 
 class FakeDataset:
