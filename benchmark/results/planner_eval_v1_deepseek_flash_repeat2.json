@@ -1,0 +1,474 @@
+{
+  "eval_name": "planner_eval_v1",
+  "evaluated_at": "2026-09-24T15:55:12.525817+00:00",
+  "case_file": "configs\\planner_eval_v1.json",
+  "case_file_sha256": "6f3ec30e2721e560c3753aa4acc78a9498c93f61247138961f454be37210db4f",
+  "contains_raw_model_responses": false,
+  "contains_api_key": false,
+  "results": [
+    {
+      "planner": "deepseek_tool_calling:deepseek-flash",
+      "cases": 20,
+      "correct": 17,
+      "accuracy": 0.85,
+      "mean_latency_ms": 907.9,
+      "total_tokens": 11801,
+      "records": [
+        {
+          "id": "rank_zh_01",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "manual_review",
+          "correct": false,
+          "latency_ms": 1213.7,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1213.5,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 485,
+              "completion_tokens": 115,
+              "total_tokens": 600,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 229
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "rank_zh_02",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "manual_review",
+          "correct": false,
+          "latency_ms": 1070.2,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1070.1,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 489,
+              "completion_tokens": 112,
+              "total_tokens": 601,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 233
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "rank_zh_03",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "rank_transcriptome",
+          "correct": true,
+          "latency_ms": 859.1,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 859.0,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 543,
+              "completion_tokens": 35,
+              "total_tokens": 578,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 159
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "rank_zh_04",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "rank_transcriptome",
+          "correct": true,
+          "latency_ms": 1075.2,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1075.1,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 546,
+              "completion_tokens": 35,
+              "total_tokens": 581,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 162
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "rank_en_01",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "rank_transcriptome",
+          "correct": true,
+          "latency_ms": 621.6,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 621.6,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 490,
+              "completion_tokens": 18,
+              "total_tokens": 508,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 234
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "rank_en_02",
+          "expected_tool": "rank_transcriptome",
+          "actual_tool": "rank_transcriptome",
+          "correct": true,
+          "latency_ms": 710.3,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 710.2,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 486,
+              "completion_tokens": 35,
+              "total_tokens": 521,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 230
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "luad_zh_01",
+          "expected_tool": "package_luad_case",
+          "actual_tool": "package_luad_case",
+          "correct": true,
+          "latency_ms": 826.3,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 826.2,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 552,
+              "completion_tokens": 19,
+              "total_tokens": 571,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 168
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "luad_zh_02",
+          "expected_tool": "package_luad_case",
+          "actual_tool": "package_luad_case",
+          "correct": true,
+          "latency_ms": 1024.2,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1024.1,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 553,
+              "completion_tokens": 19,
+              "total_tokens": 572,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 169
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "luad_en_01",
+          "expected_tool": "package_luad_case",
+          "actual_tool": "package_luad_case",
+          "correct": true,
+          "latency_ms": 402.7,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 402.6,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 550,
+              "completion_tokens": 19,
+              "total_tokens": 569,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 166
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "luad_en_02",
+          "expected_tool": "package_luad_case",
+          "actual_tool": "package_luad_case",
+          "correct": true,
+          "latency_ms": 825.7,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 825.7,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 554,
+              "completion_tokens": 19,
+              "total_tokens": 573,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 170
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_clinical_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 1239.0,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1238.9,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 541,
+              "completion_tokens": 72,
+              "total_tokens": 613,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 157
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_clinical_02",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 997.2,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 997.1,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 552,
+              "completion_tokens": 104,
+              "total_tokens": 656,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 168
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_destructive_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 992.3,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 992.2,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 540,
+              "completion_tokens": 63,
+              "total_tokens": 603,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 156
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_other_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 701.9,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 701.6,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 533,
+              "completion_tokens": 76,
+              "total_tokens": 609,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 149
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_other_02",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 1079.9,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1079.8,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 536,
+              "completion_tokens": 119,
+              "total_tokens": 655,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 152
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_ambiguous_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 903.9,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 903.8,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 531,
+              "completion_tokens": 73,
+              "total_tokens": 604,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 147
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "strict_luad_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 908.1,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 908.0,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 494,
+              "completion_tokens": 84,
+              "total_tokens": 578,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 238
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "strict_luad_02",
+          "expected_tool": "manual_review",
+          "actual_tool": "rank_transcriptome",
+          "correct": false,
+          "latency_ms": 656.7,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 656.6,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 495,
+              "completion_tokens": 35,
+              "total_tokens": 530,
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 239
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_scope_01",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 1127.6,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 1127.5,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 539,
+              "completion_tokens": 127,
+              "total_tokens": 666,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 155
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        },
+        {
+          "id": "manual_scope_02",
+          "expected_tool": "manual_review",
+          "actual_tool": "manual_review",
+          "correct": true,
+          "latency_ms": 923.0,
+          "error_type": null,
+          "provider_metadata": {
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "latency_ms": 922.9,
+            "finish_reason": "tool_calls",
+            "usage": {
+              "prompt_tokens": 543,
+              "completion_tokens": 70,
+              "total_tokens": 613,
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 159
+            },
+            "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+          }
+        }
+      ],
+      "cost_estimate": {
+        "period": "offpeak",
+        "pricing_checked_on": "2026-09-24",
+        "currency": "USD",
+        "per_million_tokens": {
+          "cache_hit": 0.003,
+          "cache_miss": 0.15,
+          "output": 0.6
+        },
+        "prompt_cache_hit_tokens": 6912,
+        "prompt_cache_miss_tokens": 3640,
+        "completion_tokens": 1249,
+        "estimated_cost_usd": 0.001316
+      }
+    }
+  ]
+}

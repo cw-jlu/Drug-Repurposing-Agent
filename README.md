@@ -28,7 +28,7 @@ Run `python -m pytest -q` for the internal contract suite. See [evaluation proto
 
 ## Run the controlled Agent
 
-The same CLI accepts a natural-language request and routes it through an allow-listed tool schema. The default planner is a deterministic, offline fallback; `StructuredPlanner` is the tested adapter boundary for an external LLM that returns JSON tool calls. Benchmark labels and file paths are never exposed to the planner.
+The same CLI accepts a natural-language request and routes it through an allow-listed tool schema. The default planner is a deterministic, offline fallback. A live DeepSeek function-calling planner and the provider-neutral `StructuredPlanner` adapter are also available. Benchmark labels, raw matrices, and file paths are never exposed to a planner.
 
 ```powershell
 python -m drug_repurposing_agent `
@@ -39,6 +39,21 @@ python -m drug_repurposing_agent `
 ```
 
 The Agent writes `agent_run.json` with the validated plan, every tool transition, missing-input or failure state, and output references. Use `--mode research_open` for the frozen LUAD case; strict mode blocks research-only tools.
+
+For DeepSeek, provide the key only through the process environment and add `--planner deepseek`. Do not put a key in source code, a CLI argument, or a committed `.env` file.
+
+```powershell
+$env:DEEPSEEK_API_KEY = "<set-locally>"
+python -m drug_repurposing_agent `
+  --question "使用 TRANSCRIPT 表达矩阵生成药物重定位排名" `
+  --planner deepseek `
+  --mode benchmark_strict `
+  --items data/raw/TRANSCRIPT_dataset_v2.0.0/items.csv `
+  --users data/raw/TRANSCRIPT_dataset_v2.0.0/users.csv `
+  --output artifacts/deepseek_transcript_run
+```
+
+The frozen 20-case routing comparison and three live DeepSeek repeats are reported in [planner evaluation results](docs/planner_eval_results.md).
 
 On Windows with Python 3.10, `scripts/setup_benchmark.ps1` installs the tested environment from [the pinned dependency file](requirements-benchmark.lock) and runs the contract suite.
 

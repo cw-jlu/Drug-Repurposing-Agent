@@ -197,7 +197,7 @@ class StructuredPlanner:
         return AgentPlan.from_dict(raw, self.name)
 
 
-def _validate_call(call: ToolCall, mode: Mode) -> None:
+def validate_tool_call(call: ToolCall, mode: Mode) -> None:
     spec = TOOLS.get(call.name)
     if spec is None:
         raise ValueError(f"Tool is not allow-listed: {call.name}")
@@ -258,7 +258,7 @@ def run_agent_task(question: str, inputs: AgentInputs, output: Path,
     try:
         plan = active_planner.plan(question, context, public_tools)
         for call in plan.calls:
-            _validate_call(call, mode)
+            validate_tool_call(call, mode)
         report["plan"] = {
             "task": plan.task,
             "rationale": plan.rationale,

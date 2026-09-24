@@ -5,9 +5,10 @@
 ## 已核对
 
 - [x] 已取得并逐页核对课程任务 PDF；要求映射见 `docs/assignment_alignment.md`。PDF 只要求五环节、GitHub 代码和约 10 分钟汇报，没有规定单独报告、视频、封面或页数格式。
-- [x] 已重新运行 `python -m pytest -q`；当前环境为 23 项通过。
+- [x] 已重新运行 `python -m pytest -q`；当前环境为 25 项通过。
 - [x] 已补充自然语言 Agent 路由、工具 Schema、Strict/Open 权限、缺输入/失败停机和完整执行轨迹；外部结构化 LLM 通过 `StructuredPlanner` 接入，默认使用可复现的规则降级。
 - [x] 已按课程要求刷新 Word 报告与九页答辩稿 `deliverables/药物重定位Agent_答辩稿_v3.pptx`；DOCX 四页和 PPTX 九页均完成逐页视觉检查，PPTX 的两张图表保持原生可编辑。
+- [x] 已接入 DeepSeek `deepseek-flash` 真实函数调用；冻结 20 个规划案例后运行三次，准确率为 0.95、0.85、1.00，均值 0.933。真实 TRANSCRIPT 613×151 全流程已跑通。
 
 ## 恢复工作时先处理
 
@@ -15,12 +16,12 @@
 
 ## 科研与系统工作
 
-- [ ] 为 `StructuredPlanner` 配置一个实际通用 LLM 后端，在冻结任务集上实测自然语言规划；当前只有适配边界与模拟安全测试，不宣称完成真实 LLM 对比。
+- [ ] 扩展冻结 Planner Eval，加入更多难例、重复运行和置信区间；当前 20 个案例只能作为小规模初步结果。
 - [ ] 扩充内部 Eval Suite，覆盖计划要求的分类、数量与真实失败案例；冻结评测输入与评分规则。
 - [ ] 按计划完成 RECeSS 嵌套交叉验证、调参和更完整的基线/消融；在此之前不宣称 SOTA。现有结果见 `docs/benchmark_results.md`。
 - [ ] 对 LUAD Top-10 逐一核对化合物身份、靶点/通路、支持与反对文献、安全性和临床阶段；更新 Evidence Ledger 与候选报告。当前仅是表达筛选，不能视为疗效证据。
 - [ ] 若取得 Jev 凭据，在冻结决策集上实测 Choice、Score、Noul，校准置信度门控，并与规则和通用 LLM 比较准确率、校准、延迟及成本。
-- [ ] 补齐 Agent/Jev 层消融与受约束 RSI 演示；记录失败回退、人工审核边界和外部调用成本。
+- [ ] 补齐 Jev 层消融与受约束 RSI 演示；DeepSeek 与规则 Planner 的初步对比、失败回退和调用成本已经记录。
 
 ## 课程交付
 

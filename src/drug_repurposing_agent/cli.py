@@ -27,8 +27,11 @@ def main() -> None:
     parser.add_argument("--deepseek-model", default=os.environ.get("DEEPSEEK_MODEL", "deepseek-flash"))
     args = parser.parse_args()
     if args.question:
-        planner = (RulePlanner(args.top_k) if args.planner == "rule"
-                   else DeepSeekPlanner.from_env(args.deepseek_model))
+        try:
+            planner = (RulePlanner(args.top_k) if args.planner == "rule"
+                       else DeepSeekPlanner.from_env(args.deepseek_model))
+        except ValueError as exc:
+            parser.error(str(exc))
         result = run_agent_task(
             args.question,
             AgentInputs(args.items, args.users, args.screen_dir,

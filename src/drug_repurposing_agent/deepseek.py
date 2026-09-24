@@ -135,10 +135,13 @@ class DeepSeekPlanner:
             "finish_reason": str(choice.get("finish_reason", "")),
             "usage": {
                 key: int(value) for key, value in usage.items()
-                if key in {"prompt_tokens", "completion_tokens", "total_tokens"}
+                if key in {"prompt_tokens", "completion_tokens", "total_tokens",
+                           "prompt_cache_hit_tokens", "prompt_cache_miss_tokens"}
                 and isinstance(value, int)
             },
         }
+        if isinstance(response.get("system_fingerprint"), str):
+            self.last_metadata["system_fingerprint"] = response["system_fingerprint"]
         task_by_tool = {
             "rank_transcriptome": "transcriptomic_ranking",
             "package_luad_case": "luad_case",
