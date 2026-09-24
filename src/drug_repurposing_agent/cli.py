@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 from .agent import AgentInputs, RulePlanner, run_agent_task
+from .deepseek import DeepSeekPlanner
 from .workflow import Mode, run_expression_workflow
 
 
@@ -21,15 +23,19 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--mode", choices=[x.value for x in Mode], default=Mode.BENCHMARK_STRICT.value)
     parser.add_argument("--top-k", type=int, default=100)
+    parser.add_argument("--planner", choices=["rule", "deepseek"], default="rule")
+    parser.add_argument("--deepseek-model", default=os.environ.get("DEEPSEEK_MODEL", "deepseek-flash"))
     args = parser.parse_args()
     if args.question:
+        planner = (RulePlanner(args.top_k) if args.planner == "rule"
+                   else DeepSeekPlanner.from_env(args.deepseek_model))
         result = run_agent_task(
             args.question,
             AgentInputs(args.items, args.users, args.screen_dir,
                         args.disease_manifest, args.screen_manifest),
             args.output,
             Mode(args.mode),
-            RulePlanner(args.top_k),
+            planner,
         )
         print(json.dumps({"run_id": result["run_id"], "status": result["status"],
                           "output": str(args.output), "plan": result.get("plan"),

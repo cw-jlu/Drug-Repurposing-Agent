@@ -264,6 +264,9 @@ def run_agent_task(question: str, inputs: AgentInputs, output: Path,
             "rationale": plan.rationale,
             "calls": [asdict(call) for call in plan.calls],
         }
+        metadata = getattr(active_planner, "last_metadata", None)
+        if isinstance(metadata, dict) and metadata:
+            report["planner_metadata"] = metadata
         event("plan_validated", task=plan.task, calls=[call.name for call in plan.calls])
     except Exception as exc:
         report.update(status="blocked", error={"type": type(exc).__name__, "message": str(exc)})
