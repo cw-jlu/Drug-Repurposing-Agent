@@ -54,3 +54,16 @@ def test_deepseek_planner_rejects_invalid_tool_arguments():
     planner = DeepSeekPlanner("test-key", transport=fake_transport)
     with pytest.raises(DeepSeekPlannerError, match="invalid tool call"):
         planner.plan("筛选候选药物", PlanningContext(Mode.RESEARCH_OPEN, ()), schemas())
+
+
+def test_deepseek_planner_fails_closed_when_provider_invents_unavailable_tool():
+    def fake_transport(_):
+        return {"choices": [{"message": {"tool_calls": [{"function": {
+            "name": "package_luad_case", "arguments": "{}"
+        }}]}}]}
+
+    planner = DeepSeekPlanner("test-key", transport=fake_transport)
+    plan = planner.plan("LUAD", PlanningContext(Mode.BENCHMARK_STRICT, ()),
+                        schemas(Mode.BENCHMARK_STRICT))
+    assert plan.calls[0].name == "manual_review"
+    assert planner.last_metadata["local_fallback"] == "unavailable_tool_to_manual_review"

@@ -45,6 +45,8 @@ def run_one(planner, case: dict) -> dict:
         "actual_tool": actual, "correct": actual == case["expected_tool"],
         "latency_ms": elapsed, "error_type": error,
     }
+    if "category" in case:
+        record["category"] = case["category"]
     metadata = getattr(planner, "last_metadata", None)
     if isinstance(metadata, dict) and metadata:
         record["provider_metadata"] = metadata
@@ -81,6 +83,16 @@ def estimate_cost(records: list[dict], pricing_period: str) -> dict | None:
 def evaluate(name: str, planner, cases: list[dict], pricing_period: str) -> dict:
     records = [run_one(planner, case) for case in cases]
     usage = [record.get("provider_metadata", {}).get("usage", {}) for record in records]
+    categories = sorted({record.get("category", "uncategorized") for record in records})
+    category_results = {}
+    for category in categories:
+        selected = [record for record in records
+                    if record.get("category", "uncategorized") == category]
+        category_results[category] = {
+            "cases": len(selected),
+            "correct": sum(record["correct"] for record in selected),
+            "accuracy": sum(record["correct"] for record in selected) / len(selected),
+        }
     result = {
         "planner": name,
         "cases": len(records),
@@ -88,6 +100,7 @@ def evaluate(name: str, planner, cases: list[dict], pricing_period: str) -> dict
         "accuracy": sum(record["correct"] for record in records) / len(records),
         "mean_latency_ms": round(mean(record["latency_ms"] for record in records), 1),
         "total_tokens": sum(item.get("total_tokens", 0) for item in usage),
+        "category_results": category_results,
         "records": records,
     }
     cost = estimate_cost(records, pricing_period)
@@ -108,7 +121,8 @@ def main() -> None:
     cases = definition["cases"]
     results = []
     if args.planner in {"rule", "both"}:
-        results.append(evaluate("rule_fallback_v1", RulePlanner(), cases, "none"))
+        rule = RulePlanner()
+        results.append(evaluate(rule.name, rule, cases, "none"))
     if args.planner in {"deepseek", "both"}:
         results.append(evaluate(f"deepseek_tool_calling:{args.model}",
                                 DeepSeekPlanner.from_env(args.model), cases,

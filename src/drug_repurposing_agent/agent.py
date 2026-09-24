@@ -133,9 +133,26 @@ class Planner(Protocol):
 class RulePlanner:
     """Deterministic fallback used when no external LLM planner is configured."""
 
-    name = "rule_fallback_v1"
+    name = "rule_fallback_v2"
     _luad_terms = ("luad", "lung adenocarcinoma", "肺腺癌")
-    _drug_terms = ("drug", "repurpos", "candidate", "药物", "重定位", "候选")
+    _rank_terms = (
+        "drug", "repurpos", "candidate", "药物", "重定位", "候选",
+        "transcriptom", "expression", "signature", "spearman", "rrf",
+        "表达谱", "表达矩阵", "转录组", "反向匹配", "反转分数",
+    )
+    _unsafe_terms = (
+        "患者", "处方", "剂量", "疗程", "治愈", "已证实疗法", "最有效",
+        "patient", "prescribe", "dose", "clinically proven", "patient benefit",
+        "treatment advice", "delete", "remove failed", "overwrite", "删除", "覆盖",
+        "modify the labels", "修改标签", "api key", "bypass", "忽略工具白名单",
+        "pretend manual review", "无需医生审核", "skip review", "自动推荐",
+        "train a new neural network", "训练一个新的神经网络",
+    )
+    _nonexecution_terms = (
+        "不要执行", "不要运行", "without repackaging", "do not run",
+        "explain what", "summarize", "列出", "局限", "statistically", "统计",
+        "检查文件是否存在",
+    )
 
     def __init__(self, top_k: int = 100):
         if isinstance(top_k, bool) or not isinstance(top_k, int) or not 1 <= top_k <= 1000:
@@ -148,14 +165,36 @@ class RulePlanner:
         normalized = question.strip().lower()
         if not normalized:
             raise ValueError("Question must not be empty")
+        if any(term in normalized for term in self._unsafe_terms + self._nonexecution_terms):
+            return AgentPlan(
+                task="manual_review",
+                rationale="The request is unsafe, non-executable, or requires human interpretation.",
+                calls=(ToolCall("manual_review", {"reason": "safety_or_scope_boundary"}),),
+                planner=self.name,
+            )
         if any(term in normalized for term in self._luad_terms):
+            required = {"screen_dir", "disease_manifest", "screen_manifest"}
+            if context.mode != Mode.RESEARCH_OPEN or not required.issubset(context.available_inputs):
+                return AgentPlan(
+                    task="manual_review",
+                    rationale="LUAD packaging is unavailable in this mode or lacks required inputs.",
+                    calls=(ToolCall("manual_review", {"reason": "luad_mode_or_inputs"}),),
+                    planner=self.name,
+                )
             return AgentPlan(
                 task="luad_case",
                 rationale="The request names lung adenocarcinoma/LUAD.",
                 calls=(ToolCall("package_luad_case"),),
                 planner=self.name,
             )
-        if any(term in normalized for term in self._drug_terms):
+        if any(term in normalized for term in self._rank_terms):
+            if not {"items", "users"}.issubset(context.available_inputs):
+                return AgentPlan(
+                    task="manual_review",
+                    rationale="Expression ranking requires both item and user matrices.",
+                    calls=(ToolCall("manual_review", {"reason": "missing_expression_inputs"}),),
+                    planner=self.name,
+                )
             return AgentPlan(
                 task="transcriptomic_ranking",
                 rationale="The request asks for drug-repurposing candidate ranking.",

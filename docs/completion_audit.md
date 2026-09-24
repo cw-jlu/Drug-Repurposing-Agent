@@ -6,13 +6,13 @@
 | --- | --- | --- |
 | 1 可运行药物重定位 Agent | `agent.py`、DeepSeek Planner、自然语言 CLI、严格模式表达工作流、LUAD 案例打包器 | 已有核心链路：真实 DeepSeek 规划已驱动完整 TRANSCRIPT 分析；开放证据审阅仍未自动化 |
 | 2 RECeSS/TRANSCRIPT 适配器 | `benchmarks/recess_adapter/`、12 份三种子结果 JSON | 已有 |
-| 3 外部 Benchmark 成绩表 | `docs/benchmark_results.md` | 部分：官方拆分与指标已跑，未做发表方案的嵌套调参 |
-| 4 内部 Eval Suite | `tests/` 当前 25 项测试，另有冻结的 20 项 Planner Eval | 部分：已有真实规则/DeepSeek 对比，但未达到原计划的完整分类和数量门槛 |
+| 3 外部 Benchmark 成绩表 | `docs/benchmark_results.md` | 部分：B1k/B2 已完成两种拆分、三次外层种子和三折内层调参；benchscofi 三模型仍为默认参数 |
+| 4 内部 Eval Suite | `tests/` 当前 32 项测试，另有冻结的 20 项 v1 和 61 项 v2 Planner Eval | 已有较完整路由回归；v2 加固后结果不是独立 holdout，仍需新增盲测集 |
 | 5 Jev Choice、Score、Noul 接入层 | `src/drug_repurposing_agent/jev.py` | 部分：协议与本地模拟测试通过，缺少真实凭据与调用验证 |
 | 6 Jev 置信度门控和降级 | `gate_choice` 与测试 | 部分：规则与失败回退已实现，阈值未用真实数据校准 |
 | 7 Jev 与规则、通用 LLM 对比 | `planner_eval_results.md` 已完成规则与 DeepSeek 对比 | 部分：通用 LLM 对比已有，Jev 仍无真实凭据和结果 |
-| 8 LUAD 端到端案例 | `artifacts/reports/luad_case/case_report.json` | 部分：完成表达筛选与溯源，缺临床证据层完整审阅 |
-| 9 Top-10 候选药物证据报告 | `docs/luad_screening_report.md` | 部分：这是筛选报告，所有候选仍为证据不足 |
+| 8 LUAD 端到端案例 | `artifacts/reports/luad_case/case_report.json`、`docs/luad_top10_evidence_matrix.md` | 部分：完成表达筛选、溯源和文献/靶点分诊，缺化合物确认与实验验证 |
+| 9 Top-10 候选药物证据报告 | `docs/luad_screening_report.md`、`docs/luad_top10_evidence_matrix.md` | 已完成候选级核查；结论仍是全部证据不足，不构成疗效报告 |
 | 10 Evidence Ledger | `artifacts/reports/luad_eh3226/evidence_ledger/` | 部分：十份账本存在，身份与支持/反对证据不完整 |
 | 11 完整 Agent Trace 和成本报告 | `agent_run.json`、Planner Eval JSON 与 `case_report.json` | 部分：已覆盖 DeepSeek 规划和确定性工具执行；不覆盖尚未实测的 Jev 调用 |
 | 12 消融实验 | B0、B0p、B1、B1k、B2 及三个公开算法比较 | 部分：尚缺 Agent/Jev 层消融 |

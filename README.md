@@ -55,6 +55,15 @@ python -m drug_repurposing_agent `
 
 The frozen 20-case routing comparison and three live DeepSeek repeats are reported in [planner evaluation results](docs/planner_eval_results.md).
 
+The expanded 61-case routing regression and the B1k/B2 nested-CV runs are also committed. Reproduce one nested run with:
+
+```powershell
+python benchmarks/recess_adapter/nested_cv.py `
+  --data data/raw/TRANSCRIPT_dataset_v2.0.0 `
+  --split random_simple `
+  --seed 1234
+```
+
 On Windows with Python 3.10, `scripts/setup_benchmark.ps1` installs the tested environment from [the pinned dependency file](requirements-benchmark.lock) and runs the contract suite.
 
 The LUAD disease-signature tool processed GSE32863/GPL6884 and identified [57 verifiable tumor/normal pairs](docs/luad_data_audit.md), with two unmatched samples excluded. A verified EH3226 A549 subset produced a [Top-10 transcriptomic screening report](docs/luad_screening_report.md). Its candidates have insufficient independent evidence and several unresolved drug identities.

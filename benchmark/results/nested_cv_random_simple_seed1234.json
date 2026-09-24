@@ -1,0 +1,469 @@
+{
+  "protocol": "transcript_nested_cv_grid_v1",
+  "evaluated_at": "2026-09-24T16:45:23.457146+00:00",
+  "dataset": "TRANSCRIPT v2.0.0",
+  "split": "random_simple",
+  "seed": 1234,
+  "outer_test_size": 0.2,
+  "inner_folds": 3,
+  "selection_metric": "global_AUC",
+  "implementation": "stanscofi_2.0.1_split_and_metric_equivalent_lightweight_runner",
+  "runtime_versions": {
+    "python": "3.13.0",
+    "numpy": "2.2.4",
+    "pandas": "2.2.3",
+    "scipy": "1.16.1",
+    "scikit_learn": "1.9.0"
+  },
+  "counts": {
+    "outer_train_pairs": 74050,
+    "outer_test_pairs": 18513
+  },
+  "leakage_audit": {
+    "outer_train_test_overlap": 0,
+    "outer_test_coordinates_seen_by_inner_cv": 0,
+    "inner_coordinate_union": 74050
+  },
+  "input_sha256": {
+    "ratings": "ddc58b1b21f3f8883799c981bb4b2641f3a7e162fe50223b37a0e7a79c18e82d",
+    "items": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+    "users": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332",
+    "grid": "8dab85190cec7901cb03a256266567bac7191d761f6dd3376fe3d28876ff3fef"
+  },
+  "methods": {
+    "B1k": {
+      "selected_parameters": {
+        "neighbors": 40
+      },
+      "selection": {
+        "metric": "global_AUC",
+        "mean_global_AUC": 0.6130956599630079,
+        "mean_global_NDCG": 0.44161855050343196
+      },
+      "outer_test": {
+        "global_AUC": 0.6262260619541041,
+        "global_NDCG": 0.40502985927783247
+      },
+      "candidate_results": [
+        {
+          "parameters": {
+            "neighbors": 5
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.5320427236315086,
+              "global_NDCG": 0.4188195479140229,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5507399894738123,
+              "global_NDCG": 0.4180513989194609,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5464323525116822,
+              "global_NDCG": 0.42635874138872687,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.5430716885390011,
+          "mean_global_NDCG": 0.4210765627407369
+        },
+        {
+          "parameters": {
+            "neighbors": 10
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.5727129194189994,
+              "global_NDCG": 0.44852948572932416,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5784427250657125,
+              "global_NDCG": 0.42710419058043436,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5646984064690421,
+              "global_NDCG": 0.440591070478251,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.571951350317918,
+          "mean_global_NDCG": 0.43874158226266985
+        },
+        {
+          "parameters": {
+            "neighbors": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6048866446442023,
+              "global_NDCG": 0.46449746339941383,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5937138732720016,
+              "global_NDCG": 0.42532403689015125,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5832696362076519,
+              "global_NDCG": 0.4350108820876626,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.5939567180412854,
+          "mean_global_NDCG": 0.44161079412574256
+        },
+        {
+          "parameters": {
+            "neighbors": 40
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.62243458381231,
+              "global_NDCG": 0.45343828562543026,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6209372642255647,
+              "global_NDCG": 0.43161641432860587,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5959151318511487,
+              "global_NDCG": 0.43980095155625964,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.6130956599630079,
+          "mean_global_NDCG": 0.44161855050343196
+        }
+      ]
+    },
+    "B2": {
+      "selected_parameters": {
+        "neighbors": 20,
+        "rrf_k": 20
+      },
+      "selection": {
+        "metric": "global_AUC",
+        "mean_global_AUC": 0.7103749673302264,
+        "mean_global_NDCG": 0.4515099939626843
+      },
+      "outer_test": {
+        "global_AUC": 0.7737335892149948,
+        "global_NDCG": 0.5150730924496367
+      },
+      "candidate_results": [
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6675721430910063,
+              "global_NDCG": 0.41895574942385244,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6804246753918419,
+              "global_NDCG": 0.4445008067118052,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7323125441126364,
+              "global_NDCG": 0.4812115139893848,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.693436454198495,
+          "mean_global_NDCG": 0.4482226900416808
+        },
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6668051468225553,
+              "global_NDCG": 0.41493203029513376,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6773694950472158,
+              "global_NDCG": 0.46290747110656116,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7313743900287188,
+              "global_NDCG": 0.4761196863106932,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.6918496772994965,
+          "mean_global_NDCG": 0.45131972923746266
+        },
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6650019260466533,
+              "global_NDCG": 0.4106871927371339,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6730844848252531,
+              "global_NDCG": 0.4687235923965932,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7288816457968263,
+              "global_NDCG": 0.47787891555197465,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.688989352222911,
+          "mean_global_NDCG": 0.45242990022856727
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6988569968350471,
+              "global_NDCG": 0.42227642667483967,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6904760818243769,
+              "global_NDCG": 0.44810050523451184,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7284118081921729,
+              "global_NDCG": 0.4816665328788774,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.7059149622838655,
+          "mean_global_NDCG": 0.45068115492940963
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6972368740776176,
+              "global_NDCG": 0.4173332560614946,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6875467746057242,
+              "global_NDCG": 0.4591529913624979,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7276345131181854,
+              "global_NDCG": 0.4604932461829387,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.7041393872671757,
+          "mean_global_NDCG": 0.4456598312023104
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6949370260698875,
+              "global_NDCG": 0.4134650713302035,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6833575952832944,
+              "global_NDCG": 0.45841091467271944,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7254486559336059,
+              "global_NDCG": 0.4569363333265041,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.701247759095596,
+          "mean_global_NDCG": 0.44293743977647565
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7033806396756483,
+              "global_NDCG": 0.4221025889363137,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6978273005500388,
+              "global_NDCG": 0.4494573792845347,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7299169617649922,
+              "global_NDCG": 0.4829700136672045,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.7103749673302264,
+          "mean_global_NDCG": 0.4515099939626843
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7015424344393113,
+              "global_NDCG": 0.4171038469440329,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6941815432729751,
+              "global_NDCG": 0.4745573188488101,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7283391744548287,
+              "global_NDCG": 0.4562801956359857,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.7080210507223716,
+          "mean_global_NDCG": 0.4493137871429429
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6993169284100057,
+              "global_NDCG": 0.4130987694808685,
+              "train_pairs": 49366,
+              "validation_pairs": 24684
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6894090123637071,
+              "global_NDCG": 0.47441252388695804,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7259856131960669,
+              "global_NDCG": 0.45275404086072646,
+              "train_pairs": 49367,
+              "validation_pairs": 24683
+            }
+          ],
+          "mean_global_AUC": 0.7049038513232598,
+          "mean_global_NDCG": 0.4467551114095176
+        }
+      ]
+    }
+  },
+  "runtime_sec": 92.73,
+  "interpretation": "Unknown pairs are non-positive only under the official global metric convention; selected parameters use outer-training data only."
+}

@@ -10,7 +10,7 @@ Inputs are versioned expression matrices and manifests listed in the [data card]
 
 ## Evaluation
 
-See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). Three-seed random and weakly correlated splits use the official `stanscofi` global AUC/NDCG functions. ALSWR, PMF, and LogisticMF are direct package-default reruns; there is no publication-style nested hyperparameter search. Unknown associations count as non-positive in the official global metric convention, but are not known clinical failures. The LUAD frozen-control check reports ranks only for present names and does not turn absent names into negatives.
+See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). Three-seed random and weakly correlated splits use the RECeSS/stanscofi split and global-metric definitions. B1k/B2 additionally use three-fold inner tuning with an explicit zero-overlap audit. ALSWR, PMF, and LogisticMF remain direct package-default reruns rather than publication-style tuned models. Unknown associations count as non-positive in the official global metric convention, but are not known clinical failures. The LUAD frozen-control check reports ranks only for present names and does not turn absent names into negatives.
 
 ## Safeguards
 
@@ -18,4 +18,4 @@ The LUAD case validation rejects changed hashes, non-finite scores, broken ranks
 
 ## Known gaps
 
-Required before a clinical evidence report or full project completion: compound-level reconciliation, target/pathway and full literature review with support and conflict evidence (two context abstracts have been triaged), larger internal Eval suite, complete benchmark tuning and ablations, live Jev evaluation if access becomes available, and updated course slides for the DeepSeek comparison. No clinical deployment is supported.
+Required before a clinical efficacy report or full project completion: compound-level reconciliation and experimental validation, broader benchmark tuning/ablations, a new untouched Agent holdout after v2 hardening, live Jev evaluation if access becomes available, and updated course slides for the DeepSeek/nested-CV comparison. The bounded Top-10 target/pathway and support/conflict literature matrix is complete, but it cannot establish efficacy. No clinical deployment is supported.

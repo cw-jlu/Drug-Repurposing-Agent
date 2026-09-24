@@ -32,10 +32,24 @@ Supplemental disease-wise score AUC was calculable for 57, 50, and 51 disease ro
 
 The weakly correlated split produced identical scores for all deterministic methods and identical validation label counts across these three seeds. This suggests the selected fold may have been the same; the fold coordinates have not been independently compared. The apparent zero SD does not imply low uncertainty. B0 changes because its random scores use the seed. RRF now assigns tied component scores equal average ranks, removing an implicit input-row-order tie break. The saved B2 runs and this table were regenerated after that correction.
 
-These are **initial external evaluations**, not the full RECeSS publication protocol: the runners use the official split and global metric functions, but there is no nested hyperparameter CV and only three seeds. ALSWR, PMF, and LogisticMF are direct runs of `benchscofi` 2.0.1 with package defaults; they are not quoted publication scores. The PMF runner restores the removed NumPy `np.int` alias, and all three models receive a label-neutral test object during prediction. The numerical results are saved in `benchmark/results/recess_defaults_*.json`. No SOTA claim is supported. LogisticMF exceeds B2 in both splits on these runs. B1 is near chance; adding it to a label-driven fusion did not outperform B0p on random splits and performed worse than B0p on weakly correlated splits. Unknown `0` entries are scored as non-positive under the official global AUC definition, not established clinical failures.
+## Nested tuning of B1k and B2
+
+The new nested runner uses the same three outer seeds and both outer split protocols. Hyperparameters are selected only by three-fold CV inside each outer training set; leakage audits in all six JSON files report zero outer-test coordinates seen by inner CV.
+
+| Outer split | Method | Selected parameters | Outer global AUC | Outer global NDCG |
+| --- | --- | --- | ---: | ---: |
+| Random simple | B1k | neighbors=40 in 3/3 runs | 0.6206 ± 0.0060 | 0.4168 ± 0.0122 |
+| Random simple | B2 | neighbors=20, RRF k=20 in 3/3 | 0.7371 ± 0.0384 | 0.4450 ± 0.0609 |
+| Weakly correlated | B1k | neighbors=40 in 3/3 | 0.5140 ± 0.0000 | 0.3768 ± 0.0000 |
+| Weakly correlated | B2 | neighbors=20 once / 10 twice; RRF k=20 | 0.4702 ± 0.0079 | 0.3421 ± 0.0136 |
+
+Tuning materially improves B1k over its fixed 10-neighbor version on random splits (AUC 0.5660 → 0.6206), but B2 improves only slightly there (0.7270 → 0.7371) and does not improve under the weakly correlated outer split (0.4752 → 0.4702). Thus the more complete procedure strengthens the negative conclusion: expression-neighbor tuning does not solve generalization to dissimilar compounds, and LogisticMF remains the strongest tested baseline. The saved files are `benchmark/results/nested_cv_*.json`.
+
+These remain **limited external evaluations**, not the full RECeSS publication protocol: B1k/B2 now have nested tuning, but ALSWR, PMF, and LogisticMF remain direct `benchscofi` 2.0.1 package-default runs, and only three outer seeds are used. They are not quoted publication scores. The PMF runner restores the removed NumPy `np.int` alias, and all three models receive a label-neutral test object during prediction. No SOTA claim is supported. LogisticMF exceeds tuned B2 in both splits. Unknown `0` entries are scored as non-positive under the official global AUC definition, not established clinical failures.
 
 Reproduce one run with:
 
 ```powershell
 python benchmarks/recess_adapter/run.py --data data/raw/TRANSCRIPT_dataset_v2.0.0 --split random_simple --seed 1234
+python benchmarks/recess_adapter/nested_cv.py --data data/raw/TRANSCRIPT_dataset_v2.0.0 --split random_simple --seed 1234
 ```
