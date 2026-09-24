@@ -1,0 +1,12 @@
+{
+  "repo-drug-annotation-20250818.txt": {
+    "url": "https://repo-hub.broadinstitute.org/public/data/repo-drug-annotation-20250818.txt",
+    "bytes": 661900,
+    "sha256": "5f8284538e73c19a316d1cf45ea10300de6e15c555d75ced7c1b7387457fc523"
+  },
+  "repo-sample-annotation-20250818.txt": {
+    "url": "https://repo-hub.broadinstitute.org/public/data/repo-sample-annotation-20250818.txt",
+    "bytes": 4072927,
+    "sha256": "06eb19ad48f0e3301dbead3e184c14fd37b31c220151d5cd87fa487483db73fd"
+  }
+}

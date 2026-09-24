@@ -1,0 +1,43 @@
+{
+  "accession": "GSE92742",
+  "cohort": "A549 trt_cp 24 h 10 µM",
+  "status": "metadata_only; Level 5 GCTX expression not downloaded",
+  "sig_info_total": 473647,
+  "a549_trt_cp_total": 21685,
+  "selected_signatures": 5814,
+  "selected_pert_ids": 5169,
+  "gene_info_rows": 12328,
+  "pert_info_rows": 51383,
+  "positive_control_name_presence": {
+    "erlotinib": true,
+    "gefitinib": true,
+    "osimertinib": false,
+    "crizotinib": true,
+    "sotorasib": false,
+    "capmatinib": false,
+    "cisplatin": false,
+    "carboplatin": false,
+    "pemetrexed": false,
+    "paclitaxel": true,
+    "docetaxel": true
+  },
+  "selection_rule": "cell_id=A549; pert_type=trt_cp; pert_itime=24 h; pert_idose=10 µM; no post-ranking changes",
+  "sources": {
+    "GSE92742_Broad_LINCS_sig_info.txt.gz": {
+      "sha256": "19da29c0ee12ddf27f9698cd0da40beaff58657dcde9d382aae068737e831299",
+      "bytes": 11124404,
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE92nnn/GSE92742/suppl/GSE92742_Broad_LINCS_sig_info.txt.gz"
+    },
+    "GSE92742_Broad_LINCS_gene_info.txt.gz": {
+      "sha256": "741216ccc53320119b47ab006de3bcad48963c57087c9e07f50f0d6cd088711a",
+      "bytes": 216692,
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE92nnn/GSE92742/suppl/GSE92742_Broad_LINCS_gene_info.txt.gz"
+    },
+    "GSE92742_Broad_LINCS_pert_info.txt.gz": {
+      "sha256": "b1945b3fde51021865b12269929cc78ccf2665be27f53a4da9336e4ddcf4b42f",
+      "bytes": 1138509,
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE92nnn/GSE92742/suppl/GSE92742_Broad_LINCS_pert_info.txt.gz"
+    }
+  },
+  "selected_manifest_sha256": "53e7ebf8962d30c21e38cc654707985b50b854e9c9a4d4bd401766c7bf6abbad"
+}

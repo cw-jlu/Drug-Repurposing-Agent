@@ -1,0 +1,12 @@
+drug_name,control_group,source_note
+erlotinib,EGFR inhibitor,Prespecified in project plan section 23.3
+gefitinib,EGFR inhibitor,Prespecified in project plan section 23.3
+osimertinib,EGFR inhibitor,Prespecified in project plan section 23.3
+crizotinib,ALK inhibitor,Prespecified in project plan section 23.3
+sotorasib,KRAS inhibitor,Prespecified in project plan section 23.3
+capmatinib,MET inhibitor,Prespecified in project plan section 23.3
+cisplatin,platinum chemotherapy,Prespecified in project plan section 23.3
+carboplatin,platinum chemotherapy,Prespecified in project plan section 23.3
+pemetrexed,antifolate chemotherapy,Prespecified in project plan section 23.3
+paclitaxel,taxane chemotherapy,Prespecified in project plan section 23.3
+docetaxel,taxane chemotherapy,Prespecified in project plan section 23.3

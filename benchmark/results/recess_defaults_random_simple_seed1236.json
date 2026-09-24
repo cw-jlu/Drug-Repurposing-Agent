@@ -1,0 +1,48 @@
+{
+  "dataset": "TRANSCRIPT v2.0.0",
+  "split": "random_simple",
+  "seed": 1236,
+  "test_size": 0.2,
+  "input_sha256": {
+    "ratings": "ddc58b1b21f3f8883799c981bb4b2641f3a7e162fe50223b37a0e7a79c18e82d",
+    "items": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+    "users": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332"
+  },
+  "methods": {
+    "ALSWR": {
+      "global_AUC": 0.6198485732110888,
+      "global_NDCG": 0.458226189022846,
+      "runtime_sec": 0.512,
+      "parameters": {
+        "n_iters": 15,
+        "n_factors": 15,
+        "alpha": 15.0,
+        "reg": 0.01,
+        "random_state": 1354
+      }
+    },
+    "PMF": {
+      "global_AUC": 0.6289880920088972,
+      "global_NDCG": 0.3585182754678095,
+      "runtime_sec": 0.932,
+      "parameters": {
+        "reg": 0.01,
+        "learning_rate": 0.1,
+        "n_iters": 160,
+        "n_factors": 15,
+        "batch_size": 100
+      }
+    },
+    "LogisticMF": {
+      "global_AUC": 0.7701879780827864,
+      "global_NDCG": 0.49685078804256927,
+      "runtime_sec": 0.244,
+      "parameters": {
+        "num_factors": 2,
+        "reg_param": 0.6,
+        "gamma": 1.0,
+        "iterations": 30
+      }
+    }
+  }
+}

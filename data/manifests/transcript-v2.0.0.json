@@ -1,0 +1,34 @@
+{
+  "dataset": "TRANSCRIPT",
+  "version": "2.0.0",
+  "zenodo_record": 7982976,
+  "source_url": "https://zenodo.org/api/records/7982976/files/TRANSCRIPT_dataset_v2.0.0.zip/content",
+  "archive_name": "TRANSCRIPT_dataset_v2.0.0.zip",
+  "download_checked_at": "2026-09-24",
+  "archive_bytes": 31599556,
+  "archive_md5": "67b5be71611361ca493303b052a4944c",
+  "archive_sha256": "8cf7903fff4725aed1828f1cce01b046f68a6beb6f192863464fe4e3be9bfc45",
+  "files": {
+    "LICENSE": {
+      "bytes": 1090,
+      "sha256": "45315c721e79450a344bbf4627e7863b4337c5eb32440cde2746d34dd6156d97"
+    },
+    "README": {
+      "bytes": 2476,
+      "sha256": "5f4f6d6db2b86641123af25f429144ff929bf2aaec209c5e892642c3b70e9c53"
+    },
+    "items.csv": {
+      "bytes": 92242512,
+      "sha256": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b"
+    },
+    "ratings_mat.csv": {
+      "bytes": 191407,
+      "sha256": "ddc58b1b21f3f8883799c981bb4b2641f3a7e162fe50223b37a0e7a79c18e82d"
+    },
+    "users.csv": {
+      "bytes": 8629179,
+      "sha256": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332"
+    }
+  },
+  "license": "See original LICENSE in verified archive"
+}

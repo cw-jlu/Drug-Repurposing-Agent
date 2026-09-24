@@ -1,0 +1,27 @@
+{
+  "method": "limma lmFit + eBayes, patient fixed effect, BH FDR",
+  "r_version": "4.6.1",
+  "limma_version": "3.68.5",
+  "source_manifest_sha256": "efc695c15e87dcdb22f4b346236ec946d095f930051de6e8d1dca5c48387b2d6",
+  "outputs": {
+    "limma_session_info.txt": {
+      "bytes": 461,
+      "sha256": "e2458a205daf8ba0c53ce365f69e9cbc1ec29d75a3bcdc81a27d4a614909c6f0"
+    },
+    "luad_limma_all.tsv": {
+      "bytes": 1267150,
+      "sha256": "28b685d5c5ceebf4750d4dd4511316280871529395410042fa0eb541aefd370f"
+    }
+  },
+  "comparison": {
+    "max_abs_log2FC_difference": 8.881784197001252e-15,
+    "max_abs_p_value_difference": 0.05203828635618052,
+    "max_abs_fdr_difference": 0.062646549449698,
+    "paired_t_up": 512,
+    "paired_t_down": 749,
+    "limma_up": 512,
+    "limma_down": 749,
+    "up_jaccard": 1.0,
+    "down_jaccard": 1.0
+  }
+}

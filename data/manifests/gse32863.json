@@ -1,0 +1,70 @@
+{
+  "accession": "GSE32863",
+  "platform": "GPL6884",
+  "sources": {
+    "GSE32863_series_matrix.txt.gz": {
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE32nnn/GSE32863/matrix/GSE32863_series_matrix.txt.gz",
+      "bytes": 29776898,
+      "sha256": "7f33b83dc8d2b0876e610a265f947893753b2a70854d360c247311fa3474f63f"
+    },
+    "GPL6884.annot.gz": {
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPL6nnn/GPL6884/annot/GPL6884.annot.gz",
+      "bytes": 6942892,
+      "sha256": "8bef75ebe5b7e28bf61cf398a31e28d63d3a9884405a3510f60ac534a0b59abb"
+    }
+  },
+  "qc": {
+    "study": "GSE32863",
+    "platform": "GPL6884",
+    "pairs": 57,
+    "samples_total": 116,
+    "samples_included": 114,
+    "excluded_samples": [
+      "GSM813507",
+      "GSM813518"
+    ],
+    "pairing_note": "GEO titles 3023_T and 3035_N have no matching opposite tissue; excluded.",
+    "probes": 48803,
+    "mapped_unambiguous_probes": 28718,
+    "selected_genes": 19404,
+    "default_up": 512,
+    "default_down": 749,
+    "method": "paired t-test; Benjamini-Hochberg; tumor-minus-normal log2FC",
+    "probe_rule": "highest across-all-samples IQR per gene; probe ID tie-break",
+    "threshold": "FDR<0.05 and absolute log2FC>=1",
+    "source_sha256": {
+      "GSE32863_series_matrix.txt.gz": "7f33b83dc8d2b0876e610a265f947893753b2a70854d360c247311fa3474f63f",
+      "GPL6884.annot.gz": "8bef75ebe5b7e28bf61cf398a31e28d63d3a9884405a3510f60ac534a0b59abb"
+    }
+  },
+  "outputs": {
+    "a549_signature_manifest.tsv": {
+      "sha256": "53e7ebf8962d30c21e38cc654707985b50b854e9c9a4d4bd401766c7bf6abbad",
+      "bytes": 1228222
+    },
+    "luad_deg_all.tsv": {
+      "sha256": "cbda7ed7a2f2b0bc522b54232907cf3d09d87ecf2db4ae2a18b7af03a94cad3e",
+      "bytes": 1600398
+    },
+    "luad_down.txt": {
+      "sha256": "4e0d683dd00299d8db5e2693fd2b14083038b32e48224d534a65cf4ee21f7df5",
+      "bytes": 5321
+    },
+    "luad_gene_expression.tsv": {
+      "sha256": "3859153e9a22c11d89fabd5dc4e69ea812c34915cd2f72e8555471f995b471a3",
+      "bytes": 26449685
+    },
+    "luad_qc.json": {
+      "sha256": "30dad93d00da097a8d9d06b2fbbc679834e356a969b2f63978f8a3dfd311f701",
+      "bytes": 850
+    },
+    "luad_samples.tsv": {
+      "sha256": "e8239e8109c07503b11ce942c8d51bec7f20beca9b63f0c3ba86c6f6e704d877",
+      "bytes": 10881
+    },
+    "luad_up.txt": {
+      "sha256": "6b8fbc9e8e6cdb24e636ff9d7f27d6e5db42d1a131d73189163e244bb8fb40d9",
+      "bytes": 3790
+    }
+  }
+}

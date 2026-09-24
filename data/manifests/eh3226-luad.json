@@ -1,0 +1,23 @@
+{
+  "source": "ExperimentHub EH3226 derived from GEO GSE92742",
+  "source_url": "https://mghp.osn.xsede.org/bir190004-bucket01/ExperimentHub/signatureSearchData/v0.1/lincs.h5",
+  "source_bytes": 2464124175,
+  "source_sha256": "8087bd029d29df17ce44eb653610ad0e2b847e3f361d5540e5f798da42a473ec",
+  "assay_shape": [
+    45956,
+    12328
+  ],
+  "cohort": "A549; trt_cp; 10 µM; 24 h; first technical duplicate retained by upstream sig_filter",
+  "a549_names": 4920,
+  "ambiguous_id_names": 206,
+  "landmark_genes_intersected": 961,
+  "significant_up_landmark": 57,
+  "significant_down_landmark": 50,
+  "disease_input_sha256": "cbda7ed7a2f2b0bc522b54232907cf3d09d87ecf2db4ae2a18b7af03a94cad3e",
+  "method": "negative Spearman + prespecified disease up/down connectivity; RRF k=60",
+  "status": "transcriptomic_candidates_only; evidence curation pending",
+  "outputs": {
+    "all_candidates.csv": "dc6641606876e59632fe95092ff1d8e3379da2d102fd7560c361da7b9685d8e2",
+    "positive_control_ranks.csv": "9aa629a758afb38d542b9e6413a6dc842508648801b7ecc96ccaf72735615176"
+  }
+}

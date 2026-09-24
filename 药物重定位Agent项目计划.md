@@ -323,6 +323,8 @@ RepurposingBench 的任务形式与本项目高度匹配，但当前公开页面
 
 **原始来源**：[NCBI GEO GSE32863](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE32863)。研究为人肺腺癌肿瘤与邻近非肿瘤肺组织的 Illumina HumanWG-6 v3.0 芯片表达分析。GEO 网页摘要写“60 对”，但 Overall Design 与公开 GSM 样本清单对应 **58 对表达样本（116 份）**；本项目以实际 GSM、患者 ID 和分组核验结果为准。一个 [GEO 样本页](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM813463) 标明 `VALUE` 为 robust spline normalized、log2 transformed。该队列是 LUAD 案例输入，并非 TRANSCRIPT Benchmark 的原始组成样本。
 
+**2026-09-24 实际核验补充**：已下载 Series Matrix 的 116 份表达样本并解析标题。按标题中的患者编号只能形成 **57 个完整 Tumor/Normal 配对**；`GSM813507` (`3023_T`) 与 `GSM813518` (`3035_N`) 各自缺少相同编号的另一组。它们不能凭相邻位置强行配对；当前分析明确排除这 2 份样本，使用 57 对。详见 `docs/luad_data_audit.md` 和数据 manifest。
+
 **下载内容**：Series Matrix、样本元数据、平台注释 GPL6884；必要时取 GEO 提供的非归一化补充文件复核。先使用已经说明归一化及 log2 的处理后表达值，不能再盲目做一遍 log2。下载后输出 `sample_manifest.tsv`，至少包含 `GSM`、原始样本标题、患者 ID、Tumor/Normal、是否成对、是否纳入及原因。
 
 **处理步骤**：

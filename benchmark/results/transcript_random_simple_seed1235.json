@@ -1,0 +1,65 @@
+{
+  "dataset": "TRANSCRIPT v2.0.0",
+  "split": "random_simple",
+  "seed": 1235,
+  "test_size": 0.2,
+  "counts": {
+    "train_pairs": 74050,
+    "test_pairs": 18513,
+    "test_positive": 80,
+    "test_explicit_negative": 2,
+    "test_unknown": 18431
+  },
+  "input_sha256": {
+    "ratings": "ddc58b1b21f3f8883799c981bb4b2641f3a7e162fe50223b37a0e7a79c18e82d",
+    "items": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+    "users": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332"
+  },
+  "methods": {
+    "B0": {
+      "global_AUC": 0.5297279335973526,
+      "global_NDCG": 0.3407117767989791,
+      "rowwise_score_AUC_mean": 0.5150343708983021,
+      "rowwise_AUC_diseases": 50,
+      "recall_at_10_mean": 0.04333333333333333,
+      "MRR_mean": 0.04251182256408948,
+      "runtime_sec": 0.184
+    },
+    "B0p": {
+      "global_AUC": 0.7344887565778766,
+      "global_NDCG": 0.4242341529702582,
+      "rowwise_score_AUC_mean": 0.7120082659200926,
+      "rowwise_AUC_diseases": 50,
+      "recall_at_10_mean": 0.4416666666666667,
+      "MRR_mean": 0.23584071727128667,
+      "runtime_sec": 0.191
+    },
+    "B1": {
+      "global_AUC": 0.49396666304996484,
+      "global_NDCG": 0.3359433978227552,
+      "rowwise_score_AUC_mean": 0.4751148554270064,
+      "rowwise_AUC_diseases": 50,
+      "recall_at_10_mean": 0.06166666666666666,
+      "MRR_mean": 0.04327143209626616,
+      "runtime_sec": 3.619
+    },
+    "B1k": {
+      "global_AUC": 0.5543034232083762,
+      "global_NDCG": 0.41832140266125933,
+      "rowwise_score_AUC_mean": 0.5170112660653825,
+      "rowwise_AUC_diseases": 50,
+      "recall_at_10_mean": 0.11166666666666666,
+      "MRR_mean": 0.1227692686804798,
+      "runtime_sec": 1.648
+    },
+    "B2": {
+      "global_AUC": 0.7298252454836435,
+      "global_NDCG": 0.4357068725718541,
+      "rowwise_score_AUC_mean": 0.6911550123353929,
+      "rowwise_AUC_diseases": 50,
+      "recall_at_10_mean": 0.33333333333333326,
+      "MRR_mean": 0.15279855058779115,
+      "runtime_sec": 4.671
+    }
+  }
+}
