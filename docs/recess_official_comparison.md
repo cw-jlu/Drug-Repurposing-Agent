@@ -8,10 +8,15 @@ at commit `a7f11077271cedf3a98a82e3dc74b6fc0e93986e` and the authors'
 at commit `cf5d9fdcb1ccd1676c7a0e7a39e784d79557fae0`. The comparison is
 limited to TRANSCRIPT v2.0.0 and its 11 published reference models. B2 is
 registered in the upstream pipeline by `benchmarks/recess_adapter/official_b2.patch`.
-The patch also makes directory creation and intermediate-file cleanup portable,
-converts the generated NumPy seed to a Python integer, and restores an alias
+The patch also replaces Unix-only directory and cleanup commands with Python
+calls, converts the generated NumPy seed to a Python integer, and restores an alias
 required by the pinned `cute-ranking` package on NumPy 2. These changes do
 not alter split, training, selection, or metric functions.
+The run retained its small per-seed intermediate CSVs in the ignored artifact
+directory; the versioned aggregate and seed CSVs are the comparison inputs.
+The B2 adapter caches feature-only computations across folds; its scores are
+tested for exact equality with the frozen B2 implementation, including after
+validation labels are changed.
 
 The upstream runner generates the same 100 seeds for each model with
 `np.random.seed(1234)` followed by `np.random.choice(range(int(1e8)), size=100)`.
@@ -22,6 +27,9 @@ For B2, `neighbors=10` and `rrf_k=60` are fixed before these runs. The
 published `K=5` operation is fold-based model selection; it does not search a
 hyperparameter grid. Our separate three-fold B2 grid study remains a distinct
 experiment and must not be mixed into this table.
+All 22 published TRANSCRIPT parameter JSON files (11 models × two split
+types) set `params` to `null`, confirming that the reference result files do
+not represent a five-fold hyperparameter grid search either.
 
 In `stanscofi` 2.0.1, `weakly_correlated_split` seeds random-number generators
 but its clustering and fold assignment contain no subsequent random draw.
@@ -36,6 +44,17 @@ also writes global AUC, global NDCG, row-wise AUC/NDCG and other metrics.
 The summary script requires exact agreement of all 100 seed positions for B2
 and every published model before producing any paired difference. It records
 source-file SHA-256 values and finite-value coverage for each metric.
+
+## Result
+
+B2 achieves NS-AUC `0.5222 ± 0.0354` on random simple (rank 9/12) and
+`0.5019 ± 0.0036` on weakly correlated (rank 8/12). The leading published
+references are BNNR (`0.7331`) and MBiRW (`0.7384`), respectively. B2 is
+below both on all 100 paired seeds. The [full table](benchmark_results.md)
+and [machine-readable comparisons](../benchmark/results/recess_official_b2_vs_11.json)
+include all 11 references, paired differences, and source hashes. B2's
+aggregate result, seed, and parameter CSVs are versioned in
+`benchmark/results/recess_official_b2/`.
 
 ## Reproduce
 
@@ -53,6 +72,8 @@ git -C $published checkout cf5d9fdcb1ccd1676c7a0e7a39e784d79557fae0
 git -C $published sparse-checkout set results_TRANSCRIPT results_TRANSCRIPT_weakly_correlated
 python -m scripts.run_recess_official_b2 --upstream $upstream --n 100 --k 5
 python -m scripts.compare_recess_official_b2 --published $published
+# To recompute only the comparison from the committed B2 CSVs:
+python -m scripts.compare_recess_official_b2 --published $published --ours benchmark/results/recess_official_b2
 ```
 
 Install the environment dependencies from `requirements-benchmark.lock` and
@@ -73,3 +94,9 @@ dataset bytes and software builds are not independently checksum verified by
 the published CSVs, so any environment or source-data discrepancy remains a
 reproducibility limitation. The primary metric is a ranking measure for known
 and unknown associations; it is not a clinical benefit estimate.
+
+As a cross-check of the local patched runner and TRANSCRIPT input, an
+independent `LogisticMF` run on the first official random seed (`17263407`)
+exactly reproduced the authors' published values for NS-AUC
+(`0.6704512218407673`), global AUC (`0.950127861336678`), and global NDCG
+(`0.5501272684100554`). This checks one reference run, not all 11 × 100 runs.

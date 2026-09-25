@@ -10,7 +10,7 @@ Inputs are versioned expression matrices and manifests listed in the [data card]
 
 ## Evaluation
 
-See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). B1k/B2 use three outer seeds and three-fold inner tuning. ALSWR, PMF, and LogisticMF use five outer seeds, two split protocols, a prespecified four-candidate grid, and three-fold inner tuning. Every nested result includes an explicit zero-overlap audit. Unknown associations count as non-positive in the official global metric convention, but are not known clinical failures. The independent 100-case Agent v3 holdout was frozen before provider calls; the rule and live DeepSeek planners scored 90% and 98%, respectively.
+See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). B1k/B2 use three outer seeds and three-fold inner tuning. ALSWR, PMF, and LogisticMF use five outer seeds, two split protocols, a prespecified four-candidate grid, and three-fold inner tuning. A separate B2 run in the publication runner uses the same 100 seeds and five-fold model selection as 11 published TRANSCRIPT models; its NS-AUC ranks are 9/12 and 8/12 across the two splits. Every project nested result includes an explicit zero-overlap audit. Unknown associations count as non-positive in the global metric convention, but are not known clinical failures. The independent 100-case Agent v3 holdout was frozen before provider calls; the rule and live DeepSeek planners scored 90% and 98%, respectively.
 
 ## Safeguards
 

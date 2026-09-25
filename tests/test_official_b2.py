@@ -41,3 +41,10 @@ def test_official_b2_cached_predictions_match_frozen_baseline():
         np.testing.assert_allclose(actual.data, expected.data, rtol=0, atol=0)
         np.testing.assert_allclose(official.predict_proba(prediction).data,
                                    expected.data, rtol=0, atol=0)
+        changed_validation_labels = LocalDataset(-ratings, items, users,
+                                                 folds=dataset.folds)
+        label_blind = B2({"neighbors": 2, "rrf_k": 20}).fit(train)
+        np.testing.assert_allclose(
+            label_blind.predict_proba(changed_validation_labels).data,
+            expected.data, rtol=0, atol=0
+        )

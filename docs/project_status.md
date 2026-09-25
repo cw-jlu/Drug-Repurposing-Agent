@@ -17,6 +17,7 @@
 - GSE92742 A549 compound metadata cohort and prespecified reference names, frozen before any LUAD drug ranking.
 - Three direct `benchscofi` default-baseline runs (ALSWR, PMF, LogisticMF) on each of the six saved RECeSS folds. LogisticMF leads the project's fixed methods in both split protocols; no SOTA claim is made.
 - ALSWR, PMF, and LogisticMF now also have three-fold inner tuning under five outer seeds for both split protocols. All ten leakage audits pass. Random-split AUC means are 0.6579, 0.6161, and 0.7826; weakly correlated means are 0.5922, 0.5654, and 0.6474.
+- B2 is integrated into the pinned publication runner and evaluated against all 11 author-published TRANSCRIPT models with the same 100 seeds, five-fold model selection and NS-AUC metric. It scores 0.5222 (9/12) on random simple and 0.5019 (8/12) on weakly correlated. All 22 reference seed files agree, and one locally rerun LogisticMF seed matches its published metrics exactly.
 - ExperimentHub EH3226 A549 Level 5 subset verified by SHA-256, with 4,920 drug-name signatures and 961 aligned landmark genes. A transcriptomic LUAD Top-10 and frozen-control ranks have been generated.
 - Broad Repurposing Hub identity audit for the Top-10. Only two names have exact InChIKey matches between the inferred GEO ID and Hub sample annotation; several others are ambiguous or mismatched.
 - A candidate-by-candidate LUAD evidence matrix now records identity status, name-level targets/pathways, drug-specific literature where available, and shared supporting and contradicting glucocorticoid evidence. All ten remain `insufficient_evidence`.
@@ -25,7 +26,7 @@
 - Data card, system card, and limitations document.
 - A pinned Python 3.10 dependency set in `requirements-benchmark.lock` and Windows setup script.
 - An optional Jev Choice/Score/Noul HTTP adapter with response validation and fail-closed confidence gating; live Jev use has not been run without credentials.
-- Thirty-two passing internal tests covering scientific signs, tied ranks, missing/constant vectors, label isolation, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, fail-closed DeepSeek handling, and nested-split boundaries.
+- Thirty-three passing internal tests covering scientific signs, tied ranks, missing/constant vectors, label isolation, publication-runner B2 score equivalence, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, fail-closed DeepSeek handling, and nested-split boundaries.
 - An editable four-page course report and a nine-slide editable defense deck now include v3 holdout, five-seed nested CV, exact LUAD signature IDs and the wet-lab boundary. Every page and slide was rendered and checked; the two deck charts remain native and editable.
 
 ## Needed for the planned final deliverable

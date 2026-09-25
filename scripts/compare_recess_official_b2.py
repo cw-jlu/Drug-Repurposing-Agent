@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+from importlib.metadata import version
 import json
 from pathlib import Path
 import subprocess
+import sys
 
 import numpy as np
 import pandas as pd
@@ -45,8 +47,8 @@ def load_run(folder: Path, model: str, split: str, expected_seeds: list[int]) ->
         series[label] = values
     return {
         "series": series,
-        "source_files": {str(result_path): sha256_file(result_path),
-                         str(seed_path): sha256_file(seed_path)},
+        "source_files": {result_path.name: sha256_file(result_path),
+                         seed_path.name: sha256_file(seed_path)},
     }
 
 
@@ -79,6 +81,8 @@ def main() -> None:
                         help="Clone of RECeSS-EU-Project/benchmark-results")
     parser.add_argument("--ours", type=Path,
                         default=Path("artifacts/recess_official_b2/results_B2"))
+    parser.add_argument("--data", type=Path,
+                        default=Path("data/raw/TRANSCRIPT_dataset_v2.0.0"))
     parser.add_argument("--output", type=Path,
                         default=Path("benchmark/results/recess_official_b2_vs_11.json"))
     args = parser.parse_args()
@@ -90,10 +94,27 @@ def main() -> None:
         raise ValueError(f"Expected published results commit {PUBLISHED_COMMIT}; got {published_head}")
     expected_seeds = np.random.RandomState(1234).choice(range(int(1e8)), size=100).tolist()
     repo = Path(__file__).resolve().parents[1]
-    staged_input = args.ours.resolve(strict=True).parent / "datasets" / "TRANSCRIPT"
+    input_data = args.data.resolve(strict=True)
+    input_hashes = {
+        name: sha256_file(input_data / name)
+        for name in ("ratings_mat.csv", "items.csv", "users.csv")
+    }
+    manifest = json.loads((repo / "data" / "manifests" /
+                           "transcript-v2.0.0.json").read_text(encoding="utf-8"))
+    for name, digest in input_hashes.items():
+        if digest != manifest["files"][name]["sha256"]:
+            raise ValueError(f"TRANSCRIPT input differs from the pinned manifest: {name}")
     report = {
         "protocol": "RECeSS TRANSCRIPT official runner, N=100, K=5, ptest=0.2",
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "local_runtime": {
+            "python": sys.version.split()[0],
+            "numpy": np.__version__,
+            "pandas": pd.__version__,
+            "stanscofi": version("stanscofi"),
+            "benchscofi": version("benchscofi"),
+            "cute-ranking": version("cute-ranking"),
+        },
         "official_code_commit": "a7f11077271cedf3a98a82e3dc74b6fc0e93986e",
         "published_results_commit": PUBLISHED_COMMIT,
         "selection_metric": "official five-fold rowwise AUC, best fold model",
@@ -103,10 +124,7 @@ def main() -> None:
             repo / "benchmarks" / "recess_adapter" / "official_b2.py"),
         "runner_patch_sha256": sha256_file(
             repo / "benchmarks" / "recess_adapter" / "official_b2.patch"),
-        "transcript_input_sha256": {
-            name: sha256_file(staged_input / name)
-            for name in ("ratings_mat.csv", "items.csv", "users.csv")
-        },
+        "transcript_input_sha256": input_hashes,
         "seed_order": expected_seeds,
         "splits": {},
     }
