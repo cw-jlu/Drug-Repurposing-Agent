@@ -1,0 +1,43 @@
+"""Check that the upstream adapter preserves the frozen B2 score calculation."""
+
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+import pytest
+
+pytest.importorskip("stanscofi.models")
+
+from benchmarks.recess_adapter.nested_cv import LocalDataset
+from benchmarks.recess_adapter.official_b2 import B2
+from drug_repurposing_agent.benchmark import TranscriptBaseline
+
+
+def test_official_b2_cached_predictions_match_frozen_baseline():
+    genes = [f"g{i}" for i in range(8)]
+    drugs = [f"d{i}" for i in range(4)]
+    diseases = [f"c{i}" for i in range(3)]
+    items = pd.DataFrame(np.arange(32, dtype=float).reshape(8, 4),
+                         index=genes, columns=drugs)
+    items.iloc[2] = [3, 1, 4, 2]
+    users = pd.DataFrame(np.arange(24, dtype=float).reshape(8, 3)[::-1],
+                         index=genes, columns=diseases)
+    ratings = pd.DataFrame([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 0, 0]],
+                           index=drugs, columns=diseases)
+    dataset = LocalDataset(ratings, items, users)
+    prediction = dataset.subset(dataset.folds)
+    for changed in (False, True):
+        train = dataset.subset(dataset.folds)
+        if changed:
+            train.ratings.data[:] = 0
+            train.ratings = train.ratings.tocoo()
+        original = TranscriptBaseline({"method": "B2", "neighbors": 2,
+                                       "rrf_k": 20}).fit(train)
+        official = B2({"neighbors": 2, "rrf_k": 20}).fit(train)
+        expected = original.predict_proba(prediction)
+        actual = official.predict_proba(prediction)
+        np.testing.assert_array_equal(actual.row, expected.row)
+        np.testing.assert_array_equal(actual.col, expected.col)
+        np.testing.assert_allclose(actual.data, expected.data, rtol=0, atol=0)
+        np.testing.assert_allclose(official.predict_proba(prediction).data,
+                                   expected.data, rtol=0, atol=0)

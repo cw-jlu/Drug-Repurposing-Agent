@@ -1,0 +1,73 @@
+diff --git a/benchmark_pipeline.py b/benchmark_pipeline.py
+--- a/benchmark_pipeline.py
++++ b/benchmark_pipeline.py
+@@ -11,3 +11,5 @@ import seaborn as sns
+ import numpy as np
++# cute-ranking 0.0.3 still calls the NumPy alias removed in NumPy 2.
++np.asfarray = getattr(np, "asfarray", lambda values: np.asarray(values, dtype=float))
+ import random
+@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
+ import json
++from glob import glob
+ 
+ datasets_folder="datasets/"
+ models = [ 
+@@ -28,10 +29,11 @@ models = [ 
+ 	"VariationalWrapper", "DRRS", "SCPMF", "BNNR", "LRSSL", "MBiRW", "LibMFWrapper", 
+ 	"LogisticMF", "PSGCN", "DDA_SKF", "HAN", "ALSWR", "LibMF", "SimpleBinaryClassifier"
+ ]
++models.append("B2")
+ datasets = ["Synthetic", "DNdataset", "PREDICT_Gottlieb",  
+@@ -32,7 +34,7 @@ splitting_methods = ["weakly_correlated", "random_simple"]
+ 
+ def aux_run_pipeline(inn, model_name, params, data_args, red_folds, splitting, random_seed=1234, metric="AUC", K=5, ptest=0.2, verbose=False, intermediary_results_folder="./"):
++	random_seed = int(random_seed)
+-	Popen(("mkdir -p "+intermediary_results_folder+"/").split(" "))
++	os.makedirs(intermediary_results_folder, exist_ok=True)
+ 	np.random.seed(random_seed)
+@@ -51,8 +53,11 @@ def aux_run_pipeline(inn, model_name, params, data_args, red_folds, splitting, random_seed=1234, metric="AUC", K=5, ptest=0.2, verbose=False, intermediary_results_folder="./"):
+ 	dataset_traintest = dataset.subset(traintest_folds)
+ 	import benchscofi
+-	__import__("benchscofi."+model_name)
+-	model = eval("benchscofi."+model_name+"."+model_name)
++	if (model_name == "B2"):
++		from benchmarks.recess_adapter.official_b2 import B2
++		model = B2
++	else:
++		__import__("benchscofi."+model_name)
++		model = eval("benchscofi."+model_name+"."+model_name)
+ 	start_time = time()
+@@ -123,7 +128,7 @@ def run_pipeline(model_name=None, dataset_name=None, splitting=None, params=None, metric="AUC", batch_ratio=1., N=100, K=5, ptest=0.2, njobs=1, dataset_seed=1234, verbose=False, datasets_folder="./", results_folder="./"):
+ 	assert ptest<1 and ptest>0
+ 	assert njobs>0 and njobs<=cpu_count()
+-	Popen(("mkdir -p "+results_folder+"/").split(" "))
++	os.makedirs(results_folder, exist_ok=True)
+ 	np.random.seed(dataset_seed)
+@@ -148,3 +153,3 @@ def run_pipeline(model_name=None, dataset_name=None, splitting=None, params=None, metric="AUC", batch_ratio=1., N=100, K=5, ptest=0.2, njobs=1, dataset_seed=1234, verbose=False, datasets_folder="./", results_folder="./"):
+ 	else:
+-		Popen(("mkdir -p "+datasets_folder+"/").split(" "))
++		os.makedirs(datasets_folder, exist_ok=True)
+ 		data_args = stanscofi.utils.load_dataset(dataset_name, datasets_folder)
+@@ -180,7 +185,8 @@ def run_pipeline(model_name=None, dataset_name=None, splitting=None, params=None, metric="AUC", batch_ratio=1., N=100, K=5, ptest=0.2, njobs=1, dataset_seed=1234, verbose=False, datasets_folder="./", results_folder="./"):
+ 	res_df.to_csv((results_folder+("/results_N=%d" % N))+results_fname)
+ 	pd.DataFrame([seeds], index=["seed"], columns=range(N)).to_csv((results_folder+("/seeds_N=%d" % N))+results_fname)
+-	call((("rm -f %s/intermediary_seed=*_" % results_folder)+results_fname), shell=True)
++	for intermediary_file in glob(os.path.join(results_folder, "intermediary_seed=*_" + results_fname.lstrip("_"))):
++		os.remove(intermediary_file)
+ 	return res_df
+diff --git a/main.py b/main.py
+--- a/main.py
++++ b/main.py
+@@ -5,6 +5,7 @@ import argparse
+ from multiprocessing import cpu_count
+ from subprocess import Popen
++import os
+ 
+ parser = argparse.ArgumentParser(description='Comprehensive evaluation of collaborative filtering in drug repurposing')
+@@ -49,8 +50,7 @@ for model in models:
+ 				"datasets_folder" : args.save_folder+"/datasets/",
+ 			}
+-			proc = Popen(("mkdir -p "+params_all["results_folder"]).split(" "))
+-			proc.wait()
++			os.makedirs(params_all["results_folder"], exist_ok=True)
+ 			with open(params_all["results_folder"]+"/params_"+"_".join([p+"="+str(v) for p, v in params_all.items() if (p not in ["params", "results_folder", "datasets_folder"])])+".json", "w") as f:
