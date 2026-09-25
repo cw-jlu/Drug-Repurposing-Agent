@@ -39,11 +39,12 @@ class LocalDataset:
         self.user_list = list(ratings.columns)
         self.item_features = list(items.index)
         self.user_features = list(users.index)
-        self.ratings = coo_array(ratings.to_numpy(dtype=float))
+        rating_matrix = ratings.to_numpy(dtype=float)
+        self.ratings = coo_array(rating_matrix)
         self.items = coo_array(items.loc[:, self.item_list].to_numpy(dtype=float))
         self.users = coo_array(users.loc[:, self.user_list].to_numpy(dtype=float))
         if folds is None:
-            available = np.argwhere(np.isfinite(ratings.to_numpy(dtype=float)))
+            available = np.argwhere(np.isfinite(rating_matrix))
             row, col = available[:, 0], available[:, 1]
             folds = coo_array((np.ones(len(row)), (row, col)), shape=ratings.shape)
         self.folds = folds.tocoo()
@@ -128,14 +129,17 @@ def metric_values(dataset, scores) -> dict[str, float]:
     labels = (truth == 1).astype(int)
     if len(np.unique(labels)) < 2:
         raise ValueError("Scoring fold has only one binary class")
-    ranked = labels[np.argsort(-scores.data)]
+    selected_scores = scores.toarray()[dataset.folds.row, dataset.folds.col]
+    if not np.isfinite(selected_scores).all():
+        raise ValueError("Model produced non-finite scores on the scoring fold")
+    ranked = labels[np.argsort(-selected_scores)]
     ideal = np.sort(labels)[::-1]
     def dcg(values):
         values = np.asarray(values, dtype=float)
         return values[0] + np.sum(values[1:] / np.log2(np.arange(2, len(values) + 1)))
     ideal_dcg = dcg(ideal)
     return {
-        "global_AUC": float(roc_auc_score(labels, scores.data)),
+        "global_AUC": float(roc_auc_score(labels, selected_scores)),
         "global_NDCG": float(dcg(ranked) / ideal_dcg if ideal_dcg else 0.0),
     }
 

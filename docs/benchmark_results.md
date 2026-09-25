@@ -45,11 +45,27 @@ The new nested runner uses the same three outer seeds and both outer split proto
 
 Tuning materially improves B1k over its fixed 10-neighbor version on random splits (AUC 0.5660 → 0.6206), but B2 improves only slightly there (0.7270 → 0.7371) and does not improve under the weakly correlated outer split (0.4752 → 0.4702). Thus the more complete procedure strengthens the negative conclusion: expression-neighbor tuning does not solve generalization to dissimilar compounds, and LogisticMF remains the strongest tested baseline. The saved files are `benchmark/results/nested_cv_*.json`.
 
-These remain **limited external evaluations**, not the full RECeSS publication protocol: B1k/B2 now have nested tuning, but ALSWR, PMF, and LogisticMF remain direct `benchscofi` 2.0.1 package-default runs, and only three outer seeds are used. They are not quoted publication scores. The PMF runner restores the removed NumPy `np.int` alias, and all three models receive a label-neutral test object during prediction. No SOTA claim is supported. LogisticMF exceeds tuned B2 in both splits. Unknown `0` entries are scored as non-positive under the official global AUC definition, not established clinical failures.
+## Nested tuning of ALSWR, PMF, and LogisticMF
+
+The three official `benchscofi` 2.0.1 models now use three-fold inner selection inside five outer seeds (1234-1238). Each prediction call receives a feature-identical test object whose rating matrix contains zeros only. All ten saved runs report zero outer train/test overlap and zero outer-test coordinates in inner CV.
+
+| Outer split | Method | Outer global AUC | Outer global NDCG | Most frequent selected parameters |
+| --- | --- | ---: | ---: | --- |
+| Random simple | ALSWR | 0.6579 ± 0.0320 | 0.4908 ± 0.0518 | 20 factors, alpha 5, reg 0.1 in 3/5 |
+| Random simple | PMF | 0.6161 ± 0.0211 | 0.3600 ± 0.0084 | 15 factors, 160 iterations, lr 0.1, reg 0.01 in 5/5 |
+| Random simple | LogisticMF | 0.7826 ± 0.0410 | 0.4811 ± 0.0229 | 2 factors, reg 0.6 in 5/5 |
+| Weakly correlated | ALSWR | 0.5922 ± 0.0528 | 0.3628 ± 0.0215 | no single configuration exceeded 2/5 |
+| Weakly correlated | PMF | 0.5654 ± 0.0036 | 0.3394 ± 0.0029 | 15 factors, 160 iterations, lr 0.1, reg 0.01 in 5/5 |
+| Weakly correlated | LogisticMF | 0.6474 ± 0.0678 | 0.3817 ± 0.0205 | four configurations selected across five seeds |
+
+Nested tuning leaves LogisticMF as the strongest of these three models, but its weakly correlated result varies substantially by initialization and inner split. The five-seed mean is lower than the earlier three-seed default estimate in both protocols. This is a more conservative and better isolated result, not a publication reproduction.
+
+These remain **limited external evaluations**, not the full RECeSS publication protocol. The grids are intentionally bounded, no SOTA claim is supported, and the values are not quoted publication scores. The PMF runner restores the removed NumPy `np.int` alias. Unknown `0` entries are scored as non-positive under the official global AUC definition, not established clinical failures.
 
 Reproduce one run with:
 
 ```powershell
 python benchmarks/recess_adapter/run.py --data data/raw/TRANSCRIPT_dataset_v2.0.0 --split random_simple --seed 1234
 python benchmarks/recess_adapter/nested_cv.py --data data/raw/TRANSCRIPT_dataset_v2.0.0 --split random_simple --seed 1234
+python -m benchmarks.recess_adapter.nested_cv_official --data data/raw/TRANSCRIPT_dataset_v2.0.0 --split random_simple --seed 1234
 ```

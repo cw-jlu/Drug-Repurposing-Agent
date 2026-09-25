@@ -1,4 +1,4 @@
-# Project status (2026-09-24)
+# Project status (2026-09-25)
 
 ## Implemented and verified
 
@@ -6,6 +6,7 @@
 - Controlled natural-language routing with provider-neutral tool schemas, a deterministic fallback planner, a structured external-LLM adapter boundary, mode-specific allow lists, missing-input states, and an auditable run trace.
 - Live DeepSeek `deepseek-flash` function calling through an environment-only credential path. A frozen 20-case routing eval was run three times: 0.95, 0.85, and 1.00 accuracy (mean 0.933, sample SD 0.076), versus 0.75 for the deterministic rule planner. All returned calls passed local tool and argument validation.
 - A larger 61-case v2 routing suite now covers ten categories. Before hardening, rule v1 scored 35/61 and DeepSeek scored 55/61. Development on the frozen regression failures raised rule v2 to 61/61 and DeepSeek plus local fail-closed handling to 59/61; these post-development values are regression results, not independent holdout estimates.
+- An independent 100-case v3 holdout was committed before evaluation. Rule v2 scored 90/100 and one DeepSeek Flash run scored 98/100. No v3 failure was used to modify the planner or case file.
 - One live strict-mode TRANSCRIPT Agent run completed end to end: 12,096 genes, 613 drugs, 151 diseases, four score matrices, and a five-event Agent trace.
 - Strict-mode command-line workflow with input SHA-256, output matrices, QC, trace, and limitations.
 - RECeSS/stanscofi-compatible B0, B0p, B1, B1k, B2 adapter with training-fold label isolation.
@@ -15,21 +16,22 @@
 - A paired limma sensitivity analysis in R 4.6.1 / limma 3.68.5 reproduces the same 512 up and 749 down gene sets at the prespecified thresholds.
 - GSE92742 A549 compound metadata cohort and prespecified reference names, frozen before any LUAD drug ranking.
 - Three direct `benchscofi` default-baseline runs (ALSWR, PMF, LogisticMF) on each of the six saved RECeSS folds. LogisticMF leads the project's fixed methods in both split protocols; no SOTA claim is made.
+- ALSWR, PMF, and LogisticMF now also have three-fold inner tuning under five outer seeds for both split protocols. All ten leakage audits pass. Random-split AUC means are 0.6579, 0.6161, and 0.7826; weakly correlated means are 0.5922, 0.5654, and 0.6474.
 - ExperimentHub EH3226 A549 Level 5 subset verified by SHA-256, with 4,920 drug-name signatures and 961 aligned landmark genes. A transcriptomic LUAD Top-10 and frozen-control ranks have been generated.
 - Broad Repurposing Hub identity audit for the Top-10. Only two names have exact InChIKey matches between the inferred GEO ID and Hub sample annotation; several others are ambiguous or mismatched.
 - A candidate-by-candidate LUAD evidence matrix now records identity status, name-level targets/pathways, drug-specific literature where available, and shared supporting and contradicting glucocorticoid evidence. All ten remain `insufficient_evidence`.
+- The exact GSE92742 `sig_id` and `pert_id` for every LUAD Top-10 row were recovered by replaying the published EH3226 source-order distinct rule against checksum-pinned metadata. A dose, subtype, mechanism and combination experiment protocol plus a measurement template are included; no wet-lab result is claimed.
 - A LUAD case packager validates frozen source/output hashes, ranks, ledgers, identity audit, and preregistered controls, then writes a trace and external-model cost record. It stops at `expression_screen_complete_evidence_pending`.
 - Data card, system card, and limitations document.
 - A pinned Python 3.10 dependency set in `requirements-benchmark.lock` and Windows setup script.
 - An optional Jev Choice/Score/Noul HTTP adapter with response validation and fail-closed confidence gating; live Jev use has not been run without credentials.
 - Thirty-two passing internal tests covering scientific signs, tied ranks, missing/constant vectors, label isolation, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, fail-closed DeepSeek handling, and nested-split boundaries.
-- An editable four-page course-report draft rendered and visually checked page by page, plus a nine-slide editable defense deck with checked slide previews and native charts. Both include the controlled Agent flow and reflect the current evidence limits.
+- An editable four-page course report and a nine-slide editable defense deck now include v3 holdout, five-seed nested CV, exact LUAD signature IDs and the wet-lab boundary. Every page and slide was rendered and checked; the two deck charts remain native and editable.
 
 ## Needed for the planned final deliverable
 
-1. Resolve the remaining compound identities experimentally or against per-signature IDs, then validate dose, subtype, and combination effects. The literature/target triage is complete, but the Top-10 remains an expression-screening list rather than an efficacy report.
-2. Expand nested tuning to the direct benchscofi baselines and more outer seeds before any publication-style or SOTA claim. B1k/B2 have completed three outer seeds under both split protocols; the direct benchscofi baselines still use package defaults.
-3. Run a frozen Jev decision evaluation if account access is available, then compare it with the saved rule/DeepSeek planner results. The Jev adapter exists, but no live Jev result is claimed.
-4. Rehearse the updated nine-slide deck against the approximately 10-minute limit and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
+1. Execute the wet-lab protocol. Signature IDs and structures are now explicit, but LC-MS identity checks, dose curves, subtype comparisons and combination matrices require physical compounds, cell models and laboratory instrumentation.
+2. Run a frozen Jev decision evaluation if account access is available, then compare it with the saved rule/DeepSeek planner results. The Jev adapter exists, but no live Jev result is claimed.
+3. Rehearse the updated nine-slide deck against the approximately 10-minute limit and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
 
 The current benchmark results support a negative finding for pure transcriptomic reversal on TRANSCRIPT. They do not establish clinical efficacy of any candidate drug.

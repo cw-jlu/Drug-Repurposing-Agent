@@ -14,7 +14,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 
 SOURCE = Path("docs/课程设计报告_草稿.md")
-OUTPUT = Path("deliverables/药物重定位Agent_课程设计报告草稿.docx")
+OUTPUT = Path("deliverables/药物重定位Agent_课程设计报告_v2.docx")
 FONT = "Microsoft YaHei"
 
 
@@ -124,7 +124,7 @@ def add_table(document: Document, rows: list[list[str]]) -> None:
                 paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             add_inline(paragraph, value.strip())
             for run in paragraph.runs:
-                run.font.size = Pt(9)
+                run.font.size = Pt(8.8)
                 if i == 0:
                     run.font.bold = True
                     run.font.color.rgb = RGBColor(255, 255, 255)
@@ -164,9 +164,9 @@ def main() -> None:
         set_east_asian_font(styles[name])
         styles[name].font.color.rgb = RGBColor(0, 0, 0)
     normal = styles["Normal"]
-    normal.font.size = Pt(10)
-    normal.paragraph_format.line_spacing = 1.22
-    normal.paragraph_format.space_after = Pt(5)
+    normal.font.size = Pt(9.5)
+    normal.paragraph_format.line_spacing = 1.18
+    normal.paragraph_format.space_after = Pt(4)
     styles["Title"].font.size = Pt(18)
     styles["Title"].font.bold = True
     styles["Title"].paragraph_format.space_after = Pt(10)
@@ -186,7 +186,7 @@ def main() -> None:
     styles["Heading 2"].paragraph_format.keep_with_next = True
 
     header = section.header.paragraphs[0]
-    header.text = "药物重定位 Agent 课程设计报告草稿"
+    header.text = "药物重定位 Agent 课程设计报告"
     header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     for run in header.runs:
         run.font.name = FONT

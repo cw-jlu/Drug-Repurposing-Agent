@@ -1,7 +1,8 @@
 """Rank LUAD candidates using the frozen ExperimentHub EH3226 A549 subset.
 
 This produces transcriptomic research hypotheses only. It does not infer
-clinical efficacy, and unresolved drug identities remain unresolved.
+clinical efficacy. Source signature IDs are reconstructed in a separate,
+checksum-pinned metadata audit and do not change the ranking.
 """
 
 from __future__ import annotations
