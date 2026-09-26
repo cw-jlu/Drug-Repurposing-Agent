@@ -7,7 +7,7 @@
 | 1 可运行药物重定位 Agent | `agent.py`、DeepSeek Planner、自然语言 CLI、严格模式表达工作流、LUAD 案例打包器 | 已有核心链路：真实 DeepSeek 规划已驱动完整 TRANSCRIPT 分析；开放证据审阅仍未自动化 |
 | 2 RECeSS/TRANSCRIPT 适配器 | `benchmarks/recess_adapter/`、12 份三种子结果 JSON、官方 Runner B2 与三分支补丁及对应 100 次结果 CSV | 已有 |
 | 3 外部 Benchmark 成绩表 | `docs/benchmark_results.md`、`benchmark/results/recess_official_b2_vs_11.json`、`benchmark/results/recess_official_component_ablation.json` | 已有：B2 与作者 11 模型在相同 100 种子、五折选模、NS-AUC 下对比；B0p/B1k/B1 消融完成；单次 LLM 预选与研究行动审阅单列，不作为药效准确率 |
-| 4 内部 Eval Suite | `tests/` 当前 72 项测试，另有冻结的 20 项 v1、61 项 v2 和独立 100 项 v3 Planner Eval；新规则 v3 trace 回归与逐条评分为 90/100 | 已有：旧 v3 规则为 90/100、DeepSeek 为 98/100；新 trace 评分是回归检查，不是第二个独立 holdout。另有 15/15 provider-visible 方法选择 trace 核验；事后正例/未知修订实验中其选法不及固定 B2（-0.11031 NS-AUC），不能声称方法选择能力已验证 |
+| 4 内部 Eval Suite | `tests/`、冻结的 20 项 v1、61 项 v2 和独立 100 项 v3 Planner Eval；另有单例 LUAD 研究分诊审计 | 已有：旧 v3 规则为 90/100、DeepSeek 为 98/100；新 trace 评分是回归检查，不是第二个独立 holdout。15/15 provider-visible 方法选择 trace 核验通过，但事后正例/未知修订实验中选法不及固定 B2（−0.11031 NS-AUC）。LUAD 单例审计不是独立 Agent holdout |
 | 5 Jev Choice、Score、Noul 接入层 | `src/drug_repurposing_agent/jev.py` | 部分：协议与本地模拟测试通过，缺少真实凭据与调用验证 |
 | 6 Jev 置信度门控和降级 | `gate_choice` 与测试 | 部分：规则与失败回退已实现，阈值未用真实数据校准 |
 | 7 Jev 与规则、通用 LLM 对比 | `planner_eval_results.md` 已完成规则与 DeepSeek 对比 | 部分：通用 LLM 对比已有，Jev 仍无真实凭据和结果 |
@@ -19,8 +19,8 @@
 | 13 受约束 RSI 演示 | 无 | 未完成 |
 | 14 Docker 或锁定环境 | `requirements-benchmark.lock`、`scripts/setup_benchmark.ps1`；全新 Python 3.10 环境测试通过 | 已有 Python 环境；R/limma 另记版本 |
 | 15 数据卡、系统卡和限制说明 | `docs/data_card.md`、`docs/system_card.md`、`docs/limitations.md` | 已有 |
-| 16 课程设计报告 | `docs/课程设计报告_草稿.md`、`deliverables/药物重定位Agent_课程设计报告_v3.docx` | v3 纳入官方 100 次 NS-AUC 对比、分支消融、58 项测试与 trace 评分，并保留无湿实验结论 |
-| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v5.pptx` | v5 九页用同一官方 NS-AUC 口径展示模型对比，保留原生可编辑图表与实验边界 |
+| 16 课程设计报告 | `docs/课程设计报告_草稿.md`、`deliverables/药物重定位Agent_课程设计报告_v4.docx` | v4 写入五分区负结果、B1k 指标核查及单例分诊审计，并保留无湿实验结论 |
+| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v6.pptx` | v6 九页更新方法选择负结果与限制，保留原生可编辑图表与实验边界 |
 | 18 演示视频 | 无 | 未完成 |
 
 外部阻碍：TypeSafe Jev 凭据尚未提供；剂量、亚型和组合验证需要湿实验资源。课程 PDF 已完成核对，DeepSeek 通用 LLM 已真实实测，100 例 v3 独立 holdout、逐签名 ID 恢复和三种官方基线的五种子嵌套调参均已完成。表达反转没有超过强基线，不能通过修改结论把尚未执行的实验视为完成。

@@ -1,0 +1,20 @@
+{
+  "split": "random_simple",
+  "seed_index": 0,
+  "seed": 17263407,
+  "saved_official_ns_auc": 0.14668458781362,
+  "reproduced_official_ns_auc": 0.14668458781362007,
+  "pair_counts": {
+    "wins": 360,
+    "ties": 2077,
+    "losses": 43,
+    "eligible_rows": 60,
+    "ignored_rows": 553,
+    "row_mean_half_tie_auc": 0.5638871929772932,
+    "row_mean_inverted_strict_auc": 0.018910201859033898
+  },
+  "pairwise_strict_win_fraction": 0.14516129032258066,
+  "pairwise_half_tie_fraction": 0.5639112903225807,
+  "pairwise_inverted_strict_fraction": 0.017338709677419354,
+  "interpretation": "Diagnostic only: official NS-AUC is an unweighted mean of eligible drug-row strict pairwise AUCs; ties receive zero. Pair fractions pool pairs and are not NS-AUC. Half-tie and inverted figures are counterfactual diagnostics, not replacement official results."
+}
