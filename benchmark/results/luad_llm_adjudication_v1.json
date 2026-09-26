@@ -1,0 +1,49 @@
+{
+  "status": "research_triage_only_efficacy_unverified",
+  "model": "deepseek-flash",
+  "shortlist": [
+    {
+      "rank": 6,
+      "action": "identity_resolution",
+      "citations": [],
+      "reason": "Exact pert_id and GEO structure recovered but no Hub sample, no targets, no literature. Reconcile structure against PubChem and Hub before any assay; only non-class hypothesis in the set."
+    },
+    {
+      "rank": 5,
+      "action": "identity_resolution",
+      "citations": [],
+      "reason": "Synonym ambiguity: 'flumetasone' may map to flumethasone or an ester, altering targets (NR3C1 vs PLA2G1B/SERPINA6). Resolve name and formulation before literature or assay."
+    },
+    {
+      "rank": 2,
+      "action": "literature_review",
+      "citations": [
+        {
+          "pmid": "12538830",
+          "scope": "candidate"
+        },
+        {
+          "pmid": "24555085",
+          "scope": "candidate"
+        },
+        {
+          "pmid": "24736075",
+          "scope": "class"
+        }
+      ],
+      "reason": "Identity exact (source and Hub InChIKey) with candidate-specific A549 target engagement, but no efficacy data. Review GR-signaling evidence including chemoresistance contradiction before assay."
+    }
+  ],
+  "candidate_count": 10,
+  "provider_usage": {
+    "prompt_tokens": 3633,
+    "completion_tokens": 283,
+    "total_tokens": 3916
+  },
+  "interpretation": "Advisory next-step prioritization; not a treatment or efficacy claim.",
+  "evaluated_at": "2026-09-26T13:54:29.518524+00:00",
+  "input_sha256": {
+    "evidence": "e64735c71634cbb32c8a5ed750bb40bb8abbc7a81b965a0562482e25a0d39c7d",
+    "matrix": "6748e8a55a9d822f5d4d987b5855dee410ba67b3dc668e0c4da97cf686b0b079"
+  }
+}

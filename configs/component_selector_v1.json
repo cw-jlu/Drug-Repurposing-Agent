@@ -1,0 +1,23 @@
+{
+  "version": "component_selector_v1_prescore",
+  "purpose": "Choose one frozen scoring method for each split before inspecting component ablation results",
+  "dataset": {
+    "name": "TRANSCRIPT v2.0.0",
+    "drugs": 613,
+    "diseases": 151,
+    "known_positive_pairs": 401,
+    "explicit_negative_pairs": 11,
+    "unknown_pairs": 92151,
+    "feature_type": "drug and disease gene-expression signatures"
+  },
+  "methods": {
+    "B0p": "Count each drug's positive associations in the training fold; no expression feature use.",
+    "B1k": "Propagate training-fold positive associations from expression-similar drugs (10 neighbors).",
+    "B1": "Rank drugs by negative Spearman correlation between drug and disease expression signatures; no association labels used.",
+    "B2": "Fixed equal-weight reciprocal-rank fusion of B0p, B1k and B1 (k=60)."
+  },
+  "splits": {
+    "random_simple": "Hold out 20% of drug-disease pairs at random; training can include associations for the same drugs.",
+    "weakly_correlated": "Hold out drugs selected to have weak expression similarity to training drugs; for fixed features this runner repeats one outer holdout across seeds."
+  }
+}
