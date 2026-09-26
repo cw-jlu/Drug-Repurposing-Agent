@@ -44,10 +44,22 @@ def _main(trace: TraceRecorder) -> None:
                         default=Path("artifacts/method_selection_partition_v2_positive_only"))
     parser.add_argument("--manifest", type=Path,
                         default=Path("artifacts/reports/method_selection_partition_v2_positive_only_manifest.json"))
+    parser.add_argument("--verify-existing-manifest", action="store_true",
+                        help="Rebuild missing staged data and verify the committed manifest without rewriting it")
     args = parser.parse_args()
     trace.emit("amendment_staging_started", rule=RULE, cases=str(args.cases),
                failed_run_trace=str(args.failed_run_trace))
-    if args.manifest.exists() or args.root.exists():
+    if args.verify_existing_manifest:
+        existing_manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+        if (existing_manifest.get("status") !=
+                "post_failure_feasibility_amendment_not_original_protocol" or
+                existing_manifest.get("rule") != RULE or
+                existing_manifest.get("protocol_sha256") != sha256_file(args.protocol) or
+                existing_manifest.get("cases_sha256") != sha256_file(args.cases) or
+                existing_manifest.get("choices_sha256") != sha256_file(args.choices) or
+                existing_manifest.get("failed_run_trace_sha256") != sha256_file(args.failed_run_trace)):
+            raise ValueError("Committed amendment manifest differs from frozen inputs")
+    elif args.manifest.exists() or args.root.exists():
         raise ValueError("Amendment output already exists; refusing to overwrite")
     grade = grade_choices(args.choices, args.cases, args.protocol)
     if grade["choices"] != 15 or grade["passed"] != 15:
@@ -66,10 +78,14 @@ def _main(trace: TraceRecorder) -> None:
         ratings = pd.read_csv(original / "ratings_mat.csv", index_col=0)
         amended, negative_count = positive_only_ratings(ratings)
         destination = args.root / case["id"] / "datasets" / "TRANSCRIPT"
-        destination.mkdir(parents=True, exist_ok=False)
-        amended.to_csv(destination / "ratings_mat.csv")
-        for name in ("items.csv", "users.csv"):
-            shutil.copy2(original / name, destination / name)
+        if destination.exists():
+            if not args.verify_existing_manifest:
+                raise ValueError(f"Amended dataset already exists: {destination}")
+        else:
+            destination.mkdir(parents=True, exist_ok=False)
+            amended.to_csv(destination / "ratings_mat.csv")
+            for name in ("items.csv", "users.csv"):
+                shutil.copy2(original / name, destination / name)
         hashes = {name: sha256_file(destination / name) for name in FILES}
         for name in ("items.csv", "users.csv"):
             if hashes[name] != case["staged_sha256"][name]:
@@ -91,6 +107,13 @@ def _main(trace: TraceRecorder) -> None:
                 "disclosure": ("The original preregistered five-partition run failed at partition 02 "
                                "because one explicit negative cannot be stratified. This mapping "
                                "is a post-failure protocol amendment, not a clean confirmatory run.")}
+    if args.verify_existing_manifest:
+        if existing_manifest["partitions"] != entries:
+            raise ValueError("Rebuilt positive-only inputs differ from committed manifest")
+        trace.emit("amendment_staging_verified", manifest=str(args.manifest),
+                   manifest_sha256=sha256_file(args.manifest), partitions=len(entries))
+        print(f"Verified {len(entries)} positive-only partitions: {args.manifest}")
+        return
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.write_bytes(json.dumps(manifest, indent=2, ensure_ascii=False).encode("utf-8"))
     trace.emit("amendment_staging_completed", manifest=str(args.manifest),

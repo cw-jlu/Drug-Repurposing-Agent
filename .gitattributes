@@ -6,3 +6,4 @@ benchmark/results/traces/*.jsonl -text
 artifacts/traces/*.jsonl -text
 artifacts/reports/traces/*.jsonl -text
 artifacts/reports/*.json -text
+artifacts/method_selection_partition_v2_positive_only/**/*.csv -text
