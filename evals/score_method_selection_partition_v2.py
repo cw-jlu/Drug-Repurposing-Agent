@@ -122,6 +122,8 @@ def main() -> None:
                         default=Path("artifacts/reports/method_selection_partition_v2_choices.json"))
     parser.add_argument("--output", type=Path,
                         default=Path("artifacts/reports/method_selection_partition_v2_score.json"))
+    parser.add_argument("--positive-only-manifest", type=Path,
+                        help="Score separately disclosed post-failure positive-only outputs")
     args = parser.parse_args()
     trace = TraceRecorder("method_selection_scoring", args.output.parent / "traces")
     trace.emit("scoring_started", protocol=str(args.protocol), cases=str(args.cases),
@@ -141,17 +143,46 @@ def main() -> None:
         trace.emit("choice_trace_verified", passed=choice_trace_grade["passed"],
                    choices=choice_trace_grade["choices"],
                    main_trace_sha256=choice_trace_grade["main_trace_sha256"])
+        outcome_cases = cases["cases"]
+        amendment = None
+        if args.positive_only_manifest:
+            amendment = json.loads(args.positive_only_manifest.read_text(encoding="utf-8"))
+            if (amendment.get("status") != "post_failure_feasibility_amendment_not_original_protocol" or
+                    amendment.get("protocol_sha256") != sha256_file(args.protocol) or
+                    amendment.get("cases_sha256") != sha256_file(args.cases) or
+                    amendment.get("choices_sha256") != sha256_file(args.choices) or
+                    len(amendment.get("partitions", [])) != len(outcome_cases)):
+                raise ValueError("Positive-only amendment differs from frozen inputs")
+            amended_cases = []
+            for case, entry in zip(outcome_cases, amendment["partitions"], strict=True):
+                if entry["case_id"] != case["id"]:
+                    raise ValueError("Positive-only partition order differs")
+                original_ratings = pd.read_csv(Path(case["dataset_dir"]) / "ratings_mat.csv",
+                                               index_col=0)
+                amended_dir = Path(entry["dataset_dir"])
+                amended_ratings = pd.read_csv(amended_dir / "ratings_mat.csv", index_col=0)
+                if (entry["original_negative_count"] != int((original_ratings == -1).sum().sum()) or
+                        not amended_ratings.equals(original_ratings.mask(original_ratings == -1, 0)) or
+                        any(sha256_file(amended_dir / name) != entry["amended_sha256"][name]
+                            for name in ("ratings_mat.csv", "items.csv", "users.csv"))):
+                    raise ValueError(f"Positive-only staged mapping differs: {case['id']}")
+                amended_cases.append({**case, "dataset_dir": str(amended_dir)})
+            outcome_cases = amended_cases
+            trace.emit("positive_only_amendment_verified",
+                       manifest_sha256=sha256_file(args.positive_only_manifest),
+                       failed_run_trace_sha256=amendment["failed_run_trace_sha256"])
         outcomes = {}
         receipts = {}
         seed_vectors = {}
-        for case in cases["cases"]:
+        for case in outcome_cases:
             outcomes[case["id"]], receipts[case["id"]], seed_vectors[case["id"]] = load_outcomes(
                 case, protocol["outer_runs"], protocol["inner_folds"])
             trace.emit("case_outcome_verified", case_id=case["id"],
                        source_sha256=receipts[case["id"]]["source_sha256"])
         scores = score_choices(choice_report["choices"], cases["cases"], outcomes,
                                protocol["model_repeats_per_partition"], seed_vectors)
-        report = {"status": "prospective_partition_evaluation_not_external_validation",
+        report = {"status": ("post_failure_positive_only_amended_evaluation_not_original_protocol"
+                             if amendment else "prospective_partition_evaluation_not_external_validation"),
                   "scored_at": datetime.now(timezone.utc).isoformat(),
                   "protocol_sha256": sha256_file(args.protocol),
                   "cases_sha256": sha256_file(args.cases),
@@ -163,6 +194,11 @@ def main() -> None:
                   },
                   "outcomes": outcomes, "outcome_receipts": receipts,
                   "scores": scores, "trace_file": str(trace.path),
+                  "data_amendment": ({"manifest_sha256": sha256_file(args.positive_only_manifest),
+                                      "failed_run_trace_sha256": amendment["failed_run_trace_sha256"],
+                                      "rule": amendment["rule"],
+                                      "disclosure": amendment["disclosure"]}
+                                     if amendment else None),
                   "limitation": protocol["disclosure"]}
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_bytes(json.dumps(report, indent=2, ensure_ascii=False).encode("utf-8"))
