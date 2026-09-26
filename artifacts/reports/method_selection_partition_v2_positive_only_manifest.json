@@ -1,0 +1,88 @@
+{
+  "status": "post_failure_feasibility_amendment_not_original_protocol",
+  "created_at": "2026-09-26T15:42:29.900943+00:00",
+  "rule": "Map every explicit -1 rating to 0 (unknown); preserve 0, 1 and all features.",
+  "protocol_sha256": "21fdea769af1c9d0862dc3fb5380df04ba9955b4be4b7f5a39c64b76898d2c65",
+  "cases_sha256": "ca5b3a1c8f5d010cfe77db58258635d080f68afefc4161111cf8f590d61d8f50",
+  "choices_sha256": "a87cf337fb8a74e943dc6237a6a0ee629d53aa3c0eee1e4b0f41cf1e5b757949",
+  "failed_run_trace_sha256": "2dc668f67e44155de29b8646510c7aea757a0745fedcf740b679528127824661",
+  "partitions": [
+    {
+      "case_id": "transcript_disease_partition_01",
+      "dataset_dir": "artifacts\\method_selection_partition_v2_positive_only\\transcript_disease_partition_01\\datasets\\TRANSCRIPT",
+      "original_negative_count": 0,
+      "original_sha256": {
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "ratings_mat.csv": "95c57265ab916919fa29853815a6d456574531da112740c9d1da778b3be23d9e",
+        "users.csv": "5b6969a376a46191414a6601b6600f26394fb7c711c2043c82199ba230f50b70"
+      },
+      "amended_sha256": {
+        "ratings_mat.csv": "95c57265ab916919fa29853815a6d456574531da112740c9d1da778b3be23d9e",
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "users.csv": "5b6969a376a46191414a6601b6600f26394fb7c711c2043c82199ba230f50b70"
+      }
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "dataset_dir": "artifacts\\method_selection_partition_v2_positive_only\\transcript_disease_partition_02\\datasets\\TRANSCRIPT",
+      "original_negative_count": 1,
+      "original_sha256": {
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "ratings_mat.csv": "79fdbc98859645b91183a15c5708d47ec226e5f3a9e249275c7cd86ddff08c58",
+        "users.csv": "94fcf5fe33fdede17281b2ab3b30180be78885586a54da17b0ac438e1c464b0c"
+      },
+      "amended_sha256": {
+        "ratings_mat.csv": "41f8cc830cf654212fba81b517a5d4aba24366a87e60c9dee0a4e8a384857297",
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "users.csv": "94fcf5fe33fdede17281b2ab3b30180be78885586a54da17b0ac438e1c464b0c"
+      }
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "dataset_dir": "artifacts\\method_selection_partition_v2_positive_only\\transcript_disease_partition_03\\datasets\\TRANSCRIPT",
+      "original_negative_count": 0,
+      "original_sha256": {
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "ratings_mat.csv": "af1600d6715c6dbf30d263b5c9f44a07bc679292b8be84e4fae815fe19ff9109",
+        "users.csv": "a462544b930be3c05b125843640b2b3d189d1ac43c88b839139d465688bb71dc"
+      },
+      "amended_sha256": {
+        "ratings_mat.csv": "af1600d6715c6dbf30d263b5c9f44a07bc679292b8be84e4fae815fe19ff9109",
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "users.csv": "a462544b930be3c05b125843640b2b3d189d1ac43c88b839139d465688bb71dc"
+      }
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "dataset_dir": "artifacts\\method_selection_partition_v2_positive_only\\transcript_disease_partition_04\\datasets\\TRANSCRIPT",
+      "original_negative_count": 7,
+      "original_sha256": {
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "ratings_mat.csv": "01b312b086484953a5a044330a6ed4d1d05a74b0c8ff56f6fcb8dd4681cb6f1e",
+        "users.csv": "8c9ba6fd0e8d4fdac0440060b52eaf6e1029dd0433765de0e94f4641d70defe6"
+      },
+      "amended_sha256": {
+        "ratings_mat.csv": "80894fe3a16c433f17640f677cc14e467ad9a16c5ccdc17566e796d609eed778",
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "users.csv": "8c9ba6fd0e8d4fdac0440060b52eaf6e1029dd0433765de0e94f4641d70defe6"
+      }
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "dataset_dir": "artifacts\\method_selection_partition_v2_positive_only\\transcript_disease_partition_05\\datasets\\TRANSCRIPT",
+      "original_negative_count": 3,
+      "original_sha256": {
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "ratings_mat.csv": "f5ba3f5b52b75785a67edbb7e99e23d93bfae5921e54b070db2a427c9565b876",
+        "users.csv": "f932fda8b07e67cf81ca0399c7f820bdea0657597ad2cb5444941f51a9ff9549"
+      },
+      "amended_sha256": {
+        "ratings_mat.csv": "cbf186b6a73197c284c4748686c0dd2f9e663a64508db5f9c402c6e26a510bb2",
+        "items.csv": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+        "users.csv": "f932fda8b07e67cf81ca0399c7f820bdea0657597ad2cb5444941f51a9ff9549"
+      }
+    }
+  ],
+  "trace_file": "artifacts\\traces\\20260926T154228992495Z_method_selection_positive_only_staging_80e743135e8846beaa3191c727ecdc78.jsonl",
+  "disclosure": "The original preregistered five-partition run failed at partition 02 because one explicit negative cannot be stratified. This mapping is a post-failure protocol amendment, not a clean confirmatory run."
+}
