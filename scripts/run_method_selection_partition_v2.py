@@ -10,7 +10,24 @@ from pathlib import Path
 from drug_repurposing_agent.data import sha256_file
 from drug_repurposing_agent.deepseek import DeepSeekConfig, DeepSeekPlanner, local_api_key
 from drug_repurposing_agent.model_selector import select_partition_method
-from drug_repurposing_agent.trace import TraceRecorder
+from drug_repurposing_agent.trace import TraceRecorder, verify_trace_chain
+
+
+def recover_first_choice(path: Path, blind_input: dict, model: str) -> dict:
+    """Revalidate the first pre-outcome provider response without resampling it."""
+    events, _ = verify_trace_chain(path, require_chain=True)
+    if [event.get("stage") for event in events] != [
+            "trace_started", "model_request", "model_response"]:
+        raise ValueError("Recovery requires one complete, unused provider response")
+    request = events[1]["payload"]
+    response = events[2]["response"]
+
+    def replay(payload: dict) -> dict:
+        if payload != request:
+            raise ValueError("Recovered request differs from the current frozen blind input")
+        return response
+
+    return select_partition_method(blind_input, replay, model)
 
 
 def main() -> None:
@@ -22,6 +39,8 @@ def main() -> None:
     parser.add_argument("--output", type=Path,
                         default=Path("artifacts/reports/method_selection_partition_v2_choices.json"))
     parser.add_argument("--model", default="deepseek-flash")
+    parser.add_argument("--recover-first-provider-trace", type=Path,
+                        help="Reuse one complete pre-outcome first response after format-only validation amendment")
     args = parser.parse_args()
     trace = TraceRecorder("method_selection_v2", args.output.parent / "traces")
     client = None
@@ -43,14 +62,28 @@ def main() -> None:
         client = DeepSeekPlanner(key, DeepSeekConfig(
             model=args.model, base_url="https://api.deepseek.com/beta"))
         rows = []
-        for case in cases["cases"]:
+        for case_index, case in enumerate(cases["cases"]):
             for repeat in range(1, protocol["model_repeats_per_partition"] + 1):
-                response = select_partition_method(case["blind_input"], client._post, args.model)
-                provider_trace = Path(client.last_trace_path or "")
-                if not client.last_trace_path or not provider_trace.is_file():
+                recovered = (case_index == 0 and repeat == 1 and
+                             args.recover_first_provider_trace is not None)
+                if recovered:
+                    provider_trace = args.recover_first_provider_trace.resolve(strict=True)
+                    response = recover_first_choice(provider_trace, case["blind_input"], args.model)
+                    trace.emit("first_choice_recovered_after_reason_cap_amendment",
+                               case_id=case["id"], repeat=repeat,
+                               provider_trace=str(provider_trace),
+                               provider_trace_sha256=sha256_file(provider_trace),
+                               local_reason_cap_before=200, local_reason_cap_after=1000)
+                else:
+                    response = select_partition_method(case["blind_input"], client._post,
+                                                       args.model)
+                    provider_trace = Path(client.last_trace_path or "")
+                if not provider_trace.is_file():
                     raise ValueError("Provider-visible trace missing for a method choice")
                 row = {"case_id": case["id"], "repeat": repeat, **response,
-                       "provider_trace_file": client.last_trace_path,
+                       "selection_source": ("recovered_first_provider_response" if recovered
+                                            else "live_provider_call"),
+                       "provider_trace_file": str(provider_trace),
                        "provider_trace_sha256": sha256_file(provider_trace)}
                 rows.append(row)
                 trace.emit("choice_validated", **row)

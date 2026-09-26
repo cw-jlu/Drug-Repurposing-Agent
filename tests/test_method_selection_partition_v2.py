@@ -5,7 +5,9 @@ import pytest
 import numpy as np
 
 from drug_repurposing_agent.model_selector import select_partition_method
+from drug_repurposing_agent.deepseek import DeepSeekPlanner
 from evals.score_method_selection_partition_v2 import score_choices
+from scripts.run_method_selection_partition_v2 import recover_first_choice
 
 
 def blind_case():
@@ -38,6 +40,22 @@ def test_partition_choice_uses_only_blind_input_and_validates_method():
     assert seen["thinking"] == {"type": "disabled"}
     with pytest.raises(ValueError, match="Unexpected"):
         select_partition_method({**blind_case(), "test_auc": 0.9}, fake)
+
+
+def test_recover_first_long_reason_from_original_provider_trace(tmp_path, monkeypatch):
+    monkeypatch.setenv("DRUG_AGENT_TRACE_DIR", str(tmp_path))
+    reason = "Evidence remains uncertain. " * 26
+    planner = DeepSeekPlanner("dummy", transport=lambda _: {
+        "choices": [{"message": {"tool_calls": [{"function": {
+            "name": "submit_partition_choice",
+            "arguments": json.dumps({"method": "B2", "reason": reason})}}]}}]})
+    first = select_partition_method(blind_case(), planner._post)
+    recovered = recover_first_choice(Path(planner.last_trace_path), blind_case(), "deepseek-flash")
+    assert recovered == first
+    assert 200 < len(recovered["choice"]["reason"]) < 1000
+    with pytest.raises(ValueError, match="differs"):
+        recover_first_choice(Path(planner.last_trace_path),
+                             {**blind_case(), "disease_count": 999}, "deepseek-flash")
 
 
 def test_score_choices_averages_all_repeats_without_best_of_selection():
