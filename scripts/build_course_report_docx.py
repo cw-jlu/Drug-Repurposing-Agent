@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 import re
 
@@ -11,6 +12,9 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
+
+from drug_repurposing_agent.data import sha256_file
+from drug_repurposing_agent.trace import TraceRecorder, traced_run
 
 
 SOURCE = Path("docs/课程设计报告_草稿.md")
@@ -148,7 +152,12 @@ def add_page_number(paragraph) -> None:
     paragraph._p.append(field)
 
 
-def main() -> None:
+def _main(trace: TraceRecorder) -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    trace.emit("source_loaded", source=str(SOURCE), source_sha256=sha256_file(SOURCE),
+               output=str(args.output))
     doc = Document()
     section = doc.sections[0]
     section.page_width, section.page_height = Inches(8.5), Inches(11)
@@ -217,7 +226,7 @@ def main() -> None:
         elif line.startswith("## "):
             p = doc.add_paragraph(style="Heading 1")
             add_inline(p, heading_text(line[3:]))
-            if "数据来源与质量控制" in line:
+            if "数据来源与质量控制" in line or "系统实现与审计" in line:
                 p.paragraph_format.page_break_before = True
         elif line.startswith("### "):
             p = doc.add_paragraph(style="Heading 2")
@@ -234,9 +243,14 @@ def main() -> None:
             add_inline(p, line)
         i += 1
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    doc.save(OUTPUT)
-    print(OUTPUT)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(args.output)
+    trace.emit("document_saved", output=str(args.output), output_sha256=sha256_file(args.output))
+    print(args.output)
+
+
+def main() -> None:
+    traced_run("course_report_build", _main)
 
 
 if __name__ == "__main__":

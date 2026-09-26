@@ -1,4 +1,4 @@
-# Project status (2026-09-25)
+# Project status (2026-09-26)
 
 ## Implemented and verified
 
@@ -19,6 +19,8 @@
 - ALSWR, PMF, and LogisticMF now also have three-fold inner tuning under five outer seeds for both split protocols. All ten leakage audits pass. Random-split AUC means are 0.6579, 0.6161, and 0.7826; weakly correlated means are 0.5922, 0.5654, and 0.6474.
 - B2 is integrated into the pinned publication runner and evaluated against all 11 author-published TRANSCRIPT models with the same 100 seeds, five-fold model selection and NS-AUC metric. It scores 0.5222 (9/12) on random simple and 0.5019 (8/12) on weakly correlated. All 22 reference seed files agree, and one locally rerun LogisticMF seed matches its published metrics exactly.
 - The three frozen B2 components were also evaluated in the same 100-run runner. B2 is best of those four on random simple (0.5222 NS-AUC), while B1 alone is best on the repeated weakly correlated holdout (0.5417). One DeepSeek prescore selection chose these two split-level methods; one constrained LUAD evidence call prioritized research follow-up only. Neither is a multi-run LLM accuracy estimate.
+- A new prescore method-selection protocol and five disjoint TRANSCRIPT disease-partition inputs were frozen at `8b14325` before any new model choice or partition outcome. Each input excludes association labels and results; three DeepSeek choices per partition and the corresponding official runs remain pending. These partitions are not an external-dataset holdout.
+- Durable JSONL traces now cover new Agent/model/evaluation calls and official-runner wrappers. A fresh rule-planner v3 regression run scored 90/100, and the per-case trace grader independently confirmed 90/100 while checking arguments and safety boundaries. The historic DeepSeek v3 run predates raw trace capture and is not retroactively trace-graded.
 - ExperimentHub EH3226 A549 Level 5 subset verified by SHA-256, with 4,920 drug-name signatures and 961 aligned landmark genes. A transcriptomic LUAD Top-10 and frozen-control ranks have been generated.
 - Broad Repurposing Hub identity audit for the Top-10. Only two names have exact InChIKey matches between the inferred GEO ID and Hub sample annotation; several others are ambiguous or mismatched.
 - A candidate-by-candidate LUAD evidence matrix now records identity status, name-level targets/pathways, drug-specific literature where available, and shared supporting and contradicting glucocorticoid evidence. All ten remain `insufficient_evidence`.
@@ -27,13 +29,13 @@
 - Data card, system card, and limitations document.
 - A pinned Python 3.10 dependency set in `requirements-benchmark.lock` and Windows setup script.
 - An optional Jev Choice/Score/Noul HTTP adapter with response validation and fail-closed confidence gating; live Jev use has not been run without credentials.
-- Forty-six passing internal tests covering scientific signs, tied ranks, missing/constant vectors, label isolation, publication-runner B2/component score equivalence, constrained LLM output validation, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, fail-closed DeepSeek handling, and nested-split boundaries.
-- An editable four-page course report and a nine-slide editable defense deck now include v3 holdout, five-seed nested CV, exact LUAD signature IDs and the wet-lab boundary. Every page and slide was rendered and checked; the two deck charts remain native and editable.
+- Fifty-eight passing internal tests covering scientific signs, tied ranks, missing/constant vectors, label isolation, publication-runner B2/component score equivalence, constrained LLM output validation, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, trace grading, prescore method selection, fail-closed DeepSeek handling, and nested-split boundaries.
+- An editable four-page course report v3 and a nine-slide editable defense deck v5 now include the official 100-run NS-AUC comparison, v3 holdout, exact LUAD signature IDs and the wet-lab boundary. Every page and slide was rendered and checked; the two deck charts remain native and editable. `docs/defense_rehearsal_10min.md` supplies a timing outline, not a claimed completed rehearsal.
 
 ## Needed for the planned final deliverable
 
-1. Execute the wet-lab protocol. Signature IDs and structures are now explicit, but LC-MS identity checks, dose curves, subtype comparisons and combination matrices require physical compounds, cell models and laboratory instrumentation.
-2. Run a frozen Jev decision evaluation if account access is available, then compare it with the saved rule/DeepSeek planner results. The Jev adapter exists, but no live Jev result is claimed.
-3. Rehearse the updated nine-slide deck against the approximately 10-minute limit and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
+1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
+2. After obtaining a rotated API key locally, freeze the five-partition model decisions before computing their official outcomes. This measures a bounded within-TRANSCRIPT method-selection stress test, not external-dataset generalization.
+3. Wet-lab work requires physical compounds, cell models and instrumentation unavailable here. The LC-MS, dose, subtype and combination protocol remains a plan, not a completed deliverable. A Jev evaluation likewise requires separate account access.
 
 The current benchmark results support a negative finding for pure transcriptomic reversal on TRANSCRIPT. They do not establish clinical efficacy of any candidate drug.
