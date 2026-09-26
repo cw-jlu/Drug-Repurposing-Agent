@@ -69,6 +69,8 @@ def _main(trace: TraceRecorder) -> None:
     seen_provider_paths = set()
     for case, row in zip(holdout["cases"], rows):
         provider_path = Path(row["provider_trace_file"])
+        if not provider_path.is_file():
+            provider_path = Path("benchmark/results/traces") / provider_path.name
         if provider_path in seen_provider_paths or sha256_file(provider_path) != row["provider_trace_sha256"]:
             raise ValueError(f"Provider trace duplicated or altered: {case['id']}")
         seen_provider_paths.add(provider_path)

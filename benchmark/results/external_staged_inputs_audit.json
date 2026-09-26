@@ -1,0 +1,1427 @@
+{
+  "status": "disease_inputs_staged_drug_matrix_and_labels_absent",
+  "source": "https://github.com/enockniyonkuru/cdrpipe-comparative-analysis",
+  "upstream_revision": "f5b358ec5f86c53a0043789bbcec0052c662c438",
+  "disease_file_count": 233,
+  "disease_total_rows": 227110,
+  "disease_total_finite_gene_logfc_rows": 227110,
+  "disease_signatures": [
+    {
+      "path": "creeds/data/manual_signatures_extracted/abdominal_aortic_aneurysm_signature.csv",
+      "sha256": "5c8069b3c711986d4c2f5e07bcf2ccd81ff9f470eebf48bdaed9470bc09f3179",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/acne_signature.csv",
+      "sha256": "166e9d6ec0b9c1e28a083f083ccd791f76f88549253bc91a06b9605044887db8",
+      "rows": 1020,
+      "finite_gene_logfc_rows": 1020
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/actinic_keratosis_signature.csv",
+      "sha256": "832545de57fa8fbe2b7f34ff7dd444040195e10be1f27f9cf62a0161b24ff358",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Acute_Lung_Injury_signature.csv",
+      "sha256": "aff3fd32fdb54713e312c7141df9c90e8270b6a395b142d42ffc4397bb4d0845",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/acute_myeloid_leukemia_signature.csv",
+      "sha256": "e85c38f9c3eab1c3ba949c07495fe7374f4cea5b3a06304af65f7ecf847844c5",
+      "rows": 1221,
+      "finite_gene_logfc_rows": 1221
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/acute_myocardial_infarction_signature.csv",
+      "sha256": "dcde3ef7748b7109e30a80f57eb86b1965963bf395ff66794ad0bdad93696974",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/acute_T_cell_leukemia_signature.csv",
+      "sha256": "149e8eb6b2c9e8240f218b8e5dd0bf4a13ced78555b7694988fa6741061ac48d",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/adenoma_signature.csv",
+      "sha256": "fc7fe11fdf4d7509ce231e47ebcfced51604eac48c5370761c2c60dd9d47612a",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/adenosquamous_cell_lung_carcinoma_signature.csv",
+      "sha256": "0eeeddf842c77ed0f4c861f3bba8a4e56e8758b314872eeefb6352dddb12e80f",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/adrenoleukodystrophy_signature.csv",
+      "sha256": "86a9e585ea3036fc33a9a5bb85489a92915945bbe566e490ae895a92f6868aff",
+      "rows": 1278,
+      "finite_gene_logfc_rows": 1278
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/alcohol_abuse_signature.csv",
+      "sha256": "0ebea9e44acc2cc29c77be0224dc5c125c95d59e861e163fa7f5f501a6287d81",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/alcoholic_hepatitis_signature.csv",
+      "sha256": "873009192d4e39b1560f651a5458a81c22923cd0275f665891860785c7be0974",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/allergic_asthma_signature.csv",
+      "sha256": "25e8dc463711fb295f7a2b0716ba79ffb2986ef5b17173122cff8e273ea28b42",
+      "rows": 1006,
+      "finite_gene_logfc_rows": 1006
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/allergic_contact_dermatitis_signature.csv",
+      "sha256": "3a65e074854542beec2ed487a751e4d6c36b35b70f45566d67a948411fa8a42e",
+      "rows": 1112,
+      "finite_gene_logfc_rows": 1112
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/alpha_1-antitrypsin_deficiency_signature.csv",
+      "sha256": "f937c066a6b033ab3eaa6dadb8190484ca455d5f351dd9183233d4ad0bd1681d",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Alzheimer's_disease_signature.csv",
+      "sha256": "063a7a4dfbdd2e7597ceda81152081ac00a46bc6d0d12fc77c023bb832e0b8d3",
+      "rows": 1795,
+      "finite_gene_logfc_rows": 1795
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/amyotrophic_lateral_sclerosis_signature.csv",
+      "sha256": "0e089ad74b34889bcf48d519de29b74335dc2f1596534c63585fac089c84db4e",
+      "rows": 740,
+      "finite_gene_logfc_rows": 740
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/amyotrophic_lateral_sclerosis_type_10_signature.csv",
+      "sha256": "af36d9cf61478ac930b8e9dc8f10227a4c400ee70a7a7c3880e3ed2f7f8b4ebb",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Anaplasmosis_signature.csv",
+      "sha256": "98c0b9f8c20ba94e4d18ec55b56440e5888791c3db1050c5cc1a03ecacdbdd5f",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/anaplastic_thyroid_carcinoma_signature.csv",
+      "sha256": "c598f876416bea3e921885ac05830f4f1ffaaf29f32969397c48c3518916e32f",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/androgen_insensitivity_syndrome_signature.csv",
+      "sha256": "712b7c4243deb9d773de6dc3c18d4294af1b2465810817ac0a158a2ce1297802",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/anemia_signature.csv",
+      "sha256": "d34c1937a65afe3df378a5cac993a60789238658514ee64000d9a25d56f5598d",
+      "rows": 1034,
+      "finite_gene_logfc_rows": 1034
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/ankylosing_spondylitis_signature.csv",
+      "sha256": "478434828e15c63950925e5427f0c79c4a669cd9e2c789bddf90680ecee1b6e6",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/anterior_horn_cell_disease_signature.csv",
+      "sha256": "e9b424c1329e1d9f329e1dbf2fb7e1c2acc163d38409c65ffdac42680f5086ce",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/aplastic_anemia_signature.csv",
+      "sha256": "1f0797ffea8920f1930e833cd9ce10131ef929fbb40aadc2914a32f0ceb7aaa0",
+      "rows": 591,
+      "finite_gene_logfc_rows": 591
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/appendicitis_signature.csv",
+      "sha256": "b1f9426c1bb3fc39b74e74e9b66be546ce3a287ecc4b92a3f95890fd8023b658",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/arthritis_signature.csv",
+      "sha256": "4fb0911107687aa56a5bdb128ff7d36672b5948db4dc420ff0f9e0abadcd184d",
+      "rows": 2068,
+      "finite_gene_logfc_rows": 2068
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/arthropathy_signature.csv",
+      "sha256": "d323fb1c47390b90e3911f3995ca9ecaf98e3786223fd3786272499ffaf903b7",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/asthma_signature.csv",
+      "sha256": "f6ffeb7c2c66d69390bbb3bea7aa1e74f1f4c276755ba0a9f1cb8472a3fdd74a",
+      "rows": 3365,
+      "finite_gene_logfc_rows": 3365
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/astrocytoma_signature.csv",
+      "sha256": "fc585e9de244184ce15678b8d6cc8821dc390fd5b479d8b8d61bb3480c907e2c",
+      "rows": 751,
+      "finite_gene_logfc_rows": 751
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/atherosclerosis_signature.csv",
+      "sha256": "7f5e110abffb2915b4dd9286437284c4b8bb6160c4ebf21017320b165e06b7ac",
+      "rows": 1034,
+      "finite_gene_logfc_rows": 1034
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/atopic_dermatitis_signature.csv",
+      "sha256": "b21eb83222042faf205ed57d15f666d18ae7cc5fe4b888407800176ec1b13344",
+      "rows": 1168,
+      "finite_gene_logfc_rows": 1168
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/autism_spectrum_disorder_signature.csv",
+      "sha256": "4897902ec5d5a29ea3d67bd0ca49db4dc87e94f7ea49710465f3592d9001d9c4",
+      "rows": 4292,
+      "finite_gene_logfc_rows": 4292
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/autistic_disorder_signature.csv",
+      "sha256": "2d3ec0851cfec103b12d9af23f9cd59a3ce31ba647cf674b56be81cbf1a4250a",
+      "rows": 1407,
+      "finite_gene_logfc_rows": 1407
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/autoimmune_thrombocytopenic_purpura_signature.csv",
+      "sha256": "d4da7c1353bbcafa8f121337fc292d10271d9c9fafe904a3f7d47ff1f544b8aa",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/bacterial_infectious_disease_signature.csv",
+      "sha256": "0723e12cb996e9aab3f246585d76c391835f065a88aabe83c3ee72935f7bb087",
+      "rows": 1058,
+      "finite_gene_logfc_rows": 1058
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Barrett's_esophagus_signature.csv",
+      "sha256": "e7a8a87ea302ef208e0291b9838506baa4183cdce8abc421a7fce138f1702393",
+      "rows": 1204,
+      "finite_gene_logfc_rows": 1204
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/bipolar_disorder_signature.csv",
+      "sha256": "4d1836cf6d196c1d44ba943e219157af5a1e43750db867ead39c78abd0f2ab2a",
+      "rows": 3284,
+      "finite_gene_logfc_rows": 3284
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/breast_adenocarcinoma_signature.csv",
+      "sha256": "bc1f0809be328b7c932bb41d0ad1a7a7d518f6d6df9d701c01e748e8fcd51bf2",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/breast_cancer_signature.csv",
+      "sha256": "ade30bef0dd3536b0ab9eaa257878105107468ea1b1933c85522caa0be28e06c",
+      "rows": 3769,
+      "finite_gene_logfc_rows": 3769
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/bronchopulmonary_dysplasia_signature.csv",
+      "sha256": "d0d1d9e0b4b246da0d0362c100248e69e2890cd37d5696aed0220f2cb67e1605",
+      "rows": 871,
+      "finite_gene_logfc_rows": 871
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Carcinoma_in_situ_of_large_intestine_signature.csv",
+      "sha256": "3ffb93a0887b113b2da46e3d2904a22f04142aa274f0aaa08c9aeb890999fe17",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Cardiomyopathy_signature.csv",
+      "sha256": "3c5964d697a670ac7b8e5409e1eed60fd74c84db043dec68c0a4d20bae0ec8d3",
+      "rows": 839,
+      "finite_gene_logfc_rows": 839
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cellular_phase_chronic_idiopathic_myelofibrosis_signature.csv",
+      "sha256": "5e7cd6d099c28836f29a329998a09872a2b7a0fe28ddbcf7e594fb3ada4e1966",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cerebral_palsy_signature.csv",
+      "sha256": "2ec5a1110eb89000c9b5ea6516f9f1d1252d528c5616092d19d9e7cc88fd320f",
+      "rows": 1086,
+      "finite_gene_logfc_rows": 1086
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cervical_cancer_signature.csv",
+      "sha256": "1e73b966cc0f9804ddc96e3341ebdff4e852c150615fd45e8b2bcba7932246c3",
+      "rows": 817,
+      "finite_gene_logfc_rows": 817
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cervix_carcinoma_signature.csv",
+      "sha256": "e2fab7e53ecf984de3402beb0e1819862aa890d391723e678d98e037536843b4",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/childhood_type_dermatomyositis_signature.csv",
+      "sha256": "a93baea199ae791ee8d969864bde9da278a600069deed8366e3b55e250c39e12",
+      "rows": 725,
+      "finite_gene_logfc_rows": 725
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/chronic_granulomatous_disease_signature.csv",
+      "sha256": "c71a500899225ad3560e1cad1613f8140500bebc304c3e0877b2febcc54e7159",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Chronic_Lymphocytic_Leukemia_(Chronic_B-lymphocytic_leukemia)_signature.csv",
+      "sha256": "ecbe8dec467fa33459c9a1ec383d1652292de942ef5c9a2b0555367cde1034a7",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/chronic_lymphocytic_leukemia_signature.csv",
+      "sha256": "cc213ec33dd2237880a3d96be69b27cd5bc1243791436edb8ddaf47c23cfb121",
+      "rows": 970,
+      "finite_gene_logfc_rows": 970
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/chronic_myeloid_leukemia_signature.csv",
+      "sha256": "d0445e92a28f7d8a1ae12d975982c2807c1863610dee5c47afebcb8bf9273823",
+      "rows": 1579,
+      "finite_gene_logfc_rows": 1579
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/chronic_obstructive_pulmonary_disease_signature.csv",
+      "sha256": "6f273008ce74b706da2e1da8831ee62f9bb4db8fb3960a604029321ffb5d2cfd",
+      "rows": 1338,
+      "finite_gene_logfc_rows": 1338
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cleft_lip_signature.csv",
+      "sha256": "f6f07cd65e1ab699515fe7e9c3e6da8774b1d8514b2057ea619dd5b2ac1bf6b9",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/colitis_signature.csv",
+      "sha256": "8b0ebd5d2a45877da03dff2d2dd9e2a71ead1143129a431abb9b4b3e0ce7e2e3",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/colon_adenoma_signature.csv",
+      "sha256": "da93f46aa5cb6cd98faa016ad0c02396cd84ca68b54c27cf1561ba1ea7923695",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/colon_cancer_signature.csv",
+      "sha256": "5e0eda13db4d8647123bb6635934c21a35f3b34ece799fa66f36425da9c17828",
+      "rows": 1013,
+      "finite_gene_logfc_rows": 1013
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/colorectal_adenocarcinoma_signature.csv",
+      "sha256": "748261589adf0605b85c61c25d8ea86e9266ca1083d815ac5d61aa239d7bd926",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/colorectal_cancer_signature.csv",
+      "sha256": "0b269043f77c4ca33acd168787f79965cb0ba5df1682ec81f0089dc049b04edb",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Crohn's_disease_signature.csv",
+      "sha256": "c69a8618a51867817fe09eeb50627c603e8894d65a5153e3ac15d3e7b4738d94",
+      "rows": 1844,
+      "finite_gene_logfc_rows": 1844
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cystic_fibrosis_signature.csv",
+      "sha256": "c0793adf9286572d9e447e7cdf2b3edef97ac72dddb657646cdc2e07e8936686",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/cystitis_signature.csv",
+      "sha256": "306b0cd0662984d5652ec8395cf473ee6652138907ced3b16d5030eb45c60d1e",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/dengue_disease_signature.csv",
+      "sha256": "4cf09f9a6ce94fafa8c4b99f7620ca9c34600a8ff0f3f47d78350e28a24a71c1",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/dengue_hemorrhagic_fever_signature.csv",
+      "sha256": "b98187e59f90809023c568a257387c76a97f59b246fd6547fbce26938107e8a8",
+      "rows": 711,
+      "finite_gene_logfc_rows": 711
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Dental_cavity,_complex_signature.csv",
+      "sha256": "e2c8451f3715aac7a0b823345b6e856b1c7b089e07349b02f17cd52d3c3a4835",
+      "rows": 582,
+      "finite_gene_logfc_rows": 582
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/dermatomyositis_signature.csv",
+      "sha256": "5afce2f4ee8e2e10058e60d7cef354a3a0521dfd14b4985762c35530e30e2452",
+      "rows": 1187,
+      "finite_gene_logfc_rows": 1187
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/diabetes_mellitus_signature.csv",
+      "sha256": "a1b6d60162ecbe2f21550f29dc3c55f74959ed041903e77557feabf12e69f98b",
+      "rows": 2871,
+      "finite_gene_logfc_rows": 2871
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Diabetic_Nephropathy_signature.csv",
+      "sha256": "0e2930bb0da39e2e4b65913bf86d1f801c08fd1271055626371b9665ad47957d",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Diamond-Blackfan_anemia_signature.csv",
+      "sha256": "8bf61545dd27bf4268ff0fa9277df26644eb1975695bc38e306c3a781dd193fc",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/dilated_cardiomyopathy_signature.csv",
+      "sha256": "be1df6b6dfc91497570db86f288947994dd3034d5ae89a1fcd0c4c76a249f687",
+      "rows": 1937,
+      "finite_gene_logfc_rows": 1937
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/discoid_lupus_erythematosus_signature.csv",
+      "sha256": "1dd96aebf046ddfefc217b0f169b18b4acda3e3191a3136299c2c279fe76dae4",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Down_syndrome_signature.csv",
+      "sha256": "9f0d1daa5c7ee0d1a50b3d5fe86b8c30e35dd9856e61d5916fdb8d1340246b7e",
+      "rows": 2975,
+      "finite_gene_logfc_rows": 2975
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Duchenne_muscular_dystrophy_signature.csv",
+      "sha256": "5efabe7160b06bb2da4a52861625103b1c03911ddeb0a0ccc4a36dbadd66d8ff",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/ductal_carcinoma_in_situ_signature.csv",
+      "sha256": "19ce166936c00d29d04da66184dd4b4087aa612b385e631610494087961ffcd1",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/dystonia_signature.csv",
+      "sha256": "927fdcdf710309052815cf756aad08f486c3a05d3d9b902d16f619b7b943c6dd",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Ebola_hemorrhagic_fever_signature.csv",
+      "sha256": "a65bbc2b8bab75c92554c1e2ae9feaa8d8c8712c81fe690d83de1e2325c26fec",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Eczema_signature.csv",
+      "sha256": "a164c95ef26c5b03e9a4633ff0d6ab48df6fe06f50e7ddd16a96ca26f67a08de",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/endometrial_cancer_signature.csv",
+      "sha256": "37c30ed5252640709edef11129cebe1bb313208d3255899c2f7a9cb2b5a5e90f",
+      "rows": 1493,
+      "finite_gene_logfc_rows": 1493
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/endometriosis_of_ovary_signature.csv",
+      "sha256": "3ad84a1f8de58361b27d3bfeec79020c02b8000a38917178c29e2066ff4f371d",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/endometriosis_signature.csv",
+      "sha256": "e4d6a18a3cff0be3bfe78b4ce14ce4eb7dfa801dc5672614cf318f83c1e353f5",
+      "rows": 1759,
+      "finite_gene_logfc_rows": 1759
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/epidermolysis_bullosa_simplex_signature.csv",
+      "sha256": "f065ed6c039728a87e7f5ff9ec93d374aaa7f511da0d42547252c42d982de538",
+      "rows": 589,
+      "finite_gene_logfc_rows": 589
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/epilepsy_syndrome_signature.csv",
+      "sha256": "bd67dd95ac8e7e17d68b9dc7ce591b485bd5d8c40146e3784e28ec7b1b274ab4",
+      "rows": 584,
+      "finite_gene_logfc_rows": 584
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Epithelial_proliferation_signature.csv",
+      "sha256": "432d96f6465ad2933786831f7660ed840fb0b65cabc08cd90f63db9a35e7059c",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/esophagus_adenocarcinoma_signature.csv",
+      "sha256": "3d335d84d297b4391b3c7b6c45664152ff91f7897a2f610f03a82958f4f0f832",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/esophagus_squamous_cell_carcinoma_signature.csv",
+      "sha256": "35134863212ec4c0b7b791d92c9fb4e1333718c287fc084cd4cc131be53d2472",
+      "rows": 1017,
+      "finite_gene_logfc_rows": 1017
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/facioscapulohumeral_muscular_dystrophy_signature.csv",
+      "sha256": "4c25705fc3f1476b3dcd57ec6a8bae19c4da14e96abf594fce9cdbbc87c04822",
+      "rows": 1410,
+      "finite_gene_logfc_rows": 1410
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/familial_combined_hyperlipidemia_signature.csv",
+      "sha256": "81f2957cc0a3c26f08ead22d6a76c73ed4ae13bfc46e4d21bbff380572bf1895",
+      "rows": 1186,
+      "finite_gene_logfc_rows": 1186
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/familial_hypercholesterolemia_signature.csv",
+      "sha256": "87dc23e25660ffbd5ffc175a043fceb0e53d609c7be7f42500fd09008ead5f38",
+      "rows": 1203,
+      "finite_gene_logfc_rows": 1203
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/fragile_X_syndrome_signature.csv",
+      "sha256": "2a1355f03e4c3c475d6d1c6ddf33d1129c84b672b6193578f41510db9cc16ce0",
+      "rows": 893,
+      "finite_gene_logfc_rows": 893
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/gastroesophageal_reflux_disease_signature.csv",
+      "sha256": "cbd9053354eb26a32892fee12daa3c82a3a98175b8f401b5011bede4794c744b",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/gastrointestinal_stromal_tumor_signature.csv",
+      "sha256": "83064096d3a2093b8ff16ea6874d96d9bd48b056c8354895cdfcd7d33cdab68c",
+      "rows": 1122,
+      "finite_gene_logfc_rows": 1122
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/glaucoma_signature.csv",
+      "sha256": "cd20efa84ab45ee75d2ab848eee501ccb72c38fdc6bb7eabea057a9459bb7e61",
+      "rows": 1001,
+      "finite_gene_logfc_rows": 1001
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/glioblastoma_multiforme_signature.csv",
+      "sha256": "28eb00de841dd041ef222c45887fb41127ed2543a379ac1a814b5c205dc774e9",
+      "rows": 935,
+      "finite_gene_logfc_rows": 935
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/head_and_neck_squamous_cell_carcinoma_signature.csv",
+      "sha256": "d11bf070161a64f071c24a2ccaab048fc68bffb31102dba83decf6b211b71262",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Helicobacter_pylori_gastrointestinal_tract_infection_signature.csv",
+      "sha256": "1360d1b76e4ed29effbdb20d0ac89012c8abd2f3ab343d52993dd9d53fe124df",
+      "rows": 365,
+      "finite_gene_logfc_rows": 365
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/hemorrhagic_thrombocythemia_signature.csv",
+      "sha256": "be8e690103c67af5aeb56160dbd689b4799885fdbe4d52671a7b740a7e140133",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/hepatitis_C_signature.csv",
+      "sha256": "35a9526579276126a30f2035c38b01f5794c61b2ed9d55750e508cecfb44010c",
+      "rows": 1523,
+      "finite_gene_logfc_rows": 1523
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/hepatitis_C_virus_related_hepatocellular_carcinoma_signature.csv",
+      "sha256": "ad2f139b41b3cc3124f106a1594655776b3e92e4a15a198fb9d90013aad9df68",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/hepatocellular_carcinoma_signature.csv",
+      "sha256": "007b017624538ac477becd42d06dcd730d753f73a8b9a75399a30b568f208b77",
+      "rows": 2296,
+      "finite_gene_logfc_rows": 2296
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Hereditary_gingival_fibromatosis_signature.csv",
+      "sha256": "cb843518a213112b32c92e98beeea3703004b29905c94d09a180812b5ebfa6dc",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/HIV_encephalitis_signature.csv",
+      "sha256": "433154b6fd18ddca68fba739244e6f57bb02082cb4bac96f35e58e4521c9b458",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Human_immunodeficiency_virus_infectious_disease_signature.csv",
+      "sha256": "97f661b2594b1eb2082a125a3e205051d70acb9e1201750703ae3ac544a856ad",
+      "rows": 1306,
+      "finite_gene_logfc_rows": 1306
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Huntington's_disease_signature.csv",
+      "sha256": "ca026c674ee59e55698e78aefcf741d56dd3aea7a46d20a2dcc5f9376c342604",
+      "rows": 2197,
+      "finite_gene_logfc_rows": 2197
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/hypertension_signature.csv",
+      "sha256": "b0fa3b60ae7ee9c6e0c6eedc1351d04511044d4642e5d470fbbeb19fb7fbf62c",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Hypoxia_signature.csv",
+      "sha256": "48c6fd9516a47ad7564ca692c875ff52e254652c4301d98f80785714406a6b40",
+      "rows": 1080,
+      "finite_gene_logfc_rows": 1080
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/idiopathic_interstitial_pneumonia_signature.csv",
+      "sha256": "2e88f9278eb8c76714752821ed6f5952680625418cba45593e41e199744707fa",
+      "rows": 1112,
+      "finite_gene_logfc_rows": 1112
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/idiopathic_pulmonary_fibrosis_signature.csv",
+      "sha256": "84fe9683c05e19f13a7688d148d0182d10c48c55768b64f363678d76ed9160c8",
+      "rows": 1774,
+      "finite_gene_logfc_rows": 1774
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/inclusion_body_myositis_signature.csv",
+      "sha256": "76d2753b69c385ded43f971704323f4fc9e00e695037ab0c35534bdef18eec82",
+      "rows": 586,
+      "finite_gene_logfc_rows": 586
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Infection_by_Aspergillus_fumigatus_signature.csv",
+      "sha256": "6c2297578020a547ded4df69a1a6992dc02258e795201a1cafabbb79b061c1b7",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/inflammatory_bowel_disease_signature.csv",
+      "sha256": "6ed5db8749012f6e4ec809d13e3b446f00c408797b23e5369abce7f424d617c3",
+      "rows": 591,
+      "finite_gene_logfc_rows": 591
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/influenza_signature.csv",
+      "sha256": "5dc3e29a77742b7c45d2a49c87e5f577c0d72114c9df3735e646f1b406d01e0d",
+      "rows": 1081,
+      "finite_gene_logfc_rows": 1081
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/intellectual_disability_signature.csv",
+      "sha256": "34704e2ac2d5404b17ce76732d5b35b51858d63e0571684eb649b9f36cf7ad99",
+      "rows": 1038,
+      "finite_gene_logfc_rows": 1038
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/interstitial_cystitis_signature.csv",
+      "sha256": "306b0cd0662984d5652ec8395cf473ee6652138907ced3b16d5030eb45c60d1e",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Intestinal_metaplasia_of_gastric_mucosa_signature.csv",
+      "sha256": "b634fdf77f5b4b25495a21c1adc96c7d37d52b4e6f0d08f2390b46d9a8deb956",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/intracranial_aneurysm_signature.csv",
+      "sha256": "176551a11e3091b516b771d40e3428452eb68e5031272e2c676b62a8658c15aa",
+      "rows": 589,
+      "finite_gene_logfc_rows": 589
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/invasive_ductal_carcinoma_signature.csv",
+      "sha256": "9d66aceb32bf748c01420975be4ce75aa4b29a79c74fe41c29095eb5780dfdcd",
+      "rows": 950,
+      "finite_gene_logfc_rows": 950
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Ischemic_stroke_signature.csv",
+      "sha256": "f5eb80a512ad6fe7bc266a4a68e289b44f34fa7fcbabbbe51646f0897539dc8a",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/JRA_-_Juvenile_rheumatoid_arthritis_signature.csv",
+      "sha256": "62e588383c7fb60e6e63f321a0d7850af438cfaea2670f4ed8bceceaa3e103cb",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/juvenile_rheumatoid_arthritis_signature.csv",
+      "sha256": "2f879e5e1c363f22fac3a0334f8a739baef8a93c452c77f18c9cf9af8df9d17f",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/large_cell_neuroendocrine_carcinoma_signature.csv",
+      "sha256": "35b5778298d596410cab65033b2e5989761a7287fba1e4f18162bd43abd186fe",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Leukemia,_Chronic_T-Cell_signature.csv",
+      "sha256": "1762af246f919e9f374ee5e2c6c70e3683d5de0901f2abecc64d2e9788282f19",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/leukemia_signature.csv",
+      "sha256": "d802a5d60ee57920b4b89dc12fd976fc54e5ed4c9c4d8bcbdf57180e6987377b",
+      "rows": 38,
+      "finite_gene_logfc_rows": 38
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Lewy_body_dementia_signature.csv",
+      "sha256": "8961f0b7232a635bbe42f8b7e317ec09d5c8ee4723bd56627ff3764b0cb47399",
+      "rows": 1018,
+      "finite_gene_logfc_rows": 1018
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/LGLL_-_Large_granular_lymphocytic_leukemia_signature.csv",
+      "sha256": "ce20b0117e20e1e24d00a3136b95114d311b2aa96b8470487fc7503a857f2b49",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/liver_cirrhosis_signature.csv",
+      "sha256": "2f0ccf0acf1c592a19648cb0e61a755010800d0d9abf0b4e9c39cbf702a24f7c",
+      "rows": 577,
+      "finite_gene_logfc_rows": 577
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/lung_adenocarcinoma_signature.csv",
+      "sha256": "bea2d961cc029d177a568ab88050c8a2ab89b46a002788be88af113740bc1f03",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Lung_Injury_signature.csv",
+      "sha256": "2d2535da3d1437a74d2ed62e96322278f8a0c1e1e8ebfce7bc42db78c18b7fe0",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/lung_large_cell_carcinoma_signature.csv",
+      "sha256": "389171fe6e76157d7347a5b1f3d2d69d25f3dbb3c629ed2f410c07b080c01baa",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/lung_small_cell_carcinoma_signature.csv",
+      "sha256": "e43b5dd60b7d90779034edeb678c5218fbdd376fe9f8ca1425e8d2f519d7f620",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/lung_squamous_cell_carcinoma_signature.csv",
+      "sha256": "951de64643d27153986bccab196a9318325394b92eef9c2f37969edc7d2acf0b",
+      "rows": 1117,
+      "finite_gene_logfc_rows": 1117
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Lung_transplant_rejection_signature.csv",
+      "sha256": "28524972ebf02fd148f8c589be3e36d0371f9bc46c8721da551eee7b3baf28cb",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/lupus_erythematosus_signature.csv",
+      "sha256": "727959e9a015310a31a22365b5dfd6dc2396681b2f54a20bb10e5091f87cebb8",
+      "rows": 590,
+      "finite_gene_logfc_rows": 590
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/macular_degeneration_signature.csv",
+      "sha256": "9ea178d959d5e9a752ed0fb608bb2d08da59062363a8dc24adc684ac1129eb62",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/malignant_pleural_mesothelioma_signature.csv",
+      "sha256": "157936b65406711dccb503692b30990ab4769b6cc80306812868b864eb125dcc",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Marfan_syndrome_signature.csv",
+      "sha256": "a1e8b25c4d1262c53c09745a8b40af5d7ecf2c28b58f487f94b5a122444a4c7f",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/MDS_-_Myelodysplastic_syndrome_signature.csv",
+      "sha256": "d1eaf9adef0c46c0238a8e58efbe85145142657f46ee53782cc031b4d680dd4f",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/melanoma_in_situ_signature.csv",
+      "sha256": "e100c98160e9ed1bef67b1d7cabd19dbb3dca6f03cd326e1770e6323ffe0a4ed",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/melanoma_signature.csv",
+      "sha256": "5415c1cd85cb28e0a0560856d8d925a118e7d3360a1d3172f86f959b62988ee8",
+      "rows": 2591,
+      "finite_gene_logfc_rows": 2591
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/MELAS_syndrome_signature.csv",
+      "sha256": "b066658dcc5e38229f3c3573461cb531a78dcea2e33aa1fa0177d11760243c0a",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Meningococcal_infection_signature.csv",
+      "sha256": "72499b4729c1556dcb96fb5dd66fa1d11aa576421ff3e311c30faf8bfac5cdf9",
+      "rows": 1161,
+      "finite_gene_logfc_rows": 1161
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/mental_depression_signature.csv",
+      "sha256": "1b736307cca546e995c3439e634bc6cf398a5ded5d9dcb2fe39eb67f6c86a120",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/monoclonal_gammopathy_of_uncertain_significance_signature.csv",
+      "sha256": "f05e29044df3bd1c1fcf5a2e56123d910d0cb1c19c39bff7406d505a35b4274f",
+      "rows": 571,
+      "finite_gene_logfc_rows": 571
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/morbid_obesity_signature.csv",
+      "sha256": "7df0a27c234cf403a3c1db782022825bda95a4dcd0ec4e2db9fc62b6de6b70b8",
+      "rows": 592,
+      "finite_gene_logfc_rows": 592
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/multiple_myeloma_signature.csv",
+      "sha256": "0094b75189815e41a231bb7391b3803dda28eca69925ef51614bfabbb2ef5440",
+      "rows": 1389,
+      "finite_gene_logfc_rows": 1389
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/multiple_sclerosis_signature.csv",
+      "sha256": "6d21515529c07cd474f2cf6925a78f4d537c9bee55c771148eb82f1b68dfad5e",
+      "rows": 1898,
+      "finite_gene_logfc_rows": 1898
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/muscular_dystrophy_signature.csv",
+      "sha256": "5c5f4ca41e863712bc50d0441eca76bef58e542253ebb0ef0a1464b227dd3b42",
+      "rows": 843,
+      "finite_gene_logfc_rows": 843
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/myelodysplastic_syndrome_signature.csv",
+      "sha256": "729e25454b63001052ea5e50541a9dbb133268149068a68182f39fcc62ac7064",
+      "rows": 1189,
+      "finite_gene_logfc_rows": 1189
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/myocardial_infarction_signature.csv",
+      "sha256": "dcde3ef7748b7109e30a80f57eb86b1965963bf395ff66794ad0bdad93696974",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/myotonic_dystrophy_type_1_signature.csv",
+      "sha256": "07a3b82d6efbfd18c56af0a887358602866be310a13a05e468c932cea659c278",
+      "rows": 1437,
+      "finite_gene_logfc_rows": 1437
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/NASH_signature.csv",
+      "sha256": "eec92d9d3a373cb1fc5b66d2b366f103376c429a2eae94801f40b2c6f65bf5a8",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/nasopharynx_carcinoma_signature.csv",
+      "sha256": "de6f4b1fd3d0b325f31ac3158d2a39a5713f621a5b834d43aed52f0e68952b69",
+      "rows": 1456,
+      "finite_gene_logfc_rows": 1456
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/nephroblastoma_signature.csv",
+      "sha256": "45fd64b4051637d022b0195b10c6bc8613f5d89280826cf75459a1ad1d1897f5",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/nephrosclerosis_signature.csv",
+      "sha256": "41073efa2bf90794f5379b823887dd5d2cb150773a3848554454f67af58021bf",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Nicotine_addiction_signature.csv",
+      "sha256": "3b743d35ed7792694dff97b1273aaedbb9bb92aa57c09360d9eca0d6854986f6",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/nicotine_dependence_signature.csv",
+      "sha256": "55841be7ae0db4ec4e093265d817c27e98aa389e1c1507ff45ea1e0bbffaa952",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/nonspecific_interstitial_pneumonia_signature.csv",
+      "sha256": "ab8138f48c9df09e986dbcd72c144d0eac8e2acda5d72f3fd826d3a66eecce4c",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/obesity_signature.csv",
+      "sha256": "abb5a22df7dcbc13f5d2d36f15d5f973ac3cd66afd57a26305530794a8cb4d2d",
+      "rows": 947,
+      "finite_gene_logfc_rows": 947
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/oligodendroglioma_signature.csv",
+      "sha256": "e4c3210a71c484cffa42eefcfe14bac436be22ac5cc14b7e1c66ae60ddc97601",
+      "rows": 1408,
+      "finite_gene_logfc_rows": 1408
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/osteoarthritis_signature.csv",
+      "sha256": "fb44ba56100f5e088dab0eef1fb245f1aa0431fca2393f5904629e434ce4c5b2",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Osteolysis_signature.csv",
+      "sha256": "a5a4f80969822352d97bd2136e7b9ca2c237c6d817d2df403c4ee56d39e3e989",
+      "rows": 598,
+      "finite_gene_logfc_rows": 598
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/osteoporosis_signature.csv",
+      "sha256": "645e8a0d76e75b381ad90cea74d8ae67e0c96a9e9427833541e09d1d413773fc",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/ovarian_cancer_signature.csv",
+      "sha256": "b7ce0ba9f54e4a1541ec2451b4a527cb1a6967cf48d7efd968fd14e93effa792",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/ovarian_serous_carcinoma_signature.csv",
+      "sha256": "15ba6f727c4be14b9d28eccbe45720faff552cff99caa905386de70a3d0385b2",
+      "rows": 588,
+      "finite_gene_logfc_rows": 588
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Overexertion_signature.csv",
+      "sha256": "26f9802baecd2871b4c192f8f1b9fc5056435505a89ab4b8dfa7910ad6d72551",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pancreatic_cancer_signature.csv",
+      "sha256": "620b8cd974e8fdcfb2ddd32edafe05815c45fc5fec1c76f999a30c5017c6dde0",
+      "rows": 1689,
+      "finite_gene_logfc_rows": 1689
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pancreatic_ductal_adenocarcinoma_signature.csv",
+      "sha256": "c0275d73a0945e20a209a8400800e420354fef204a354419f6fe950d2e2b91b1",
+      "rows": 592,
+      "finite_gene_logfc_rows": 592
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pancreatic_intraductal_papillary-mucinous_adenoma_signature.csv",
+      "sha256": "ceb594c325784d2ec10ddcee8bc6165e9e131f753cbe1bbbdc292dc51ce6cda7",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pancreatic_invasive_intraductal_papillary-mucinous_carcinoma_signature.csv",
+      "sha256": "1beb49499394d433676472b7393743b9cd882a6541d4f4923422a06de51ddfc9",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pancreatic_non-invasive_intraductal_papillary-mucinous_carcinoma_signature.csv",
+      "sha256": "0fe55eafdcb4efa0de5ad4d5faa989e2b06f302d2d9ec9ccbc18f1600435f19f",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/papillary_thyroid_carcinoma_signature.csv",
+      "sha256": "3cb31ef69535b4ec2f1aebc969eaa4d189b70744d82a4c521f6292ca36151608",
+      "rows": 1518,
+      "finite_gene_logfc_rows": 1518
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/parasitic_protozoa_infectious_disease_signature.csv",
+      "sha256": "3ffe1307e7e627fe17394f10e143ded1b659ea2b19cceb2755e289006b687117",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Parkinson's_disease_signature.csv",
+      "sha256": "1edb8199cdb1c3eea5c500562a6e4c3fbd941898ae594972bdcf5eeec584d277",
+      "rows": 1908,
+      "finite_gene_logfc_rows": 1908
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/peripartum_cardiomyopathy_signature.csv",
+      "sha256": "b4197e2d46a4798d2bd1e5dbf74ab23b11c9785e0c70dc83fc1082ee9c541976",
+      "rows": 592,
+      "finite_gene_logfc_rows": 592
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/polycystic_ovary_syndrome_signature.csv",
+      "sha256": "a4518553f0dc70446f267c828710442d70957c66432c5823b9ffab331d5ece15",
+      "rows": 3962,
+      "finite_gene_logfc_rows": 3962
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Polymyositis_signature.csv",
+      "sha256": "99fe3d9a3826b117e582aa6fa565ddc42309e81fa0635a2290897e887a2a30fb",
+      "rows": 592,
+      "finite_gene_logfc_rows": 592
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Pompe_disease,_infantile-onset_form_signature.csv",
+      "sha256": "26786b8e97c7a7ad26f1dcf23370f61e779bd5d725a1851638406fea2b6dfa61",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/post-traumatic_stress_disorder_signature.csv",
+      "sha256": "263cb716585b812f385bc8049e2df35c10afeb5b51c9dc2c76ccf35694d156ce",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pre-eclampsia_signature.csv",
+      "sha256": "e168364c116c1befcff8fc92c9577bd3c4cace56f843d85ebab278b3b2c59e1a",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/precursor_B_lymphoblastic_lymphoma_leukemia_signature.csv",
+      "sha256": "7dbe14dde4c17101a6ae4f27b0d6934f5dacf9384ffd4bf1f28c005f3dc2d136",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Premature_aging_signature.csv",
+      "sha256": "45af7d0e050ac6fb2559ceb714acf21bbcca09401232fac6ccac56e7a9400c88",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/primary_open_angle_glaucoma_signature.csv",
+      "sha256": "cd20efa84ab45ee75d2ab848eee501ccb72c38fdc6bb7eabea057a9459bb7e61",
+      "rows": 1001,
+      "finite_gene_logfc_rows": 1001
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/prolactinoma_signature.csv",
+      "sha256": "3e7ac308ad1cde7ae195e0427984ba1cc50c4982855ba2977db7c6ce671a50ef",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/prostate_cancer_signature.csv",
+      "sha256": "7f245f8e6b139c7f19500bd4438303b33178391113ea9a7f4593d225ce412f39",
+      "rows": 2475,
+      "finite_gene_logfc_rows": 2475
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Pseudomonas_Infection_signature.csv",
+      "sha256": "1dd08f5ea5c40f1534753e81689ba65f1a52ad8857c0b3ec4e928d7e893b80b3",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/psoriasis_signature.csv",
+      "sha256": "321f1951d514fe950b8b524690936555b107ed1899948d4211715cb59fd88141",
+      "rows": 2784,
+      "finite_gene_logfc_rows": 2784
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Psoriasis_vulgaris_signature.csv",
+      "sha256": "1c780309c5c02f807e689db53116fdc01bd4e34838d3b6cacc737b89df20b368",
+      "rows": 1428,
+      "finite_gene_logfc_rows": 1428
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/psoriatic_arthritis_signature.csv",
+      "sha256": "08d8c935704a57b65952d4202f7dd850b2d7b0f818ccb7e4fc553e477b1492a2",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pulmonary_fibrosis_signature.csv",
+      "sha256": "84fe9683c05e19f13a7688d148d0182d10c48c55768b64f363678d76ed9160c8",
+      "rows": 1774,
+      "finite_gene_logfc_rows": 1774
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pulmonary_hypertension_signature.csv",
+      "sha256": "b0fa3b60ae7ee9c6e0c6eedc1351d04511044d4642e5d470fbbeb19fb7fbf62c",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/pulmonary_sarcoidosis_signature.csv",
+      "sha256": "6355ec4afbae36fb58dd6729ac4046e7fc34124b1996626e8fd3cc98b534141d",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/relapsing-remitting_multiple_sclerosis_signature.csv",
+      "sha256": "6f4cfad1ab21b187a6b7048d09f7d6e3ec59393cba4c1676964f13b6583e97ae",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/renal_cell_carcinoma_signature.csv",
+      "sha256": "9ad46546e386b2eab64125336c152a6d2537d9bd5920fe52d36dea060060c27b",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Rett_syndrome_signature.csv",
+      "sha256": "11eadbc9faf514e0d2eef9d773e9e6d4e2dcd5a4d4b44a09e9dab36234fd2b23",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/rheumatoid_arthritis_signature.csv",
+      "sha256": "3b8b8048a0078ab7606ba65c3115499071eb58397be872fa2349db9938c0675c",
+      "rows": 1877,
+      "finite_gene_logfc_rows": 1877
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Rhinovirus_infection_signature.csv",
+      "sha256": "6c6f9ce33e64467ca95f57f198b4bdd6f9f58e0902d3632c1e20d63300e058a2",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Rotavirus_infection_of_children_signature.csv",
+      "sha256": "f465818a408d449e66ededf8482b4e012fb407868f009ea0432e80ff6f7f6545",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/salivary_gland_adenoid_cystic_carcinoma_signature.csv",
+      "sha256": "9c90601d2fa0db88fdfca8a837cae994797d7e97d1a8ae12432af99788f68c50",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/sarcoidosis_signature.csv",
+      "sha256": "92e317b893ca3f7bc61c9012be9b7e5f114e98d2e143c1355f23d54dead0fcd0",
+      "rows": 1036,
+      "finite_gene_logfc_rows": 1036
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Schizophrenia_signature.csv",
+      "sha256": "37b8b0f4c342055ddebae089436487231e47d516cd1399f611871eefe8035bac",
+      "rows": 4867,
+      "finite_gene_logfc_rows": 4867
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/scleroderma_signature.csv",
+      "sha256": "4936ef0a1f0069f21cdb7e521cbbe9ef1fd54f2b8c008dbbd3ac7c1d3a0a520c",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Senescence_signature.csv",
+      "sha256": "b8747547f37700a7c45c37068149ca151ccb8d765659d3ca7f3ee9c6c0f90333",
+      "rows": 1106,
+      "finite_gene_logfc_rows": 1106
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Septic_Shock_signature.csv",
+      "sha256": "e946c2ea54f221113a6b821bdd3b297ffa8afb4b8adf0cf658398ec6461bbdf9",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/serous_cystadenocarcinoma_signature.csv",
+      "sha256": "4a16421d801b74bc6cfe24a4a6e5f5ff1d430653309021a227f258cecc47ea54",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Setleis_syndrome_signature.csv",
+      "sha256": "17e851a0776ec650f6687d4e9cfe315ad317c30fe85045cc560d0304064cfbc9",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/severe_acute_respiratory_syndrome_signature.csv",
+      "sha256": "acc3eff8189ef947ec15705dd7dcb139c715fa87ce6810567d40af0bd2dda124",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/sickle_cell_anemia_signature.csv",
+      "sha256": "a5afb08c04cb2c3a77c077dcc8627475a7f39b6e47eaf135c564c95f391b837f",
+      "rows": 1984,
+      "finite_gene_logfc_rows": 1984
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Simian_Acquired_Immune_Deficiency_Syndrome_signature.csv",
+      "sha256": "64b08b61e857e2c9f4353bea0d57c0154df02725e6fcb9988697590b51da78f8",
+      "rows": 1097,
+      "finite_gene_logfc_rows": 1097
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Sjogren's_syndrome_signature.csv",
+      "sha256": "f7e97b0cb74f923f3e310fb0a028a08369091cdcab6c674de6fe2cf2ac7f2abf",
+      "rows": 824,
+      "finite_gene_logfc_rows": 824
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/skin_squamous_cell_carcinoma_signature.csv",
+      "sha256": "702642bb528c1c05650744b276d688ea0d09d1097b602fe6fcf6fbe5ea69ef71",
+      "rows": 879,
+      "finite_gene_logfc_rows": 879
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/smoldering_myeloma_signature.csv",
+      "sha256": "bacbf42cc3d523c260d512b3898270dd5a63ea730ae3625b99e156f44eab0fd3",
+      "rows": 574,
+      "finite_gene_logfc_rows": 574
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/sporadic_breast_cancer_signature.csv",
+      "sha256": "eb64d19bd75f72f8d841091d05733c74997ffdcaad7fee48911deef8fa610724",
+      "rows": 592,
+      "finite_gene_logfc_rows": 592
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Squamous_cell_carcinoma_of_mouth_signature.csv",
+      "sha256": "892ac13b72879b38b2c642c453deab9bb71da1d23f851beef053835351d6126a",
+      "rows": 596,
+      "finite_gene_logfc_rows": 596
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/stomach_cancer_signature.csv",
+      "sha256": "ba3aad01ffc23f99ff1cd1890e0f49b903ad7478d5e3d92d76a4836cb75e07f5",
+      "rows": 1573,
+      "finite_gene_logfc_rows": 1573
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/swine_influenza_signature.csv",
+      "sha256": "5dc3e29a77742b7c45d2a49c87e5f577c0d72114c9df3735e646f1b406d01e0d",
+      "rows": 1081,
+      "finite_gene_logfc_rows": 1081
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/systemic_lupus_erythematosus_signature.csv",
+      "sha256": "301dc4df7c6af7757600486c32e31b7a86d76416da8fb886fe7568a2b2b6d358",
+      "rows": 2648,
+      "finite_gene_logfc_rows": 2648
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/tendinitis_signature.csv",
+      "sha256": "57428fac477fdc4ceabc994b0ce0cb14c641af39954d95804bbd0b0abee9d935",
+      "rows": 593,
+      "finite_gene_logfc_rows": 593
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Teratospermia_signature.csv",
+      "sha256": "90a474fae49d4e605ed7c309681c636eef9f24a293261fa1f3ba8ed37fad33c3",
+      "rows": 594,
+      "finite_gene_logfc_rows": 594
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/testicular_cancer_signature.csv",
+      "sha256": "02dd245a623fcf52df1790037d52db6eaf12efbf3935684164b5ef192b229ed7",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/testis_seminoma_signature.csv",
+      "sha256": "cf95f5e263388314479df7bd5e7218919b3e9ff678333c5727a9e06054a3b3f0",
+      "rows": 824,
+      "finite_gene_logfc_rows": 824
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/tuberculosis_signature.csv",
+      "sha256": "9a377056e68bd2a1d5119fd14366133d82b81b46685b60270f29208315aedace",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Turner_syndrome_signature.csv",
+      "sha256": "dedb4ca7917a5abe3b92f6c6d6e53da8355c004b095bbb23bc669fccb25ef204",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/type_1_diabetes_mellitus_signature.csv",
+      "sha256": "881834e0c9c5031f416f3a4d8289d688ccbbd158c524bca57a43181fc7599d44",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/type_2_diabetes_mellitus_signature.csv",
+      "sha256": "19ae29df70e7c01b311091385eb896d9579da95b753f6af4e87fe973b26d9930",
+      "rows": 2498,
+      "finite_gene_logfc_rows": 2498
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/ulcerative_colitis_signature.csv",
+      "sha256": "1953317651c043f0e9799f746d04f918ffa014d639fce1ffa6b02c273f1fca05",
+      "rows": 4292,
+      "finite_gene_logfc_rows": 4292
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Urothelial_carcinoma_in_situ_signature.csv",
+      "sha256": "5cb761a70db6d8409a314baba02b6a2acbd1223b7a1ffb2f48f31bf3b7c42eea",
+      "rows": 597,
+      "finite_gene_logfc_rows": 597
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/urticaria_signature.csv",
+      "sha256": "a2e197d322c86726b8c7329a76c145ef662af97822e64038d50d4f675dd3de7b",
+      "rows": 567,
+      "finite_gene_logfc_rows": 567
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/uterine_fibroid_signature.csv",
+      "sha256": "a3370972955b135d2212fb46c4180cc90e63b654bc06026cabe37d93267a16bd",
+      "rows": 1101,
+      "finite_gene_logfc_rows": 1101
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Venezuelan_equine_encephalitis_signature.csv",
+      "sha256": "d27fc93ed75ebfe549e65f242a318f8672a9899ded4b59d205a2c08006e65b34",
+      "rows": 600,
+      "finite_gene_logfc_rows": 600
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Viral_cardiomyopathy_signature.csv",
+      "sha256": "46b0f279549a5d9be34b2c7bf0bd514ec6c566199a00d8cf0dfa6ab836868680",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Vulvar_intraepithelial_tumor_signature.csv",
+      "sha256": "8af3927cdfa0782356fc6d7a9ded55f62457f51adfc858f22cdc6a52d87d7699",
+      "rows": 599,
+      "finite_gene_logfc_rows": 599
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Waldenstrom_Macroglobulinemia_signature.csv",
+      "sha256": "66516166640feed93366dd1c8804bf267abd5247754f632c27e98065ab38e830",
+      "rows": 884,
+      "finite_gene_logfc_rows": 884
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/West_Nile_fever_signature.csv",
+      "sha256": "3964cc07c94cfc2bee624975ac1b8165058b66e7dedce19ae635d208cd643ccb",
+      "rows": 582,
+      "finite_gene_logfc_rows": 582
+    },
+    {
+      "path": "creeds/data/manual_signatures_extracted/Williams-Beuren_syndrome_signature.csv",
+      "sha256": "4103fc77c284191b96d979ba5ece10e44a67eb750ffb1ecfed8f791e856161d3",
+      "rows": 595,
+      "finite_gene_logfc_rows": 595
+    }
+  ],
+  "metadata": [
+    {
+      "path": "drug_signatures/data/cmap/cmap_drug_experiments_new.csv",
+      "sha256": "6e8d90413caa766e2c4cd5b0dd83e81ea4399c9065cf20530b66cc3761558c4e",
+      "bytes": 857275
+    },
+    {
+      "path": "shared/gene_id_conversion_table.tsv",
+      "sha256": "2eb4963205ffe46d56aff0d3a9273900b7ed03362793e4d6843dd89811682343",
+      "bytes": 4870423
+    }
+  ],
+  "required_missing_for_v3": [
+    "raw drug-expression matrix",
+    "known-indication labels",
+    "frozen drug/disease ID mapping and split policy"
+  ],
+  "scope": "Input provenance only; no model outcomes or provider calls",
+  "trace_file": "artifacts\\traces\\20260926T173254163447Z_external_staged_inputs_audit_330b6a25c0d846ad9f2184407b9d1a13.jsonl"
+}
