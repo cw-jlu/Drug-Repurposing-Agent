@@ -129,7 +129,7 @@ def select_partition_method(blind_input: dict, transport: Transport,
         raise ValueError("Invalid partition-choice tool response") from exc
     if (not isinstance(choice, dict) or set(choice) != {"method", "reason"} or
             choice["method"] not in METHODS or not isinstance(choice["reason"], str) or
-            not 1 <= len(choice["reason"].strip()) <= 1000):
+            not 1 <= len(choice["reason"].strip()) <= 4096):
         raise ValueError("Invalid partition choice or reason")
     usage = response.get("usage") if isinstance(response.get("usage"), dict) else {}
     return {"choice": choice, "model": str(response.get("model", model)),

@@ -7,7 +7,9 @@ import numpy as np
 from drug_repurposing_agent.model_selector import select_partition_method
 from drug_repurposing_agent.deepseek import DeepSeekPlanner
 from evals.score_method_selection_partition_v2 import score_choices
-from scripts.run_method_selection_partition_v2 import recover_first_choice
+from scripts.run_method_selection_partition_v2 import recover_attempt_rows, recover_first_choice
+from drug_repurposing_agent.data import sha256_file
+from drug_repurposing_agent.trace import TraceRecorder
 
 
 def blind_case():
@@ -56,6 +58,35 @@ def test_recover_first_long_reason_from_original_provider_trace(tmp_path, monkey
     with pytest.raises(ValueError, match="differs"):
         recover_first_choice(Path(planner.last_trace_path),
                              {**blind_case(), "disease_count": 999}, "deepseek-flash")
+
+
+def test_recover_failed_attempt_preserves_every_provider_response(tmp_path, monkeypatch):
+    monkeypatch.setenv("DRUG_AGENT_TRACE_DIR", str(tmp_path))
+    cases = json.loads(Path("configs/method_selection_partition_v2_cases.json")
+                       .read_text(encoding="utf-8"))["cases"]
+    reasons = ["short reason", "uncertain " * 120]
+    paths = []
+    responses = []
+    for reason in reasons:
+        planner = DeepSeekPlanner("dummy", transport=lambda _, text=reason: {
+            "choices": [{"message": {"tool_calls": [{"function": {
+                "name": "submit_partition_choice",
+                "arguments": json.dumps({"method": "B1", "reason": text})}}]}}]})
+        responses.append(select_partition_method(cases[0]["blind_input"], planner._post))
+        paths.append(Path(planner.last_trace_path))
+    attempt = TraceRecorder("failed_selection", tmp_path)
+    attempt.emit("selection_started")
+    attempt.emit("choice_validated", case_id=cases[0]["id"], repeat=1,
+                 **responses[0], provider_trace_file=str(paths[0]),
+                 provider_trace_sha256=sha256_file(paths[0]))
+    attempt.emit("selection_failed", error="Invalid partition choice or reason",
+                 provider_trace=str(paths[1]))
+    rows = recover_attempt_rows(attempt.path, cases, 3, "deepseek-flash")
+    assert [(row["case_id"], row["repeat"]) for row in rows] == [
+        (cases[0]["id"], 1), (cases[0]["id"], 2)]
+    assert [row["choice"] for row in rows] == [item["choice"] for item in responses]
+    assert all(row["recovery_attempt_trace_sha256"] == sha256_file(attempt.path)
+               for row in rows)
 
 
 def test_score_choices_averages_all_repeats_without_best_of_selection():
