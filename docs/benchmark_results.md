@@ -27,6 +27,10 @@ The authors' 22 parameter files use `params=null`; the official five-fold operat
 
 See the [full protocol and caveats](recess_official_comparison.md), [machine-readable 12-model comparison](../benchmark/results/recess_official_b2_vs_11.json), and the original B2 result/seed/parameter CSVs in `benchmark/results/recess_official_b2/`. This is a comparison with the paper's 11-model panel, not a claim against every later method.
 
+## Frozen B2 component ablation and prescore LLM choice
+
+The same official runner evaluated B2's three separate inputs under the same 100 seeds and five folds. The NS-AUC means ± sample SD are: B0p 0.5000 ± 0.0000 / 0.5000 ± 0.0000; B1k 0.1747 ± 0.0393 / 0.0562 ± 0.0466; B1 0.4816 ± 0.0340 / 0.5417 ± 0.0000; B2 0.5222 ± 0.0354 / 0.5019 ± 0.0036 (random simple / weakly correlated). Thus fusion helps relative to B1 on random simple but hurts it on the repeated weakly correlated outer holdout. A single DeepSeek call, committed before the component results were inspected, chose B2 for random and B1 for weakly correlated; these happen to be the best of these four methods on their respective splits. Two choices are not a generalization test of LLM-based model selection, and the weak-split result has only one outer holdout. See the [ablation and LLM evidence-triage protocol](component_and_llm_adjudication.md) and [machine-readable paired results](../benchmark/results/recess_official_component_ablation.json). The separate LUAD LLM triage prioritized research actions, not clinical treatments or benchmark scores.
+
 ## Earlier project evaluations
 
 The tables below use means ± sample SD over seeds 1234, 1235 and 1236 with `test_size=0.2`. The fixed methods are defined in [the protocol](evaluation_protocol.md).

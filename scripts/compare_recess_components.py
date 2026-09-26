@@ -31,6 +31,8 @@ def main() -> None:
                         default=Path("artifacts/recess_official_components"))
     parser.add_argument("--b2", type=Path,
                         default=Path("benchmark/results/recess_official_b2"))
+    parser.add_argument("--selector", type=Path,
+                        default=Path("benchmark/results/recess_component_llm_selector_v1.json"))
     parser.add_argument("--output", type=Path,
                         default=Path("benchmark/results/recess_official_component_ablation.json"))
     args = parser.parse_args()
@@ -40,6 +42,11 @@ def main() -> None:
     seeds = reference["seed_order"]
     if len(seeds) != 100:
         raise ValueError("B2 reference must contain 100 ordered seeds")
+    selector = json.loads(args.selector.read_text(encoding="utf-8"))
+    if selector.get("status") != "prescore_method_selection_not_validated":
+        raise ValueError("Expected the frozen prescore method choices")
+    if set(selector.get("choices", {})) != {"random_simple", "weakly_correlated"}:
+        raise ValueError("Method selector lacks one of the two splits")
     report = {
         "protocol": "RECeSS TRANSCRIPT official runner, N=100, K=5, ptest=0.2",
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -49,6 +56,8 @@ def main() -> None:
             repo / "benchmarks/recess_adapter/official_components.py"),
         "component_patch_sha256": sha256_file(
             repo / "benchmarks/recess_adapter/official_components.patch"),
+        "prescore_selector_sha256": sha256_file(args.selector),
+        "prescore_selector_chosen_at": selector["chosen_at"],
         "seed_order": seeds,
         "selection_metric": "official five-fold rowwise AUC, best fold model",
         "splits": {},
@@ -75,6 +84,18 @@ def main() -> None:
             },
             "source_sha256": {method: run["source_files"] for method, run in runs.items()},
         }
+        selected = selector["choices"][split]["method"]
+        if selected not in runs:
+            raise ValueError(f"Unknown prescore method for {split}: {selected}")
+        primary = {method: float(run["series"]["NS-AUC"].mean())
+                   for method, run in runs.items()}
+        report["splits"][split]["prescore_llm_selection"] = {
+            "method": selected,
+            "mean_ns_auc": primary[selected],
+            "rank_among_four": 1 + sum(value > primary[selected] for value in primary.values()),
+            "minus_fixed_b2": paired(runs[selected]["series"]["NS-AUC"] -
+                                     runs["B2"]["series"]["NS-AUC"]),
+        }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     for split, result in report["splits"].items():
@@ -82,6 +103,8 @@ def main() -> None:
         for method, metrics in result["models"].items():
             ns = metrics["NS-AUC"]
             print(f"{method:4} NS-AUC={ns['mean']:.4f} ± {ns['sd']:.4f}")
+        choice = result["prescore_llm_selection"]
+        print(f"Prescore LLM selected {choice['method']} (rank {choice['rank_among_four']}/4)")
     print(f"Saved {args.output}")
 
 

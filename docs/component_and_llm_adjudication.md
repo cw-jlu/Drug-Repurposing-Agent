@@ -37,6 +37,54 @@ The comparison checks all 100 seed positions, finite metrics, pairwise B2
 differences, and source hashes. It writes
 `benchmark/results/recess_official_component_ablation.json`.
 
+| Frozen method | Random simple NS-AUC | Weakly correlated NS-AUC |
+| --- | ---: | ---: |
+| B0p: training association count | 0.5000 ± 0.0000 | 0.5000 ± 0.0000 |
+| B1k: expression-neighbor propagation | 0.1747 ± 0.0393 | 0.0562 ± 0.0466 |
+| B1: label-free expression reversal | 0.4816 ± 0.0340 | **0.5417 ± 0.0000** |
+| B2: fixed RRF fusion | **0.5222 ± 0.0354** | 0.5019 ± 0.0036 |
+
+Values are means ± sample SD over 100 upstream metric values. On random
+simple, B2 exceeds B1 by 0.0407 paired NS-AUC points and wins 97/100 seeds;
+on weakly correlated, B1 exceeds B2 by 0.0398 and wins 100/100 seeds. The
+weak-split B1 zero SD reflects the same deterministic outer holdout, **not**
+evidence of negligible uncertainty. The B1k adapter was additionally checked
+against the frozen `TranscriptBaseline` on the real TRANSCRIPT first random
+split; all three component score vectors matched exactly (maximum absolute
+difference 0). The very low B1k NS-AUC is therefore not explained by an
+adapter score mismatch, though the dataset/metric cause has not been proven.
+The versioned aggregate CSVs and parameter files are in
+`benchmark/results/recess_official_components/`.
+
+The B0p random run was resumed after changing only `njobs` from 1 to 4:
+the official runner reused the first 14 completed seed intermediates and
+computed the rest in parallel. Both parameter receipts are retained. Seed
+order, model code, folds and metric were unchanged; `njobs` affects execution
+scheduling only.
+
+Before inspecting component ablation results, one accepted DeepSeek Flash call chose a
+method from the four frozen options using only the versioned method, split,
+and dataset descriptions in `configs/component_selector_v1.json`. It selected
+`B2` for random simple and `B1` for weakly correlated. The choices, input
+hash, timestamp and token usage were committed in
+`benchmark/results/recess_component_llm_selector_v1.json` at `fbd9858` while
+the component runs were still in progress. An earlier strict-tool response
+failed the local reason-length check and was not saved; the accepted retry
+still preceded inspection of ablation scores. This is a single prescore
+choice, not a tuned classifier or a reliable estimate of method-selection
+skill. After the run, both choices rank first among these **four** methods:
+selected NS-AUC
+is 0.5222 for random simple and 0.5417 for weakly correlated. Relative to
+always using B2, the latter is +0.0398 on the same repeated outer holdout.
+There are only two split-level decisions, no candidate- or disease-specific
+LLM routing and no independent model-selection holdout. This result cannot
+support a claim that LLM selection generally improves prediction or beats
+the published 11-model panel.
+The model's random-split rationale described B0p/B1k label signal as reliable,
+but their observed NS-AUCs were 0.5000 and 0.1747. Thus even its successful
+method choice came with a partly unsupported explanation. The reasoning text
+must not be treated as an interpretation of the measured result.
+
 ## LLM evidence triage
 
 `scripts/run_luad_llm_adjudication.py` reads the frozen
