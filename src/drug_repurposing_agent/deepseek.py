@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 import os
+from pathlib import Path
 from time import perf_counter
 from typing import Callable
 from urllib.error import HTTPError, URLError
@@ -19,6 +20,21 @@ class DeepSeekPlannerError(RuntimeError):
 
 
 Transport = Callable[[dict[str, object]], dict[str, object]]
+
+
+def local_api_key() -> str:
+    """Read a process key or an ignored local .env without ever logging its value."""
+    key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+    if key:
+        return key
+    env_file = Path(".env")
+    if env_file.is_file():
+        for line in env_file.read_text(encoding="utf-8-sig").splitlines():
+            if line.strip().startswith("DEEPSEEK_API_KEY="):
+                key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                if key:
+                    return key
+    raise ValueError("Set DEEPSEEK_API_KEY in the process environment or ignored local .env")
 
 
 @dataclass(frozen=True)
@@ -47,9 +63,7 @@ class DeepSeekPlanner:
 
     @classmethod
     def from_env(cls, model: str | None = None) -> "DeepSeekPlanner":
-        key = os.environ.get("DEEPSEEK_API_KEY", "")
-        if not key:
-            raise ValueError("Set DEEPSEEK_API_KEY in the process environment")
+        key = local_api_key()
         config = DeepSeekConfig(
             model=model or os.environ.get("DEEPSEEK_MODEL", "deepseek-flash"),
             base_url=os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),

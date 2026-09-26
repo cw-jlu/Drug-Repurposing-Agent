@@ -7,6 +7,7 @@ from drug_repurposing_agent.deepseek import (
     DeepSeekConfig,
     DeepSeekPlanner,
     DeepSeekPlannerError,
+    local_api_key,
 )
 from drug_repurposing_agent.workflow import Mode
 
@@ -67,3 +68,12 @@ def test_deepseek_planner_fails_closed_when_provider_invents_unavailable_tool():
                         schemas(Mode.BENCHMARK_STRICT))
     assert plan.calls[0].name == "manual_review"
     assert planner.last_metadata["local_fallback"] == "unavailable_tool_to_manual_review"
+
+
+def test_local_key_reads_ignored_env_without_printing_or_tracing_value(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    (tmp_path / ".env").write_text("DEEPSEEK_API_KEY=local-test-credential\n", encoding="utf-8")
+    assert local_api_key() == "local-test-credential"
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "process-test-credential")
+    assert local_api_key() == "process-test-credential"

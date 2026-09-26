@@ -5,25 +5,16 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
-import os
 from pathlib import Path
 
 from drug_repurposing_agent.data import sha256_file
-from drug_repurposing_agent.deepseek import DeepSeekConfig, DeepSeekPlanner
+from drug_repurposing_agent.deepseek import DeepSeekConfig, DeepSeekPlanner, local_api_key
 from drug_repurposing_agent.research_adjudication import adjudicate
 from drug_repurposing_agent.trace import TraceRecorder
 
 
 def local_key() -> str:
-    key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
-    if key:
-        return key
-    env_file = Path(".env")
-    if env_file.is_file():
-        for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-            if line.strip().startswith("DEEPSEEK_API_KEY="):
-                return line.split("=", 1)[1].strip().strip('"').strip("'")
-    raise ValueError("Set DEEPSEEK_API_KEY or create an ignored local .env file")
+    return local_api_key()
 
 
 def main() -> None:

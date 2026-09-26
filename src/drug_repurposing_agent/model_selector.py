@@ -8,6 +8,9 @@ from typing import Callable
 
 METHODS = ("B0p", "B1k", "B1", "B2")
 SPLITS = ("random_simple", "weakly_correlated")
+PARTITION_KEYS = {"dataset", "partition_id", "drug_count", "disease_count",
+                  "expression_gene_count", "median_disease_signature_sd", "split",
+                  "split_description", "methods", "metric_to_optimize"}
 Transport = Callable[[dict[str, object]], dict[str, object]]
 
 
@@ -83,3 +86,53 @@ def select_methods(config: dict, transport: Transport, model: str = "deepseek-fl
                            and isinstance(value, int)},
         "interpretation": "Choice made without outer-test metrics; benchmark scores must be checked separately.",
     }
+
+
+def select_partition_method(blind_input: dict, transport: Transport,
+                            model: str = "deepseek-flash") -> dict:
+    """Choose one method from feature-only context before partition outcomes exist."""
+    if (not isinstance(blind_input, dict) or set(blind_input) != PARTITION_KEYS or
+            set(blind_input["methods"]) != set(METHODS) or
+            blind_input["split"] != "random_simple" or
+            blind_input["metric_to_optimize"] != "official NS-AUC"):
+        raise ValueError("Unexpected partition selector input")
+    schema = {"type": "object", "properties": {
+        "method": {"type": "string", "enum": list(METHODS)},
+        "reason": {"type": "string"}},
+        "required": ["method", "reason"], "additionalProperties": False}
+    payload: dict[str, object] = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": (
+                "Choose exactly one frozen method for this research benchmark partition BEFORE "
+                "seeing any association labels, held-out metrics or other partition outcomes. "
+                "Call submit_partition_choice once. Use only the supplied expression-feature "
+                "summary and method definitions. If the summary is insufficient, still choose "
+                "one method and state the uncertainty. Do not claim efficacy or unseen performance.")},
+            {"role": "user", "content": json.dumps(blind_input, ensure_ascii=False)},
+        ],
+        "tools": [{"type": "function", "function": {
+            "name": "submit_partition_choice", "strict": True,
+            "description": "Freeze one prescore method choice.", "parameters": schema}}],
+        "tool_choice": "required", "thinking": {"type": "disabled"},
+        "max_tokens": 400, "stream": False,
+    }
+    response = transport(payload)
+    try:
+        if response["choices"][0].get("finish_reason") == "length":
+            raise ValueError("Truncated method choice")
+        calls = response["choices"][0]["message"]["tool_calls"]
+        if len(calls) != 1 or calls[0]["function"]["name"] != "submit_partition_choice":
+            raise ValueError("Expected exactly one choice tool call")
+        choice = json.loads(calls[0]["function"]["arguments"])
+    except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("Invalid partition-choice tool response") from exc
+    if (not isinstance(choice, dict) or set(choice) != {"method", "reason"} or
+            choice["method"] not in METHODS or not isinstance(choice["reason"], str) or
+            not 1 <= len(choice["reason"].strip()) <= 200):
+        raise ValueError("Invalid partition choice or reason")
+    usage = response.get("usage") if isinstance(response.get("usage"), dict) else {}
+    return {"choice": choice, "model": str(response.get("model", model)),
+            "usage": {key: value for key, value in usage.items()
+                      if key in {"prompt_tokens", "completion_tokens", "total_tokens"}
+                      and isinstance(value, int)}}
