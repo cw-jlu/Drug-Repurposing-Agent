@@ -14,12 +14,14 @@ import pandas as pd
 from drug_repurposing_agent.data import sha256_file
 from drug_repurposing_agent.model_selector import METHODS
 from drug_repurposing_agent.trace import TraceRecorder
+from evals.grade_method_selection_traces import grade_choices
 
 
-def load_outcomes(case: dict, runs: int, folds: int) -> tuple[dict[str, float], dict]:
+def load_outcomes(case: dict, runs: int, folds: int) -> tuple[dict[str, float], dict, dict[str, np.ndarray]]:
     case_root = Path(case["dataset_dir"]).parents[1]
     scores = {}
     hashes = {}
+    vectors = {}
     seed_order = None
     for method in METHODS:
         folder = case_root / ("b2" if method == "B2" else "components") / f"results_{method}"
@@ -39,12 +41,13 @@ def load_outcomes(case: dict, runs: int, folds: int) -> tuple[dict[str, float], 
         if not np.isfinite(values).all():
             raise ValueError(f"Nonfinite NS-AUC for {case['id']}/{method}; no partial-case scoring")
         scores[method] = float(values.mean())
+        vectors[method] = values
         hashes[method] = {"results": sha256_file(result_path), "seeds": sha256_file(seeds_path)}
-    return scores, {"seed_order": seed_order, "source_sha256": hashes}
+    return scores, {"seed_order": seed_order, "source_sha256": hashes}, vectors
 
 
 def score_choices(choices: list[dict], cases: list[dict], outcomes: dict[str, dict[str, float]],
-                  repeats: int) -> dict:
+                  repeats: int, seed_vectors: dict[str, dict[str, np.ndarray]] | None = None) -> dict:
     expected = {(case["id"], repeat) for case in cases for repeat in range(1, repeats + 1)}
     observed = [(row["case_id"], row["repeat"]) for row in choices]
     if len(observed) != len(expected) or set(observed) != expected or len(set(observed)) != len(observed):
@@ -71,11 +74,42 @@ def score_choices(choices: list[dict], cases: list[dict], outcomes: dict[str, di
             "oracle_ns_auc": selected[0]["oracle_ns_auc"],
             "mean_regret": mean(row["oracle_regret"] for row in selected),
         }
-    return {"case_count": len(cases), "model_repeats_per_case": repeats,
+        if seed_vectors is not None:
+            vectors = seed_vectors[case["id"]]
+            if set(vectors) != set(METHODS):
+                raise ValueError(f"Missing paired method vectors for {case['id']}")
+            baseline = np.asarray(vectors["B2"], dtype=float)
+            selected_vectors = [np.asarray(vectors[row["selected_method"]], dtype=float)
+                                for row in selected]
+            if (not baseline.size or any(vector.shape != baseline.shape for vector in selected_vectors)
+                    or not np.isfinite(baseline).all()
+                    or any(not np.isfinite(vector).all() for vector in selected_vectors)):
+                raise ValueError(f"Nonfinite or unpaired seed vectors for {case['id']}")
+            delta = np.mean(np.stack(selected_vectors), axis=0) - baseline
+            by_case[case["id"]]["paired_seed_delta_vs_b2"] = {
+                "mean": float(delta.mean()),
+                "median": float(np.median(delta)),
+                "seed_wins": int(np.sum(delta > 1e-12)),
+                "seed_ties": int(np.sum(np.abs(delta) <= 1e-12)),
+                "seed_losses": int(np.sum(delta < -1e-12)),
+                "seed_count": int(delta.size),
+            }
+    result = {"case_count": len(cases), "model_repeats_per_case": repeats,
             "mean_selected_ns_auc_across_cases": mean(x["mean_selected_ns_auc"] for x in by_case.values()),
             "mean_fixed_b2_ns_auc_across_cases": mean(x["fixed_b2_ns_auc"] for x in by_case.values()),
             "mean_oracle_regret_across_cases": mean(x["mean_regret"] for x in by_case.values()),
             "by_case": by_case, "trials": rows}
+    if seed_vectors is not None:
+        group_deltas = [row["paired_seed_delta_vs_b2"]["mean"] for row in by_case.values()]
+        result["paired_partition_summary"] = {
+            "mean_delta_vs_b2": float(mean(group_deltas)),
+            "positive_partitions": sum(value > 1e-12 for value in group_deltas),
+            "tied_partitions": sum(abs(value) <= 1e-12 for value in group_deltas),
+            "negative_partitions": sum(value < -1e-12 for value in group_deltas),
+            "interpretation": ("Descriptive across partitions of one parent dataset; "
+                               "seed repeats and model repeats are not independent cohorts."),
+        }
+    return result
 
 
 def main() -> None:
@@ -101,25 +135,37 @@ def main() -> None:
                 choice_report["cases_sha256"] != sha256_file(args.cases) or
                 choice_report["status"] != "prescore_choices_frozen_outcomes_unseen"):
             raise ValueError("Frozen protocol, cases or prescore choices differ")
+        choice_trace_grade = grade_choices(args.choices, args.cases, args.protocol)
+        if choice_trace_grade["passed"] != choice_trace_grade["choices"]:
+            raise ValueError("Provider-visible choice trace audit did not pass")
+        trace.emit("choice_trace_verified", passed=choice_trace_grade["passed"],
+                   choices=choice_trace_grade["choices"],
+                   main_trace_sha256=choice_trace_grade["main_trace_sha256"])
         outcomes = {}
         receipts = {}
+        seed_vectors = {}
         for case in cases["cases"]:
-            outcomes[case["id"]], receipts[case["id"]] = load_outcomes(
+            outcomes[case["id"]], receipts[case["id"]], seed_vectors[case["id"]] = load_outcomes(
                 case, protocol["outer_runs"], protocol["inner_folds"])
             trace.emit("case_outcome_verified", case_id=case["id"],
                        source_sha256=receipts[case["id"]]["source_sha256"])
         scores = score_choices(choice_report["choices"], cases["cases"], outcomes,
-                               protocol["model_repeats_per_partition"])
+                               protocol["model_repeats_per_partition"], seed_vectors)
         report = {"status": "prospective_partition_evaluation_not_external_validation",
                   "scored_at": datetime.now(timezone.utc).isoformat(),
                   "protocol_sha256": sha256_file(args.protocol),
                   "cases_sha256": sha256_file(args.cases),
                   "prescore_choices_sha256": sha256_file(args.choices),
+                  "prescore_choice_trace_grade": {
+                      "passed": choice_trace_grade["passed"],
+                      "choices": choice_trace_grade["choices"],
+                      "main_trace_sha256": choice_trace_grade["main_trace_sha256"],
+                  },
                   "outcomes": outcomes, "outcome_receipts": receipts,
                   "scores": scores, "trace_file": str(trace.path),
                   "limitation": protocol["disclosure"]}
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        args.output.write_bytes(json.dumps(report, indent=2, ensure_ascii=False).encode("utf-8"))
         trace.emit("scoring_completed", output=str(args.output),
                    output_sha256=sha256_file(args.output))
         print(f"Scored {scores['case_count']} partitions from frozen choices")

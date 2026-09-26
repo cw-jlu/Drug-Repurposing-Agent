@@ -7,14 +7,14 @@
 | 1 可运行药物重定位 Agent | `agent.py`、DeepSeek Planner、自然语言 CLI、严格模式表达工作流、LUAD 案例打包器 | 已有核心链路：真实 DeepSeek 规划已驱动完整 TRANSCRIPT 分析；开放证据审阅仍未自动化 |
 | 2 RECeSS/TRANSCRIPT 适配器 | `benchmarks/recess_adapter/`、12 份三种子结果 JSON、官方 Runner B2 与三分支补丁及对应 100 次结果 CSV | 已有 |
 | 3 外部 Benchmark 成绩表 | `docs/benchmark_results.md`、`benchmark/results/recess_official_b2_vs_11.json`、`benchmark/results/recess_official_component_ablation.json` | 已有：B2 与作者 11 模型在相同 100 种子、五折选模、NS-AUC 下对比；B0p/B1k/B1 消融完成；单次 LLM 预选与研究行动审阅单列，不作为药效准确率 |
-| 4 内部 Eval Suite | `tests/` 当前 58 项测试，另有冻结的 20 项 v1、61 项 v2 和独立 100 项 v3 Planner Eval；新规则 v3 trace 回归与逐条评分为 90/100 | 已有：旧 v3 规则为 90/100、DeepSeek 为 98/100；新 trace 评分是回归检查，不是第二个独立 holdout |
+| 4 内部 Eval Suite | `tests/` 当前 65 项测试，另有冻结的 20 项 v1、61 项 v2 和独立 100 项 v3 Planner Eval；新规则 v3 trace 回归与逐条评分为 90/100 | 已有：旧 v3 规则为 90/100、DeepSeek 为 98/100；新 trace 评分是回归检查，不是第二个独立 holdout |
 | 5 Jev Choice、Score、Noul 接入层 | `src/drug_repurposing_agent/jev.py` | 部分：协议与本地模拟测试通过，缺少真实凭据与调用验证 |
 | 6 Jev 置信度门控和降级 | `gate_choice` 与测试 | 部分：规则与失败回退已实现，阈值未用真实数据校准 |
 | 7 Jev 与规则、通用 LLM 对比 | `planner_eval_results.md` 已完成规则与 DeepSeek 对比 | 部分：通用 LLM 对比已有，Jev 仍无真实凭据和结果 |
 | 8 LUAD 端到端案例 | `artifacts/reports/luad_case/case_report.json`、`configs/luad_top10_signature_ids.csv`、`docs/luad_top10_evidence_matrix.md` | 部分：完成表达筛选、逐签名 ID 恢复、溯源和文献/靶点分诊；湿实验尚未执行 |
 | 9 Top-10 候选药物证据报告 | `docs/luad_screening_report.md`、`docs/luad_top10_evidence_matrix.md` | 已完成候选级核查；结论仍是全部证据不足，不构成疗效报告 |
 | 10 Evidence Ledger | `artifacts/reports/luad_eh3226/evidence_ledger/` | 部分：十份账本存在，身份与支持/反对证据不完整 |
-| 11 完整 Agent Trace 和成本报告 | 新运行的 JSONL trace、`agent_run.json`、Planner Eval JSON 与 `case_report.json`；`evals/grade_planner_traces.py` | 部分：新入口记录成功与失败并可逐条评分；历史 v3 DeepSeek 的原始响应不能补录，Jev 尚未实测 |
+| 11 完整 Agent Trace 和成本报告 | 新运行的 SHA-256 链式 JSONL trace、`agent_run.json`、Planner Eval JSON 与 `case_report.json`；Planner 与方法选择的 provider-visible trace 评分器 | 部分：新入口记录成功与失败，能检查记录完整性及报告、模型请求/响应、工具调用的一致性；历史 v3 DeepSeek 的原始响应不能补录，Jev 尚未实测 |
 | 12 消融实验 | B0、B0p、B1、B1k、B2 及三个公开算法比较 | 部分：尚缺 Agent/Jev 层消融 |
 | 13 受约束 RSI 演示 | 无 | 未完成 |
 | 14 Docker 或锁定环境 | `requirements-benchmark.lock`、`scripts/setup_benchmark.ps1`；全新 Python 3.10 环境测试通过 | 已有 Python 环境；R/limma 另记版本 |

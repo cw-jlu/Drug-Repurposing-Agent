@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
+import numpy as np
 
 from drug_repurposing_agent.model_selector import select_partition_method
 from evals.score_method_selection_partition_v2 import score_choices
@@ -53,3 +54,18 @@ def test_score_choices_averages_all_repeats_without_best_of_selection():
     assert result["mean_selected_ns_auc_across_cases"] == pytest.approx(0.53)
     with pytest.raises(ValueError, match="exactly once"):
         score_choices(choices[:-1], cases, outcomes, 2)
+
+
+def test_score_choices_uses_paired_seed_deltas_without_best_of_repeats():
+    cases = [{"id": "one"}]
+    vectors = {"one": {"B0p": np.array([0.5, 0.5]), "B1k": np.array([0.4, 0.4]),
+                       "B1": np.array([0.6, 0.4]), "B2": np.array([0.5, 0.5])}}
+    outcomes = {"one": {method: float(values.mean())
+                        for method, values in vectors["one"].items()}}
+    choices = [{"case_id": "one", "repeat": 1, "choice": {"method": "B1"}},
+               {"case_id": "one", "repeat": 2, "choice": {"method": "B2"}}]
+    report = score_choices(choices, cases, outcomes, 2, vectors)
+    paired = report["by_case"]["one"]["paired_seed_delta_vs_b2"]
+    assert paired["mean"] == pytest.approx(0)
+    assert (paired["seed_wins"], paired["seed_ties"], paired["seed_losses"]) == (1, 0, 1)
+    assert report["paired_partition_summary"]["tied_partitions"] == 1

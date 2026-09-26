@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 from datetime import datetime, timezone
 import json
 from pathlib import Path
 
 from drug_repurposing_agent.agent import ToolCall, validate_tool_call
 from drug_repurposing_agent.data import sha256_file
-from drug_repurposing_agent.trace import TraceRecorder
+from drug_repurposing_agent.trace import TraceRecorder, verify_trace_chain
 from drug_repurposing_agent.workflow import Mode
 
 
@@ -21,8 +20,36 @@ def _trace_path(value: str, report_path: Path) -> Path:
     return report_path.parent / path
 
 
-def _events(path: Path) -> list[dict]:
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+def _provider_trace_verified(value: str | None, report_path: Path, case: dict,
+                             calls: list[dict], actual: str) -> bool:
+    if not value:
+        return False
+    try:
+        events, _ = verify_trace_chain(_trace_path(value, report_path), require_chain=True)
+        if (len(events) < 3 or events[0].get("stage") != "trace_started" or
+                len({event.get("run_id") for event in events}) != 1 or
+                any(event.get("schema_version") != 1 for event in events)):
+            return False
+        request = [event for event in events if event.get("stage") == "model_request"]
+        response = [event for event in events if event.get("stage") == "model_response"]
+        selected = [event for event in events if event.get("stage") == "tool_call_selected"]
+        if len(request) != 1 or len(response) != 1 or len(selected) != 1 or len(calls) != 1:
+            return False
+        payload = request[0]["payload"]
+        user = json.loads(payload["messages"][-1]["content"])
+        raw = response[0]["response"]["choices"][0]["message"]["tool_calls"]
+        if len(raw) != 1:
+            return False
+        provider_call = raw[0]["function"]
+        return (user == {"question": case["question"], "mode": case["mode"],
+                         "available_inputs": case["available_inputs"]} and
+                provider_call["name"] == selected[0]["provider_selected"] and
+                selected[0]["executed_name"] == actual and
+                selected[0]["arguments"] == calls[0]["arguments"] and
+                calls[0]["name"] == actual)
+    except (FileNotFoundError, KeyError, IndexError, TypeError, ValueError,
+            json.JSONDecodeError):
+        return False
 
 
 def grade_result(result: dict, cases: dict[str, dict], report_path: Path) -> dict:
@@ -31,20 +58,50 @@ def grade_result(result: dict, cases: dict[str, dict], report_path: Path) -> dic
     if not trace_value:
         raise ValueError("Evaluation has no trace_file; historical runs cannot be trace-graded")
     path = _trace_path(str(trace_value), report_path)
-    events = _events(path)
+    events, integrity = verify_trace_chain(path)
     if not events or events[0].get("stage") != "trace_started" or events[-1].get("stage") != "evaluation_finished":
         raise ValueError("Evaluation trace is incomplete")
     run_ids = {event.get("run_id") for event in events}
     if len(run_ids) != 1 or None in run_ids or any(event.get("schema_version") != 1 for event in events):
         raise ValueError("Evaluation trace schema or run ID is inconsistent")
+    if (len(events) < 3 or events[1].get("stage") != "evaluation_started" or
+            events[1].get("planner") != result.get("planner") or
+            events[-1].get("planner") != result.get("planner")):
+        raise ValueError("Evaluation start or finish differs from report")
     starts = {event["case_id"]: event for event in events if event.get("stage") == "case_started"}
     finishes = {event["id"]: event for event in events if event.get("stage") == "case_finished"}
     proposed = {event["case_id"]: event for event in events if event.get("stage") == "case_plan_proposed"}
     records = result.get("records", [])
     expected_ids = [case["id"] for case in cases.values()]
     observed_ids = [record["id"] for record in records]
-    if Counter(observed_ids) != Counter(expected_ids) or len(starts) != len(cases) or len(finishes) != len(cases):
+    start_ids = [event["case_id"] for event in events if event.get("stage") == "case_started"]
+    finish_ids = [event["id"] for event in events if event.get("stage") == "case_finished"]
+    if (observed_ids != expected_ids or start_ids != expected_ids or finish_ids != expected_ids or
+            len(starts) != len(cases) or len(finishes) != len(cases)):
         raise ValueError("Trace, report and case IDs do not match one-to-one")
+    if (result.get("cases") != len(cases) or
+            result.get("correct") != sum(record.get("correct") is True for record in records) or
+            events[-1].get("correct") != result.get("correct") or
+            events[-1].get("cases") != result.get("cases")):
+        raise ValueError("Evaluation aggregate differs from case records or trace")
+    active_case = None
+    for event in events[2:-1]:
+        stage = event.get("stage")
+        if stage == "case_started":
+            if active_case is not None:
+                raise ValueError("Overlapping case trace events")
+            active_case = event["case_id"]
+        elif stage == "case_plan_proposed":
+            if event.get("case_id") != active_case:
+                raise ValueError("Proposed call is outside its case")
+        elif stage == "case_finished":
+            if event.get("id") != active_case:
+                raise ValueError("Finished case does not match its start")
+            active_case = None
+        else:
+            raise ValueError(f"Unexpected trace stage: {stage}")
+    if active_case is not None:
+        raise ValueError("Unfinished case trace")
     rows = []
     for record in records:
         case_id = record["id"]
@@ -52,7 +109,7 @@ def grade_result(result: dict, cases: dict[str, dict], report_path: Path) -> dic
         start, finish = starts[case_id], finishes[case_id]
         calls = proposed.get(case_id, {}).get("calls", [])
         actual = record["actual_tool"]
-        reported_match = (finish.get("actual_tool") == actual and
+        reported_match = (all(finish.get(key) == value for key, value in record.items()) and
                           finish.get("expected_tool") == case["expected_tool"] and
                           finish.get("correct") == (actual == case["expected_tool"]))
         input_match = (start.get("question") == case["question"] and
@@ -70,21 +127,29 @@ def grade_result(result: dict, cases: dict[str, dict], report_path: Path) -> dic
         provider_trace = finish.get("provider_trace")
         provider_trace_exists = (provider_trace is None or
                                  _trace_path(str(provider_trace), report_path).is_file())
+        provider_required = str(result["planner"]).startswith("deepseek_")
+        provider_trace_verified = (_provider_trace_verified(provider_trace, report_path, case,
+                                                            calls, actual)
+                                   if provider_required and provider_trace else None)
         passed = (reported_match and input_match and tool_match and argument_valid and
-                  safe_boundary and provider_trace_exists and record.get("error_type") is None)
+                  safe_boundary and provider_trace_exists and record.get("error_type") is None and
+                  (not provider_required or provider_trace_verified is True))
         rows.append({"id": case_id, "category": case.get("category"),
                      "expected_tool": case["expected_tool"], "actual_tool": actual,
                      "tool_match": tool_match, "argument_valid": argument_valid,
                      "safe_boundary": safe_boundary, "input_match": input_match,
                      "report_trace_match": reported_match,
                      "provider_trace_exists": provider_trace_exists,
+                     "provider_trace_verified": provider_trace_verified,
                      "error_type": record.get("error_type"), "passed": passed})
     return {"planner": result["planner"], "trace_file": str(path),
+            "trace_integrity": integrity,
             "trace_sha256": sha256_file(path), "cases": len(rows),
             "passed": sum(row["passed"] for row in rows),
             "tool_correct": sum(row["tool_match"] for row in rows),
             "arguments_valid": sum(row["argument_valid"] for row in rows),
             "safe_boundaries": sum(row["safe_boundary"] for row in rows),
+            "provider_traces_verified": sum(row["provider_trace_verified"] is True for row in rows),
             "rows": rows}
 
 
@@ -116,7 +181,7 @@ def main() -> None:
         result = grade_report(args.report, args.cases)
         result["trace_file"] = str(trace.path)
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+        args.output.write_bytes(json.dumps(result, indent=2, ensure_ascii=False).encode("utf-8"))
         trace.emit("grading_completed", output=str(args.output),
                    summaries=[{"planner": row["planner"], "passed": row["passed"],
                                "cases": row["cases"]} for row in result["results"]])

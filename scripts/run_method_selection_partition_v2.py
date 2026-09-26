@@ -46,8 +46,12 @@ def main() -> None:
         for case in cases["cases"]:
             for repeat in range(1, protocol["model_repeats_per_partition"] + 1):
                 response = select_partition_method(case["blind_input"], client._post, args.model)
+                provider_trace = Path(client.last_trace_path or "")
+                if not client.last_trace_path or not provider_trace.is_file():
+                    raise ValueError("Provider-visible trace missing for a method choice")
                 row = {"case_id": case["id"], "repeat": repeat, **response,
-                       "provider_trace_file": client.last_trace_path}
+                       "provider_trace_file": client.last_trace_path,
+                       "provider_trace_sha256": sha256_file(provider_trace)}
                 rows.append(row)
                 trace.emit("choice_validated", **row)
         report = {"status": "prescore_choices_frozen_outcomes_unseen",
@@ -57,7 +61,7 @@ def main() -> None:
                   "model": args.model, "choices": rows,
                   "trace_file": str(trace.path)}
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        args.output.write_bytes(json.dumps(report, indent=2, ensure_ascii=False).encode("utf-8"))
         trace.emit("selection_saved", output=str(args.output),
                    output_sha256=sha256_file(args.output), choices=len(rows))
         print(f"Saved {len(rows)} prescore choices to {args.output}")

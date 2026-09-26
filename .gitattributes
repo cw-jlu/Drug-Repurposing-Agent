@@ -1,0 +1,5 @@
+# Hash-linked audit snapshots must retain exact bytes on every platform.
+benchmark/results/planner_v3_rule_chained_regression.json -text
+benchmark/results/planner_v3_rule_chained_trace_grade.json -text
+benchmark/results/recess_component_selector_v1_paired_audit.json -text
+benchmark/results/traces/*.jsonl -text

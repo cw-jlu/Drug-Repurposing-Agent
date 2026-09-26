@@ -5,7 +5,7 @@ import pytest
 
 from drug_repurposing_agent.agent import AgentInputs, PlanningContext, StructuredPlanner, TOOLS, run_agent_task
 from drug_repurposing_agent.deepseek import DeepSeekPlanner, DeepSeekPlannerError
-from drug_repurposing_agent.trace import TraceRecorder, redact, traced_run
+from drug_repurposing_agent.trace import TraceRecorder, redact, traced_run, verify_trace_chain
 from drug_repurposing_agent.workflow import Mode, run_expression_workflow
 from evals.run_planner_eval import run_one
 
@@ -25,6 +25,22 @@ def test_trace_is_durable_and_redacts_credentials_and_internal_reasoning(tmp_pat
         assert secret not in data
     assert events(trace.path)[-1]["nested"]["api_key"] == "[REDACTED]"
     assert redact("DEEPSEEK_API_KEY=abc123") == "DEEPSEEK_API_KEY=[REDACTED]"
+    verified, integrity = verify_trace_chain(trace.path, require_chain=True)
+    assert integrity == "sha256_chain_v1"
+    assert verified[-1]["sequence"] == 2
+
+
+def test_trace_chain_rejects_reordered_or_modified_events(tmp_path):
+    trace = TraceRecorder("chain", tmp_path)
+    trace.emit("one", value=1)
+    trace.emit("two", value=2)
+    original = trace.path.read_text(encoding="utf-8")
+    events = [json.loads(line) for line in original.splitlines()]
+    events[1]["value"] = 99
+    trace.path.write_text("\n".join(json.dumps(event) for event in events) + "\n",
+                          encoding="utf-8")
+    with pytest.raises(ValueError, match="hash chain"):
+        verify_trace_chain(trace.path, require_chain=True)
 
 
 def test_deepseek_trace_records_request_response_selection_and_bad_call(tmp_path, monkeypatch):

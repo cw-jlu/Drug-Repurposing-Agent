@@ -161,7 +161,7 @@ def main() -> None:
         "results": results,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    args.output.write_bytes(json.dumps(report, indent=2, ensure_ascii=False).encode("utf-8"))
     for result in results:
         cost = result.get("cost_estimate", {}).get("estimated_cost_usd", 0)
         print(f"{result['planner']}: {result['correct']}/{result['cases']} "
