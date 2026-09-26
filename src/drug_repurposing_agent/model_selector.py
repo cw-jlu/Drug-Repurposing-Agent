@@ -40,7 +40,8 @@ def select_methods(config: dict, transport: Transport, model: str = "deepseek-fl
                 "component ablation scores. Call submit_method_choice exactly once. "
                 "Choose one of B0p, B1k, B1, B2 separately for each split. "
                 "Use only supplied dataset/split/method descriptions; do not assume any "
-                "unseen holdout performance. Explain uncertainty; this is not treatment advice.")},
+                "unseen holdout performance. Keep each reason under 150 characters. "
+                "Explain uncertainty; this is not treatment advice.")},
             {"role": "user", "content": json.dumps(config, ensure_ascii=False)},
         ],
         "tools": [{"type": "function", "function": {
@@ -68,7 +69,7 @@ def select_methods(config: dict, transport: Transport, model: str = "deepseek-fl
             raise ValueError("Invalid split choice")
         if choice["method"] not in METHODS or not isinstance(choice["reason"], str):
             raise ValueError("Unknown method or invalid reason")
-        if not 1 <= len(choice["reason"].strip()) <= 1000:
+        if not 1 <= len(choice["reason"].strip()) <= 2000:
             raise ValueError("Reason must be nonempty and concise")
     usage = response.get("usage", {})
     if not isinstance(usage, dict):
