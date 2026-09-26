@@ -10,7 +10,10 @@ from dataclasses import dataclass
 import json
 import math
 import os
+from time import perf_counter
 from urllib.request import Request, urlopen
+
+from .trace import TraceRecorder
 
 
 API_URL = "https://api.typesafe.ai/v1/systemone"
@@ -82,6 +85,7 @@ class JevClient:
         self._api_key = api_key
         self.model = model
         self.timeout = timeout
+        self.last_trace_path: str | None = None
 
     @classmethod
     def from_env(cls, model: str = "jev-latest") -> "JevClient":
@@ -94,11 +98,29 @@ class JevClient:
         if not questions or any(q.get("type") not in QUESTION_TYPES for q in questions.values()):
             raise ValueError("At least one supported question is required")
         payload = {"state": state, "model": self.model, "questions": questions}
+        trace = TraceRecorder("jev", secrets=(self._api_key,))
+        self.last_trace_path = str(trace.path)
+        trace.emit("model_request", provider="typesafe_jev", payload=payload)
+        started = perf_counter()
+        try:
+            result = self._ask_and_validate(payload, questions, trace)
+            trace.emit("model_response_validated", model=result.get("model"),
+                       usage=result.get("usage"),
+                       latency_ms=round((perf_counter() - started) * 1000, 1))
+            return result
+        except Exception as exc:
+            trace.emit("model_error", error_type=type(exc).__name__,
+                       latency_ms=round((perf_counter() - started) * 1000, 1))
+            raise
+
+    def _ask_and_validate(self, payload: dict, questions: dict[str, dict],
+                          trace: TraceRecorder) -> dict:
         request = Request(API_URL, data=json.dumps(payload).encode("utf-8"),
                           headers={"Authorization": f"Bearer {self._api_key}",
                                    "Content-Type": "application/json"}, method="POST")
         with urlopen(request, timeout=self.timeout) as response:
             result = json.load(response)
+        trace.emit("model_response", response=result)
         answers = result.get("answers")
         if not isinstance(answers, dict) or set(answers) != set(questions):
             raise ValueError("Jev response lacks requested answers")
@@ -109,6 +131,18 @@ class JevClient:
         return result
 
     def available_models(self) -> list[dict]:
+        trace = TraceRecorder("jev_models", secrets=(self._api_key,))
+        self.last_trace_path = str(trace.path)
+        trace.emit("model_catalog_request", provider="typesafe_jev")
+        try:
+            models = self._available_models()
+            trace.emit("model_catalog_response", models=models)
+            return models
+        except Exception as exc:
+            trace.emit("model_catalog_error", error_type=type(exc).__name__)
+            raise
+
+    def _available_models(self) -> list[dict]:
         request = Request("https://api.typesafe.ai/v1/models",
                           headers={"Authorization": f"Bearer {self._api_key}"}, method="GET")
         with urlopen(request, timeout=self.timeout) as response:

@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 from time import perf_counter
-from uuid import uuid4
 
 import numpy as np
 import pandas as pd
@@ -19,6 +18,7 @@ import pandas as pd
 from .data import sha256_file
 from .evidence import CandidateLedger, Citation
 from .jev import JevClient, choice_question, gate_choice
+from .trace import TraceRecorder
 
 
 def _read_json(path: Path) -> dict:
@@ -41,14 +41,34 @@ def _validated_ledger(path: Path) -> CandidateLedger:
 
 def build_luad_case(screen_dir: Path, disease_manifest: Path, screen_manifest: Path,
                     output: Path, jev_client: JevClient | None = None) -> dict:
+    recorder = TraceRecorder("luad_case", output / "traces")
+    recorder.emit("case_requested", screen_dir=str(screen_dir),
+                  disease_manifest=str(disease_manifest), screen_manifest=str(screen_manifest),
+                  use_jev=jev_client is not None)
+    try:
+        report = _build_luad_case(screen_dir, disease_manifest, screen_manifest,
+                                  output, jev_client, recorder)
+        recorder.emit("case_completed", report=str(output / "case_report.json"),
+                      status=report["status"])
+        return report
+    except Exception as exc:
+        recorder.emit("case_failed", error_type=type(exc).__name__, error=str(exc),
+                      provider_trace=getattr(jev_client, "last_trace_path", None))
+        raise
+
+
+def _build_luad_case(screen_dir: Path, disease_manifest: Path, screen_manifest: Path,
+                     output: Path, jev_client: JevClient | None,
+                     recorder: TraceRecorder) -> dict:
     """Assemble a report only when all upstream rows and hashes agree."""
     started = perf_counter()
-    run_id = uuid4().hex
+    run_id = recorder.run_id
     trace: list[dict] = []
 
     def step(stage: str, **details: object) -> None:
         trace.append({"time": datetime.now(timezone.utc).isoformat(),
                       "stage": stage, **details})
+        recorder.emit(stage, **details)
 
     step("plan", disease="LUAD", mode="research_open",
          allowed_sources=["frozen_GEO", "frozen_ExperimentHub", "Broad_identity_audit"],
@@ -193,6 +213,8 @@ def build_luad_case(screen_dir: Path, disease_manifest: Path, screen_manifest: P
                        "screen_manifest_sha256": sha256_file(screen_manifest),
                        "identity_audit_sha256": sha256_file(screen_dir / "identity_audit.csv")},
         "trace": trace,
+        "trace_file": str(recorder.path),
+        "provider_trace_file": getattr(jev_client, "last_trace_path", None),
     }
     output.mkdir(parents=True, exist_ok=True)
     (output / "case_report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False),

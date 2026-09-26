@@ -22,7 +22,7 @@ Use Python 3.10 or newer. Install with `python -m pip install -e .` and run:
 python -m drug_repurposing_agent --items data/raw/TRANSCRIPT_dataset_v2.0.0/items.csv --users data/raw/TRANSCRIPT_dataset_v2.0.0/users.csv --output artifacts/transcript_run
 ```
 
-Download the official TRANSCRIPT v2.0.0 archive from [Zenodo](https://zenodo.org/records/7982976), verify MD5 `67b5be71611361ca493303b052a4944c`, and extract it under `data/raw/`. The CLI reads no labels. It writes four CSV matrices, QC, input SHA-256 hashes, trace, and limitations. `rrf.csv` is a ranking signal, not a calibrated treatment probability.
+Download the official TRANSCRIPT v2.0.0 archive from [Zenodo](https://zenodo.org/records/7982976), verify MD5 `67b5be71611361ca493303b052a4944c`, and extract it under `data/raw/`. The CLI reads no labels. It writes four CSV matrices, QC, input SHA-256 hashes, trace, and limitations. New runs also write a durable JSONL trace by default; see the [trace policy](docs/trace_policy.md). `rrf.csv` is a ranking signal, not a calibrated treatment probability.
 
 Run `python -m pytest -q` for the internal contract suite. See [evaluation protocol](docs/evaluation_protocol.md), [initial benchmark results](docs/benchmark_results.md), and [limitations](docs/limitations.md) before interpreting results. The benchmark runner additionally needs `stanscofi` 2.0.1 and its plotting/UMAP dependencies in a Python 3.10 environment with NumPy 1.26; its legacy `cute-ranking` dependency is incompatible with NumPy 2.
 

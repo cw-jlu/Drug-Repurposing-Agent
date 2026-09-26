@@ -11,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from .agent import AgentPlan, PlanningContext, ToolCall
+from .trace import TraceRecorder
 
 
 class DeepSeekPlannerError(RuntimeError):
@@ -41,6 +42,8 @@ class DeepSeekPlanner:
         self._transport = transport
         self.name = f"deepseek_tool_calling:{self.config.model}"
         self.last_metadata: dict[str, object] = {}
+        self.last_trace_path: str | None = None
+        self._last_trace: TraceRecorder | None = None
 
     @classmethod
     def from_env(cls, model: str | None = None) -> "DeepSeekPlanner":
@@ -54,29 +57,52 @@ class DeepSeekPlanner:
         return cls(key, config)
 
     def _post(self, payload: dict[str, object]) -> dict[str, object]:
-        if self._transport is not None:
-            return self._transport(payload)
-        request = Request(
-            f"{self.config.base_url.rstrip('/')}/chat/completions",
-            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-            headers={
-                "Authorization": f"Bearer {self._api_key}",
-                "Content-Type": "application/json",
-            },
-            method="POST",
-        )
+        recorder = TraceRecorder("deepseek", secrets=(self._api_key,))
+        self._last_trace = recorder
+        self.last_trace_path = str(recorder.path)
+        recorder.emit("model_request", provider="deepseek", model=self.config.model,
+                      payload=payload)
+        started = perf_counter()
         try:
-            with urlopen(request, timeout=self.config.timeout_seconds) as response:
-                return json.loads(response.read().decode("utf-8"))
+            if self._transport is not None:
+                result = self._transport(payload)
+            else:
+                request = Request(
+                    f"{self.config.base_url.rstrip('/')}/chat/completions",
+                    data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                    headers={
+                        "Authorization": f"Bearer {self._api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    method="POST",
+                )
+                with urlopen(request, timeout=self.config.timeout_seconds) as response:
+                    result = json.loads(response.read().decode("utf-8"))
+            recorder.emit("model_response", latency_ms=round((perf_counter() - started) * 1000, 1),
+                          response=result)
+            return result
         except HTTPError as exc:
+            recorder.emit("model_error", error_type="HTTPError", http_status=exc.code,
+                          latency_ms=round((perf_counter() - started) * 1000, 1))
             raise DeepSeekPlannerError(f"DeepSeek HTTP error {exc.code}") from exc
         except URLError as exc:
+            recorder.emit("model_error", error_type="URLError",
+                          latency_ms=round((perf_counter() - started) * 1000, 1))
             raise DeepSeekPlannerError("DeepSeek network request failed") from exc
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            recorder.emit("model_error", error_type=type(exc).__name__,
+                          latency_ms=round((perf_counter() - started) * 1000, 1))
             raise DeepSeekPlannerError("DeepSeek returned an invalid JSON response") from exc
+        except Exception as exc:
+            recorder.emit("model_error", error_type=type(exc).__name__,
+                          latency_ms=round((perf_counter() - started) * 1000, 1))
+            raise
 
     def plan(self, question: str, context: PlanningContext,
              tools: tuple[dict[str, object], ...]) -> AgentPlan:
+        self.last_metadata = {}
+        self.last_trace_path = None
+        self._last_trace = None
         if not question.strip():
             raise ValueError("Question must not be empty")
         if not tools:
@@ -131,6 +157,8 @@ class DeepSeekPlanner:
             if not isinstance(name, str) or not isinstance(arguments, dict):
                 raise TypeError("invalid function call")
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+            if self._last_trace:
+                self._last_trace.emit("tool_call_invalid", error_type=type(exc).__name__)
             raise DeepSeekPlannerError("DeepSeek returned an invalid tool call") from exc
         available_names = {str(schema.get("name")) for schema in tools}
         provider_selected_name = name
@@ -142,6 +170,7 @@ class DeepSeekPlanner:
             "provider": "deepseek",
             "model": str(response.get("model", self.config.model)),
             "latency_ms": latency_ms,
+            "trace_file": self.last_trace_path,
             "finish_reason": str(choice.get("finish_reason", "")),
             "usage": {
                 key: int(value) for key, value in usage.items()
@@ -154,6 +183,9 @@ class DeepSeekPlanner:
             self.last_metadata["system_fingerprint"] = response["system_fingerprint"]
         if provider_selected_name != name:
             self.last_metadata["local_fallback"] = "unavailable_tool_to_manual_review"
+        if self._last_trace:
+            self._last_trace.emit("tool_call_selected", provider_selected=provider_selected_name,
+                                  executed_name=name, arguments=arguments)
         task_by_tool = {
             "rank_transcriptome": "transcriptomic_ranking",
             "package_luad_case": "luad_case",

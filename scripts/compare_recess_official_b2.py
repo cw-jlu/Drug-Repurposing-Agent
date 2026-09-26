@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 from drug_repurposing_agent.data import sha256_file
+from drug_repurposing_agent.trace import TraceRecorder, traced_run
 
 
 PUBLISHED_COMMIT = "cf5d9fdcb1ccd1676c7a0e7a39e784d79557fae0"
@@ -75,7 +76,7 @@ def paired_summary(difference: np.ndarray) -> dict:
     return result
 
 
-def main() -> None:
+def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--published", type=Path, required=True,
                         help="Clone of RECeSS-EU-Project/benchmark-results")
@@ -84,14 +85,17 @@ def main() -> None:
     parser.add_argument("--data", type=Path,
                         default=Path("data/raw/TRANSCRIPT_dataset_v2.0.0"))
     parser.add_argument("--output", type=Path,
-                        default=Path("benchmark/results/recess_official_b2_vs_11.json"))
+                        default=Path("artifacts/reports/recess_official_b2_vs_11.json"))
     args = parser.parse_args()
+    trace.emit("parameters", published=str(args.published), ours=str(args.ours),
+               data=str(args.data), output=str(args.output))
     published = args.published.resolve(strict=True)
     published_head = subprocess.check_output(
         ["git", "-C", str(published), "rev-parse", "HEAD"], text=True
     ).strip()
     if published_head != PUBLISHED_COMMIT:
         raise ValueError(f"Expected published results commit {PUBLISHED_COMMIT}; got {published_head}")
+    trace.emit("published_results_verified", commit=published_head)
     expected_seeds = np.random.RandomState(1234).choice(range(int(1e8)), size=100).tolist()
     repo = Path(__file__).resolve().parents[1]
     input_data = args.data.resolve(strict=True)
@@ -127,6 +131,7 @@ def main() -> None:
         "transcript_input_sha256": input_hashes,
         "seed_order": expected_seeds,
         "splits": {},
+        "trace_file": str(trace.path),
     }
     for split in ("random_simple", "weakly_correlated"):
         reference_dir = published / ("results_TRANSCRIPT" if split == "random_simple"
@@ -150,8 +155,10 @@ def main() -> None:
             paired[model] = deltas
         report["splits"][split] = {"models": rows, "b2_minus_reference": paired,
                                    "source_sha256": hashes}
+        trace.emit("split_compared", split=split, models=list(rows), source_sha256=hashes)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    trace.emit("report_saved", output=str(args.output), sha256=sha256_file(args.output))
     for split, contents in report["splits"].items():
         print(split)
         for model, metrics in sorted(contents["models"].items(),
@@ -162,6 +169,10 @@ def main() -> None:
             display = f"{value['mean']:.4f}" if value["mean"] is not None else "NA"
             print(f"{model:24} NS-AUC={display} n={value['n']}")
     print(f"Saved {args.output}")
+
+
+def main() -> None:
+    traced_run("recess_b2_comparison", _main)
 
 
 if __name__ == "__main__":

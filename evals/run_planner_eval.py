@@ -17,6 +17,7 @@ from drug_repurposing_agent.agent import (
     validate_tool_call,
 )
 from drug_repurposing_agent.deepseek import DeepSeekPlanner
+from drug_repurposing_agent.trace import TraceRecorder
 from drug_repurposing_agent.workflow import Mode
 
 
@@ -24,13 +25,27 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run_one(planner, case: dict) -> dict:
+def run_one(planner, case: dict, recorder: TraceRecorder | None = None) -> dict:
     mode = Mode(case["mode"])
     context = PlanningContext(mode, tuple(case["available_inputs"]))
     tools = tuple(spec.public_schema() for spec in TOOLS.values() if mode in spec.modes)
+    if recorder:
+        recorder.emit("case_started", case_id=case["id"], question=case["question"],
+                      mode=mode.value, available_inputs=list(context.available_inputs),
+                      expected_tool=case["expected_tool"], tools=tools)
     started = perf_counter()
+    proposed_tool = None
+    arguments = None
     try:
         plan = planner.plan(case["question"], context, tools)
+        if plan.calls:
+            proposed_tool = plan.calls[0].name
+            arguments = plan.calls[0].arguments
+        if recorder:
+            recorder.emit("case_plan_proposed", case_id=case["id"], task=plan.task,
+                          calls=[{"name": call.name, "arguments": call.arguments}
+                                 for call in plan.calls],
+                          provider_trace=getattr(planner, "last_trace_path", None))
         if len(plan.calls) != 1:
             raise ValueError("Planner must return exactly one tool call")
         validate_tool_call(plan.calls[0], mode)
@@ -43,13 +58,16 @@ def run_one(planner, case: dict) -> dict:
     record = {
         "id": case["id"], "expected_tool": case["expected_tool"],
         "actual_tool": actual, "correct": actual == case["expected_tool"],
-        "latency_ms": elapsed, "error_type": error,
+        "latency_ms": elapsed, "error_type": error, "proposed_tool": proposed_tool,
     }
     if "category" in case:
         record["category"] = case["category"]
     metadata = getattr(planner, "last_metadata", None)
     if isinstance(metadata, dict) and metadata:
         record["provider_metadata"] = metadata
+    if recorder:
+        recorder.emit("case_finished", **record, arguments=arguments,
+                      provider_trace=getattr(planner, "last_trace_path", None))
     return record
 
 
@@ -80,8 +98,11 @@ def estimate_cost(records: list[dict], pricing_period: str) -> dict | None:
     }
 
 
-def evaluate(name: str, planner, cases: list[dict], pricing_period: str) -> dict:
-    records = [run_one(planner, case) for case in cases]
+def evaluate(name: str, planner, cases: list[dict], pricing_period: str,
+             trace_dir: Path | None = None) -> dict:
+    recorder = TraceRecorder("planner_eval", trace_dir)
+    recorder.emit("evaluation_started", planner=name, cases=len(cases))
+    records = [run_one(planner, case, recorder) for case in cases]
     usage = [record.get("provider_metadata", {}).get("usage", {}) for record in records]
     categories = sorted({record.get("category", "uncategorized") for record in records})
     category_results = {}
@@ -102,10 +123,13 @@ def evaluate(name: str, planner, cases: list[dict], pricing_period: str) -> dict
         "total_tokens": sum(item.get("total_tokens", 0) for item in usage),
         "category_results": category_results,
         "records": records,
+        "trace_file": str(recorder.path),
     }
     cost = estimate_cost(records, pricing_period)
     if cost is not None and name.startswith("deepseek_"):
         result["cost_estimate"] = cost
+    recorder.emit("evaluation_finished", planner=name, correct=result["correct"],
+                  cases=result["cases"], accuracy=result["accuracy"])
     return result
 
 
@@ -122,11 +146,11 @@ def main() -> None:
     results = []
     if args.planner in {"rule", "both"}:
         rule = RulePlanner()
-        results.append(evaluate(rule.name, rule, cases, "none"))
+        results.append(evaluate(rule.name, rule, cases, "none", args.output.parent / "traces"))
     if args.planner in {"deepseek", "both"}:
         results.append(evaluate(f"deepseek_tool_calling:{args.model}",
                                 DeepSeekPlanner.from_env(args.model), cases,
-                                args.pricing_period))
+                                args.pricing_period, args.output.parent / "traces"))
     report = {
         "eval_name": definition["name"],
         "evaluated_at": datetime.now(timezone.utc).isoformat(),

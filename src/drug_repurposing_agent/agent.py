@@ -9,13 +9,12 @@ computation and makes a future LLM planner replaceable and testable.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
 import json
 from pathlib import Path
 from typing import Callable, Protocol
-from uuid import uuid4
 
 from .luad_case import build_luad_case
+from .trace import TraceRecorder, redact
 from .workflow import Mode, run_expression_workflow
 
 
@@ -222,18 +221,31 @@ class StructuredPlanner:
 
     def __init__(self, invoke: Callable[[dict[str, object]], dict[str, object]]):
         self.invoke = invoke
+        self.last_trace_path: str | None = None
 
     def plan(self, question: str, context: PlanningContext,
              tools: tuple[dict[str, object], ...]) -> AgentPlan:
-        raw = self.invoke({
+        request = {
             "question": question,
             "context": {"mode": context.mode.value,
                         "available_inputs": list(context.available_inputs)},
             "tools": list(tools),
             "required_output": {"task": "string", "rationale": "string",
                                 "calls": [{"name": "string", "arguments": {}}]},
-        })
-        return AgentPlan.from_dict(raw, self.name)
+        }
+        recorder = TraceRecorder("structured_planner")
+        self.last_trace_path = str(recorder.path)
+        recorder.emit("model_request", payload=request)
+        try:
+            raw = self.invoke(request)
+            recorder.emit("model_response", response=raw)
+            plan = AgentPlan.from_dict(raw, self.name)
+            recorder.emit("tool_call_parsed", calls=[asdict(call) for call in plan.calls])
+            return plan
+        except Exception as exc:
+            recorder.emit("model_or_parse_error", error_type=type(exc).__name__,
+                          error=str(exc))
+            raise
 
 
 def validate_tool_call(call: ToolCall, mode: Mode) -> None:
@@ -267,49 +279,63 @@ def run_agent_task(question: str, inputs: AgentInputs, output: Path,
                    mode: Mode = Mode.RESEARCH_OPEN,
                    planner: Planner | None = None) -> dict[str, object]:
     """Plan and execute one bounded research task with a complete audit trace."""
-    run_id = uuid4().hex
     trace: list[dict[str, object]] = []
+    output.mkdir(parents=True, exist_ok=True)
+    recorder = TraceRecorder("agent", output / "traces")
+    run_id = recorder.run_id
 
     def event(stage: str, **details: object) -> None:
-        trace.append({"time": datetime.now(timezone.utc).isoformat(),
-                      "stage": stage, **details})
+        recorded = recorder.emit(stage, **details)
+        trace.append({key: value for key, value in recorded.items()
+                      if key not in {"schema_version", "run_id"}})
 
-    output.mkdir(parents=True, exist_ok=True)
     active_planner = planner or RulePlanner()
+    planner_secret = getattr(active_planner, "_api_key", "")
+    if isinstance(planner_secret, str):
+        recorder.add_secret(planner_secret)
+    else:
+        planner_secret = ""
     context = PlanningContext(mode, inputs.inventory())
     public_tools = tuple(spec.public_schema() for spec in TOOLS.values() if mode in spec.modes)
     report: dict[str, object] = {
         "run_id": run_id,
-        "question": question,
+        "question": redact(question, (planner_secret,)),
         "mode": mode.value,
         "status": "planning",
         "planner": active_planner.name,
         "available_inputs": list(context.available_inputs),
         "tool_results": [],
         "trace": trace,
+        "trace_file": str(recorder.path),
     }
 
     def save() -> None:
         (output / "agent_run.json").write_text(
             json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    event("request_received", question_length=len(question), mode=mode.value)
+    event("request_received", question=question, mode=mode.value,
+          available_inputs=list(context.available_inputs), planner=active_planner.name)
     try:
         plan = active_planner.plan(question, context, public_tools)
+        event("plan_proposed", task=plan.task, calls=[asdict(call) for call in plan.calls],
+              provider_trace=getattr(active_planner, "last_trace_path", None))
         for call in plan.calls:
             validate_tool_call(call, mode)
         report["plan"] = {
             "task": plan.task,
-            "rationale": plan.rationale,
-            "calls": [asdict(call) for call in plan.calls],
+            "rationale": redact(plan.rationale, (planner_secret,)),
+            "calls": redact([asdict(call) for call in plan.calls], (planner_secret,)),
         }
         metadata = getattr(active_planner, "last_metadata", None)
         if isinstance(metadata, dict) and metadata:
             report["planner_metadata"] = metadata
-        event("plan_validated", task=plan.task, calls=[call.name for call in plan.calls])
+        event("plan_validated", task=plan.task, calls=[asdict(call) for call in plan.calls],
+              planner_metadata=metadata if isinstance(metadata, dict) else None)
     except Exception as exc:
-        report.update(status="blocked", error={"type": type(exc).__name__, "message": str(exc)})
-        event("plan_blocked", error_type=type(exc).__name__)
+        report.update(status="blocked", error={"type": type(exc).__name__,
+                                               "message": redact(str(exc), (planner_secret,))})
+        event("plan_blocked", error_type=type(exc).__name__, error=str(exc),
+              provider_trace=getattr(active_planner, "last_trace_path", None))
         save()
         return report
 
@@ -320,7 +346,7 @@ def run_agent_task(question: str, inputs: AgentInputs, output: Path,
             event("tool_waiting_for_input", tool=call.name, missing=missing)
             save()
             return report
-        event("tool_started", tool=call.name, sequence=index)
+        event("tool_started", tool=call.name, arguments=call.arguments, sequence=index)
         try:
             if call.name == "rank_transcriptome":
                 tool_output = output / "expression_ranking"
@@ -348,8 +374,10 @@ def run_agent_task(question: str, inputs: AgentInputs, output: Path,
             report["tool_results"].append(summary)
             event("tool_completed", tool=call.name, sequence=index, status=summary["status"])
         except Exception as exc:
-            report.update(status="failed", error={"type": type(exc).__name__, "message": str(exc)})
-            event("tool_failed", tool=call.name, sequence=index, error_type=type(exc).__name__)
+            report.update(status="failed", error={"type": type(exc).__name__,
+                                                  "message": redact(str(exc), (planner_secret,))})
+            event("tool_failed", tool=call.name, sequence=index,
+                  error_type=type(exc).__name__, error=str(exc))
             save()
             return report
 
