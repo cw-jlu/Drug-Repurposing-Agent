@@ -1,6 +1,6 @@
 # Prospective method-selection stress test (v2)
 
-Status: input and analysis plan frozen at commit `8b14325`; no completed v2 choice set or partition benchmark outcomes exist as of 2026-09-26. This is a within-TRANSCRIPT stress test, **not** an independent external-dataset validation or evidence of improved drug efficacy.
+Status: input and analysis plan frozen at commit `8b14325`; 15 prescore DeepSeek choices are now frozen and provider-visible trace grading passed 15/15. Choice JSON SHA-256: `a87cf337fb8a74e943dc6237a6a0ee629d53aa3c0eee1e4b0f41cf1e5b757949`. The 15 choices select B2 five times, B1k five times, B1 three times and B0p twice. No partition benchmark outcome was computed before this freeze. This is a within-TRANSCRIPT stress test, **not** an independent external-dataset validation or evidence of improved drug efficacy.
 
 Five disjoint sets of disease IDs were deterministically derived from checksum-pinned TRANSCRIPT v2.0.0. The committed `configs/method_selection_partition_v2.json` fixes the data manifest, four eligible methods (B0p, B1k, B1, B2), `random_simple` protocol, 20 outer seeds, five-fold model selection and three independent model choices per partition. `configs/method_selection_partition_v2_cases.json` contains only label-blind input summaries and staged-data paths; it was committed before model selection. Disease groups are disjoint, but drugs and the parent dataset are shared, and outer test items within a group are reused across runs. Do not call the resulting 15 choices 15 independent biomedical validation cohorts.
 

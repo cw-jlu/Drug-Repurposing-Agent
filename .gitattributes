@@ -3,6 +3,6 @@ benchmark/results/planner_v3_rule_chained_regression.json -text
 benchmark/results/planner_v3_rule_chained_trace_grade.json -text
 benchmark/results/recess_component_selector_v1_paired_audit.json -text
 benchmark/results/traces/*.jsonl -text
-artifacts/traces/*deepseek*.jsonl -text
-artifacts/reports/traces/*method_selection_v2*.jsonl -text
-artifacts/reports/method_selection_partition_v2_choices.json -text
+artifacts/traces/*.jsonl -text
+artifacts/reports/traces/*.jsonl -text
+artifacts/reports/*.json -text

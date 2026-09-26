@@ -1,0 +1,179 @@
+{
+  "status": "provider_visible_choice_trace_audit",
+  "graded_at": "2026-09-26T15:32:20.316655+00:00",
+  "choice_report_sha256": "a87cf337fb8a74e943dc6237a6a0ee629d53aa3c0eee1e4b0f41cf1e5b757949",
+  "cases_sha256": "ca5b3a1c8f5d010cfe77db58258635d080f68afefc4161111cf8f590d61d8f50",
+  "protocol_sha256": "21fdea769af1c9d0862dc3fb5380df04ba9955b4be4b7f5a39c64b76898d2c65",
+  "main_trace_sha256": "be9e74a0f37a3f316f24b28c06ad646cfc7e38dd8de337496c8659f3dadafc4c",
+  "choices": 15,
+  "passed": 15,
+  "rows": [
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 1,
+      "method": "B2",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "4ed955d92ac30261bbe79233abc6bf6e6117beb472dc5950bbbd1f734121e96e",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 2,
+      "method": "B1k",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "a33d6f3716937516a36d7c097b1557b851e6affc00118f82f9aef4d59360dc64",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 3,
+      "method": "B1",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "8328b076be6a3a8aae01d3622a7506d430ae9f5ad1e333472e7af0d23a79951f",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 1,
+      "method": "B2",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "7e5e5face1553db37951aa76f42d0d8171db98bc1e773f5a8f3a7f60560c880c",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 2,
+      "method": "B2",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "4832d90a06d45da2e40971595a883a3db1cfe3dc780db5ee33d3be33595fc928",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 3,
+      "method": "B0p",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "99c55aaa38ed67f32171fe0aa7273f18a53a80af6ca28b62555a018026770385",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 1,
+      "method": "B1",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "05ddcb11dcd5e0945ea49c2483e9169b1a2abf43be01ac415854f461aa563a6f",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 2,
+      "method": "B1k",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "262bcbff3cf2929f6abd9a290d8d9f5f082aaeb99262a0ed4e4ff0cd9404513d",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 3,
+      "method": "B0p",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "f74d4f42e17f5172a4df36d338e53aa0edc9d49e7003f841b01161e8a88f6a0b",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 1,
+      "method": "B1k",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "f187aa49bd77c5a8357d41d79be5f5812079846818d41fe27d3e3126a9946ad3",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 2,
+      "method": "B2",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "5363a21936d267f1a80ca93e25fd8bbb82fbd133cab939785f7ccd7afc3c3fc6",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 3,
+      "method": "B1",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "9afa26bb514d7d19b5d914ec81215ea2c3276e3ac5d6de686ae5c392c6e3545b",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 1,
+      "method": "B2",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "e74c756116be5b30a5058aa1a81ec85b4819d5dd136bbd586537afbb7ce44d04",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 2,
+      "method": "B1k",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "53db8399222f5a8f63634fe039926c05d934ef682c68ea5124e0acedec575e55",
+      "passed": true
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 3,
+      "method": "B1k",
+      "main_trace_match": true,
+      "provider_hash_match": true,
+      "blind_request_match": true,
+      "provider_choice_match": true,
+      "provider_trace_sha256": "ede8f6ccd2ef45872a807e06f86c36e2012011a14dedf0be20dabe344b3a6de9",
+      "passed": true
+    }
+  ],
+  "limitation": "Checks provider-visible request/response and saved choice, not private reasoning or predictive validity.",
+  "trace_file": "artifacts\\reports\\traces\\20260926T153220258342Z_method_selection_trace_grading_650ef37229aa49aab7bd2f20c56ac0c5.jsonl"
+}
