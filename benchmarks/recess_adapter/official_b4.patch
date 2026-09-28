@@ -1,0 +1,24 @@
+diff --git a/benchmark_pipeline.py b/benchmark_pipeline.py
+--- a/benchmark_pipeline.py
++++ b/benchmark_pipeline.py
+@@ -33,6 +33,7 @@
+ models.append("B2")
+ models.extend(["B0p", "B1k", "B1"])
+ models.extend(["B3", "B3noREV"])
++models.extend(["BNNRnp", "B4"])
+ datasets = ["Synthetic", "DNdataset", "PREDICT_Gottlieb",  
+ 	"TRANSCRIPT", "Gottlieb", "Cdataset", "PREDICT", "LRSSL", "Synthetic-wo-features"] 
+ splitting_methods = ["weakly_correlated", "random_simple"]
+@@ -65,6 +66,12 @@
+ 	elif (model_name in {"B3", "B3noREV"}):
+ 		from benchmarks.recess_adapter import official_b3
+ 		model = getattr(official_b3, model_name)
++	elif (model_name == "BNNRnp"):
++		from benchmarks.recess_adapter.bnnr_numpy import BNNRnp
++		model = BNNRnp
++	elif (model_name == "B4"):
++		from benchmarks.recess_adapter.official_b4 import B4
++		model = B4
+ 	elif (model_name in {"B0p", "B1k", "B1"}):
+ 		from benchmarks.recess_adapter import official_components
+ 		model = getattr(official_components, model_name)

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -14,8 +16,10 @@ np.asfarray = getattr(np, "asfarray", lambda v: np.asarray(v, dtype=float))
 import stanscofi.datasets
 from scipy.sparse import coo_array
 
-from benchmarks.recess_adapter.bnnr_numpy import BNNRNumpy, bnnr, svt
+from benchmarks.recess_adapter.bnnr_numpy import BNNRNumpy, bnnr, cached_bnnr, svt
+from benchmarks.recess_adapter.official_b4 import B4, FROZEN_SPEC, ensemble_scores
 
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _dataset(seed=0, drugs=9, diseases=6, genes=15):
@@ -63,6 +67,20 @@ def test_bnnr_respects_bounds_and_recovers_low_rank():
     assert np.abs(recovered - truth)[hidden].mean() < np.abs(truth)[hidden].mean()
 
 
+def test_cache_returns_identical_result(tmp_path, monkeypatch):
+    rng = np.random.default_rng(2)
+    t = rng.random((8, 8)) * (rng.random((8, 8)) < 0.6)
+    index = (t != 0).astype(float)
+    expected = bnnr(1, 10, t, index, 2e-3, 1e-5, 300, 0, 1)
+    monkeypatch.setenv("BNNR_NUMPY_CACHE_DIR", str(tmp_path))
+    first = cached_bnnr(1, 10, t, index, 2e-3, 1e-5, 300, 0, 1)
+    second = cached_bnnr(1, 10, t, index, 2e-3, 1e-5, 300, 0, 1)
+    assert len(list(tmp_path.glob("bnnr_*.npz"))) == 1
+    for result in (first, second):
+        np.testing.assert_array_equal(result[0], expected[0])
+        assert result[1] == expected[1]
+
+
 def test_bnnr_numpy_shapes_determinism_and_defaults():
     dataset = _dataset()
     train, test, _ = _split(dataset)
@@ -94,3 +112,27 @@ def test_bnnr_numpy_label_isolation():
     changed = train.ratings.toarray().copy()
     changed[mask] = np.where(changed[mask] == 1, 0, 1)
     assert not np.array_equal(changed, train.ratings.toarray())
+
+
+def test_b4_ensemble_shapes_determinism_and_isolation():
+    dataset = _dataset()
+    train, test, _ = _split(dataset)
+    one, two = B4(), B4()
+    one.fit(train); two.fit(train)
+    a, b = one.predict_proba(test), two.predict_proba(test)
+    assert a.shape == dataset.folds.shape
+    np.testing.assert_array_equal(a.toarray(), b.toarray())
+    assert np.isfinite(a.data).all()
+    rng = np.random.default_rng(3)
+    b3, bn = rng.random((5, 4)), rng.random((5, 4))
+    y = (rng.random((5, 4)) < 0.3).astype(float)
+    for spec in ({"mode": "block", "b3_weight": 1, "bnnr_weight": 2}, {"mode": "flat"}):
+        assert ensemble_scores(b3, bn, y, spec).shape == (5, 4)
+    with pytest.raises(ValueError):
+        ensemble_scores(b3, bn, y, {"mode": "bogus"})
+
+
+def test_frozen_config_matches_adapter():
+    config = json.loads((ROOT / "configs" / "b4_ensemble_v1.json").read_text(encoding="utf-8"))
+    assert config["frozen_spec"] == FROZEN_SPEC
+    assert config["frozen_before_official_scoring"] is True

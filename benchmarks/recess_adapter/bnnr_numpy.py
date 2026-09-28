@@ -15,10 +15,19 @@ Octave command reproduced from benchscofi ``BNNR.model_fit``::
 
 benchscofi formats ``alpha``/``beta`` with ``%d`` and ``tol1``/``tol2`` with
 ``%f``; that formatting is replicated so the effective parameters match.
+
+Optional exact-result cache: if ``BNNR_NUMPY_CACHE_DIR`` is set, the solver
+output is stored under the SHA-256 of the input matrix and parameters and
+reused for byte-identical inputs (the solver is deterministic).  This only
+avoids recomputation when BNNRnp and B4 fit the same training folds; it never
+changes a result.
 """
 
 from __future__ import annotations
 
+import hashlib
+import os
+from pathlib import Path
 import warnings
 
 import numpy as np
@@ -77,6 +86,29 @@ def _octave_float(value) -> float:
     return float("%f" % value)
 
 
+def cached_bnnr(alpha, beta, t, tr_index, tol1, tol2, maxiter, a, b):
+    """``bnnr`` with an optional content-addressed disk cache (see module docstring)."""
+    folder = os.environ.get("BNNR_NUMPY_CACHE_DIR")
+    if not folder:
+        return bnnr(alpha, beta, t, tr_index, tol1, tol2, maxiter, a, b)
+    t = np.ascontiguousarray(t, dtype=float)
+    tr_index = np.ascontiguousarray(tr_index, dtype=float)
+    digest = hashlib.sha256()
+    digest.update(repr((t.shape, alpha, beta, tol1, tol2, maxiter, a, b)).encode())
+    digest.update(t.tobytes())
+    digest.update(tr_index.tobytes())
+    path = Path(folder) / f"bnnr_{digest.hexdigest()}.npz"
+    if path.is_file():
+        with np.load(path) as cached:
+            return cached["w"].copy(), int(cached["n_iter"])
+    w, n_iter = bnnr(alpha, beta, t, tr_index, tol1, tol2, maxiter, a, b)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f"{path.stem}.{os.getpid()}.tmp.npz")
+    np.savez(temporary, w=w, n_iter=n_iter)
+    os.replace(temporary, path)
+    return w, n_iter
+
+
 class BNNRNumpy(BNNR):
     """benchscofi ``BNNR`` with the Octave subprocess replaced by the NumPy port."""
 
@@ -91,7 +123,7 @@ class BNNRNumpy(BNNR):
     def model_fit(self, X_s, X_p, A_sp):
         wdd, wdr, wrr = X_p, A_sp, X_s
         t = np.block([[wrr, wdr.T], [wdr, wdd]])
-        ww, n_iter = bnnr(_octave_int(self.alpha), _octave_int(self.beta), t,
+        ww, n_iter = cached_bnnr(_octave_int(self.alpha), _octave_int(self.beta), t,
                           (t != 0).astype(float), _octave_float(self.tol1),
                           _octave_float(self.tol2), int(self.maxiter), 0, 1)
         t1 = t.shape[0]
