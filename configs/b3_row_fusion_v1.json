@@ -1,0 +1,19 @@
+{
+  "name": "B3 row-oriented training-free fusion",
+  "version": 1,
+  "frozen_on": "2026-09-28",
+  "frozen_before_official_scoring": true,
+  "primary_model": "B3",
+  "primary_components": ["DP", "DK", "SK", "LD", "LS", "REV"],
+  "fixed_parameters": {"drug_knn_k": 10, "disease_knn_k": 10, "label_drug_cf_k": 20,
+                       "fusion": "mean of within-drug-row normalised ranks",
+                       "tie_breaker": "1e-6 x within-row rank of training disease popularity"},
+  "selection_rule": "Highest mean official Lin's AUC on eight random_simple development seeds disjoint from the 100 official seeds (seeds 1-8 after removing official seeds).",
+  "development_results_random_simple": {
+    "DP": 0.6858, "DK": 0.6959, "SK": 0.6439, "LD": 0.7411, "LS": 0.7407, "REV": 0.4879,
+    "ALL-REV": 0.7515, "ALL": 0.7542
+  },
+  "disclosure": "weakly_correlated_split has no seed-dependent randomness in stanscofi 2.0.1, so its development run used the same single outer holdout as the official run (DP 0.7179, ALL-REV 0.7150, ALL 0.6938). These weak-split values were seen before freezing and were NOT used for primary selection. B3noREV (ALL-REV) is a post-hoc secondary variant and must be labelled as such.",
+  "secondary_posthoc_model": "B3noREV",
+  "development_script": "artifacts/b3_dev/dev.py (ignored scratch harness)"
+}
