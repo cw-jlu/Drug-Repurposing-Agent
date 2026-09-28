@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 
 from drug_repurposing_agent.llm_calls import CallStats, TracedToolCaller
-from evals.contamination_probe import (analyze, assert_closed_book_blind, auc, bootstrap_auc_ci,
+from evals.contamination_probe import (analyze, paired_auc_difference, assert_closed_book_blind, auc, bootstrap_auc_ci,
                                        build_sample, closed_book_payload, freeze_sample,
                                        load_checkpoint, load_frozen_sample, open_book_payload,
                                        run_calls, validate_probability)
@@ -149,3 +149,12 @@ def test_run_refuses_to_exceed_call_budget(tmp_path: Path):
         run_calls(TraceRecorder("probe_test", tmp_path), caller, rows, "x" * 64,
                   tmp_path / "c.jsonl", "deepseek-flash", max_calls=3)
     assert not calls
+
+
+def test_paired_auc_difference_is_zero_for_identical_scores_and_positive_when_better():
+    labels = [1] * 20 + [0] * 20
+    good = list(range(40, 20, -1)) + list(range(20, 0, -1))
+    same = paired_auc_difference(labels, good, good, n_boot=200)
+    assert same["auc_difference"] == 0 and same["ci95"] == [0, 0]
+    noise = [0.5] * 40
+    assert paired_auc_difference(labels, good, noise, n_boot=200)["auc_difference"] == 0.5

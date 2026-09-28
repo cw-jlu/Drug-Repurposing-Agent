@@ -379,6 +379,23 @@ def bootstrap_auc_ci(positive, negative, n_boot: int = 2000, seed: int = SEED,
             "bootstrap_seed": seed}
 
 
+def paired_auc_difference(labels, first, second, n_boot: int = 2000, seed: int = SEED) -> dict:
+    """AUC(first) - AUC(second) on the same pairs; stratified paired bootstrap CI."""
+    labels = np.asarray(labels)
+    first, second = np.asarray(first, dtype=float), np.asarray(second, dtype=float)
+    pos, neg = np.flatnonzero(labels == 1), np.flatnonzero(labels == 0)
+    point = auc(first[pos], first[neg]) - auc(second[pos], second[neg])
+    rng = np.random.default_rng(seed)
+    stats = np.empty(n_boot)
+    for b in range(n_boot):
+        p, q = rng.choice(pos, len(pos)), rng.choice(neg, len(neg))
+        stats[b] = auc(first[p], first[q]) - auc(second[p], second[q])
+    low, high = np.quantile(stats, [0.025, 0.975])
+    return {"auc_difference": round(float(point), 4),
+            "ci95": [round(float(low), 4), round(float(high), 4)],
+            "n_positive": int(len(pos)), "n_negative": int(len(neg)), "n_bootstrap": n_boot}
+
+
 # --------------------------------------------------------------------------- run
 
 def load_checkpoint(path: Path, sample_sha: str) -> dict[tuple[str, str], dict]:
@@ -474,6 +491,13 @@ def analyze(rows: list[dict], records: dict[tuple[str, str], dict], sample_sha: 
         "positive_vs_unknown": bootstrap_auc_ci(raw[1], raw[0]),
         "positive_vs_known_negative_descriptive": bootstrap_auc_ci(raw[1], raw[-1]) if raw[-1] else None,
         "mean_score": {str(k): round(float(np.mean(v)), 4) for k, v in raw.items() if v}}
+    paired = [r for r in by_label[1] + by_label[0]
+              if all((r["pair_id"], c) in records for c in CONDITIONS)]
+    if paired and any(r["label"] == 1 for r in paired) and any(r["label"] == 0 for r in paired):
+        conditions["open_minus_closed_paired"] = paired_auc_difference(
+            [r["label"] for r in paired],
+            [records[(r["pair_id"], "open_book")]["probability"] for r in paired],
+            [records[(r["pair_id"], "closed_book")]["probability"] for r in paired])
     usage = call_stats.get("usage", {})
     return {
         "experiment": "contamination_probe_v1",
