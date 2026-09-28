@@ -155,8 +155,9 @@ def add_page_number(paragraph) -> None:
 def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--source", type=Path, default=SOURCE)
     args = parser.parse_args()
-    trace.emit("source_loaded", source=str(SOURCE), source_sha256=sha256_file(SOURCE),
+    trace.emit("source_loaded", source=str(args.source), source_sha256=sha256_file(args.source),
                output=str(args.output))
     doc = Document()
     section = doc.sections[0]
@@ -203,7 +204,7 @@ def _main(trace: TraceRecorder) -> None:
         run.font.color.rgb = RGBColor(90, 100, 108)
     add_page_number(section.footer.paragraphs[0])
 
-    lines = SOURCE.read_text(encoding="utf-8").splitlines()
+    lines = args.source.read_text(encoding="utf-8").splitlines()
     i = 0
     while i < len(lines):
         line = lines[i].strip()
@@ -219,6 +220,23 @@ def _main(trace: TraceRecorder) -> None:
                 i += 1
             if rows:
                 add_table(doc, rows)
+            continue
+        image = re.fullmatch(r"!\[(.*)\]\((.+)\)", line)
+        if image:
+            picture = Path(image.group(2))
+            if not picture.is_file():
+                raise FileNotFoundError(picture)
+            p = doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.add_run().add_picture(str(picture), width=Inches(6.6))
+            caption = doc.add_paragraph()
+            caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            add_inline(caption, image.group(1))
+            for run in caption.runs:
+                run.font.size = Pt(8.5)
+                run.font.color.rgb = RGBColor(90, 100, 108)
+            trace.emit("figure_embedded", path=str(picture), sha256=sha256_file(picture))
+            i += 1
             continue
         if line.startswith("# "):
             p = doc.add_paragraph(style="Title")
