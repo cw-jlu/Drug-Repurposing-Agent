@@ -1,4 +1,4 @@
-# Project status (2026-09-27)
+# Project status (2026-09-28)
 
 ## Implemented and verified
 
@@ -34,6 +34,9 @@
 - Internal tests cover scientific signs, tied ranks, missing/constant vectors, label isolation, publication-runner B2/component score equivalence, constrained LLM output validation, provenance, pairing, citation syntax, PubMed triage, Jev response gating, natural-language routing, missing-input handling, tool allow-list enforcement, chained/provider-visible trace grading, paired prescore method analysis, pinned upstream preparation, fail-closed DeepSeek handling, nested-split boundaries, B1k metric ties, and LUAD claim grading. Run `python -m pytest -q` for the current count.
 - A traced B1k all-seed diagnostic reproduces every frozen official NS-AUC value for both 100-seed split protocols and quantifies strict-score ties; it does not revise the primary benchmark or establish a new metric. A traced retrospective LUAD triage grader passes the one saved DeepSeek research-action shortlist on identity/citation/abstention checks. A later 20-case, prescore-frozen DeepSeek evidence-card holdout passed 14/20 strict result-level cases, with 20/20 clinical-use abstentions and cited-card fidelity; it is source-overlapping and not independent clinical validation. A v3 method-selection protocol specifies training-only inner-CV evidence and a genuinely new outer dataset; no external selector outcome has run. A pinned external CDRPipe sparse checkout staged 233 CREEDS disease signatures and metadata, with per-file hashes and a trace, but lacks the raw drug matrix and known-indication labels needed for v3.
 - An editable four-page course report v4 and nine-slide editable defense deck v6 include the official 100-run NS-AUC comparison, the amended five-partition negative method-selection result, the B1k tie diagnostic, v3 planning holdout, exact LUAD signature IDs and the wet-lab boundary. Every page and slide was rendered and checked; the two deck charts remain native and editable. `docs/defense_rehearsal_10min.md` supplies a timing outline, not a claimed completed rehearsal.
+
+- B3 row-oriented fusion was frozen at `92943bb` before official scoring and evaluated in the pinned 100-seed runner: NS-AUC 0.7234 random simple (rank 2/13; BNNR 0.7331 leads, B3 wins 35/100 paired seeds) and 0.6919 weakly correlated (rank 3/13; MBiRW 0.7384 leads). No SOTA claim is made. The improvement over B2 comes from aligning with the metric's drug-row orientation and from known-association structure, not from signature reversal.
+- A Streamlit demo (`app/`) and six reproducible defense figures (`docs/figures/`) were added.
 
 ## Needed for the planned final deliverable
 
