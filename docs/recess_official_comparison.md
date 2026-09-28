@@ -100,3 +100,16 @@ independent `LogisticMF` run on the first official random seed (`17263407`)
 exactly reproduced the authors' published values for NS-AUC
 (`0.6704512218407673`), global AUC (`0.950127861336678`), and global NDCG
 (`0.5501272684100554`). This checks one reference run, not all 11 × 100 runs.
+
+## B3: row-oriented fusion (2026-09-28)
+
+The official NS-AUC ("Lin's AUC", `rowwise_metrics.calc_auc(..., transpose=False)`) ranks diseases **within each drug row** and counts tied scores as losses (strict `>`). B2 ranked candidates within disease columns, and its popularity component is constant within a drug row. B3 (`benchmarks/recess_adapter/official_b3.py`) rank-normalises six training-free components within drug rows and averages them: disease popularity, drug- and disease-expression kNN, label co-occurrence drug/disease CF, and reversal. It adds a deterministic disease-popularity tie-breaker.
+
+The configuration was frozen in `configs/b3_row_fusion_v1.json` at commit `92943bb`, before any official scoring. It was selected on eight random-split development seeds disjoint from the 100 official seeds. `weakly_correlated_split` has no seed-dependent draw, so its development run necessarily used the official outer holdout; this is disclosed in the config and was not used for selection.
+
+| Split | B3 NS-AUC (mean ± SD, 100 seeds) | Rank / 13 | Best published | B3 paired wins vs best |
+|---|---:|---:|---|---:|
+| Random simple | 0.7234 ± 0.0339 | 2 | BNNR 0.7331 | 35/100 |
+| Weakly correlated | 0.6919 ± 0.0088 | 3 | MBiRW 0.7384 | 0/100 |
+
+B3 does not surpass the best published model on either split. The gain from B2 (0.5222 → 0.7234) comes from matching the metric's orientation and from known-association structure, not from signature reversal. Machine-readable comparison: `benchmark/results/recess_official_b3_vs_11.json`; aggregate CSVs: `benchmark/results/recess_official_b3/`. The post-hoc variant B3noREV was paused at 46/100 random-split seeds; its cached intermediate files allow the run to resume.
