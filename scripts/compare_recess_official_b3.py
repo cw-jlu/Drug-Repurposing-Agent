@@ -18,7 +18,7 @@ from scripts.compare_recess_official_b2 import (
 )
 
 OURS = {"B3": "benchmark/results/recess_official_b3",
-        "B3noREV": "artifacts/recess_official_b3/results_B3noREV",
+        "B3noREV": "benchmark/results/recess_official_b3",
         "B2": "benchmark/results/recess_official_b2"}
 
 
@@ -79,7 +79,15 @@ def _main(trace: TraceRecorder) -> None:
                 if np.any(d != 0):
                     stat["wilcoxon_p"] = float(wilcoxon(d[d != 0]).pvalue)
                 paired[ours][other] = stat
+        # Rank of each own model within {11 published models, B2, that model} (13 entries).
+        field = lambda name: [m for m in MODELS] + ["B2"] + ([name] if name != "B2" else [])
+        rank_in_field = {
+            name: {"rank": 1 + sum((rows[m]["NS-AUC"]["mean"] or -1) > (rows[name]["NS-AUC"]["mean"] or -1)
+                                   for m in field(name) if m != name),
+                   "of": len(field(name))}
+            for name in runs if name not in MODELS}
         report["splits"][split] = {
+            "rank_in_published_field": rank_in_field,
             "ranking_by_ns_auc": [{"model": n, "rank": i + 1, "ns_auc_mean": rows[n]["NS-AUC"]["mean"],
                                    "ns_auc_sd": rows[n]["NS-AUC"].get("sd")}
                                   for i, n in enumerate(ranking)],

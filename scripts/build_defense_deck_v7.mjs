@@ -21,9 +21,13 @@ const b4Path = "benchmark/results/recess_official_b4_vs_11.json";
 const b4 = has(b4Path) ? J(b4Path) : null;
 
 const ns = (report, split, model) => report.splits[split].models[model]?.["NS-AUC"]?.mean;
+// Prefer the fixed field {11 published, B2, model}; fall back to the full ranking list.
 const rankOf = (report, split, model) =>
+  report.splits[split].rank_in_published_field?.[model]?.rank ??
   report.splits[split].ranking_by_ns_auc?.find((x) => x.model === model)?.rank ?? null;
-const total = (report, split) => report.splits[split].ranking_by_ns_auc?.length;
+const total = (report, split, model) =>
+  report.splits[split].rank_in_published_field?.[model]?.of ??
+  report.splits[split].ranking_by_ns_auc?.length;
 
 const C = { navy: "112B3C", ink: "183042", muted: "5B6B75", teal: "087E78",
   red: "9E493D", sand: "EEF3F2", white: "FFFFFF", gray: "B9C2C7" };
@@ -151,7 +155,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 // 6 Main benchmark
 {
   const pw = b3.splits[R].paired_ns_auc.B3?.BNNR?.wins;
-  const s = content(`官方 Benchmark：${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R)}，弱相关第 ${rankOf(main, W, mainName)}/${total(main, W)}`,
+  const s = content(`官方 Benchmark：${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}，弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}`,
     `约 70 秒。RECeSS 官方 Runner，与作者公布的 11 个模型逐种子对齐。B3：随机 ${f3(ns(b3, R, "B3"))}（BNNR ${f3(ns(b3, R, "BNNR"))} 第一，B3 在 100 个配对种子中胜 ${pw ?? "?"} 次），弱相关 ${f3(ns(b3, W, "B3"))}（MBiRW ${f3(ns(b3, W, "MBiRW"))} 第一）。${b4 ? `第二轮 B4（B3 + BNNR 的 NumPy 移植，只在开发种子上设计后冻结）：随机 ${f3(ns(b4, R, "B4"))}、弱相关 ${f3(ns(b4, W, "B4"))}。` : ""}不训练新模型的方法达到了与训练型协同过滤方法相当的水平，但没有在两种拆分上都超过最强模型，不宣称 SOTA。`);
   s.addImage({ path: "docs/figures/fig1_nsauc_boxplot.png", x: 0.55, y: 1.3, w: 12.2, h: 5.55,
     sizing: { type: "contain", w: 12.2, h: 5.55 } });
@@ -229,7 +233,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   txt(s, "结论与局限", 0.7, 0.5, 12, 0.8, 34, { bold: true, color: C.white });
   const items = [
     ["负结果", `纯表达反转在 TRANSCRIPT 上 ≈ 随机（官方 NS-AUC ${f3(comp.splits[R].models.B1["NS-AUC"].mean)}）`],
-    ["提分", `对齐指标方向后 ${mainName} 排名 ${rankOf(main, R, mainName)}/${total(main, R)} 与 ${rankOf(main, W, mainName)}/${total(main, W)}，接近但未全面超过最强基线`],
+    ["提分", `对齐指标方向后 ${mainName} 排名 ${rankOf(main, R, mainName)}/${total(main, R, mainName)} 与 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}，接近但未全面超过最强基线`],
     ["可信", "Strict 模式隔离标签；探针证实 LLM 看到药名会“背答案”"],
     ["Agent", "规划 98/100；门控降低高风险误执行；多 Agent 引用逐字校验"],
     ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；无湿实验；Jev 未获访问"]];
