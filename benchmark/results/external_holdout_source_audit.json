@@ -1,0 +1,21 @@
+{
+  "status": "external_holdout_not_ready_no_model_outcomes_computed",
+  "audited_source": "CDRPipe comparative analysis / CREEDS + CMap + Open Targets",
+  "repository": "https://github.com/enockniyonkuru/cdrpipe-comparative-analysis",
+  "github_tree_sha": "f5b358ec5f86c53a0043789bbcec0052c662c438",
+  "github_tree_url": "https://api.github.com/repos/enockniyonkuru/cdrpipe-comparative-analysis/git/trees/main?recursive=1",
+  "disease_signature_csv_count": 233,
+  "tracked_drug_metadata_present": true,
+  "required_large_files_absent_from_git": [
+    "drug_signatures/data/cmap/cmap_signatures.RData",
+    "drug_evidence/data/open_targets/known_drug_info_data.parquet"
+  ],
+  "decision": "Do not claim or run a v3 official independent holdout until raw drug-expression vectors, disease-expression vectors, indication labels, ID mapping, and frozen split/label policy are staged and hash-verified.",
+  "alternative_source": {
+    "name": "TRACE cross-disease dataset",
+    "url": "https://data.mendeley.com/datasets/fy93xjjrb8/1",
+    "published_disease_count": 3,
+    "gate": "insufficient independent disease-level units for the planned multi-unit selector comparison; published drug_scores are outcomes, not raw perturbation expression features"
+  },
+  "scope": "Metadata availability audit only; no dataset download or performance evaluation"
+}

@@ -1,0 +1,37 @@
+{
+  "evaluated_at": "2026-09-24T23:52:42.925574+08:00",
+  "status": "completed",
+  "mode": "benchmark_strict",
+  "planner": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "selected_tool": "rank_transcriptome",
+    "arguments": {"top_k": 100},
+    "latency_ms": 1033.5,
+    "prompt_tokens": 489,
+    "completion_tokens": 35,
+    "total_tokens": 524
+  },
+  "input": {
+    "items_sha256": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+    "users_sha256": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332"
+  },
+  "qc": {
+    "genes": 12096,
+    "drugs": 613,
+    "diseases": 151,
+    "drug_missing": 0,
+    "disease_missing": 0,
+    "constant_drugs": 0,
+    "constant_diseases": 1
+  },
+  "output_sha256": {
+    "spearman_reversal.csv": "7ea194ecd814104ed870affc29b1acf14a7ed4b5f9dbd5b7fbba7ccdd066c1d7",
+    "connectivity.csv": "6ed12947682906a5bb66d77d93484b0bc158e5cf4c041c79520ff845ed6ab0ae",
+    "rrf.csv": "19ee869ea3ea8563d3d25fb9bf778d376c84f5c1e37013d720de38698fca1954",
+    "gene_counts.csv": "515e88ae42eaf854660d49836ee711e5f3bfdd04c622c08b3b3843ade26859d7"
+  },
+  "trace_event_count": 5,
+  "contains_raw_model_response": false,
+  "contains_api_key": false
+}

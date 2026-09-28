@@ -1,0 +1,527 @@
+{
+  "status": "post_failure_positive_only_amended_evaluation_not_original_protocol",
+  "scored_at": "2026-09-26T16:07:35.390621+00:00",
+  "protocol_sha256": "21fdea769af1c9d0862dc3fb5380df04ba9955b4be4b7f5a39c64b76898d2c65",
+  "cases_sha256": "ca5b3a1c8f5d010cfe77db58258635d080f68afefc4161111cf8f590d61d8f50",
+  "prescore_choices_sha256": "a87cf337fb8a74e943dc6237a6a0ee629d53aa3c0eee1e4b0f41cf1e5b757949",
+  "prescore_choice_trace_grade": {
+    "passed": 15,
+    "choices": 15,
+    "main_trace_sha256": "be9e74a0f37a3f316f24b28c06ad646cfc7e38dd8de337496c8659f3dadafc4c"
+  },
+  "outcomes": {
+    "transcript_disease_partition_01": {
+      "B0p": 0.5,
+      "B1k": 0.21260792778649912,
+      "B1": 0.43566846843632556,
+      "B2": 0.46432809254237817
+    },
+    "transcript_disease_partition_02": {
+      "B0p": 0.5,
+      "B1k": 0.24022727272727268,
+      "B1": 0.5209117965367965,
+      "B2": 0.5061058802308802
+    },
+    "transcript_disease_partition_03": {
+      "B0p": 0.5,
+      "B1k": 0.21772435897435893,
+      "B1": 0.5219895868020867,
+      "B2": 0.5282828652828654
+    },
+    "transcript_disease_partition_04": {
+      "B0p": 0.5,
+      "B1k": 0.2685666599314297,
+      "B1": 0.48805724391834826,
+      "B2": 0.5625111761193478
+    },
+    "transcript_disease_partition_05": {
+      "B0p": 0.5,
+      "B1k": 0.19565011581555697,
+      "B1": 0.46109938048085464,
+      "B2": 0.5229770031208198
+    }
+  },
+  "outcome_receipts": {
+    "transcript_disease_partition_01": {
+      "seed_order": [
+        17263407,
+        22928437,
+        978124,
+        78863732,
+        17646232,
+        91740153,
+        72669873,
+        97034519,
+        47325214,
+        88571563,
+        11437214,
+        88645356,
+        11018108,
+        4005658,
+        96154998,
+        60418490,
+        55437432,
+        4274032,
+        77667804,
+        79523152
+      ],
+      "source_sha256": {
+        "B0p": {
+          "results": "89b7b6eb8273419e47fa3984ed60808e911e14cdb1a6a7992831b83bec54939d",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1k": {
+          "results": "f8eee8ee5395f8cdcb39f92bd6f94b6ff911fa51795d3f0bcaae9aa372d0954c",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1": {
+          "results": "e2ff68c304592790e056793272db9223bf1fc03ac28d17fa8666c79d4e6c25fc",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B2": {
+          "results": "288933b692dc8eb10d629510fed5277464a3cf95818cdfeef13f4bc98ecfcd37",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        }
+      }
+    },
+    "transcript_disease_partition_02": {
+      "seed_order": [
+        17263407,
+        22928437,
+        978124,
+        78863732,
+        17646232,
+        91740153,
+        72669873,
+        97034519,
+        47325214,
+        88571563,
+        11437214,
+        88645356,
+        11018108,
+        4005658,
+        96154998,
+        60418490,
+        55437432,
+        4274032,
+        77667804,
+        79523152
+      ],
+      "source_sha256": {
+        "B0p": {
+          "results": "f1019183ed9c0151c2995081728239d7cb5ac5d12a97c4ea16ddf4240dd2730a",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1k": {
+          "results": "9c8bbf2c0636af4fa63bd4f8f4078a8430c212a6c8ea7b94d03fb9a0c1120ef6",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1": {
+          "results": "861157f7e782b2cca84913f97acf4bafe42d1ae1a1abe9c6f5d0e51747a0eede",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B2": {
+          "results": "e4f378e2afe6f9cb20fb718025bc55d7213f0441cb8a0a020d0e38ff7a379416",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        }
+      }
+    },
+    "transcript_disease_partition_03": {
+      "seed_order": [
+        17263407,
+        22928437,
+        978124,
+        78863732,
+        17646232,
+        91740153,
+        72669873,
+        97034519,
+        47325214,
+        88571563,
+        11437214,
+        88645356,
+        11018108,
+        4005658,
+        96154998,
+        60418490,
+        55437432,
+        4274032,
+        77667804,
+        79523152
+      ],
+      "source_sha256": {
+        "B0p": {
+          "results": "0f069ef6d4e4385763d863691948b6014fb0a9af7302c3fd19ecaec873d4ee78",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1k": {
+          "results": "40f8b5c65e54bad20b4b0f963ba5cf1249b14347b4e475673528a7e5b64d4b08",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1": {
+          "results": "5d1ebe033c6153b00ec0b624293f6bc8b6b4d4a2bc063f0216f72fb11d06f38a",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B2": {
+          "results": "07136740021c61cef6568a3244bb2f8998eabf47badd8c8a8319544a8dceed21",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        }
+      }
+    },
+    "transcript_disease_partition_04": {
+      "seed_order": [
+        17263407,
+        22928437,
+        978124,
+        78863732,
+        17646232,
+        91740153,
+        72669873,
+        97034519,
+        47325214,
+        88571563,
+        11437214,
+        88645356,
+        11018108,
+        4005658,
+        96154998,
+        60418490,
+        55437432,
+        4274032,
+        77667804,
+        79523152
+      ],
+      "source_sha256": {
+        "B0p": {
+          "results": "6fe643dfb655e5a4fbf9ae6220d249b1e108b2b28ee1923707d703d61d8850b5",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1k": {
+          "results": "511dba6dfc5d315684fc6e3727d2b71d23039365c48a5ff68be03c0cf87884cc",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1": {
+          "results": "282d4761e3d1b20cad1ae9ee41dbca1275ec499e742ce27141825804136f3ac6",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B2": {
+          "results": "5b619875c2ab1384829cfb76bca8c3698d3ad12a9dce11de5dcf6693187cfb0d",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        }
+      }
+    },
+    "transcript_disease_partition_05": {
+      "seed_order": [
+        17263407,
+        22928437,
+        978124,
+        78863732,
+        17646232,
+        91740153,
+        72669873,
+        97034519,
+        47325214,
+        88571563,
+        11437214,
+        88645356,
+        11018108,
+        4005658,
+        96154998,
+        60418490,
+        55437432,
+        4274032,
+        77667804,
+        79523152
+      ],
+      "source_sha256": {
+        "B0p": {
+          "results": "9580874988d20215872f9cf26b34808e80534a6673e564254c735e18127aa4c1",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1k": {
+          "results": "1cde84a15a74b15ec7c63c617a61b7ac20d0a8e61b667a0e65105ba15584a27c",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B1": {
+          "results": "d6d5be83f89d56117bc67e58c8618b717cfe42217b6127f6912b41081aaa4be8",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        },
+        "B2": {
+          "results": "a3a7f8dd0ccef5928aa83f6ba233deb8a04848f66daafece39442f9c04fd3f7a",
+          "seeds": "e4e4672a9a3beea66ea1dd459a6521da4f50174412e436fbbe7453d44d0a0b2c"
+        }
+      }
+    }
+  },
+  "scores": {
+    "case_count": 5,
+    "model_repeats_per_case": 3,
+    "mean_selected_ns_auc_across_cases": 0.4065295006482979,
+    "mean_fixed_b2_ns_auc_across_cases": 0.5168410034592583,
+    "mean_oracle_regret_across_cases": 0.12040706756366801,
+    "by_case": {
+      "transcript_disease_partition_01": {
+        "choices": [
+          "B2",
+          "B1k",
+          "B1"
+        ],
+        "mean_selected_ns_auc": 0.3708681629217343,
+        "fixed_b2_ns_auc": 0.46432809254237817,
+        "oracle_ns_auc": 0.5,
+        "mean_regret": 0.12913183707826573,
+        "paired_seed_delta_vs_b2": {
+          "mean": -0.09345992962064392,
+          "median": -0.09830586080586079,
+          "seed_wins": 3,
+          "seed_ties": 0,
+          "seed_losses": 17,
+          "seed_count": 20
+        }
+      },
+      "transcript_disease_partition_02": {
+        "choices": [
+          "B2",
+          "B2",
+          "B0p"
+        ],
+        "mean_selected_ns_auc": 0.5040705868205868,
+        "fixed_b2_ns_auc": 0.5061058802308802,
+        "oracle_ns_auc": 0.5209117965367965,
+        "mean_regret": 0.016841209716209726,
+        "paired_seed_delta_vs_b2": {
+          "mean": -0.002035293410293404,
+          "median": 0.004515392015392028,
+          "seed_wins": 12,
+          "seed_ties": 0,
+          "seed_losses": 8,
+          "seed_count": 20
+        }
+      },
+      "transcript_disease_partition_03": {
+        "choices": [
+          "B1",
+          "B1k",
+          "B0p"
+        ],
+        "mean_selected_ns_auc": 0.4132379819254819,
+        "fixed_b2_ns_auc": 0.5282828652828654,
+        "oracle_ns_auc": 0.5282828652828654,
+        "mean_regret": 0.1150448833573835,
+        "paired_seed_delta_vs_b2": {
+          "mean": -0.11504488335738336,
+          "median": -0.12704365079365074,
+          "seed_wins": 2,
+          "seed_ties": 0,
+          "seed_losses": 18,
+          "seed_count": 20
+        }
+      },
+      "transcript_disease_partition_04": {
+        "choices": [
+          "B1k",
+          "B2",
+          "B1"
+        ],
+        "mean_selected_ns_auc": 0.4397116933230419,
+        "fixed_b2_ns_auc": 0.5625111761193478,
+        "oracle_ns_auc": 0.5625111761193478,
+        "mean_regret": 0.12279948279630586,
+        "paired_seed_delta_vs_b2": {
+          "mean": -0.12279948279630586,
+          "median": -0.12264734648067979,
+          "seed_wins": 0,
+          "seed_ties": 0,
+          "seed_losses": 20,
+          "seed_count": 20
+        }
+      },
+      "transcript_disease_partition_05": {
+        "choices": [
+          "B2",
+          "B1k",
+          "B1k"
+        ],
+        "mean_selected_ns_auc": 0.3047590782506446,
+        "fixed_b2_ns_auc": 0.5229770031208198,
+        "oracle_ns_auc": 0.5229770031208198,
+        "mean_regret": 0.21821792487017524,
+        "paired_seed_delta_vs_b2": {
+          "mean": -0.21821792487017522,
+          "median": -0.21054292929292928,
+          "seed_wins": 0,
+          "seed_ties": 0,
+          "seed_losses": 20,
+          "seed_count": 20
+        }
+      }
+    },
+    "trials": [
+      {
+        "case_id": "transcript_disease_partition_01",
+        "repeat": 1,
+        "selected_method": "B2",
+        "selected_ns_auc": 0.46432809254237817,
+        "fixed_b2_ns_auc": 0.46432809254237817,
+        "oracle_ns_auc": 0.5,
+        "selected_minus_fixed_b2": 0.0,
+        "oracle_regret": 0.03567190745762183
+      },
+      {
+        "case_id": "transcript_disease_partition_01",
+        "repeat": 2,
+        "selected_method": "B1k",
+        "selected_ns_auc": 0.21260792778649912,
+        "fixed_b2_ns_auc": 0.46432809254237817,
+        "oracle_ns_auc": 0.5,
+        "selected_minus_fixed_b2": -0.25172016475587905,
+        "oracle_regret": 0.2873920722135009
+      },
+      {
+        "case_id": "transcript_disease_partition_01",
+        "repeat": 3,
+        "selected_method": "B1",
+        "selected_ns_auc": 0.43566846843632556,
+        "fixed_b2_ns_auc": 0.46432809254237817,
+        "oracle_ns_auc": 0.5,
+        "selected_minus_fixed_b2": -0.028659624106052606,
+        "oracle_regret": 0.06433153156367444
+      },
+      {
+        "case_id": "transcript_disease_partition_02",
+        "repeat": 1,
+        "selected_method": "B2",
+        "selected_ns_auc": 0.5061058802308802,
+        "fixed_b2_ns_auc": 0.5061058802308802,
+        "oracle_ns_auc": 0.5209117965367965,
+        "selected_minus_fixed_b2": 0.0,
+        "oracle_regret": 0.014805916305916322
+      },
+      {
+        "case_id": "transcript_disease_partition_02",
+        "repeat": 2,
+        "selected_method": "B2",
+        "selected_ns_auc": 0.5061058802308802,
+        "fixed_b2_ns_auc": 0.5061058802308802,
+        "oracle_ns_auc": 0.5209117965367965,
+        "selected_minus_fixed_b2": 0.0,
+        "oracle_regret": 0.014805916305916322
+      },
+      {
+        "case_id": "transcript_disease_partition_02",
+        "repeat": 3,
+        "selected_method": "B0p",
+        "selected_ns_auc": 0.5,
+        "fixed_b2_ns_auc": 0.5061058802308802,
+        "oracle_ns_auc": 0.5209117965367965,
+        "selected_minus_fixed_b2": -0.006105880230880212,
+        "oracle_regret": 0.020911796536796534
+      },
+      {
+        "case_id": "transcript_disease_partition_03",
+        "repeat": 1,
+        "selected_method": "B1",
+        "selected_ns_auc": 0.5219895868020867,
+        "fixed_b2_ns_auc": 0.5282828652828654,
+        "oracle_ns_auc": 0.5282828652828654,
+        "selected_minus_fixed_b2": -0.006293278480778652,
+        "oracle_regret": 0.006293278480778652
+      },
+      {
+        "case_id": "transcript_disease_partition_03",
+        "repeat": 2,
+        "selected_method": "B1k",
+        "selected_ns_auc": 0.21772435897435893,
+        "fixed_b2_ns_auc": 0.5282828652828654,
+        "oracle_ns_auc": 0.5282828652828654,
+        "selected_minus_fixed_b2": -0.31055850630850645,
+        "oracle_regret": 0.31055850630850645
+      },
+      {
+        "case_id": "transcript_disease_partition_03",
+        "repeat": 3,
+        "selected_method": "B0p",
+        "selected_ns_auc": 0.5,
+        "fixed_b2_ns_auc": 0.5282828652828654,
+        "oracle_ns_auc": 0.5282828652828654,
+        "selected_minus_fixed_b2": -0.028282865282865388,
+        "oracle_regret": 0.028282865282865388
+      },
+      {
+        "case_id": "transcript_disease_partition_04",
+        "repeat": 1,
+        "selected_method": "B1k",
+        "selected_ns_auc": 0.2685666599314297,
+        "fixed_b2_ns_auc": 0.5625111761193478,
+        "oracle_ns_auc": 0.5625111761193478,
+        "selected_minus_fixed_b2": -0.29394451618791806,
+        "oracle_regret": 0.29394451618791806
+      },
+      {
+        "case_id": "transcript_disease_partition_04",
+        "repeat": 2,
+        "selected_method": "B2",
+        "selected_ns_auc": 0.5625111761193478,
+        "fixed_b2_ns_auc": 0.5625111761193478,
+        "oracle_ns_auc": 0.5625111761193478,
+        "selected_minus_fixed_b2": 0.0,
+        "oracle_regret": 0.0
+      },
+      {
+        "case_id": "transcript_disease_partition_04",
+        "repeat": 3,
+        "selected_method": "B1",
+        "selected_ns_auc": 0.48805724391834826,
+        "fixed_b2_ns_auc": 0.5625111761193478,
+        "oracle_ns_auc": 0.5625111761193478,
+        "selected_minus_fixed_b2": -0.0744539322009995,
+        "oracle_regret": 0.0744539322009995
+      },
+      {
+        "case_id": "transcript_disease_partition_05",
+        "repeat": 1,
+        "selected_method": "B2",
+        "selected_ns_auc": 0.5229770031208198,
+        "fixed_b2_ns_auc": 0.5229770031208198,
+        "oracle_ns_auc": 0.5229770031208198,
+        "selected_minus_fixed_b2": 0.0,
+        "oracle_regret": 0.0
+      },
+      {
+        "case_id": "transcript_disease_partition_05",
+        "repeat": 2,
+        "selected_method": "B1k",
+        "selected_ns_auc": 0.19565011581555697,
+        "fixed_b2_ns_auc": 0.5229770031208198,
+        "oracle_ns_auc": 0.5229770031208198,
+        "selected_minus_fixed_b2": -0.3273268873052629,
+        "oracle_regret": 0.3273268873052629
+      },
+      {
+        "case_id": "transcript_disease_partition_05",
+        "repeat": 3,
+        "selected_method": "B1k",
+        "selected_ns_auc": 0.19565011581555697,
+        "fixed_b2_ns_auc": 0.5229770031208198,
+        "oracle_ns_auc": 0.5229770031208198,
+        "selected_minus_fixed_b2": -0.3273268873052629,
+        "oracle_regret": 0.3273268873052629
+      }
+    ],
+    "paired_partition_summary": {
+      "mean_delta_vs_b2": -0.11031150281096035,
+      "positive_partitions": 0,
+      "tied_partitions": 0,
+      "negative_partitions": 5,
+      "interpretation": "Descriptive across partitions of one parent dataset; seed repeats and model repeats are not independent cohorts."
+    }
+  },
+  "trace_file": "artifacts\\reports\\traces\\20260926T160734645239Z_method_selection_scoring_b9e64265eed74732beb4000d9bc79126.jsonl",
+  "data_amendment": {
+    "manifest_sha256": "5b512abd97df4de2a85ea821a10ac0e54293d06be13c9e67cfa88abd56f7ce35",
+    "failed_run_trace_sha256": "2dc668f67e44155de29b8646510c7aea757a0745fedcf740b679528127824661",
+    "rule": "Map every explicit -1 rating to 0 (unknown); preserve 0, 1 and all features.",
+    "disclosure": "The original preregistered five-partition run failed at partition 02 because one explicit negative cannot be stratified. This mapping is a post-failure protocol amendment, not a clean confirmatory run."
+  },
+  "limitation": "Partitions are new evaluation units but derive from the already studied TRANSCRIPT dataset; this is not an independent external-dataset validation. No test metrics or outcome labels may enter the model prompt."
+}

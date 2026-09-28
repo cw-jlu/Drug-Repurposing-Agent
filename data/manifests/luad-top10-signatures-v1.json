@@ -1,0 +1,25 @@
+{
+  "version": "luad_top10_signatures_v1",
+  "status": "exact_signature_ids_recovered_from_pinned_metadata",
+  "reconstruction_rule": "filter pert_type=trt_cp, pert_idose=10 µM, pert_itime=24 h; then keep the first source-order row per pert_iname+cell_id",
+  "upstream_method_source": "https://rdrr.io/github/yduan004/signatureSearch_data/src/R/meta_filter.R",
+  "source_filtered_rows_before_distinct": 5814,
+  "reconstructed_a549_columns": 4920,
+  "top10_recovered": 10,
+  "top10_unique_sig_ids": 10,
+  "top10_unique_pert_ids": 10,
+  "source_sha256": {
+    "data\\raw\\GSE92742\\GSE92742_Broad_LINCS_sig_info.txt.gz": "19da29c0ee12ddf27f9698cd0da40beaff58657dcde9d382aae068737e831299",
+    "data\\raw\\GSE92742\\GSE92742_Broad_LINCS_pert_info.txt.gz": "b1945b3fde51021865b12269929cc78ccf2665be27f53a4da9336e4ddcf4b42f",
+    "configs\\luad_top10_evidence_v1.json": "e64735c71634cbb32c8a5ed750bb40bb8abbc7a81b965a0562482e25a0d39c7d"
+  },
+  "output": {
+    "path": "configs\\luad_top10_signature_ids.csv",
+    "sha256": "a968500398b51a6d3d3b5e2b040826245477ef866ef279a93b763f11c12e2ac0"
+  },
+  "limitations": [
+    "The reconstruction identifies the exact source signature but does not repeat the expression ranking.",
+    "Chemical structures still require row-level identity review when Broad and Hub annotations disagree.",
+    "The signatures are A549 in vitro perturbations and do not establish treatment efficacy."
+  ]
+}

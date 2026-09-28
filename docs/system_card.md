@@ -2,7 +2,7 @@
 
 ## System and current capability
 
-The current implementation runs deterministic expression ranking, reproduces a limited TRANSCRIPT external benchmark, and packages a LUAD screening case with source hashes, quality checks, an identity audit, per-candidate evidence ledgers, a trace, and an external-model cost record. It is a research prototype. An optional [Jev adapter](jev_integration.md) exists but has no live results or account access; no general LLM planner is active. The benchmark strict mode reads item and user expression features for ranking; the benchmark adapter sees labels only through its training fold.
+The current implementation accepts a natural-language research request, produces a validated allow-listed tool plan, runs deterministic expression ranking, reproduces a limited TRANSCRIPT external benchmark, and packages a LUAD screening case with source hashes, quality checks, an identity audit, per-candidate evidence ledgers, a trace, and an external-model cost record. It is a research prototype. The default planner is a deterministic fallback; a live DeepSeek function-calling planner and a provider-neutral structured-LLM adapter are available. An optional [Jev adapter](jev_integration.md) exists without live results or account access. The benchmark strict mode reads item and user expression features for ranking; the planner receives only the question, mode, safe input inventory, and tool schemas, while the benchmark adapter sees labels only through its training fold.
 
 ## Inputs and outputs
 
@@ -10,12 +10,14 @@ Inputs are versioned expression matrices and manifests listed in the [data card]
 
 ## Evaluation
 
-See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). Three-seed random and weakly correlated splits use the official `stanscofi` global AUC/NDCG functions. ALSWR, PMF, and LogisticMF are direct package-default reruns; there is no publication-style nested hyperparameter search. Unknown associations count as non-positive in the official global metric convention, but are not known clinical failures. The LUAD frozen-control check reports ranks only for present names and does not turn absent names into negatives.
+See [the protocol](evaluation_protocol.md) and [benchmark results](benchmark_results.md). B1k/B2 use three outer seeds and three-fold inner tuning. ALSWR, PMF, and LogisticMF use five outer seeds, two split protocols, a prespecified four-candidate grid, and three-fold inner tuning. A separate B2 run in the publication runner uses the same 100 seeds and five-fold model selection as 11 published TRANSCRIPT models; its NS-AUC ranks are 9/12 and 8/12 across the two splits. Every project nested result includes an explicit zero-overlap audit. Unknown associations count as non-positive in the global metric convention, but are not known clinical failures. The independent 100-case Agent v3 holdout was frozen before provider calls; the rule and live DeepSeek planners scored 90% and 98%, respectively.
+
+The [component ablation](component_and_llm_adjudication.md) uses that same runner: fixed B2 leads its three inputs on random simple, but single-component B1 leads on the repeated weakly correlated holdout. A one-call DeepSeek selector chose these two methods before seeing those ablation scores; that is not an independent validation of selector accuracy. A separate LUAD LLM output can only prioritize research actions, and every candidate remains `insufficient_evidence`.
 
 ## Safeguards
 
-The LUAD case validation rejects changed hashes, non-finite scores, broken ranks, mismatched ledgers, and changes to the control list. All unreviewed Top-10 candidates remain in the `insufficient_evidence` tier. The case report explicitly separates a transcriptomic score from clinical evidence and records unresolved drug identities. These checks cannot verify biological validity, citation relevance, treatment efficacy, or safety.
+The LUAD case validation rejects changed hashes, non-finite scores, broken ranks, mismatched ledgers, and changes to the control list. All Top-10 candidates remain in the `insufficient_evidence` tier. Exact source GSE92742 IDs are recorded separately from the cross-source Broad chemical-identity audit. These checks cannot verify biological validity, citation relevance, treatment efficacy, or safety.
 
 ## Known gaps
 
-Required before a clinical evidence report or full project completion: compound-level reconciliation, target/pathway and full literature review with support and conflict evidence (two context abstracts have been triaged), larger internal Eval suite, complete benchmark tuning and ablations, Jev access or documented fallback comparison, and the course-specific report, slides, and demo after the assignment PDF is supplied. No clinical deployment is supported.
+Required before any clinical efficacy claim: execute the preregistered compound procurement, dose, subtype, mechanism, and combination experiments; independently replicate the findings; and assess safety. Further benchmark search spaces, live Jev evaluation (if access becomes available), and broader Agent/provider repetitions remain optional research extensions. The Top-10 source-ID reconstruction, evidence matrix, independent v3 holdout, updated report, and updated course slides are complete. No clinical deployment is supported.

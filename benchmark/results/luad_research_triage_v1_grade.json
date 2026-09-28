@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "failures": [],
+  "shortlist_size": 3,
+  "checks": [
+    "rank-to-source crosswalk integrity",
+    "candidate/class citation scope",
+    "known GR contradiction",
+    "identity-based assay gate",
+    "structured research-only abstention"
+  ],
+  "scope": "observable one-case retrospective triage audit; not an independent holdout or treatment-efficacy score",
+  "input_sha256": {
+    "benchmark\\results\\luad_llm_adjudication_v1.json": "5fc6cbcfc34ca6aebf0a5d476374171cbe8853d3a12212524a80bd27fa337b50",
+    "configs\\luad_top10_evidence_v1.json": "e64735c71634cbb32c8a5ed750bb40bb8abbc7a81b965a0562482e25a0d39c7d",
+    "configs\\luad_top10_signature_ids.csv": "a968500398b51a6d3d3b5e2b040826245477ef866ef279a93b763f11c12e2ac0"
+  }
+}

@@ -25,6 +25,11 @@ class TranscriptBaseline:
             raise ValueError("Unknown baseline")
         self.seed = int(params.get("seed", 1234))
         self.neighbors = int(params.get("neighbors", 10))
+        self.rrf_k = int(params.get("rrf_k", 60))
+        if self.neighbors < 1:
+            raise ValueError("neighbors must be positive")
+        if self.rrf_k < 1:
+            raise ValueError("rrf_k must be positive")
         self.name = f"Transcript{self.method}"
         self._train_positive: np.ndarray | None = None
         self._drug_ids: list[str] = []
@@ -92,7 +97,7 @@ class TranscriptBaseline:
             popularity = np.broadcast_to(self._train_positive.sum(axis=1)[:, None], shape)
             knn = self._knn(data)
             # Fixed RRF; every method ranks candidates within each disease.
-            values = _rrf([popularity, knn, reversal])
+            values = _rrf([popularity, knn, reversal], k=self.rrf_k)
         available = test_dataset.folds.tocoo()
         selected = values[available.row, available.col]
         # Keep all available pairs, including a legitimate zero score.

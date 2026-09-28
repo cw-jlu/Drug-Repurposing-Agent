@@ -1,0 +1,469 @@
+{
+  "protocol": "transcript_nested_cv_grid_v1",
+  "evaluated_at": "2026-09-24T16:47:35.503565+00:00",
+  "dataset": "TRANSCRIPT v2.0.0",
+  "split": "weakly_correlated",
+  "seed": 1236,
+  "outer_test_size": 0.2,
+  "inner_folds": 3,
+  "selection_metric": "global_AUC",
+  "implementation": "stanscofi_2.0.1_split_and_metric_equivalent_lightweight_runner",
+  "runtime_versions": {
+    "python": "3.13.0",
+    "numpy": "2.2.4",
+    "pandas": "2.2.3",
+    "scipy": "1.16.1",
+    "scikit_learn": "1.9.0"
+  },
+  "counts": {
+    "outer_train_pairs": 74141,
+    "outer_test_pairs": 18422
+  },
+  "leakage_audit": {
+    "outer_train_test_overlap": 0,
+    "outer_test_coordinates_seen_by_inner_cv": 0,
+    "inner_coordinate_union": 74141
+  },
+  "input_sha256": {
+    "ratings": "ddc58b1b21f3f8883799c981bb4b2641f3a7e162fe50223b37a0e7a79c18e82d",
+    "items": "86b64ed3415e0cf0a07e676feda474bfa64d08d3352d1338d220ded78fd2484b",
+    "users": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332",
+    "grid": "8dab85190cec7901cb03a256266567bac7191d761f6dd3376fe3d28876ff3fef"
+  },
+  "methods": {
+    "B1k": {
+      "selected_parameters": {
+        "neighbors": 40
+      },
+      "selection": {
+        "metric": "global_AUC",
+        "mean_global_AUC": 0.6123907235219418,
+        "mean_global_NDCG": 0.4420359872538933
+      },
+      "outer_test": {
+        "global_AUC": 0.5139592794429306,
+        "global_NDCG": 0.37684117035225634
+      },
+      "candidate_results": [
+        {
+          "parameters": {
+            "neighbors": 5
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.5576074104727982,
+              "global_NDCG": 0.41343587555242683,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5724916059054157,
+              "global_NDCG": 0.4350222645142947,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5749539043649518,
+              "global_NDCG": 0.4348702089348236,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.5683509735810551,
+          "mean_global_NDCG": 0.4277761163338483
+        },
+        {
+          "parameters": {
+            "neighbors": 10
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.5786087997517033,
+              "global_NDCG": 0.42051244425611034,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5758587517641115,
+              "global_NDCG": 0.44211684367659865,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5972416519788792,
+              "global_NDCG": 0.44716792188137117,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.5839030678315646,
+          "mean_global_NDCG": 0.4365990699380267
+        },
+        {
+          "parameters": {
+            "neighbors": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.5841457782178803,
+              "global_NDCG": 0.42036075508786236,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.5986690629375323,
+              "global_NDCG": 0.444670590640867,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.5982045796336736,
+              "global_NDCG": 0.441682861439459,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.5936731402630286,
+          "mean_global_NDCG": 0.4355714023893961
+        },
+        {
+          "parameters": {
+            "neighbors": 40
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.6014118177384313,
+              "global_NDCG": 0.4234073038705776,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.6166010115792829,
+              "global_NDCG": 0.4465950550441788,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.6191593412481109,
+              "global_NDCG": 0.45610560284692353,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.6123907235219418,
+          "mean_global_NDCG": 0.4420359872538933
+        }
+      ]
+    },
+    "B2": {
+      "selected_parameters": {
+        "neighbors": 10,
+        "rrf_k": 20
+      },
+      "selection": {
+        "metric": "global_AUC",
+        "mean_global_AUC": 0.7339355611608958,
+        "mean_global_NDCG": 0.45236444788920566
+      },
+      "outer_test": {
+        "global_AUC": 0.47470821980018163,
+        "global_NDCG": 0.33421747027668947
+      },
+      "candidate_results": [
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7222981111718715,
+              "global_NDCG": 0.44414763587944645,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7297679482614297,
+              "global_NDCG": 0.4425041141929804,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7412141165341994,
+              "global_NDCG": 0.4709987760554772,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7310933919891669,
+          "mean_global_NDCG": 0.45255017537596803
+        },
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7197763482656183,
+              "global_NDCG": 0.4479858706940562,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7262615378018565,
+              "global_NDCG": 0.4469399929797325,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7405057771964246,
+              "global_NDCG": 0.48233542968256155,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7288478877546333,
+          "mean_global_NDCG": 0.45908709778545004
+        },
+        {
+          "parameters": {
+            "neighbors": 5,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7162218634072803,
+              "global_NDCG": 0.4445445161462716,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7217916474797208,
+              "global_NDCG": 0.4473515685330408,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7385732708132415,
+              "global_NDCG": 0.48843871157348906,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7255289272334142,
+          "mean_global_NDCG": 0.4601115987509338
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7312824226659376,
+              "global_NDCG": 0.44659623689666383,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7247046453227043,
+              "global_NDCG": 0.43911376431818766,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7458196154940455,
+              "global_NDCG": 0.47138334245276536,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7339355611608958,
+          "mean_global_NDCG": 0.45236444788920566
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7281149776089624,
+              "global_NDCG": 0.4471772874488522,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7213320929400118,
+              "global_NDCG": 0.43977461222481673,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7458332871453223,
+              "global_NDCG": 0.4830223230382096,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7317601192314321,
+          "mean_global_NDCG": 0.4566580742372928
+        },
+        {
+          "parameters": {
+            "neighbors": 10,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7243208790883966,
+              "global_NDCG": 0.4443479885836729,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.717060193255268,
+              "global_NDCG": 0.43701561153745694,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7445969264649913,
+              "global_NDCG": 0.4844155970455453,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7286593329362187,
+          "mean_global_NDCG": 0.45525973238889167
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 20
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7226707408994842,
+              "global_NDCG": 0.44239110419277006,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7332456482142624,
+              "global_NDCG": 0.4412521545337906,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7440016553783168,
+              "global_NDCG": 0.469703082144144,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7333060148306879,
+          "mean_global_NDCG": 0.4511154469569016
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 60
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7200314804688077,
+              "global_NDCG": 0.44330295222491756,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7296066847008422,
+              "global_NDCG": 0.44027370799926924,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7431723034515376,
+              "global_NDCG": 0.47825395226847667,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7309368228737293,
+          "mean_global_NDCG": 0.4539435374975545
+        },
+        {
+          "parameters": {
+            "neighbors": 20,
+            "rrf_k": 100
+          },
+          "inner_folds": [
+            {
+              "fold": 0,
+              "global_AUC": 0.7162168753048285,
+              "global_NDCG": 0.4403677069629161,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 1,
+              "global_AUC": 0.7247803366586563,
+              "global_NDCG": 0.4369959241565245,
+              "train_pairs": 49427,
+              "validation_pairs": 24714
+            },
+            {
+              "fold": 2,
+              "global_AUC": 0.7417378885797371,
+              "global_NDCG": 0.47565958968398053,
+              "train_pairs": 49428,
+              "validation_pairs": 24713
+            }
+          ],
+          "mean_global_AUC": 0.7275783668477406,
+          "mean_global_NDCG": 0.45100774026780704
+        }
+      ]
+    }
+  },
+  "runtime_sec": 121.632,
+  "interpretation": "Unknown pairs are non-positive only under the official global metric convention; selected parameters use outer-training data only."
+}

@@ -1,0 +1,271 @@
+{
+  "status": "prescore_choices_frozen_outcomes_unseen",
+  "chosen_at": "2026-09-26T15:32:16.886583+00:00",
+  "protocol_sha256": "21fdea769af1c9d0862dc3fb5380df04ba9955b4be4b7f5a39c64b76898d2c65",
+  "cases_sha256": "ca5b3a1c8f5d010cfe77db58258635d080f68afefc4161111cf8f590d61d8f50",
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 1,
+      "choice": {
+        "method": "B2",
+        "reason": "With 613 drugs, 25 diseases, and a random_simple split holding out 20% of pairs while allowing the same drugs in training, a fusion method that combines a training-fold positive-count signal (B0p), expression-similarity label propagation (B1k), and negative expression correlation (B1) is the most robust default. B2 uses fixed equal weights and reciprocal-rank fusion at k=60, which aggregates complementary signals without needing tuning or labels, reducing the risk that any single component (e.g., popularity-like counts or noisy median disease signature variation) dominates. Given the supplied summary lacks validation evidence, B2 is chosen on structural grounds only; this is not a claim of unseen performance."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 195,
+        "total_tokens": 769
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "benchmark\\results\\traces\\method_selection_v2_initial_provider_attempt.jsonl",
+      "provider_trace_sha256": "4ed955d92ac30261bbe79233abc6bf6e6117beb472dc5950bbbd1f734121e96e"
+    },
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 2,
+      "choice": {
+        "method": "B1k",
+        "reason": "The split is random_simple over drug-disease pairs with drugs shared between train and test, so a method that generalizes from expression-similar drugs observed in training should be the most appropriate among the supplied options. B1k (training-fold label propagation from expression-similar drugs, 10 neighbors) directly exploits both the drug sharing across folds and the 12096-gene expression features. B1 alone is label-free and bypasses training signals, B0p is a per-drug popularity prior vulnerable to the same-drug overlap, and B2's fusion adds the weaker negative-correlation component without evidence it helps. Uncertainty: the summary gives no neighbor-quality, graph-density, or label-signal diagnostics, so this choice rests on the split structure and feature availability rather than demonstrated performance."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 209,
+        "total_tokens": 783
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "artifacts\\traces\\20260926T152907362790Z_deepseek_65b1b10a8a234827ab45471ba14cf9fe.jsonl",
+      "provider_trace_sha256": "a33d6f3716937516a36d7c097b1557b851e6affc00118f82f9aef4d59360dc64"
+    },
+    {
+      "case_id": "transcript_disease_partition_01",
+      "repeat": 3,
+      "choice": {
+        "method": "B1",
+        "reason": "The summary gives only dataset dimensions and a median disease-signature SD (0.00865), with no information about association-label density, drug-degree distribution, or expression-signal strength that would justify a labeled or fusion approach. Given a random simple split holding out 20% of pairs while drugs recur in training (making label-derived features like B0p and B1k somewhat leak-prone/optimistic in a different split, and B2 dependent on tuning of components I cannot verify), the label-free choice B1 is the most defensible: it uses neither training labels nor neighbor propagation, so it is robust to the unseen labeling structure and avoids assumptions the summary does not support. Uncertainty is high because the provided summary is insufficient to distinguish efficacy among methods; B1 is chosen on interpretability and low-risk grounds, not on claimed performance."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 219,
+        "total_tokens": 793
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "artifacts\\traces\\20260926T152908848874Z_deepseek_15f011a128534a7e9ad8df039de3442e.jsonl",
+      "provider_trace_sha256": "8328b076be6a3a8aae01d3622a7506d430ae9f5ad1e333472e7af0d23a79951f"
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 1,
+      "choice": {
+        "method": "B2",
+        "reason": "With 29 diseases, 613 drugs and ~12k expression genes, the split holds out 20% of drug-disease pairs while allowing the same drugs in training, so drug-level signals (B0p counts, label propagation through expression-similar drugs) and the disease-side expression correlation (B1) are all plausibly informative and complementary. B2 fuses these three into one fixed equal-weight reciprocal-rank score, which hedges against any single signal being weak or miscalibrated and requires no tuning that could overfit this small disease set. The provided summary confirms the components exist without revealing which is best, so the robust fusion is the safer prescore choice; uncertainty remains because the summary lacks per-method validation evidence, so actual NS-AUC performance is unverified."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 209,
+        "total_tokens": 783
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "artifacts\\traces\\20260926T152910760947Z_deepseek_948a0e62d03f4297997b3c597a130b9f.jsonl",
+      "provider_trace_sha256": "7e5e5face1553db37951aa76f42d0d8171db98bc1e773f5a8f3a7f60560c880c"
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 2,
+      "choice": {
+        "method": "B2",
+        "reason": "Frozen before labels/outcomes. The summary gives only weak signal: 12096 expression genes vs 29 diseases and 613 drugs, with a low median disease-signature SD (0.00825), indicating signature noise that makes any single label-free signal (B1) or pure training-count prior (B0p) fragile. Split is random over pairs with drugs shared between folds, so training-fold-derived signals (B0p, B1k) are usable without drug-disjoint leakage, and B1k's 10-neighbor expression similarity is plausible given the large gene space. B2 is the fixed reciprocal-rank fusion of all three complementary views (positive-count prior, expression-similarity propagation, negative correlation), requiring no tuning and hedging against any one method's failure mode. This is a defensible default under uncertainty; I make no claim about its actual NS-AUC performance on this partition."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 235,
+        "total_tokens": 809
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "artifacts\\traces\\20260926T152912493013Z_deepseek_47f7d456302146e69d2a81bf87a790c9.jsonl",
+      "provider_trace_sha256": "4832d90a06d45da2e40971595a883a3db1cfe3dc780db5ee33d3be33595fc928"
+    },
+    {
+      "case_id": "transcript_disease_partition_02",
+      "repeat": 3,
+      "choice": {
+        "method": "B0p",
+        "reason": "The split is random_simple holding out 20% of drug-disease pairs while the same drugs occur in training. That means per-drug training positive association counts (B0p) are directly informative for the held-out pairs of those same drugs, since a drug's overall association propensity transfers across its held-out pairs. The expression-based signals (B1 negative Spearman, B1k propagation) rely on expression similarity, but the provided summary gives a very small median disease-signature SD (0.00825), suggesting weak/low-contrast expression signal in this partition, which raises uncertainty for B1/B1k. B2 fuses all of them, including the weaker B1/B1k components, which could dilute the strong drug-level prior under equal weighting with fixed k=60. With no association labels or held-out metrics available and a same-drug split, B0p is the most defensible single choice as it most directly exploits the split structure. I cannot claim performance on unseen data; this is a structure-based rationale only."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 262,
+        "total_tokens": 836
+      },
+      "selection_source": "recovered_previous_attempt",
+      "recovery_attempt_trace_sha256": "36e46d09229b25d1072dd139dad317bbc9d6ee10c6e4b0a37b430b413dd6a840",
+      "provider_trace_file": "artifacts\\traces\\20260926T152914552173Z_deepseek_78fc706408fd47c886b8247e70119091.jsonl",
+      "provider_trace_sha256": "99c55aaa38ed67f32171fe0aa7273f18a53a80af6ca28b62555a018026770385"
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 1,
+      "choice": {
+        "method": "B1",
+        "reason": "Given a random-simple split holding out 20% of drug-disease pairs while allowing the same drugs in training, a label-free expression-based method avoids leakage from training-fold labels and does not depend on positive-count statistics that may be sparse across 33 diseases. B1 (negative Spearman correlation between drug and disease expression) directly uses the supplied 12,096-gene expression profiles. The median disease signature SD (0.00847) is small but does not indicate method preference, so this choice is made under uncertainty about actual NS-AUC performance."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 163,
+        "total_tokens": 737
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153201866746Z_deepseek_ebe8ae5811b44a768b54204264d95b15.jsonl",
+      "provider_trace_sha256": "05ddcb11dcd5e0945ea49c2483e9169b1a2abf43be01ac415854f461aa563a6f"
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 2,
+      "choice": {
+        "method": "B1k",
+        "reason": "For a random-simple split that holds out 20% of drug-disease pairs while allowing the same drugs in training, label propagation from expression-similar drugs (B1k) exploits the retained drug-level structure while remaining label-free at prediction time and robust to the very low median disease-signature SD (0.00847), which suggests weak/noisy per-disease signals where direct correlation (B1) may be unreliable. B1k does not depend on training-fold positive counts (B0p) or their fusion (B2), and with 12096 expression genes there is ample feature space for a 10-neighbor similarity graph. Uncertainty: the provided summary lacks neighbor-graph diagnostics and label availability per drug, so this choice is not a claim of measured efficacy."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 209,
+        "total_tokens": 783
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153203155953Z_deepseek_1f99c4569c2248b1a3acad88fe92bd95.jsonl",
+      "provider_trace_sha256": "262bcbff3cf2929f6abd9a290d8d9f5f082aaeb99262a0ed4e4ff0cd9404513d"
+    },
+    {
+      "case_id": "transcript_disease_partition_03",
+      "repeat": 3,
+      "choice": {
+        "method": "B0p",
+        "reason": "This is a random_simple pair-level split, not a drug-cold-start split, so training-fold positive counts per drug (B0p) can exploit the fact that the same drugs reappear in training. With 33 diseases and 613 drugs, per-drug association counts provide a direct, stable ranking signal learned from training folds, and B0p alone is the single method that most directly uses the observed label structure that survives this split. The expression-based methods (B1, B1k) depend on a disease signature with a very small median SD (0.00847), suggesting weak/noisy expression signal, and B2 only fuses components whose individual value is uncertain here. B0p also avoids the risk that the label-free correlation (B1) carries little ranking information for official NS-AUC. This choice is made on the provided summary alone; no performance claims are implied."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 233,
+        "total_tokens": 807
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153204559950Z_deepseek_c78f3959edb647c09a2cec99f99d28e7.jsonl",
+      "provider_trace_sha256": "f74d4f42e17f5172a4df36d338e53aa0edc9d49e7003f841b01161e8a88f6a0b"
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 1,
+      "choice": {
+        "method": "B1k",
+        "reason": "Insufficient information to compare methods empirically before labels are revealed, but the summary suggests key considerations: B0p is purely a training-fold positive-count prior and, under a random_simple 20% pair holdout where the same drugs recur in training, it can leak drug-level frequency structure and give limited use of the provided 12,096-gene expression features. B1 (negative Spearman correlation) uses expression but is a single deterministic score and ignores the drug-disease association-count structure. B2 fuses everything but with fixed equal weights and no tuning evidence, adding complexity risk. B1k (label propagation from expression-similar drugs, 10 neighbors) uses the expression feature summary, incorporates training-fold association structure, is label-free at scoring time, and is a single coherent choice appropriate for a 613-drug / 31-disease space. Given only the provided summary, B1k is selected, with uncertainty noted about its superiority over B1 or B2 since no association labels or held-out metrics were available."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 260,
+        "total_tokens": 834
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153206337168Z_deepseek_bc3017bd91114067a074a7d7cde36ee3.jsonl",
+      "provider_trace_sha256": "f187aa49bd77c5a8357d41d79be5f5812079846818d41fe27d3e3126a9946ad3"
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 2,
+      "choice": {
+        "method": "B2",
+        "reason": "Given the expression-feature summary only (12096 genes, 31 diseases, 613 drugs, small disease signature SD ~0.008, and a random simple split holding out 20% of pairs with the same drugs recurring in training), there is insufficient information to validate any single signal empirically. I choose the fixed equal-weight reciprocal-rank fusion B2 because it is a pre-specified deterministic combination of three complementary, individually plausible scoring sources (training-fold positive counts B0p, expression-similarity label propagation B1k, and label-free negative correlation B1), which hedges against any one source being weak or noisy without tuning on labels. Uncertainty: without label-derived diagnostics or validation folds we cannot confirm this is superior to B0p, B1k, or B1, and random pair splits with recurring drugs may favor simpler count-based signals."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 223,
+        "total_tokens": 797
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153208143188Z_deepseek_f292a3a98f1a459eb3817dc7ed9cd052.jsonl",
+      "provider_trace_sha256": "5363a21936d267f1a80ca93e25fd8bbb82fbd133cab939785f7ccd7afc3c3fc6"
+    },
+    {
+      "case_id": "transcript_disease_partition_04",
+      "repeat": 3,
+      "choice": {
+        "method": "B1",
+        "reason": "The summary gives 31 diseases vs 613 drugs, so per-drug training positive counts (B0p) will be extremely sparse, and B1k label propagation with only 10 neighbors over a 12096-gene expression space is likely noisy given the small median disease-signature SD (0.00828) relative to typical correlation scales. The split is random at the pair level with drugs recurring in training, which favors a method that does not depend on held-out drug novelty; a label-free negative Spearman correlation (B1) between drug and disease expression is the most stable, assumption-light choice here, and it does not require tuning or label leakage. B2's fixed fusion inherits B0p/B1k weaknesses and adds untested weights. Uncertainty: no association labels or NS-AUC values were available, so this is a structural, not empirical, choice."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 228,
+        "total_tokens": 802
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153209874417Z_deepseek_8d328c219af04ad7874eae1548944e49.jsonl",
+      "provider_trace_sha256": "9afa26bb514d7d19b5d914ec81215ea2c3276e3ac5d6de686ae5c392c6e3545b"
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 1,
+      "choice": {
+        "method": "B2",
+        "reason": "Frozen choice: B2 (equal-weight reciprocal-rank fusion of B0p, B1k, B1). Rationale from the supplied summary only: random_simple split with 20% pairs held out but the same drugs recurring in training makes a positive-association-count prior (B0p) unusually informative relative to a cold-drug setting, while the expression-based signals (B1 negative Spearman, B1k 10-neighbor label propagation) contribute complementary drug-disease evidence. Rank fusion with k=60 combines these three without needing any per-source tuning, which suits a single prior-free choice where I cannot validate source weights. Uncertainties: median disease signature SD (0.00826) is fairly small, so the label-free B1 correlation may be noisy, and no metrics are visible to confirm that fusion outperforms B0p alone; B2 is chosen for robustness across signal types rather than demonstrated efficacy."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 238,
+        "total_tokens": 812
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153211552404Z_deepseek_11d1c9810ddc47a6aff4df736f60e606.jsonl",
+      "provider_trace_sha256": "e74c756116be5b30a5058aa1a81ec85b4819d5dd136bbd586537afbb7ce44d04"
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 2,
+      "choice": {
+        "method": "B1k",
+        "reason": "The split holds out 20% of drug-disease pairs at random while allowing the same drugs in training. For this partition, the expression-similarity structure (12,096 genes) is the most informative signal available: B1k propagates training-fold labels from expression-similar drugs with 10 neighbors, which exploits both the dense gene-level representation and the pair-level holdout without relying on count-based priors that could leak drug-level popularity. B1's label-free Spearman correlation is attractive for stability but discards available training labels; B0p is a pure popularity baseline likely misaligned with a random pair split; B2's fixed fusion mixes in weaker components without tuning. Given the summary alone (no association labels, no held-out metrics), B1k is the most defensible frozen choice. Uncertainty: median disease signature sd is small (0.00826), so expression signal may be modest, and neighbor count sensitivity is unknown."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 244,
+        "total_tokens": 818
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153213176653Z_deepseek_d75fd501e1f84928a4e1105e0c98bd17.jsonl",
+      "provider_trace_sha256": "53db8399222f5a8f63634fe039926c05d934ef682c68ea5124e0acedec575e55"
+    },
+    {
+      "case_id": "transcript_disease_partition_05",
+      "repeat": 3,
+      "choice": {
+        "method": "B1k",
+        "reason": "With a random_simple split holding out 20% of drug-disease pairs while the same drugs can reappear in training, neighborhood information over the drug axis is the most robust signal available. B1k propagates labels from the 10 most expression-similar drugs, which matches the random-pair split structure (drugs recur across folds) and avoids relying on raw drug-level positive counts (B0p) that can be sparse/noisy across 613 drugs and 33 diseases. The label-free correlation B1 alone ignores training labels, and B2's fixed reciprocal-rank fusion adds unvalidated weighting complexity with no provided tuning evidence. The summary gives no label distribution or per-drug density details, so the choice is made under uncertainty; B1k is the best-aligned prescore given the split design."
+      },
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 574,
+        "completion_tokens": 216,
+        "total_tokens": 790
+      },
+      "selection_source": "live_provider_call",
+      "provider_trace_file": "artifacts\\traces\\20260926T153215155637Z_deepseek_e42e5bdb60a04cce8d8d40fa7c01d9c7.jsonl",
+      "provider_trace_sha256": "ede8f6ccd2ef45872a807e06f86c36e2012011a14dedf0be20dabe344b3a6de9"
+    }
+  ],
+  "trace_file": "artifacts\\reports\\traces\\20260926T153201819385Z_method_selection_v2_84def1d48f5249c4a1a9f111aa27f513.jsonl"
+}

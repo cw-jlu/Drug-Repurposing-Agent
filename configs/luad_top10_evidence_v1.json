@@ -1,0 +1,27 @@
+{
+  "version": "luad_top10_evidence_v1",
+  "reviewed_at": "2026-09-25",
+  "status": "research_hypotheses_only",
+  "shared_mechanism": "glucocorticoid receptor signaling dominates 9/10 names; BRD-K84203638 unresolved",
+  "shared_supporting_pmids": ["12204894", "37035141"],
+  "shared_contradicting_pmids": ["24736075", "41344105", "33007977", "36142204"],
+  "candidates": [
+    {"rank":1,"name":"hydrocortisone","identity":"exact_GSE_signature_and_pert_id; Hub_stereochemistry_differs","targets":["ANXA1","NOS2","NR3C1","NR3C2"],"pathways":["glucocorticoid_receptor_transcription","annexin_eicosanoid_signaling"],"candidate_pmids":["1533045","35676421"],"confidence":"insufficient_evidence"},
+    {"rank":2,"name":"beclomethasone-dipropionate","identity":"exact_GSE_signature_and_pert_id; exact_Hub_InChIKey","targets":["CYP3A5","GPR97","NR3C1"],"pathways":["glucocorticoid_receptor_transcription","xenobiotic_metabolism"],"candidate_pmids":["12538830","24555085"],"confidence":"insufficient_evidence"},
+    {"rank":3,"name":"clocortolone-pivalate","identity":"exact_GSE_signature_and_pert_id; exact_Hub_InChIKey","targets":["NR3C1","PLA2G1B"],"pathways":["glucocorticoid_receptor_transcription","phospholipase_eicosanoid_context"],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":4,"name":"mometasone","identity":"exact_GSE_signature_and_pert_id; GEO_Hub_structure_mismatch","targets":["NR3C1"],"pathways":["glucocorticoid_receptor_transcription"],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":5,"name":"flumetasone","identity":"exact_GSE_signature_and_pert_id; cross_source_synonym_ambiguous","targets":["NR3C1"],"pathways":["glucocorticoid_receptor_transcription"],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":6,"name":"BRD-K84203638","identity":"exact_GSE_signature_pert_id_and_structure; no_Hub_sample","targets":[],"pathways":[],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":7,"name":"hydrocortisone-hemisuccinate","identity":"exact_GSE_signature_and_pert_id; Hub_stereochemistry_differs","targets":[],"pathways":["parent_drug_glucocorticoid_receptor_inference_only"],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":8,"name":"fluorometholone","identity":"exact_GSE_signature_pert_id_and_structure; no_Hub_sample","targets":["NR3C1"],"pathways":["glucocorticoid_receptor_transcription"],"candidate_pmids":[],"confidence":"insufficient_evidence"},
+    {"rank":9,"name":"fluticasone","identity":"exact_GSE_signature_and_pert_id; cross_source_formulation_ambiguous","targets":["NR3C1"],"pathways":["glucocorticoid_receptor_transcription"],"candidate_pmids":["35843928"],"confidence":"insufficient_evidence"},
+    {"rank":10,"name":"diflorasone","identity":"exact_GSE_signature_pert_id_and_structure; no_Hub_sample","targets":["NR3C1"],"pathways":["glucocorticoid_receptor_transcription"],"candidate_pmids":[],"confidence":"insufficient_evidence"}
+  ],
+  "limitations": [
+    "EH3226 per-column IDs were reconstructed from the pinned GSE92742 metadata and published first-row distinct rule",
+    "target fields are name-level Broad annotations unless identity is exact",
+    "class evidence cannot be promoted to compound-specific efficacy",
+    "bounded literature retrieval is not proof of absence",
+    "no treatment recommendation is supported"
+  ]
+}

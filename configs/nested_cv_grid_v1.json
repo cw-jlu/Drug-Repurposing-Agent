@@ -1,0 +1,24 @@
+{
+  "name": "transcript_nested_cv_grid_v1",
+  "selection_metric": "global_AUC",
+  "inner_folds": 3,
+  "methods": {
+    "B1k": [
+      {"neighbors": 5},
+      {"neighbors": 10},
+      {"neighbors": 20},
+      {"neighbors": 40}
+    ],
+    "B2": [
+      {"neighbors": 5, "rrf_k": 20},
+      {"neighbors": 5, "rrf_k": 60},
+      {"neighbors": 5, "rrf_k": 100},
+      {"neighbors": 10, "rrf_k": 20},
+      {"neighbors": 10, "rrf_k": 60},
+      {"neighbors": 10, "rrf_k": 100},
+      {"neighbors": 20, "rrf_k": 20},
+      {"neighbors": 20, "rrf_k": 60},
+      {"neighbors": 20, "rrf_k": 100}
+    ]
+  }
+}

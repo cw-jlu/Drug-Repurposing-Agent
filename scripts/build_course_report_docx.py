@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 import re
 
@@ -12,9 +13,12 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
+from drug_repurposing_agent.data import sha256_file
+from drug_repurposing_agent.trace import TraceRecorder, traced_run
+
 
 SOURCE = Path("docs/课程设计报告_草稿.md")
-OUTPUT = Path("deliverables/药物重定位Agent_课程设计报告草稿.docx")
+OUTPUT = Path("deliverables/药物重定位Agent_课程设计报告_v2.docx")
 FONT = "Microsoft YaHei"
 
 
@@ -124,7 +128,7 @@ def add_table(document: Document, rows: list[list[str]]) -> None:
                 paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             add_inline(paragraph, value.strip())
             for run in paragraph.runs:
-                run.font.size = Pt(9)
+                run.font.size = Pt(8.8)
                 if i == 0:
                     run.font.bold = True
                     run.font.color.rgb = RGBColor(255, 255, 255)
@@ -148,7 +152,12 @@ def add_page_number(paragraph) -> None:
     paragraph._p.append(field)
 
 
-def main() -> None:
+def _main(trace: TraceRecorder) -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    trace.emit("source_loaded", source=str(SOURCE), source_sha256=sha256_file(SOURCE),
+               output=str(args.output))
     doc = Document()
     section = doc.sections[0]
     section.page_width, section.page_height = Inches(8.5), Inches(11)
@@ -164,9 +173,9 @@ def main() -> None:
         set_east_asian_font(styles[name])
         styles[name].font.color.rgb = RGBColor(0, 0, 0)
     normal = styles["Normal"]
-    normal.font.size = Pt(10)
-    normal.paragraph_format.line_spacing = 1.22
-    normal.paragraph_format.space_after = Pt(5)
+    normal.font.size = Pt(9.5)
+    normal.paragraph_format.line_spacing = 1.18
+    normal.paragraph_format.space_after = Pt(4)
     styles["Title"].font.size = Pt(18)
     styles["Title"].font.bold = True
     styles["Title"].paragraph_format.space_after = Pt(10)
@@ -186,7 +195,7 @@ def main() -> None:
     styles["Heading 2"].paragraph_format.keep_with_next = True
 
     header = section.header.paragraphs[0]
-    header.text = "药物重定位 Agent 课程设计报告草稿"
+    header.text = "药物重定位 Agent 课程设计报告"
     header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     for run in header.runs:
         run.font.name = FONT
@@ -217,7 +226,7 @@ def main() -> None:
         elif line.startswith("## "):
             p = doc.add_paragraph(style="Heading 1")
             add_inline(p, heading_text(line[3:]))
-            if "数据来源与质量控制" in line:
+            if "数据来源与质量控制" in line or "系统实现与审计" in line:
                 p.paragraph_format.page_break_before = True
         elif line.startswith("### "):
             p = doc.add_paragraph(style="Heading 2")
@@ -234,9 +243,14 @@ def main() -> None:
             add_inline(p, line)
         i += 1
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    doc.save(OUTPUT)
-    print(OUTPUT)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(args.output)
+    trace.emit("document_saved", output=str(args.output), output_sha256=sha256_file(args.output))
+    print(args.output)
+
+
+def main() -> None:
+    traced_run("course_report_build", _main)
 
 
 if __name__ == "__main__":

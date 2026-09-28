@@ -1,0 +1,20 @@
+{
+  "version": "method_selection_partition_v2_prescore",
+  "purpose": "Prospective component-method selection on five disjoint disease partitions of TRANSCRIPT",
+  "source_manifest": "data/manifests/transcript-v2.0.0.json",
+  "source_manifest_sha256": "30339cf102ac867c241658a020d2108712d82915a9b3956a2f8c2ef412939533",
+  "partition_salt": "method-selection-v2-20260926",
+  "partition_count": 5,
+  "split": "random_simple",
+  "outer_runs": 20,
+  "inner_folds": 5,
+  "primary_metric": "official NS-AUC",
+  "methods": {
+    "B0p": "Training-fold positive association count per drug",
+    "B1k": "Training-fold label propagation from expression-similar drugs with 10 neighbors",
+    "B1": "Label-free negative Spearman correlation between drug and disease expression",
+    "B2": "Fixed equal-weight reciprocal-rank fusion of B0p, B1k and B1 with k=60"
+  },
+  "model_repeats_per_partition": 3,
+  "disclosure": "Partitions are new evaluation units but derive from the already studied TRANSCRIPT dataset; this is not an independent external-dataset validation. No test metrics or outcome labels may enter the model prompt."
+}

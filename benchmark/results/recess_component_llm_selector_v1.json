@@ -1,0 +1,22 @@
+{
+  "status": "prescore_method_selection_not_validated",
+  "model": "deepseek-flash",
+  "choices": {
+    "random_simple": {
+      "method": "B2",
+      "reason": "Random split keeps same drugs in train, so B0p/B1k label signal is reliable; fusion adds expression-based B1 without much downside."
+    },
+    "weakly_correlated": {
+      "method": "B1",
+      "reason": "Held-out drugs are expression-dissimilar to train, so B1k neighbor propagation and B0p counts transfer poorly; label-free B1 is safer."
+    }
+  },
+  "provider_usage": {
+    "prompt_tokens": 775,
+    "completion_tokens": 139,
+    "total_tokens": 914
+  },
+  "interpretation": "Choice made without outer-test metrics; benchmark scores must be checked separately.",
+  "chosen_at": "2026-09-26T13:57:52.518048+00:00",
+  "input_sha256": "7f054864d24a33e1ef01a4dc8aee5a2196613f3fddd2b64a75d35630e7fe5799"
+}

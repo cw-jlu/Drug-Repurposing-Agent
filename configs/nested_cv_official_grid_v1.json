@@ -1,0 +1,26 @@
+{
+  "name": "official_matrix_factorization_nested_cv_v1",
+  "selection_metric": "global_AUC",
+  "inner_folds": 3,
+  "outer_seeds": [1234, 1235, 1236, 1237, 1238],
+  "methods": {
+    "ALSWR": [
+      {"n_iters": 15, "n_factors": 10, "alpha": 5.0, "reg": 0.01},
+      {"n_iters": 15, "n_factors": 10, "alpha": 15.0, "reg": 0.1},
+      {"n_iters": 15, "n_factors": 20, "alpha": 5.0, "reg": 0.1},
+      {"n_iters": 15, "n_factors": 20, "alpha": 15.0, "reg": 0.01}
+    ],
+    "PMF": [
+      {"n_iters": 80, "n_factors": 10, "reg": 0.01, "learning_rate": 0.05, "batch_size": 100},
+      {"n_iters": 80, "n_factors": 20, "reg": 0.1, "learning_rate": 0.05, "batch_size": 100},
+      {"n_iters": 160, "n_factors": 15, "reg": 0.01, "learning_rate": 0.1, "batch_size": 100},
+      {"n_iters": 160, "n_factors": 20, "reg": 0.1, "learning_rate": 0.1, "batch_size": 100}
+    ],
+    "LogisticMF": [
+      {"num_factors": 2, "reg_param": 0.1, "gamma": 1.0, "iterations": 30},
+      {"num_factors": 2, "reg_param": 0.6, "gamma": 1.0, "iterations": 30},
+      {"num_factors": 8, "reg_param": 0.1, "gamma": 1.0, "iterations": 30},
+      {"num_factors": 8, "reg_param": 0.6, "gamma": 1.0, "iterations": 30}
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "status": "all_seed_diagnostics_and_source_gate_archived",
+  "files": [
+    {
+      "source": "artifacts\\reports\\b1k_all_seeds_random.json",
+      "archive": "benchmark\\results\\b1k_all_seeds_random.json",
+      "sha256": "0610d079cb77f8397eaa5884cbd6646e6d45a0e47823695ae3f9169dbc5ecab1"
+    },
+    {
+      "source": "artifacts\\reports\\b1k_all_seeds_random.jsonl",
+      "archive": "benchmark\\results\\b1k_all_seeds_random.jsonl",
+      "sha256": "e2cb652b161246f1933377ed46c40ca8a26ad306ae73c22b13869f29a030256e"
+    },
+    {
+      "source": "artifacts\\traces\\20260926T171724123311Z_b1k_all_seeds_audit_37dfea01d4264a19a19e30d7355f1de3.jsonl",
+      "archive": "benchmark\\results\\traces\\20260926T171724123311Z_b1k_all_seeds_audit_37dfea01d4264a19a19e30d7355f1de3.jsonl",
+      "sha256": "282806370f275e15e7b809f71d00fa0141e3a3f159deb96585902e92f63b5ba2"
+    },
+    {
+      "source": "artifacts\\reports\\b1k_all_seeds_weak.json",
+      "archive": "benchmark\\results\\b1k_all_seeds_weak.json",
+      "sha256": "875279da3217e8b34666eb3907d7cbad3c427278e7e05b10c9abdb79d44d9552"
+    },
+    {
+      "source": "artifacts\\reports\\b1k_all_seeds_weak.jsonl",
+      "archive": "benchmark\\results\\b1k_all_seeds_weak.jsonl",
+      "sha256": "ad4c42c68fb9a850f59580dba9efca58cfe38a181efcdc6b1010c88e8619a12e"
+    },
+    {
+      "source": "artifacts\\traces\\20260926T172657870991Z_b1k_all_seeds_audit_c291129c01f14780be675e82b80c3d24.jsonl",
+      "archive": "benchmark\\results\\traces\\20260926T172657870991Z_b1k_all_seeds_audit_c291129c01f14780be675e82b80c3d24.jsonl",
+      "sha256": "349c29b1b5d4786affc735ba63c93c7a45a1e4e47561d24cf12751dc35f5b4b6"
+    },
+    {
+      "source": "artifacts\\reports\\external_holdout_source_audit.json",
+      "archive": "benchmark\\results\\external_holdout_source_audit.json",
+      "sha256": "cf61d48ba395d9bbeff3cfced350a41dd03c49f60ff5e4755fc370d91626b1b8"
+    },
+    {
+      "source": "artifacts\\traces\\20260926T171847733523Z_external_holdout_source_audit_97c7850afe794e27991bfad8c525b62b.jsonl",
+      "archive": "benchmark\\results\\traces\\20260926T171847733523Z_external_holdout_source_audit_97c7850afe794e27991bfad8c525b62b.jsonl",
+      "sha256": "c194a85e7bfc7db5ecfeeb150022be0d99cf713e7e0cae37d4b2946d320bcf30"
+    },
+    {
+      "source": "artifacts\\reports\\external_staged_inputs_audit.json",
+      "archive": "benchmark\\results\\external_staged_inputs_audit.json",
+      "sha256": "e1c038ec8ded6e51258ee54bfbb24e7fa61566b34b837d0e82431c7ea5037d8a"
+    },
+    {
+      "source": "artifacts\\traces\\20260926T173254163447Z_external_staged_inputs_audit_330b6a25c0d846ad9f2184407b9d1a13.jsonl",
+      "archive": "benchmark\\results\\traces\\20260926T173254163447Z_external_staged_inputs_audit_330b6a25c0d846ad9f2184407b9d1a13.jsonl",
+      "sha256": "264a5ca39348f495e6b6eb1e0a6e9b81fdf5ca50fb2e02db40edd87349805d15"
+    }
+  ],
+  "archive_trace_file": "benchmark\\results\\traces\\20260926T173631916910Z_analytic_audits_archive_62b7e1b10bc94568b6a7f21528771b6d.jsonl"
+}

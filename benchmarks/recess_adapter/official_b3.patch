@@ -1,0 +1,22 @@
+diff --git a/benchmark_pipeline.py b/benchmark_pipeline.py
+index 7ed0b8e..ea90b45 100644
+--- a/benchmark_pipeline.py
++++ b/benchmark_pipeline.py
+@@ -32,6 +32,7 @@ models = [
+ ]
+ models.append("B2")
+ models.extend(["B0p", "B1k", "B1"])
++models.extend(["B3", "B3noREV"])
+ datasets = ["Synthetic", "DNdataset", "PREDICT_Gottlieb",  
+ 	"TRANSCRIPT", "Gottlieb", "Cdataset", "PREDICT", "LRSSL", "Synthetic-wo-features"] 
+ splitting_methods = ["weakly_correlated", "random_simple"]
+@@ -61,6 +62,9 @@ def aux_run_pipeline(inn, model_name, params, data_args, red_folds, splitting, r
+ 	if (model_name == "B2"):
+ 		from benchmarks.recess_adapter.official_b2 import B2
+ 		model = B2
++	elif (model_name in {"B3", "B3noREV"}):
++		from benchmarks.recess_adapter import official_b3
++		model = getattr(official_b3, model_name)
+ 	elif (model_name in {"B0p", "B1k", "B1"}):
+ 		from benchmarks.recess_adapter import official_components
+ 		model = getattr(official_components, model_name)

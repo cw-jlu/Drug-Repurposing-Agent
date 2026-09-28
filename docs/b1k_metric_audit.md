@@ -1,0 +1,14 @@
+# B1k official NS-AUC diagnostic
+
+Status: **all 100 previously scored official seeds per split** have now been reproduced within absolute tolerance `1e-12` using the frozen seed/result CSVs, identical splitter, five-fold B1k selection, and official rowwise NS-AUC calculation. The [random-simple report](../benchmark/results/b1k_all_seeds_random.json), [weakly-correlated report](../benchmark/results/b1k_all_seeds_weak.json), per-seed JSONL checkpoints, chained traces and [archive receipt](../benchmark/results/analytic_audits_archive_receipt.json) are versioned. The official CSVs and primary 100-run comparison are unchanged. Reproduce with `python -m evals.audit_b1k_all_seeds --split random_simple --output artifacts/reports/b1k_all_seeds_random.json` and the analogous `weakly_correlated` command using a new output path. Each run checks source-data, frozen seed, and frozen-result hashes and refuses output overwrite.
+
+The pinned runner calls `benchscofi.utils.rowwise_metrics.calc_auc` with `transpose=False`, so NS-AUC is an **unweighted mean over eligible drug rows**. Its comparison is strictly `positive_score > nonpositive_score`; an exact tie contributes zero, unlike standard AUC's half credit. Rows without both labels are omitted. The official global AUC and earlier project-level AUC use different aggregation/score handling and must not be used to infer a reversed sign.
+
+| Split, 100 frozen seeds | Official mean NS-AUC | Mean / min–max tie fraction of eligible pairs | Row-mean if ties got half credit | Row-mean if scores inverted, still strict |
+| --- | ---: | ---: | ---: | ---: |
+| Random simple | 0.174732 | 0.802969 / 0.726419–0.873774 | 0.576379 | 0.021975 |
+| Weakly correlated | 0.056176 | 0.972287 / 0.968002–0.997317 | 0.522817 | 0.005543 |
+
+All 200 seeds have a majority of eligible positive–nonpositive pairs tied. The B1k neighbor-label propagation generates many identical scores in this sparse association matrix, and the pinned strict comparison awards those ties zero. **Tie handling is therefore the dominant arithmetic reason for B1k's low official NS-AUC across these seeds**; simply inverting score direction would make it worse. The half-tie figures are counterfactual diagnostics on B1k's saved-score reproduction, **not** new official benchmark scores, not commensurate with other methods' untouched official scores, and not a justification to revise the comparator after viewing results. Replacing the metric would require rerunning all our methods and the 11 published baselines under one prospective definition. This retrospective audit does not establish clinical prediction value.
+
+The earlier one-seed-per-split [random](../benchmark/results/b1k_ns_auc_random_seed0_diagnostic.json) and [weak](../benchmark/results/b1k_ns_auc_weak_seed0_diagnostic.json) reports remain as initial diagnostics; the all-seed reports supersede any extrapolation from only those two cases.

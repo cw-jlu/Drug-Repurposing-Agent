@@ -1,0 +1,17 @@
+diff --git a/benchmark_pipeline.py b/benchmark_pipeline.py
+--- a/benchmark_pipeline.py
++++ b/benchmark_pipeline.py
+@@ -29,6 +29,7 @@ models = [
+ ]
+ models.append("B2")
++models.extend(["B0p", "B1k", "B1"])
+ datasets = ["Synthetic", "DNdataset", "PREDICT_Gottlieb",  
+@@ -56,6 +57,9 @@ def aux_run_pipeline(inn, model_name, params, data_args, red_folds, splitting,
+ 	if (model_name == "B2"):
+ 		from benchmarks.recess_adapter.official_b2 import B2
+ 		model = B2
++	elif (model_name in {"B0p", "B1k", "B1"}):
++		from benchmarks.recess_adapter import official_components
++		model = getattr(official_components, model_name)
+ 	else:
+ 		__import__("benchscofi."+model_name)

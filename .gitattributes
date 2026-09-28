@@ -1,0 +1,17 @@
+# Hash-linked audit snapshots must retain exact bytes on every platform.
+benchmark/results/planner_v3_rule_chained_regression.json -text
+benchmark/results/planner_v3_rule_chained_trace_grade.json -text
+benchmark/results/recess_component_selector_v1_paired_audit.json -text
+benchmark/results/traces/*.jsonl -text
+benchmark/results/agent_v4_claim_choices.json -text -diff
+benchmark/results/agent_v4_claim_score.json -text -diff
+benchmark/results/agent_v4_claim_archive_receipt.json -text -diff
+benchmark/results/agent_v4_claim_choices_checkpoint.jsonl -text
+benchmark/results/b1k_all_seeds_*.json -text -diff
+benchmark/results/b1k_all_seeds_*.jsonl -text
+benchmark/results/external_*audit.json -text -diff
+benchmark/results/analytic_audits_archive_receipt.json -text -diff
+artifacts/traces/*.jsonl -text
+artifacts/reports/traces/*.jsonl -text
+artifacts/reports/*.json -text
+artifacts/method_selection_partition_v2_positive_only/**/*.csv -text

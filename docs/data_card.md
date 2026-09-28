@@ -20,7 +20,7 @@ GSE32863 uses tumor-minus-normal log2 fold change from a paired t-test, Benjamin
 
 ## Coverage and quality limits
 
-EH3226 stores drug names, not per-signature perturbagen IDs. In the matched GEO metadata, 206 of its 4,920 A549 names map to multiple IDs. The Top-10 Broad identity audit finds two exact InChIKey matches, two same-connectivity/different-stereochemistry cases, one mismatch, two ambiguous GEO names, and three names with no Hub sample. Name-level annotations must not be treated as chemical-identity proof. Single A549 cell-line conditions, 10 µM concentration, 24-hour exposure, first-duplicate selection, and missing clinical endpoints limit generalization.
+EH3226 stores drug names rather than per-column perturbagen IDs. The upstream `signatureSearchData` selection rule keeps the first `pert_iname`/cell duplicate; replaying that rule against the official GSE92742 metadata deterministically recovers one `sig_id` and `pert_id` for each Top-10 column. The reconstruction is recorded in `configs/luad_top10_signature_ids.csv` and `data/manifests/luad-top10-signatures-v1.json`. It does not erase cross-source identity limits: the Broad audit still finds two exact InChIKey matches, two same-connectivity/different-stereochemistry cases, one mismatch, two names with multiple GEO IDs, and three names without a Hub sample. Single A549 cell-line conditions, 10 µM concentration, 24-hour exposure, first-duplicate selection, and missing clinical endpoints limit generalization.
 
 ## Intended and excluded uses
 

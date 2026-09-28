@@ -1,0 +1,200 @@
+{
+  "protocol": "official_matrix_factorization_nested_cv_v1",
+  "summarized_at": "2026-09-24T17:31:44.007685+00:00",
+  "outer_seeds": [
+    1234,
+    1235,
+    1236,
+    1237,
+    1238
+  ],
+  "result_files": [
+    "benchmark\\results\\nested_cv_official_random_simple_seed1234.json",
+    "benchmark\\results\\nested_cv_official_random_simple_seed1235.json",
+    "benchmark\\results\\nested_cv_official_random_simple_seed1236.json",
+    "benchmark\\results\\nested_cv_official_random_simple_seed1237.json",
+    "benchmark\\results\\nested_cv_official_random_simple_seed1238.json",
+    "benchmark\\results\\nested_cv_official_weakly_correlated_seed1234.json",
+    "benchmark\\results\\nested_cv_official_weakly_correlated_seed1235.json",
+    "benchmark\\results\\nested_cv_official_weakly_correlated_seed1236.json",
+    "benchmark\\results\\nested_cv_official_weakly_correlated_seed1237.json",
+    "benchmark\\results\\nested_cv_official_weakly_correlated_seed1238.json"
+  ],
+  "splits": {
+    "random_simple": {
+      "runs": 5,
+      "methods": {
+        "ALSWR": {
+          "runs": 5,
+          "global_AUC_mean": 0.657884093744914,
+          "global_AUC_sd": 0.031952363301495555,
+          "global_NDCG_mean": 0.4907922436012638,
+          "global_NDCG_sd": 0.051805017522542796,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "alpha": 5.0,
+                "n_factors": 20,
+                "n_iters": 15,
+                "reg": 0.1
+              },
+              "count": 3
+            },
+            {
+              "parameters": {
+                "alpha": 5.0,
+                "n_factors": 10,
+                "n_iters": 15,
+                "reg": 0.01
+              },
+              "count": 2
+            }
+          ]
+        },
+        "PMF": {
+          "runs": 5,
+          "global_AUC_mean": 0.6160954538056747,
+          "global_AUC_sd": 0.021086759794822323,
+          "global_NDCG_mean": 0.3599972699387506,
+          "global_NDCG_sd": 0.008395151945119009,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "batch_size": 100,
+                "learning_rate": 0.1,
+                "n_factors": 15,
+                "n_iters": 160,
+                "reg": 0.01
+              },
+              "count": 5
+            }
+          ]
+        },
+        "LogisticMF": {
+          "runs": 5,
+          "global_AUC_mean": 0.7825679487875007,
+          "global_AUC_sd": 0.04096633792362688,
+          "global_NDCG_mean": 0.4810778242999737,
+          "global_NDCG_sd": 0.022908218841023356,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "gamma": 1.0,
+                "iterations": 30,
+                "num_factors": 2,
+                "reg_param": 0.6
+              },
+              "count": 5
+            }
+          ]
+        }
+      }
+    },
+    "weakly_correlated": {
+      "runs": 5,
+      "methods": {
+        "ALSWR": {
+          "runs": 5,
+          "global_AUC_mean": 0.5921849833484711,
+          "global_AUC_sd": 0.052838009768471694,
+          "global_NDCG_mean": 0.3628280972008742,
+          "global_NDCG_sd": 0.021459521121084426,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "alpha": 5.0,
+                "n_factors": 10,
+                "n_iters": 15,
+                "reg": 0.01
+              },
+              "count": 2
+            },
+            {
+              "parameters": {
+                "alpha": 15.0,
+                "n_factors": 10,
+                "n_iters": 15,
+                "reg": 0.1
+              },
+              "count": 2
+            },
+            {
+              "parameters": {
+                "alpha": 5.0,
+                "n_factors": 20,
+                "n_iters": 15,
+                "reg": 0.1
+              },
+              "count": 1
+            }
+          ]
+        },
+        "PMF": {
+          "runs": 5,
+          "global_AUC_mean": 0.5654450499545868,
+          "global_AUC_sd": 0.0036415396129886313,
+          "global_NDCG_mean": 0.3394322320394129,
+          "global_NDCG_sd": 0.0029009151415718714,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "batch_size": 100,
+                "learning_rate": 0.1,
+                "n_factors": 15,
+                "n_iters": 160,
+                "reg": 0.01
+              },
+              "count": 5
+            }
+          ]
+        },
+        "LogisticMF": {
+          "runs": 5,
+          "global_AUC_mean": 0.6473581592491675,
+          "global_AUC_sd": 0.06784304812923672,
+          "global_NDCG_mean": 0.3816828202757018,
+          "global_NDCG_sd": 0.020549084248179236,
+          "selected_parameter_frequency": [
+            {
+              "parameters": {
+                "gamma": 1.0,
+                "iterations": 30,
+                "num_factors": 2,
+                "reg_param": 0.6
+              },
+              "count": 2
+            },
+            {
+              "parameters": {
+                "gamma": 1.0,
+                "iterations": 30,
+                "num_factors": 8,
+                "reg_param": 0.6
+              },
+              "count": 1
+            },
+            {
+              "parameters": {
+                "gamma": 1.0,
+                "iterations": 30,
+                "num_factors": 2,
+                "reg_param": 0.1
+              },
+              "count": 1
+            },
+            {
+              "parameters": {
+                "gamma": 1.0,
+                "iterations": 30,
+                "num_factors": 8,
+                "reg_param": 0.1
+              },
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "leakage_audit_passed": true
+}

@@ -1,14 +1,18 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { Presentation, PresentationFile } from "@oai/artifact-tool";
 
 const skillDir = process.env.SKILL_DIR;
 const runtimePython = process.env.RUNTIME_PYTHON;
+const runtimeNodeModules = process.env.RUNTIME_NODE_MODULES;
 const workspaceDir = process.cwd();
-if (!path.isAbsolute(skillDir ?? "") || !path.isAbsolute(runtimePython ?? "")) {
-  throw new Error("Set SKILL_DIR and RUNTIME_PYTHON to bundled absolute paths");
+if (!path.isAbsolute(skillDir ?? "") || !path.isAbsolute(runtimePython ?? "") ||
+    !path.isAbsolute(runtimeNodeModules ?? "")) {
+  throw new Error("Set SKILL_DIR, RUNTIME_PYTHON, and RUNTIME_NODE_MODULES to bundled absolute paths");
 }
+const { Presentation, PresentationFile } = await import(pathToFileURL(path.join(
+  runtimeNodeModules, "@oai", "artifact-tool", "dist", "artifact_tool.mjs",
+)).href);
 const { applyPresentationChartFont, finalizePresentation } = await import(
   pathToFileURL(path.join(skillDir, "container_tools/artifact_tool_utils.mjs")).href,
 );
@@ -17,8 +21,8 @@ const buildDir = path.join(workspaceDir, "artifacts", "slide_build");
 const outputDir = path.join(workspaceDir, "deliverables");
 await fs.mkdir(buildDir, { recursive: true });
 await fs.mkdir(outputDir, { recursive: true });
-const finalPath = path.join(outputDir, "药物重定位Agent_答辩草稿_v2.pptx");
-const candidatePath = path.join(buildDir, "candidate-v2.pptx");
+const finalPath = path.join(outputDir, "药物重定位Agent_答辩稿_v3.pptx");
+const candidatePath = path.join(buildDir, "candidate-v3.pptx");
 
 const pres = Presentation.create({ slideSize: { width: 1280, height: 720 } });
 const slideList = [];
@@ -56,9 +60,9 @@ function slide(title, number, notes) {
     { bold: true, color: C.white });
   text(s, "公开基准与肺腺癌研究案例", 80, 310, 1100, 72, 37,
     { color: C.white });
-  text(s, "课程设计答辩草稿  ·  2026 年 9 月", 82, 585, 1040, 42, 22,
+  text(s, "课程设计答辩  2026 年 9 月", 82, 585, 1040, 42, 22,
     { color: "#BBD5D3" });
-  s.speakerNotes.textFrame.setText("内容基于仓库计划、已保存的基准结果和 LUAD 案例报告。课程任务 PDF 尚未提供，最终版式和内容须按任务要求调整。研究用途，不构成临床建议。");
+  s.speakerNotes.textFrame.setText("内容基于仓库计划、已保存的基准结果、LUAD 案例报告和课程任务 PDF。课程要求覆盖 Problem、Data、Model、Benchmark、Biological interpretation 五个环节，提交 GitHub 代码并进行约 10 分钟汇报。研究用途，不构成临床建议。");
 }
 
 {
@@ -153,29 +157,29 @@ function slide(title, number, notes) {
 }
 
 {
-  const s = slide("可审计的案例输出", 8,
-    "代码：src/drug_repurposing_agent/luad_case.py、scripts/build_luad_case.py；TypeSafe 官方 API：https://api.typesafe.ai/docs 。目前默认运行没有 Jev 凭据，外部模型调用数为零。详见 docs/system_card.md。");
-  text(s, "输入哈希与样本 QC", 76, 167, 1070, 50, 30,
+  const s = slide("自然语言 Agent 与审计轨迹", 8,
+    "代码：src/drug_repurposing_agent/agent.py、workflow.py、luad_case.py。课程要求映射见 docs/assignment_alignment.md。目前默认使用规则 Planner；StructuredPlanner 提供外部结构化 LLM 接口，但尚无真实 LLM 结果。");
+  text(s, "自然语言问题进入受控 Planner", 76, 151, 1070, 50, 30,
     { bold: true, color: C.teal });
-  text(s, "连续排名与冻结参考药清单", 76, 253, 1070, 50, 30,
+  text(s, "工具名称、参数与 Strict/Open 权限必须通过验证", 76, 237, 1100, 58, 28,
     { bold: true, color: C.navy });
-  text(s, "身份核对与逐候选证据账本", 76, 339, 1070, 50, 30,
+  text(s, "确定性工具执行表达排名或 LUAD 案例打包", 76, 329, 1100, 56, 28,
     { bold: true, color: C.teal });
-  text(s, "JSON 报告、执行轨迹及模型调用成本", 76, 425, 1100, 50, 30,
+  text(s, "agent_run.json 记录计划、输入缺口、越权阻断与失败", 76, 421, 1120, 58, 28,
     { bold: true, color: C.navy });
-  text(s, "默认人工复核；Jev 接口只作可选研究任务路由", 78, 552, 1100, 56, 22,
+  text(s, "23 项测试通过；Planner 不接收原始矩阵、路径或测试标签", 78, 552, 1100, 56, 22,
     { color: C.muted });
 }
 
 {
   const s = slide("结论与待完成工作", 9,
-    "基准结果：docs/benchmark_results.md；LUAD：docs/luad_screening_report.md；进度：docs/project_status.md。课程 PDF 尚缺，无法按其具体要求确认报告、幻灯片和视频的最终格式。任何候选都不构成临床治疗建议。");
+    "基准结果：docs/benchmark_results.md；LUAD：docs/luad_screening_report.md；课程映射：docs/assignment_alignment.md；进度：docs/project_status.md。任何候选都不构成临床治疗建议。");
   text(s, "表达反转未超过强基线", 78, 175, 1100, 60, 34,
     { bold: true, color: C.red });
   text(s, "LUAD 前十名是待验证的研究假设", 78, 272, 1100, 70, 32,
     { bold: true, color: C.navy });
-  text(s, "下一步：化合物身份核对与完整证据审阅", 78, 400, 1100, 66, 26);
-  text(s, "仍需课程任务 PDF、完整内部 Eval 和 Jev 对比实验", 78, 498, 1100, 68, 24,
+  text(s, "下一步是化合物身份核对与完整证据审阅", 78, 400, 1100, 66, 26);
+  text(s, "仍需真实 LLM/Jev 对比、扩展内部 Eval 和完整调参", 78, 498, 1100, 68, 24,
     { color: C.muted });
 }
 
@@ -197,6 +201,6 @@ const result = await finalizePresentation({
   materializeLiteralChartWorkbooks: true,
   fontPolicy: { basis: "design", families: [font], scriptFonts: { ea: font } },
   verifyArtifactToolImport: true,
-  receiptPath: path.join(buildDir, "presentation-v2.validation.json"),
+  receiptPath: path.join(buildDir, "presentation-v3.validation.json"),
 });
 console.log(JSON.stringify({ finalPath, result }, null, 2));
