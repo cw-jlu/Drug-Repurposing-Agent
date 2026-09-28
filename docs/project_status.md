@@ -38,6 +38,11 @@
 - B3 row-oriented fusion was frozen at `92943bb` before official scoring and evaluated in the pinned 100-seed runner: NS-AUC 0.7234 random simple (rank 2/13; BNNR 0.7331 leads, B3 wins 35/100 paired seeds) and 0.6919 weakly correlated (rank 3/13; MBiRW 0.7384 leads). No SOTA claim is made. The improvement over B2 comes from aligning with the metric's drug-row orientation and from known-association structure, not from signature reversal.
 - A Streamlit demo (`app/`) and six reproducible defense figures (`docs/figures/`) were added.
 
+- An LLM knowledge-contamination probe (`docs/contamination_probe.md`) shows open-book DeepSeek AUC 0.567 [0.526, 0.609] versus closed-book 0.527 and raw reversal 0.519 on a frozen 600-pair TRANSCRIPT sample. This supports strict mode; the open-minus-closed gap (+0.040) has a CI that crosses zero.
+- A frozen 120-case decision-layer ablation (`docs/decision_eval_v1.md`) compares rules (J0), DeepSeek structured output (J1) and J1 plus the Jev-style confidence gate (J3). J0 and J1 both score 0.875 accuracy. The gate lowers the high-risk wrong-auto-execution rate from 0.150 to 0.083. Jev itself was not run (no access).
+- A multi-agent LUAD evidence review (`docs/multi_agent_review.md`) runs literature, critic, deterministic citation validation and coordinator steps. 0 of 65 quoted claims were rejected, and all 10 candidates remain insufficient evidence.
+- A NumPy port of BNNR reproduces the published per-seed NS-AUC exactly on official seeds 1–3 (`benchmark/results/bnnr_numpy_fidelity.json`).
+
 ## Needed for the planned final deliverable
 
 1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.

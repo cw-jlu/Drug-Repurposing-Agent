@@ -10,23 +10,23 @@
 - [x] 已按课程要求刷新 Word 报告 `deliverables/archive/药物重定位Agent_课程设计报告_v2.docx` 与九页答辩稿 `deliverables/archive/药物重定位Agent_答辩稿_v4.pptx`；DOCX 四页和 PPTX 九页均完成逐页视觉检查，PPTX 的两张图表保持原生可编辑。
 - [x] 已接入 DeepSeek `deepseek-flash` 真实函数调用；冻结 20 个规划案例后运行三次，准确率为 0.95、0.85、1.00，均值 0.933。真实 TRANSCRIPT 613×151 全流程已跑通。
 
-## 2026-09-28 新增：提分与展示（已暂停，见各项状态）
+## 2026-09-28 新增：提分与展示
 
 背景：B2 在官方 100 次 NS-AUC 中排 9/12 与 8/12。复核发现官方 NS-AUC（Lin's AUC）按**药物行**对疾病排序，并用严格 `>` 将并列计为 0；B2 按疾病列排序、且流行度分量在行内为常数，方向与评价指标不一致。
 
 - [x] **B3 行方向无训练融合**：疾病流行度、药物/疾病表达 kNN、标签共现 CF、反转，按行归一化排名后平均，并加入并列打破。配置已在正式评分前冻结于 `configs/b3_row_fusion_v1.json`，开发种子与官方 100 个种子不相交。弱相关拆分只有一个固定留出集，冻结前已看过，已在配置中披露；B3noREV 标记为事后变体。
 - [x] B3 官方 Runner 100 次 × 两种拆分已完成：随机 0.7234（13 个中排第 2，BNNR 0.7331 第 1），弱相关 0.6919（排第 3，MBiRW 0.7384 第 1）。见 `docs/recess_official_comparison.md`。
-- [ ] B3noREV（事后变体）暂停于随机拆分 46/100；重新运行 `scripts/run_recess_official_b3.py --models B3noREV` 会复用缓存继续。
+- [x] B3noREV（事后变体）完成：随机 0.7124、弱相关 0.7050（均为 2/13），仅作事后结果报告。
 - [ ] **第二轮 B4 = B3 + BNNR（NumPy 移植）**：已暂停。`benchmarks/recess_adapter/bnnr_numpy.py` 为未验证草稿（未提交）。步骤：在 3 个官方种子上核对移植保真度 → 只在开发种子上设计集成 → 冻结提交 → 官方 100 次。
-- [ ] **LLM 知识污染探针**（已暂停，草稿未提交）：开卷（给药名/病名）对比闭卷（只给表达特征），论证 Strict Mode 的必要性（`docs/contamination_probe.md`）。
-- [ ] **多 Agent 证据审阅**（已暂停，草稿未提交）：LUAD Top-10 由 Literature Agent、Critic Agent、确定性引用校验、Coordinator 分级完成，统计幻觉引用拒绝率（`docs/multi_agent_review.md`）。
-- [ ] **决策层消融（Jev 替代）**（已暂停，草稿未提交）：冻结 ≥100 个 Choice/Score/Noul 决策用例，比较 J0 规则、J1 通用 LLM、J3 LLM+置信度门控；Jev 保留接口，获得权限后在同一冻结集复测（`docs/decision_eval_v1.md`）。
+- [x] **LLM 知识污染探针**（开卷 AUC 0.567 [0.526, 0.609]，闭卷 0.527，反转 0.519）：开卷（给药名/病名）对比闭卷（只给表达特征），论证 Strict Mode 的必要性（`docs/contamination_probe.md`）。
+- [x] **多 Agent 证据审阅**（65 条引语 0 条被拒；10/10 证据不足）：LUAD Top-10 由 Literature Agent、Critic Agent、确定性引用校验、Coordinator 分级完成，统计幻觉引用拒绝率（`docs/multi_agent_review.md`）。
+- [x] **决策层消融（Jev 替代）**（120 例；J0/J1 准确率 0.875；门控把高风险误执行从 0.15 降到 0.083）：冻结 ≥100 个 Choice/Score/Noul 决策用例，比较 J0 规则、J1 通用 LLM、J3 LLM+置信度门控；Jev 保留接口，获得权限后在同一冻结集复测（`docs/decision_eval_v1.md`）。
 - [x] **交互式 Demo**：Streamlit，含 Agent 运行/回放、LUAD 候选证据卡、Benchmark 表（`app/demo.py`、`docs/demo.md`）。
 - [x] **答辩图表**：12 模型 NS-AUC 箱线图、组件消融、LUAD 火山图、Top-10 条形图与药物—靶点—通路网络、数据稀疏度（`scripts/make_figures.py` → `docs/figures/`）。
 - [ ] 将上述结果写入报告 v5 / 答辩稿 v7，逐页核验；旧版交付物归档到 `deliverables/archive/`。
-- [ ] 按 `docs/defense_rehearsal_10min.md` 计时排练一次。
-- [ ] **轮换 DeepSeek API Key**：旧 key 曾在对话中暴露，需本人在 DeepSeek 控制台操作。
-- [ ] 推送 `codex/deepseek-planner` 并开 PR 合并到 `main`，让 GitHub 展示最新版本。
+- [ ] 按 `docs/defense_rehearsal_v7.md` 计时排练一次（需本人在答辩设备上完成；提纲与问答已写好）。
+- [ ] ~~轮换 DeepSeek API Key~~：用户决定继续使用现有 key（2026-09-28）。
+- [x] `codex/deepseek-planner` 已合并到 `main` 并推送（`72fe99f`；gh 未登录，因此用 git 合并提交代替 PR 对象）。
 
 ## 恢复工作时先处理
 
