@@ -156,6 +156,8 @@ def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument("--source", type=Path, default=SOURCE)
+    parser.add_argument("--no-system-break", action="store_true",
+                        help="Do not force a page break before the system section")
     args = parser.parse_args()
     trace.emit("source_loaded", source=str(args.source), source_sha256=sha256_file(args.source),
                output=str(args.output))
@@ -244,7 +246,7 @@ def _main(trace: TraceRecorder) -> None:
         elif line.startswith("## "):
             p = doc.add_paragraph(style="Heading 1")
             add_inline(p, heading_text(line[3:]))
-            if "数据来源与质量控制" in line or "系统实现与审计" in line:
+            if "数据来源与质量控制" in line or ("系统实现与审计" in line and not args.no_system_break):
                 p.paragraph_format.page_break_before = True
         elif line.startswith("### "):
             p = doc.add_paragraph(style="Heading 2")
