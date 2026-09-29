@@ -33,6 +33,38 @@ def test_validator_keeps_verbatim_and_rejects_hallucinated_or_paraphrased_quotes
                                                "quote_too_short"]
 
 
+def test_validator_withholds_wrong_drug_and_erratum_from_candidate_evidence():
+    records = {
+        "11": {"pmid": "11", "title": "Naringin in A549 cells", "abstract":
+               "Naringin reduced A549 cell proliferation in vitro.",
+               "publication_types": ["Journal Article"]},
+        "12": {"pmid": "12", "title": "Correction to fluticasone study", "abstract":
+               "This corrects the fluticasone study in A549 cells.",
+               "publication_types": ["Published Erratum"]},
+        "13": {"pmid": "13", "title": "Fluticasone propionate in A549 cells", "abstract":
+               "Fluticasone propionate altered A549 gene expression in vitro.",
+               "publication_types": ["Journal Article"]},
+        "14": {"pmid": "14", "title": "Fluticasone propionate and naringin in A549 cells", "abstract":
+               "Fluticasone propionate was included as a comparator. Naringin reduced A549 cell proliferation in vitro.",
+               "publication_types": ["Journal Article"]},
+    }
+    claims = [
+        {"pmid": "11", "quote": "Naringin reduced A549 cell proliferation in vitro.",
+         "scope": "candidate"},
+        {"pmid": "12", "quote": "This corrects the fluticasone study in A549 cells.",
+         "scope": "candidate"},
+        {"pmid": "13", "quote": "Fluticasone propionate altered A549 gene expression in vitro.",
+         "scope": "candidate"},
+        {"pmid": "14", "quote": "Naringin reduced A549 cell proliferation in vitro.",
+         "scope": "candidate"},
+    ]
+    kept, rejected = validate_quoted_items(claims, records, "support", "fluticasone-propionate")
+    assert [claim["pmid"] for claim in kept] == ["13"]
+    assert [item["reason"] for item in rejected] == [
+        "candidate_name_absent_identity_review_required", "correction_not_primary_evidence",
+        "candidate_name_absent_from_quote_identity_review_required"]
+
+
 def test_parse_pubmed_xml_joins_labelled_sections():
     xml = b"""<PubmedArticleSet><PubmedArticle><MedlineCitation><PMID>42</PMID><Article>
       <Journal><Title>J</Title><JournalIssue><PubDate><Year>2020</Year></PubDate></JournalIssue></Journal>

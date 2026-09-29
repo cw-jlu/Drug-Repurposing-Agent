@@ -113,9 +113,20 @@ def normalize_text(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
 
 
+def _identity_text(value: str) -> str:
+    """Normalize punctuation for a conservative exact-name scope check."""
+    return " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
 def validate_quoted_items(items: list[dict], records: dict[str, dict],
-                          kind: str) -> tuple[list[dict], list[dict]]:
-    """Keep items whose PMID was retrieved and whose quote is verbatim in that abstract."""
+                          kind: str, candidate_name: str | None = None
+                          ) -> tuple[list[dict], list[dict]]:
+    """Check quote provenance and withhold obvious source/scope mismatches.
+
+    This does not establish that a quote entails its claim. A candidate-specific
+    claim without the exact candidate name may be valid under a synonym, but it
+    needs identity review before it can affect an automated evidence tier.
+    """
     kept, rejected = [], []
     for item in items:
         pmid = str(item.get("pmid", "")).strip()
@@ -127,6 +138,18 @@ def validate_quoted_items(items: list[dict], records: dict[str, dict],
             reason = "quote_too_short"
         elif quote not in normalize_text(records[pmid].get("abstract", "")):
             reason = "quote_not_verbatim_in_abstract"
+        elif any("erratum" in str(publication_type).casefold() or
+                 "correction" in str(publication_type).casefold()
+                 for publication_type in records[pmid].get("publication_types", [])):
+            reason = "correction_not_primary_evidence"
+        elif candidate_name and item.get("scope") == "candidate":
+            source = _identity_text(records[pmid].get("title", "") + " " +
+                                    records[pmid].get("abstract", ""))
+            candidate = _identity_text(candidate_name)
+            if candidate and f" {candidate} " not in f" {source} ":
+                reason = "candidate_name_absent_identity_review_required"
+            elif candidate and f" {candidate} " not in f" {_identity_text(quote)} ":
+                reason = "candidate_name_absent_from_quote_identity_review_required"
         if reason:
             rejected.append({"kind": kind, "pmid": pmid, "reason": reason})
         else:
@@ -356,7 +379,8 @@ class MultiAgentReviewer:
 
         raw_claims = self.literature_agent(candidate, support_records)
         counters.proposed_support = len(raw_claims)
-        supports, rejected = validate_quoted_items(raw_claims, support_records, "support")
+        supports, rejected = validate_quoted_items(
+            raw_claims, support_records, "support", name)
         dropped_over_limit = max(len(supports) - MAX_CLAIMS, 0)
         supports = supports[:MAX_CLAIMS]
         for number, claim in enumerate(supports, start=1):
@@ -370,7 +394,7 @@ class MultiAgentReviewer:
         contra_pool = {**support_records, **critic_records}
         counters.proposed_contradictions = len(critique["contradicting_evidence"])
         contradictions, contra_rejected = validate_quoted_items(
-            critique["contradicting_evidence"], contra_pool, "contradiction")
+            critique["contradicting_evidence"], contra_pool, "contradiction", name)
         self.trace.emit("critique_validated", candidate=name,
                         challenges=len(challenges), unknown_claim_ids=len(critique["challenges"]) - len(challenges),
                         contradictions_kept=len(contradictions), rejected=contra_rejected)

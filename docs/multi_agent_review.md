@@ -1,5 +1,7 @@
 # LUAD Top-10 多智能体证据审阅（v1）
 
+后续对本版 65 条引文所做的[来源与药物指向预筛](evidence_scope_audit.md)将 23 条列为需要进一步核对；该结果不改写这里的冻结分级。
+
 > **这是文献分诊（literature triage），不是疗效证据。** 分级只描述在 PubMed 中检索到、并且通过引用校验的文献现状，用来安排后续研究的优先级；不构成治疗建议，也不证明任何候选药物对肺腺癌有效。
 
 运行日期：2026-09-28。模型：`deepseek-flash`（DeepSeek beta 端点，strict function calling）。
