@@ -23,7 +23,7 @@
 - [x] **决策层消融（Jev 替代）**（120 例；J0/J1 准确率 0.875；门控把高风险误执行从 0.15 降到 0.083）：冻结 ≥100 个 Choice/Score/Noul 决策用例，比较 J0 规则、J1 通用 LLM、J3 LLM+置信度门控；Jev 保留接口，获得权限后在同一冻结集复测（`docs/decision_eval_v1.md`）。
 - [x] **交互式 Demo**：Streamlit，含 Agent 运行/回放、LUAD 候选证据卡、Benchmark 表（`app/demo.py`、`docs/demo.md`）。
 - [x] **答辩图表**：12 模型 NS-AUC 箱线图、组件消融、LUAD 火山图、Top-10 条形图与药物—靶点—通路网络、数据稀疏度（`scripts/make_figures.py` → `docs/figures/`）。
-- [ ] 将上述结果写入报告 v5 / 答辩稿 v7，逐页核验；旧版交付物归档到 `deliverables/archive/`。
+- [x] 报告 v5（8 页，Word 渲染核验）与答辩稿 v7（11 页，PowerPoint 渲染核验，3 张原生图表）已生成；v4/v6 及更早版本已归档到 `deliverables/archive/`。
 - [ ] 按 `docs/defense_rehearsal_v7.md` 计时排练一次（需本人在答辩设备上完成；提纲与问答已写好）。
 - [ ] ~~轮换 DeepSeek API Key~~：用户决定继续使用现有 key（2026-09-28）。
 - [x] `codex/deepseek-planner` 已合并到 `main` 并推送（`72fe99f`；gh 未登录，因此用 git 合并提交代替 PR 对象）。
@@ -47,7 +47,7 @@
 
 ## 课程交付
 
-- [ ] 若用于最新答辩，将新增的 RECeSS 100 次 NS-AUC 对比、B2 消融和 LLM 决策边界写入 Word/PPT 新版本，再逐页核验；现有 v2/v4 是这些对比前的版本。
+- [x] 官方 100 次 NS-AUC 对比、消融与 LLM 决策边界已写入报告 v5 / 答辩稿 v7。
 - [ ] 如教师另行要求，再录制演示视频；当前课程 PDF 只明确约 10 分钟汇报，没有要求视频或单独书面报告。
 - [x] 已对照项目计划第 19 节逐项复核 `docs/completion_audit.md`；只将有直接证据的项目标为完成。
 
