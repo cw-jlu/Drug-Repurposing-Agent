@@ -1,4 +1,8 @@
 # Hash-linked audit snapshots must retain exact bytes on every platform.
+configs/component_selector_v1.json -text
+configs/luad_top10_evidence_v1.json -text
+configs/luad_top10_signature_ids.csv -text
+docs/luad_top10_evidence_matrix.md -text
 benchmark/results/planner_v3_rule_chained_regression.json -text
 benchmark/results/planner_v3_rule_chained_trace_grade.json -text
 benchmark/results/recess_component_selector_v1_paired_audit.json -text
