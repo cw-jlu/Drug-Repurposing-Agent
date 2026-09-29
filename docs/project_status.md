@@ -43,6 +43,8 @@
 - A multi-agent LUAD evidence review (`docs/multi_agent_review.md`) runs literature, critic, deterministic citation validation and coordinator steps. 0 of 65 quoted claims were rejected, and all 10 candidates remain insufficient evidence.
 - A NumPy port of BNNR reproduces the published per-seed NS-AUC exactly on official seeds 1–3 (`benchmark/results/bnnr_numpy_fidelity.json`).
 
+- Round-2 B4 (B3 + NumPy BNNR, 1:2 row-rank ensemble, frozen at `e5ff7e7`): NS-AUC 0.7453 random simple (rank 1/13) and 0.6585 weakly correlated (rank 3/13). B4 ranks first on random simple but not on weakly correlated, where MBiRW (0.7384) leads. It is therefore not state of the art across both protocols.
+
 ## Needed for the planned final deliverable
 
 1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.

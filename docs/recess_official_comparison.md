@@ -113,3 +113,17 @@ The configuration was frozen in `configs/b3_row_fusion_v1.json` at commit `92943
 | Weakly correlated | 0.6919 ± 0.0088 | 3 | MBiRW 0.7384 | 0/100 |
 
 B3 does not surpass the best published model on either split. The gain from B2 (0.5222 → 0.7234) comes from matching the metric's orientation and from known-association structure, not from signature reversal. Machine-readable comparison: `benchmark/results/recess_official_b3_vs_11.json`; aggregate CSVs: `benchmark/results/recess_official_b3/`. The post-hoc variant B3noREV (reversal removed) completed afterwards: 0.7124 random simple (rank 2/13) and 0.7050 weakly correlated (rank 2/13, behind MBiRW). Because REV removal was chosen after the weak-split development score had been seen, B3noREV is reported only as a secondary, post-hoc result; B3 remains the primary pre-registered model. Ranks here are within {11 published models, B2, the model} (`rank_in_published_field`).
+
+
+## B4: round 2, B3 plus a NumPy BNNR port (2026-09-29)
+
+BNNR's published implementation calls Octave. `benchmarks/recess_adapter/bnnr_numpy.py` ports `BNNR.m` and `svt.m` line by line. On official random-split seeds 1–3 it reproduces the published per-seed NS-AUC with a maximum absolute difference of 0.0 (`benchmark/results/bnnr_numpy_fidelity.json`). Those seeds were used only to check fidelity.
+
+B4 averages within-drug-row ranks of B3 and BNNR at weights 1:2. It was chosen among five pre-listed ensembles on 10 random-split development seeds disjoint from the official 100, and frozen at commit `e5ff7e7` (`configs/b4_ensemble_v1.json`) before any official B4 score existed. The official B3 results were already public at that point, so B4 is a second, separately labelled round.
+
+| Split | B4 NS-AUC (mean ± SD, 100 seeds) | Rank / 13 | Best published | B4 paired wins vs best | Mean paired difference |
+|---|---:|---:|---|---:|---:|
+| Random simple | 0.7453 ± 0.0333 | 1 | BNNR 0.7331 | 87/100 | +0.0122 |
+| Weakly correlated | 0.6585 ± 0.0187 | 3 | MBiRW 0.7384 | 0/100 | -0.0799 |
+
+B4 ranks first on random simple but not on weakly correlated, where MBiRW (0.7384) leads. It is therefore not state of the art across both protocols. The weakly correlated protocol repeats one outer holdout across all seeds, so its paired values are not independent replications. B4 still trains nothing new: BNNR is a published matrix-completion method run through the official protocol, and the ensemble weights were fixed on development seeds. Comparison: `benchmark/results/recess_official_b4_vs_11.json`.
