@@ -25,6 +25,7 @@ B2_RESULT_DIR = ROOT / "benchmark" / "results" / "recess_official_b2"
 # reported as notes rather than errors.
 EXTRA_RESULT_DIRS: list[Path] = [
     ROOT / "benchmark" / "results" / "recess_official_b3",
+    ROOT / "benchmark" / "results" / "recess_official_b4",
 ]
 
 LUAD_CONFIG = ROOT / "configs" / "luad_top10_evidence_v1.json"
