@@ -1,0 +1,133 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{GSE32863 LUAD data audit}\label{gse32863-luad-data-audit}
+
+The
+\href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE32863}{GEO
+GSE32863} Series Matrix contains 116 log2-transformed, robust spline
+normalized expression samples on GPL6884. The GEO overall design
+describes 58 pairs, but the sample titles identify only 57 complete
+patient IDs. \texttt{GSM813507} is \texttt{3023\_\allowbreak{}T} with no
+\texttt{3023\_\allowbreak{}N}; \texttt{GSM813518} is \texttt{3035\_\allowbreak{}N} with no
+\texttt{3035\_\allowbreak{}T}. Their metadata also names different subjects, so
+neither is treated as the other\textquotesingle s pair. The two samples
+are excluded. The analysis uses 114 samples from 57 verifiable pairs.
+
+The matrix has 48,803 probes. GPL6884 annotation yields 28,718 probes
+with one unambiguous gene symbol; the predetermined maximum-IQR probe
+rule retains 19,404 genes. A paired tumor-minus-normal t-test with
+Benjamini-Hochberg adjustment and FDR \textless{} 0.05 plus absolute
+log2FC ≥ 1 finds 512 upregulated and 749 downregulated genes. These are
+disease-signature results, not drug efficacy findings. A paired
+\href{https://bioconductor.org/packages/release/bioc/html/limma.html}{limma}
+sensitivity run (R 4.6.1, limma 3.68.5; patient fixed effects,
+\texttt{lmFit} + \texttt{eBayes}) produced the same 512 up and 749 down
+thresholded genes, with Jaccard overlap 1.0 in each direction. Log2FC
+values agree to numerical precision, while p-values and FDRs differ
+because limma moderates the variance. Exact outputs and versions are in
+\href{../data/manifests/gse32863-limma.json}{\texttt{data/\allowbreak{}manifests/\allowbreak{}gse32863-limma.\allowbreak{}json}}.
+
+Run \texttt{python\ scripts/\allowbreak{}process\_\allowbreak{}gse32863.\allowbreak{}py} after placing the
+official GSE32863 Series Matrix and GPL6884 annotation under
+\texttt{data/\allowbreak{}raw/\allowbreak{}GSE32863/\allowbreak{}}. For the sensitivity run, install R and
+Bioconductor limma, then run
+\texttt{python\ scripts/\allowbreak{}run\_\allowbreak{}limma\_\allowbreak{}sensitivity.\allowbreak{}py\ -\/\allowbreak{}-rscript\ \textless{}path-to-Rscript\textgreater{}}.
+File URLs and SHA-256 hashes, QC counts, and generated-output hashes are
+in
+\href{../data/manifests/gse32863.json}{\texttt{data/\allowbreak{}manifests/\allowbreak{}gse32863.\allowbreak{}json}}.
+Full expression matrices and derived per-gene files remain outside Git.
+
+The GSE92742 metadata was frozen for the A549 chemical-treatment cohort:
+24 hours, 10 µM, 5,814 signatures and 5,169 unique \texttt{pert\_\allowbreak{}id}
+values. Eleven reference drug names were saved in
+\texttt{configs/\allowbreak{}luad\_\allowbreak{}positive\_\allowbreak{}controls.\allowbreak{}csv} before any LUAD drug
+ranking. Five names match this exact metadata subset directly; unmatched
+names require ID-level review, not guessed synonym matching.
+
+The
+\href{https://bioconductor.org/packages/release/data/experiment/html/signatureSearchData.html}{ExperimentHub
+EH3226 \texttt{lincs.\allowbreak{}h5}} is a public GSE92742-derived 10 µM, 24-hour
+Level 5 subset. Its upstream \texttt{sig\_\allowbreak{}filter} retains the first
+technical duplicate for each drug name and cell line. We verified the
+2,464,124,175-byte file (SHA-256
+\texttt{8087bd029d29df\allowbreak{}17ce44eb653610\allowbreak{}ad0e2b847e3f36\allowbreak{}1d5540e5f798da\allowbreak{}42a473ec})
+and selected 4,920 A549 drug-name signatures. The LUAD signature
+intersects 961 of the 978 LINCS landmark genes; 57 are in the
+prespecified up set and 50 in the down set. Negative Spearman and
+gene-set connectivity were fused with fixed RRF (\texttt{k=60}). See
+\href{luad_screening_report.md}{the Top-10 screening report}.
+
+EH3226 stores names in its columns but no per-column \texttt{pert\_\allowbreak{}id}.
+GEO metadata maps 206 of the 4,920 names to multiple IDs. The Broad
+Repurposing Hub sample audit finds only two exact InChIKey matches among
+the Top-10 inferred GEO IDs. Consequently, Hub targets and
+clinical-phase annotations remain name-level context, never
+chemical-identity proof. The full GEO Level 5 archive was not needed for
+this bounded analysis.
+
+\end{document}

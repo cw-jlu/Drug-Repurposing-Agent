@@ -1,0 +1,31 @@
+{
+  "status": "source_staged_schema_only_not_label_crosswalked",
+  "source": "https://raw.githubusercontent.com/adam-sam-brown/repoDB/cd4edec67e57df1d2a5f552e30a6960a38d79432/Shiny_Application/data/shiny.RData",
+  "revision": "cd4edec67e57df1d2a5f552e30a6960a38d79432",
+  "bytes": 306051,
+  "sha256": "21e8c95c6e18dc678599bf760f81c435fc21e75e6c68a5f475f68be9adc1cb52",
+  "rdata_version": "1.1.0",
+  "objects": {
+    "drug.fr": {
+      "type": "DataFrame",
+      "shape": [
+        10800,
+        11
+      ],
+      "columns": [
+        "Drug",
+        "Indication",
+        "drug_name",
+        "drug_id",
+        "ind_name",
+        "ind_id",
+        "sem_type",
+        "TrialStatus",
+        "status",
+        "phase",
+        "DetailedStatus"
+      ]
+    }
+  },
+  "trace": "artifacts\\reports\\traces\\20260929T142316049667Z_repodb_2017_source_stage_8485b9a9bd204ecfab7322ce57670606.jsonl"
+}

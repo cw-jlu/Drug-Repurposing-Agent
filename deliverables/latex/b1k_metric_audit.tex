@@ -1,0 +1,148 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{B1k official NS-AUC
+diagnostic}\label{b1k-official-ns-auc-diagnostic}
+
+Status: \textbf{all 100 previously scored official seeds per split} have
+now been reproduced within absolute tolerance \texttt{1e-12} using the
+frozen seed/result CSVs, identical splitter, five-fold B1k selection,
+and official rowwise NS-AUC calculation. The
+\href{../benchmark/results/b1k_all_seeds_random.json}{random-simple
+report},
+\href{../benchmark/results/b1k_all_seeds_weak.json}{weakly-correlated
+report}, per-seed JSONL checkpoints, chained traces and
+\href{../benchmark/results/analytic_audits_archive_receipt.json}{archive
+receipt} are versioned. The official CSVs and primary 100-run comparison
+are unchanged. Reproduce with
+\texttt{python\ -m\ evals.\allowbreak{}audit\_\allowbreak{}b1k\_\allowbreak{}all\_\allowbreak{}seeds\ -\/\allowbreak{}-split\ random\_\allowbreak{}simple\ -\/\allowbreak{}-output\ artifacts/\allowbreak{}reports/\allowbreak{}b1k\_\allowbreak{}all\_\allowbreak{}seeds\_\allowbreak{}random.\allowbreak{}json}
+and the analogous \texttt{weakly\_\allowbreak{}correlated} command using a new output
+path. Each run checks source-data, frozen seed, and frozen-result hashes
+and refuses output overwrite.
+
+The pinned runner calls
+\texttt{benchscofi.\allowbreak{}utils.\allowbreak{}rowwise\_\allowbreak{}metrics.\allowbreak{}calc\_\allowbreak{}auc} with
+\texttt{transpose=False}, so NS-AUC is an \textbf{unweighted mean over
+eligible drug rows}. Its comparison is strictly
+\texttt{positive\_\allowbreak{}score\ \textgreater{}\ nonpositive\_\allowbreak{}score}; an exact
+tie contributes zero, unlike standard AUC\textquotesingle s half credit.
+Rows without both labels are omitted. The official global AUC and
+earlier project-level AUC use different aggregation/score handling and
+must not be used to infer a reversed sign.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+Split, 100 frozen seeds & Official mean NS-AUC & Mean / min--max tie
+fraction of eligible pairs & Row-mean if ties got half credit & Row-mean
+if scores inverted, still strict \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Random simple & 0.174732 & 0.802969 / 0.726419--0.873774 & 0.576379 &
+0.021975 \\
+Weakly correlated & 0.056176 & 0.972287 / 0.968002--0.997317 & 0.522817
+& 0.005543 \\
+\end{longtable}
+}
+
+All 200 seeds have a majority of eligible positive--nonpositive pairs
+tied. The B1k neighbor-label propagation generates many identical scores
+in this sparse association matrix, and the pinned strict comparison
+awards those ties zero. \textbf{Tie handling is therefore the dominant
+arithmetic reason for B1k\textquotesingle s low official NS-AUC across
+these seeds}; simply inverting score direction would make it worse. The
+half-tie figures are counterfactual diagnostics on B1k\textquotesingle s
+saved-score reproduction, \textbf{not} new official benchmark scores,
+not commensurate with other methods\textquotesingle{} untouched official
+scores, and not a justification to revise the comparator after viewing
+results. Replacing the metric would require rerunning all our methods
+and the 11 published baselines under one prospective definition. This
+retrospective audit does not establish clinical prediction value.
+
+The earlier one-seed-per-split
+\href{../benchmark/results/b1k_ns_auc_random_seed0_diagnostic.json}{random}
+and
+\href{../benchmark/results/b1k_ns_auc_weak_seed0_diagnostic.json}{weak}
+reports remain as initial diagnostics; the all-seed reports supersede
+any extrapolation from only those two cases.
+
+\end{document}

@@ -1,0 +1,406 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{基于转录组与证据核验的药物重定位 Agent
+课程设计报告}\label{ux57faux4e8eux8f6cux5f55ux7ec4ux4e0eux8bc1ux636eux6838ux9a8cux7684ux836fux7269ux91cdux5b9aux4f4d-agent-ux8bfeux7a0bux8bbeux8ba1ux62a5ux544a}
+
+\begin{quote}
+状态：v5 技术报告（2026-09-29 更新证据范围审计），在 v4
+基础上加入行方向融合 B3、LLM 知识污染探针、决策层消融与多 Agent
+证据审阅。课程任务 PDF 已核对：要求覆盖
+Problem、Data、Model、Benchmark、Biological interpretation 五环节，提交
+GitHub 代码并进行约 10 分钟汇报；PDF
+未规定报告篇幅、封面或单独视频。本报告不构成临床建议。
+\end{quote}
+
+\subsection{摘要}\label{ux6458ux8981}
+
+本项目实现了可审计的药物重定位研究流程，连接公开转录组数据、确定性排序、证据账本和受控
+Agent。外部评估采用 RECeSS/TRANSCRIPT v2.0.0；肺腺癌（LUAD）案例使用
+GSE32863 配对样本与 GSE92742 衍生的 EH3226 A549
+化合物扰动表达。在相同的官方 100 次拆分、五折选模与 NS-AUC
+口径下，固定融合方法 B2 在随机拆分得 0.5222，弱相关拆分得 0.5019，分别排
+12 个方法中的第 9 和第
+8。表达反转没有超过强基线。复核官方评价代码后发现，NS-AUC
+在每个药物行内对疾病排序并把同分记零，而 B2
+按疾病列排序；改为行方向的无训练融合 B3
+在正式评分前冻结，随后在同一官方协议下得到 0.7234 与 0.6919，分列 13
+个方法的第 2 和第
+3，接近但未超过最强的作者模型。五个疾病分区上的事后标明正例/未知修订实验中，DeepSeek
+方法选择平均比固定 B2 低 0.11031
+NS-AUC，不能声称大模型会自动选出更好的算法。LUAD 筛选得到 4,920
+个药名的排名，但前十名存在化合物身份与疗效证据缺口，只能作为后续实验假设。LLM
+知识污染探针表明：看得到药名和病名的大模型能凭记忆部分``认出''已知适应症（AUC
+0.567），这证明 Benchmark 必须在 Strict
+模式下运行。系统记录输入哈希、工具调用、验证结果和执行轨迹，不把 Agent
+的工具选择准确率当作药物预测准确率。
+
+\textbf{关键词：} 药物重定位；肺腺癌；转录组；LINCS
+L1000；证据溯源；Agent
+
+\subsection{1.
+研究目标与边界}\label{1-ux7814ux7a76ux76eeux6807ux4e0eux8fb9ux754c}
+
+药物重定位希望为已有化合物寻找新的研究用途，但疾病表达与药物扰动表达的``反向''关系并不等同于患者获益。本项目的问题是：在公开基准上，表达反转是否带来可测的排序价值；以及能否把肺腺癌候选药物从数据处理追踪到可复核的证据记录。评价重点是数据边界、可复现性、与强基线比较及不确定性表述，而非制造新的临床疗法结论。
+
+原计划包含 Jev 决策模型、通用 LLM、外部基准、内部 Eval、LUAD
+端到端案例和课程展示。本阶段已实现确定性分析主流程、自然语言任务路由、受控工具调用、完整
+Agent Trace、真实 DeepSeek 函数调用及可选 Jev 接口。冻结的 61 项 v2
+路由集上，修改前规则为 35/61，原始 DeepSeek 为
+55/61；根据失败类型加固后的结果只作为回归验证。另建的 100 项 v3 独立
+holdout 在任何调用前提交，规则规划器为 90/100，一次 DeepSeek Flash
+调用为 98/100，且未根据失败修改系统。TypeSafe Jev 仍无凭据和真实结果。
+
+\subsection{2.
+数据来源与质量控制}\label{2-ux6570ux636eux6765ux6e90ux4e0eux8d28ux91cfux63a7ux5236}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}@{}}
+\toprule\noalign{}
+来源 & 用途 & 本次纳入情况 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\href{https://zenodo.org/records/7982976}{TRANSCRIPT v2.0.0} &
+外部排序基准 & 613 个药物、151 个疾病；401 个正关联、11
+个明确负关联，其余为未知 \\
+\href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE32863}{GSE32863/GPL6884}
+& LUAD 疾病签名 & 116 份样本中可核对 57 对；两个孤立样本排除；保留
+19,404 个基因 \\
+\href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742}{GSE92742}
+元数据 & A549 条件与药物 ID & 固定化合物、24 小时、10 µM 条件；5,814
+条元数据签名；Top-10 精确签名 ID 已恢复 \\
+\href{https://bioconductor.org/packages/release/data/experiment/html/signatureSearchData.html}{ExperimentHub
+EH3226} & LUAD 药物表达 & 上游按药名/细胞保留第一个技术重复；得到 4,920
+个 A549 药名 \\
+\href{https://repo-hub.broadinstitute.org/repurposing}{Broad Drug
+Repurposing Hub} & 药物注释和身份核对 & 使用 2025-08-18
+的药物与样品注释快照 \\
+\end{longtable}
+}
+
+GSE32863 的 GEO 标题可形成 57
+个相同患者编号的肿瘤/正常配对。\texttt{GSM813507} 与 \texttt{GSM813518}
+分属不同编号，不能强行配成第 58
+对。探针至基因映射只接受单一明确基因符号，再按全样本 IQR
+选一个探针，避免使用病理标签选探针。输入与产物校验值记录在
+\texttt{data/\allowbreak{}manifests/\allowbreak{}}。
+
+\subsection{3. 方法}\label{3-ux65b9ux6cd5}
+
+\subsubsection{3.1
+疾病差异表达}\label{31-ux75beux75c5ux5deeux5f02ux8868ux8fbe}
+
+对已归一化且取 log2
+的表达矩阵进行同一患者的肿瘤减正常分析。初始实现为配对 t
+检验、Benjamini--Hochberg 校正，预设阈值为 FDR \textless{} 0.05 且
+\textbar log2FC\textbar{} ≥ 1。随后使用 R 4.6.1、Bioconductor limma
+3.68.5 以患者固定效应设计矩阵运行 \texttt{lmFit} 和 \texttt{eBayes}
+敏感性分析。两者得到相同的阈值基因集：上调 512 个、下调 749 个；log2FC
+在数值精度内一致。limma 对方差进行经验贝叶斯调整，因此 p 值和 FDR
+不要求逐项相同。
+
+\subsubsection{3.2
+转录组候选排序}\label{32-ux8f6cux5f55ux7ec4ux5019ux9009ux6392ux5e8f}
+
+药物与疾病向量按明确基因 ID 对齐。方法 B1 为负 Spearman 相关系数；LUAD
+案例另计算疾病上调基因在药物下调端、疾病下调基因在药物上调端的秩连接分数。各分数通过固定
+\texttt{k=60} 的 reciprocal-rank
+fusion（RRF）合并，并列分数使用相同平均名次，避免输入行顺序成为隐含先验。LUAD
+仅使用 961 个重合的 LINCS landmark 基因，其中预设显著上调 57 个、下调 50
+个。候选排名不读取已知治疗药物标签或 Broad 注释。
+
+\subsubsection{3.3 外部基准}\label{33-ux5916ux90e8ux57faux51c6}
+
+主比较将 B2 及其 B0p、B1k、B1 三个分支放入固定版本的 RECeSS 官方
+Runner，与作者发布的 11 个模型共用 100 个种子、20\% 外层测试、五折选模和
+NS-AUC 统计。弱相关拆分在固定特征下重复同一个外层测试集，因此 100
+次的波动不能解释为 100 个独立药物组。另有早期项目内实验使用全局
+AUC/NDCG：B1k/B2 为三个外层种子与三折内层调参；ALSWR、PMF、LogisticMF
+为五个外层种子与三折内层调参。这两组指标和调参协议不同，不直接混表比较。未知的
+\texttt{0} 在相应指标中按既定规则处理，不代表临床失败。
+
+\subsubsection{3.4 行方向无训练融合
+B3}\label{34-ux884cux65b9ux5411ux65e0ux8badux7ec3ux878dux5408-b3}
+
+官方
+NS-AUC（\texttt{rowwise\_\allowbreak{}metrics.\allowbreak{}calc\_\allowbreak{}auc}，\texttt{transpose=False}）在每个药物行内比较正例与非正例疾病，并用严格
+\texttt{\textgreater{}} 计数，同分记零。B2 的 RRF
+在疾病列内排序，其药物流行度分量在一个药物行内为常数，因此与评价方向不一致。B3
+把六个不需参数拟合的分量都在药物行内转为归一化名次后取平均：训练折疾病流行度、药物表达
+kNN（k=10）、疾病表达
+kNN（k=10）、训练标签共现的药物协同过滤（k=20）与疾病协同过滤、负
+Spearman 反转；再加入基于疾病流行度的极小确定性打破同分项。选择规则为 8
+个与官方 100 种子不相交的随机拆分开发种子上的最高均值；配置文件
+\texttt{configs/\allowbreak{}b3\_\allowbreak{}row\_\allowbreak{}fusion\_\allowbreak{}v1.\allowbreak{}json} 在任何官方评分前提交（commit
+\texttt{92943bb}）。\texttt{weakly\_\allowbreak{}correlated\_\allowbreak{}split}
+不含随种子变化的随机抽取，开发运行必然使用了官方外层测试集，这一点在配置中披露且未用于选择。
+
+\subsection{4. 结果}\label{4-ux7ed3ux679c}
+
+官方协议下，B2 的随机/弱相关 NS-AUC 为 0.5222 ± 0.0354 / 0.5019 ±
+0.0036；最强的作者模型分别为 BNNR 0.7331 和 MBiRW 0.7384。B2 分列第 9/12
+与第 8/12。分支消融的 B0p 为 0.5000 / 0.5000，B1k 为 0.1747 / 0.0562，B1
+为 0.4816 / 0.5417（随机/弱相关）。B2
+只在随机拆分领先这四个自有方法；弱相关拆分由 B1 领先。一次预先冻结的
+DeepSeek
+选择恰好选中了两种拆分各自的最佳自有方法，但只有两个决策，不能证明大模型选择策略可泛化。对
+B1k 各复算一个冻结种子，官方数值精确重现；其低 NS-AUC
+主要受大量同分影响，官方严格比较把同分记零，不是预测方向简单颠倒。该诊断不替代官方
+100 次结果。
+
+B3 在同一官方 Runner 中得到随机拆分 0.7234 ± 0.0339（第 2/13，BNNR
+0.7331 第一；100 个配对种子中 B3 胜 35 次）与弱相关拆分 0.6919 ±
+0.0088（第 3/13，MBiRW 0.7384 与 HAN 0.7029 在前）。较 B2
+的提升来自与评价方向对齐和已知关联结构，而非签名反转；不宣称 SOTA。
+
+第二轮 B4 将 B3 与 BNNR 的 NumPy 移植按药物行名次 1:2
+加权平均。移植版在官方随机拆分前 3 个种子上与作者公布的逐种子 NS-AUC
+最大绝对差为 0.0。B4 在 10
+个与官方种子不相交的开发种子上从五个预列组合中选出，并在正式评分前冻结（commit
+\texttt{e5ff7e7}）。官方 100 种子结果：随机拆分 0.7453 ± 0.0333（第
+1/13；对 BNNR 配对胜 87/100，平均差 +0.0122），弱相关拆分 0.6585 ±
+0.0187（第 3/13）。随机拆分排第一；弱相关拆分由
+MBiRW（0.7384）领先，因此不能宣称两种协议下的 SOTA。由于 B3 的官方结果在
+B4 设计时已公开，B4 单独标注为第二轮。
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 1 TRANSCRIPT 官方 100 种子 NS-AUC 分布（本项目方法高亮）}]{docs/figures/fig1_nsauc_boxplot.png}}
+
+随后，五个疾病分区的 15 次 DeepSeek
+决策在任何分区结果之前冻结并通过逐响应 trace
+核对。原始官方协议在第二分区因仅一条明确负例而无法分层，故未完成。另行标注的事后正例/未知修订实验完成五分区、四方法、20
+外层种子和五折选模；大模型所选方法均值为 0.40653，固定 B2 为 0.51684
+NS-AUC，分区配对均差
+−0.11031，五个分区无一为正。三次选择共享每个分区的结果，并非 15
+个独立验证集；该修订也不是原预注册实验。下一版协议只允许给模型看外层训练集的内层交叉验证证据，且必须取得未用过的独立评估数据，尚未运行。
+
+较早的项目内全局 AUC 实验使用不同拆分和选模协议，结果单列于
+\texttt{docs/\allowbreak{}benchmark\_\allowbreak{}results.\allowbreak{}md}，不能与上述 NS-AUC
+直接比较。其中五外层种子的嵌套调参显示 LogisticMF
+为已测项目方法中较强的基线；弱相关拆分的外层划分与不确定性仍需谨慎解释。
+
+LUAD 表达筛选前十名依次是
+hydrocortisone、beclomethasone-dipropionate、clocortolone-pivalate、mometasone、flumetasone、BRD-K84203638、hydrocortisone-hemisuccinate、fluorometholone、fluticasone、diflorasone。预先冻结的
+11 个参考药名只有 5 个可在该 A549 子集中测得；其中 docetaxel 排
+106、crizotinib 排
+241，其他三个可测参考药排得更低。其余六个参考药名未测得，不能当作排序失败。
+
+复现 EH3226 上游 \texttt{sig\_\allowbreak{}filter}
+的源文件顺序去重规则后，前十候选均恢复出唯一 \texttt{sig\_\allowbreak{}id} 和
+\texttt{pert\_\allowbreak{}id}，并得到 GSE92742 的 InChIKey
+与结构字段。逐签名来源因此明确，但与 Broad Hub 交叉核对时仍只有两个精确
+InChIKey 匹配；其余包括立体化学差异、结构不符、同义词或没有 Hub
+样品。候选级证据矩阵显示九个名称属于或很可能属于糖皮质激素类，主要指向
+NR3C1/糖皮质激素受体转录。hydrocortisone 有 A549
+生长抑制和独立计算候选背景，beclomethasone-dipropionate 有 A549 中 GR
+依赖的 CYP3A5
+诱导；类别级研究也报告化疗保护、干性与免疫治疗背景下的不利信号。其余多数候选没有药物特异
+LUAD 疗效证据。十个候选均保持``证据不足''。
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 2 GSE32863 配对差异表达火山图（FDR\textless0.05，\textbar log2FC\textbar≥1）}]{docs/figures/fig3_luad_volcano.png}}
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 3 LUAD Top-10 候选的药物---靶点---通路网络（仅使用已记录的靶点与通路）}]{docs/figures/fig5_top10_network.png}}
+
+\subsubsection{4.1 LLM
+知识污染探针}\label{41-llm-ux77e5ux8bc6ux6c61ux67d3ux63a2ux9488}
+
+为检验``让大模型直接判断药物---疾病对''是否会泄漏答案，从 TRANSCRIPT
+按固定种子抽取 300 个正例、300 个未知对与全部 11
+个负例，样本哈希在任何调用前固定。同一 DeepSeek
+模型在开卷条件（给药名与病名）下正例对未知的 AUC 为 0.567（95\%
+bootstrap CI 0.526--0.609），是唯一显著高于 0.5
+的条件；闭卷条件（只给反转数值与名次，不给身份）为 0.527，反转分数本身为
+0.519。开卷减闭卷的配对差为 0.040（CI
+-0.022--0.102，跨零）。高置信命中都是教科书适应症，说明这是记忆而非发现；TRANSCRIPT
+中许多正例并非真实世界适应症，限制了泄漏幅度。该结果支持 Benchmark 只在
+LLM 不可见身份的 Strict 模式下运行。共 1222 次调用。
+
+\subsubsection{4.2 决策层消融（Jev
+替代）}\label{42-ux51b3ux7b56ux5c42ux6d88ux878djev-ux66ffux4ee3}
+
+TypeSafe Jev 未获访问，因此在同一冻结集上比较 J0 固定规则、J1 通用 LLM
+结构化输出与 J3 LLM 加置信门控。120
+个封闭决策用例覆盖工具路由、数据质量评分、证据充分性与候选分级各 30
+个，参考答案由成文策略决定，并在任何模型调用前提交。J0 与 J1
+总体准确率均为 0.875；J1 对模糊用例的人工升级召回为 1.00（J0 为
+0.69），但高风险误自动执行率为 0.150，高于 J0 的 0.033；加入门控后 J3
+降至 0.083，代价是升级率升至
+0.400。用例为策略生成的合成数据且只运行一次；Jev
+接口已预留，可在同一冻结集上复测。
+
+另冻结 40 条全新中文备注压力用例，检验``LLM
+只判断自由文本是否报告具体风险、确定性规则计算其余状态''的混合层。原关键词规则
+20/40，混合层 39/40，完整策略 LLM 37/40；混合层对 20
+条作者标注的具体风险全部转人工，另有 1
+条无风险备注被过度升级。两种模型分支共 80 次调用，80/80 请求/响应 trace
+通过独立回放。该新集刻意采用旧英文关键词覆盖不到的中文措辞，两个结构化状态/节点且由作者标注，不能与前述
+120
+例直接比较，更不能代表临床正确率。详见\href{docs/decision_eval_v2.md}{决策层
+v2 报告}。
+
+\subsubsection{4.3 多 Agent
+证据审阅}\label{43-ux591a-agent-ux8bc1ux636eux5ba1ux9605}
+
+对 LUAD Top-10，文献 Agent 检索 PubMed 并提出带原文引语的支持论断，批评
+Agent 独立检索反对证据，确定性校验要求 PMID
+属于检索集合且引语逐字出现在摘要中，协调者再给出分级。冻结版 65 条引语中
+0 条被逐字规则拒绝，十个候选均为``证据不足''，与单轮人工分诊一致；共 22
+次调用。但逐字存在不等于论断被文献支持。事后来源与候选药范围预筛标记
+23/65 条；进一步按当前 PubMed 摘要逐条复核后，13
+条应从原样候选级支持/反证中排除，9
+条仅可在收窄到药代、炎症、递送或体外终点后保留，另 1
+条仅可作非癌种特异安全提示。问题包括把勘误当研究证据、把不明糖皮质激素归到具体药物、以及把柚皮素
+A549 抗癌结果误归给
+fluticasone。详见\href{docs/evidence_scope_audit.md}{逐条审计}。本轮是作者的事后摘要级核查，不是独立双人阅读全文审阅；冻结的
+10/10 分级未重跑，不能将其解释为审计后的分级准确率。
+
+\subsection{5.
+系统实现与审计}\label{5-ux7cfbux7edfux5b9eux73b0ux4e0eux5ba1ux8ba1}
+
+系统包含自然语言 Planner、允许列表工具 Schema、表达数据读取与
+QC、差异表达、排序、RECeSS 适配器、药物身份核对、文献分诊、证据账本和
+LUAD 案例打包器。Planner
+只接收模式和可用输入名称，不接收原始矩阵、文件路径或 Benchmark
+标签；DeepSeek
+返回的调用还须经过工具名、参数、输入和模式权限验证，不可用工具会失效关闭到人工复核。全部状态写入
+\texttt{agent\_\allowbreak{}run.\allowbreak{}json}。可选 Jev
+适配器仍没有真实凭据或结果。项目另提供 Streamlit
+演示界面（\texttt{app/\allowbreak{}demo.\allowbreak{}py}），可运行或回放 Agent、查看 LUAD 证据卡与
+Benchmark 表；答辩图表由 \texttt{scripts/\allowbreak{}make\_\allowbreak{}figures.\allowbreak{}py}
+从已提交结果重建。
+
+Python 3.10 的 Benchmark 测试依赖记录在
+\texttt{requirements-benchmark.\allowbreak{}lock}。内部单元测试和冻结的 20 项 v1、61
+项 v2、100 项 v3 Planner Eval 分开报告。逐事件 JSONL trace
+记录模型可见输入输出、工具选择、参数、用量和错误，并移除密钥与内部推理字段；它不能重建历史
+v3 的原始模型响应。基于新 trace 重跑的规则规划器 v3 回归评测为
+90/100，逐条 trace 评分亦为 90/100；这不是新的独立
+holdout。五分区方法选择的 15 条模型可见响应已逐条核对。另对历史 LUAD
+大模型研究分诊单例做身份、引文范围、操作门槛与``不宣称疗效''核验，保存的三项研究行动均通过；这不是新的独立
+Agent 评测，更不能推断临床正确性。\texttt{data/\allowbreak{}manifests/\allowbreak{}}
+保存公开来源哈希；完整表达矩阵不入 Git。
+
+\subsection{6.
+局限与后续工作}\label{6-ux5c40ux9650ux4e0eux540eux7eedux5de5ux4f5c}
+
+本项目的表达反转指标在公开基准上没有取得领先结果，提示基于转录组的单一对抗方向不足以代表药物与疾病的真实治疗关系。LUAD
+案例只有单一 A549 细胞系、固定剂量与时间；逐签名 ID
+已恢复，但交叉来源的盐型、立体化学和同义词问题仍需实物核验。前十名的类固醇集中也可能反映共同转录反应。候选级文献矩阵已记录支持与反对信号，但它是有边界的人工分诊而非系统综述，且类别证据不能替代候选药特异验证。没有足够证据把任何候选推荐给患者。
+
+湿实验需要实体化合物、细胞模型和仪器，目前不具备执行条件，故剂量、LUAD
+亚型、NR3C1 依赖和联合用药仅保留为预设方案。五个疾病分区仍来自
+TRANSCRIPT，不是外部独立数据集；正例/未知修订实验给出了负结果。外部数据可行性审计已取得
+233 个 CREEDS 疾病签名、6,100 个 CMap 实验的原始秩矩阵，并对齐 Open
+Targets 和 repoDB，但前者没有明确负标签；repoDB 的严格跨库匹配只有 14
+个疾病同时有正负记录，零个疾病满足保守的逐疾病五折门槛。排除与
+TRANSCRIPT 相同的 CUI 后只剩两个疾病同时有正负记录；使用 Open Targets
+UMLS 交叉引用扩展匹配仍没有合格单元。因此独立方法选择 v3
+没有运行，也没有外部 NS-AUC
+结论。下一步需要新的来源不重叠的表达与关联数据、外层训练集内的性能证据与预先冻结的比较协议；已有分区不能再次充当确认集。Jev
+若获得访问权限也需另做真实评测。课程答辩应展示已完成结果与这些边界，不将计划写成已验证结论。
+
+\subsection{参考与复现材料}\label{ux53c2ux8003ux4e0eux590dux73b0ux6750ux6599}
+
+新增材料：\texttt{docs/\allowbreak{}recess\_\allowbreak{}official\_\allowbreak{}comparison.\allowbreak{}md}（B3
+章节）、\texttt{docs/\allowbreak{}contamination\_\allowbreak{}probe.\allowbreak{}md}、\texttt{docs/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v1.\allowbreak{}md}、\texttt{docs/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v2.\allowbreak{}md}、\texttt{docs/\allowbreak{}multi\_\allowbreak{}agent\_\allowbreak{}review.\allowbreak{}md}、\texttt{docs/\allowbreak{}evidence\_\allowbreak{}scope\_\allowbreak{}audit.\allowbreak{}md}、\texttt{docs/\allowbreak{}external\_\allowbreak{}holdout\_\allowbreak{}feasibility.\allowbreak{}md}、\texttt{docs/\allowbreak{}figures/\allowbreak{}}。项目计划与方法细节见根目录
+\texttt{药物重定位Agent项目计划.\allowbreak{}md}、\texttt{docs/\allowbreak{}evaluation\_\allowbreak{}protocol.\allowbreak{}md}、\texttt{docs/\allowbreak{}benchmark\_\allowbreak{}results.\allowbreak{}md}、\texttt{docs/\allowbreak{}method\_\allowbreak{}selection\_\allowbreak{}partition\_\allowbreak{}v2.\allowbreak{}md}、\texttt{docs/\allowbreak{}b1k\_\allowbreak{}metric\_\allowbreak{}audit.\allowbreak{}md}、\texttt{docs/\allowbreak{}method\_\allowbreak{}selection\_\allowbreak{}v3\_\allowbreak{}protocol.\allowbreak{}md}、\texttt{docs/\allowbreak{}luad\_\allowbreak{}data\_\allowbreak{}audit.\allowbreak{}md}、\texttt{docs/\allowbreak{}luad\_\allowbreak{}screening\_\allowbreak{}report.\allowbreak{}md}；来源与版本见
+\texttt{data/\allowbreak{}manifests/\allowbreak{}}。核心公开来源为
+\href{https://zenodo.org/records/7982976}{TRANSCRIPT}、\href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE32863}{GSE32863}、\href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742}{GSE92742}、\href{https://bioconductor.org/packages/release/bioc/html/limma.html}{Bioconductor
+limma}、\href{https://www.ncbi.nlm.nih.gov/books/NBK25499/}{NCBI
+E-utilities} 和 \href{https://api.typesafe.ai/docs}{TypeSafe System One
+API}。
+
+\end{document}

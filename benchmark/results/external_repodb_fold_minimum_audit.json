@@ -1,0 +1,63 @@
+{
+  "status": "necessary_label_count_only_not_sufficient_for_independent_nested_cv",
+  "source_sha256": "67b93ff058d6177fd35e54bdca853dbde40ccf1ab0a33e3789e43c66e20a86a5",
+  "checks": [
+    {
+      "minimum_each_label": 2,
+      "all_signatures": 12,
+      "nonoverlap_signatures": 2,
+      "all_signature_names": [
+        "acute_myeloid_leukemia_signature.csv",
+        "Human_immunodeficiency_virus_infectious_disease_signature.csv",
+        "hypertension_signature.csv",
+        "inflammatory_bowel_disease_signature.csv",
+        "mental_depression_signature.csv",
+        "multiple_sclerosis_signature.csv",
+        "obesity_signature.csv",
+        "ovarian_cancer_signature.csv",
+        "psoriasis_signature.csv",
+        "rheumatoid_arthritis_signature.csv",
+        "Schizophrenia_signature.csv",
+        "ulcerative_colitis_signature.csv"
+      ],
+      "nonoverlap_signature_names": [
+        "inflammatory_bowel_disease_signature.csv",
+        "mental_depression_signature.csv"
+      ]
+    },
+    {
+      "minimum_each_label": 3,
+      "all_signatures": 8,
+      "nonoverlap_signatures": 0,
+      "all_signature_names": [
+        "acute_myeloid_leukemia_signature.csv",
+        "Human_immunodeficiency_virus_infectious_disease_signature.csv",
+        "hypertension_signature.csv",
+        "multiple_sclerosis_signature.csv",
+        "obesity_signature.csv",
+        "psoriasis_signature.csv",
+        "rheumatoid_arthritis_signature.csv",
+        "Schizophrenia_signature.csv"
+      ],
+      "nonoverlap_signature_names": []
+    },
+    {
+      "minimum_each_label": 5,
+      "all_signatures": 2,
+      "nonoverlap_signatures": 0,
+      "all_signature_names": [
+        "hypertension_signature.csv",
+        "Schizophrenia_signature.csv"
+      ],
+      "nonoverlap_signature_names": []
+    },
+    {
+      "minimum_each_label": 8,
+      "all_signatures": 0,
+      "nonoverlap_signatures": 0,
+      "all_signature_names": [],
+      "nonoverlap_signature_names": []
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T162116255540Z_repodb_fold_minimum_audit_b642b36d3d2f4dffbd65ee360ada56bd.jsonl"
+}

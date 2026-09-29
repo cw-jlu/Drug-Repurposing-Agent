@@ -16,7 +16,13 @@ const b3 = J("benchmark/results/recess_official_b3_vs_11.json");
 const comp = J("benchmark/results/recess_official_component_ablation.json");
 const probe = J("benchmark/results/contamination_probe_v1.json");
 const dec = J("benchmark/results/decision_eval_v1.json");
+const dec2 = J("benchmark/results/decision_eval_v2.json");
 const rev = J("benchmark/results/multi_agent_review_v1.json");
+const evidenceAudit = J("benchmark/results/evidence_scope_adjudication_audit.json");
+const evidenceLedger = J("benchmark/results/evidence_scope_adjudication_v1.json");
+const evidenceExcluded = Object.entries(evidenceAudit.decision_counts)
+  .filter(([decision]) => decision.startsWith("exclude_"))
+  .reduce((sum, [, count]) => sum + count, 0);
 const b4Path = "benchmark/results/recess_official_b4_vs_11.json";
 const b4 = has(b4Path) ? J(b4Path) : null;
 
@@ -184,7 +190,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   const lab = ["J0 固定规则", "J1 通用 LLM", "J3 LLM + 置信门控"];
   const cases = Object.values(dec.case_counts_by_node).reduce((a, b) => a + b, 0);
   const s = content("决策层消融：规则 vs LLM vs 门控（Jev 接口已预留）",
-    `约 50 秒。冻结 ${cases} 个封闭决策用例（工具路由、数据质量、证据充分性、候选分级各 30），参考答案由成文策略决定，调用前提交冻结。J0 与 J1 准确率都是 ${f3(L[keys[0]].accuracy)}；J1 对模糊用例全部升级人工，但高风险误执行 ${f3(L[keys[1]].high_risk_wrong_auto_execution_rate)}，高于规则的 ${f3(L[keys[0]].high_risk_wrong_auto_execution_rate)}；加入置信门控后降到 ${f3(L[keys[2]].high_risk_wrong_auto_execution_rate)}，代价是升级率 ${f3(L[keys[2]].escalation_rate)}。Jev 未获访问，同一冻结集可直接复测。用例为策略生成的合成数据，单次运行。`);
+    `约 50 秒。图为 v1 的 ${cases} 个封闭合成决策用例：J0 与 J1 准确率都是 ${f3(L[keys[0]].accuracy)}，J1 高风险误执行 ${f3(L[keys[1]].high_risk_wrong_auto_execution_rate)}；置信门控降到 ${f3(L[keys[2]].high_risk_wrong_auto_execution_rate)}，但增加人工升级。新 v2 是另一个在任何调用前冻结的 40 条中文风险备注压力测试：混合层 ${dec2.layers.hybrid.correct}/40、完整 LLM ${dec2.layers.full_llm.correct}/40、旧关键词规则 ${dec2.layers.j0_rules.correct}/40；80/80 provider trace 通过回放。v2 是作者标注的合成新用例，不与 v1 准确率直接比较，也不代表临床正确率。Jev 未获访问。`);
   s.addChart(pres.charts.BAR, [
     { name: "准确率", labels: lab, values: keys.map((k) => +f3(L[k].accuracy)) },
     { name: "模糊用例升级召回", labels: lab, values: keys.map((k) => +f3(L[k].review_recall_on_ambiguous_cases)) },
@@ -192,11 +198,11 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
     { x: 0.5, y: 1.3, w: 8.2, h: 5.4, barDir: "col", barGrouping: "clustered", chartColors: [C.navy, C.teal, C.red],
       showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.00", valAxisMinVal: 0,
       valAxisMaxVal: 1.1, showLegend: true, legendPos: "b", showTitle: false, ...axis() });
-  bullets(s, [`${cases} 个冻结用例，参考答案由成文策略决定`,
-    "LLM 与规则总体准确率持平",
-    "LLM 更会“知道自己不确定”：模糊用例全部升级人工",
-    "但 LLM 会高置信出错 → 必须叠加门控",
-    "Jev 未获访问：接口保留，可直接复测"], 9.0, 1.5, 3.8, 5.0, 14);
+  bullets(s, [`图：v1 ${cases} 个冻结合成决策用例`,
+    "v1 规则与 LLM 准确率持平；门控减少高风险误执行",
+    `新 v2 中文备注：混合 ${dec2.layers.hybrid.correct}/40，完整 LLM ${dec2.layers.full_llm.correct}/40`,
+    "v2 作者标注、合成；两集结果不能直接比",
+    "Jev 未获访问：接口保留"], 9.0, 1.5, 3.8, 5.0, 14);
 }
 
 // 9 LUAD biology
@@ -205,21 +211,27 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
     "约 60 秒。GSE32863 配对差异表达得到 512 上调 / 749 下调基因（FDR<0.05，|log2FC|≥1）；肺泡上皮标志物（AGER、SFTPA1、CLDN18）下调，细胞外基质与侵袭相关基因（SPP1、MMP11、COL1A1）上调，符合 LUAD 生物学。A549 签名反转得到的 Top-10 中 8 个是糖皮质激素、共同指向 NR3C1 与 GR 转录通路——这是一个机制假设而不是十个独立发现；A549 为 KRAS 突变细胞系，细胞系结果不能外推到患者。");
   s.addImage({ path: "docs/figures/fig3_luad_volcano.png", x: 0.4, y: 1.3, w: 6.2, h: 4.9, sizing: { type: "contain", w: 6.2, h: 4.9 } });
   s.addImage({ path: "docs/figures/fig5_top10_network.png", x: 6.8, y: 1.3, w: 6.1, h: 4.9, sizing: { type: "contain", w: 6.1, h: 4.9 } });
-  txt(s, "Top-10 中 8/10 为糖皮质激素 → 一个 NR3C1 机制假设，而非十个独立候选", 0.6, 6.4, 11.4, 0.45, 16, { bold: true, color: C.red });
+  txt(s, "Top-10 中 9/10 属于或很可能属于糖皮质激素 → NR3C1 类别假设，而非十个独立疗效证据", 0.6, 6.4, 11.9, 0.45, 15, { bold: true, color: C.red });
 }
 
 // 10 Multi-agent review
 {
   const cv = rev.citation_validation, tc = rev.tier_counts;
-  const s = content("多 Agent 证据审阅：文献 × 批评 × 确定性校验",
-    `约 50 秒。每个候选：文献 Agent 检索 PubMed 并提出带原文引语的支持论断；批评 Agent 独立检索反对证据；确定性校验要求 PMID 在检索集中且引语逐字出现；协调者给出分级。${cv.proposed_quoted_items} 条引语 ${cv.rejected_quoted_items} 条被拒；10/10 为证据不足，与单轮审阅一致。局限：逐字校验不保证引语真正支持论断（例如批评 Agent 引用了一篇勘误），仍需人工复核。共 ${rev.call_counts.attempts} 次调用。`);
-  stat(s, String(cv.proposed_quoted_items), "带原文引语的论断", 0.6, 1.4, 2.9);
-  stat(s, String(cv.rejected_quoted_items), "未通过 PMID/逐字校验", 3.7, 1.4, 2.9, C.red);
-  stat(s, `${tc.INSUFFICIENT_EVIDENCE}/10`, "证据不足（与单轮一致）", 6.8, 1.4, 2.9);
-  stat(s, String(rev.call_counts.attempts), "LLM 调用次数", 9.9, 1.4, 2.8);
-  const rows = [["排名", "候选", "分级", "关键 PMID"]].concat(rev.candidates.map((c) =>
-    [String(c.rank), c.name, c.tier === "INSUFFICIENT_EVIDENCE" ? "证据不足" : c.tier,
-      (c.key_pmids ?? []).slice(0, 3).join(", ") || "—"]));
+  const s = content("多 Agent 证据审阅：逐字引用 ≠ 论断成立",
+    `约 50 秒。每个候选由文献 Agent、批评 Agent 和协调者处理。冻结版 ${cv.proposed_quoted_items} 条引语全部通过 PMID 与逐字校验、${tc.INSUFFICIENT_EVIDENCE}/10 判为证据不足，共 ${rev.call_counts.attempts} 次模型调用。事后来源/药名范围预筛标记 ${evidenceAudit.reviewed_count} 条；当前 PubMed 摘要级复核中 ${evidenceExcluded} 条原样候选级引用需排除，${evidenceAudit.decision_counts.retain_narrowed} 条仅能收窄终点保留，${evidenceAudit.decision_counts.retain_class_caution_only} 条仅作一般安全提示。错误包括勘误当原始研究、未指名类固醇归给具体候选、柚皮素抗癌结果误归给 fluticasone。冻结分级未重跑；这不是独立双人全文审阅。`);
+  stat(s, String(cv.proposed_quoted_items), "冻结版通过逐字校验", 0.6, 1.4, 2.9);
+  stat(s, String(evidenceAudit.reviewed_count), "事后范围预筛标记", 3.7, 1.4, 2.9, C.red);
+  stat(s, String(evidenceExcluded), "原样候选级引用需排除", 6.8, 1.4, 2.9, C.red);
+  stat(s, `${tc.INSUFFICIENT_EVIDENCE}/10`, "冻结分级：未重新计算", 9.9, 1.4, 2.8);
+  const rows = [["排名", "候选", "冻结分级", "23 条中的摘要级审计"]].concat(rev.candidates.map((c) => {
+    const entries = evidenceLedger.decisions.filter((entry) =>
+      entry.case_id.startsWith(`rank${String(c.rank).padStart(2, "0")}_`));
+    const excluded = entries.filter((entry) => entry.decision.startsWith("exclude_")).length;
+    const narrowed = entries.length - excluded;
+    return [String(c.rank), c.name,
+      c.tier === "INSUFFICIENT_EVIDENCE" ? "证据不足" : c.tier,
+      entries.length ? `排除 ${excluded}；限定范围 ${narrowed}` : "本轮未标记（不等于已全面核验）"];
+  }));
   s.addTable(rows.map((r, i) => r.map((v) => ({ text: v, options: { bold: i === 0,
     color: i === 0 ? C.white : C.ink, fill: { color: i === 0 ? C.navy : (i % 2 ? C.white : C.sand) } } }))),
     { x: 0.6, y: 3.0, w: 12.1, colW: [0.9, 4.2, 2.2, 4.8], fontFace: FONT, fontSize: 10.5, rowH: 0.3,
@@ -235,14 +247,14 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
     ["负结果", `纯表达反转在 TRANSCRIPT 上 ≈ 随机（官方 NS-AUC ${f3(comp.splits[R].models.B1["NS-AUC"].mean)}）`],
     ["提分", `对齐指标方向${b4 ? "并集成 BNNR " : ""}后 ${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}、弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}${rankOf(main, R, mainName) === 1 ? "；随机拆分超过全部发表模型，弱相关未超过" : "，接近但未全面超过最强基线"}`],
     ["可信", "Strict 模式隔离标签；探针证实 LLM 看到药名会“背答案”"],
-    ["Agent", "规划 98/100；门控降低高风险误执行；多 Agent 引用逐字校验"],
-    ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；无湿实验；Jev 未获访问"]];
+    ["Agent", "规划 98/100；23 条范围预筛引用中 13 条原样需排除"],
+    ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；外部 v3 未跑；Jev/湿实验未做"]];
   items.forEach(([h, d], i) => {
     const y = 1.6 + i * 1.0;
     txt(s, h, 0.8, y, 1.6, 0.6, 20, { bold: true, color: i === 4 ? "F2B8A8" : "9FE0D8" });
     txt(s, d, 2.5, y, 10.2, 0.8, 18, { color: C.white });
   });
-  s.addNotes("约 40 秒。总结五点。最后强调：Benchmark 分数只代表已知关联恢复能力；LUAD 候选是待验证的研究假设，不是用药建议。代码与所有结果见 GitHub 仓库。");
+  s.addNotes("约 40 秒。总结五点。23 条是事后来源/药名范围预筛标记，并非 65 条都经过全文审阅；13 条原样候选级引用需排除，冻结药物分级未重算。独立外部方法选择 v3 的数据与标签门槛未通过，没有外部 NS-AUC 结果。Benchmark 分数只代表已知关联恢复能力；LUAD 候选是待验证的研究假设，不是用药建议。代码与所有结果见 GitHub 仓库。");
 }
 
 const out = process.argv[2] ?? "deliverables/药物重定位Agent_答辩稿_v7.pptx";

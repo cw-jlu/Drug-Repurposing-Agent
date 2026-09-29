@@ -36,7 +36,9 @@ def _dataset(seed=0, drugs=9, diseases=6, genes=15):
         items=pd.DataFrame(rng.normal(size=(genes, drugs)), index=gene_ids, columns=drug_ids),
         users=pd.DataFrame(rng.normal(size=(genes, diseases)), index=gene_ids,
                            columns=disease_ids),
-        same_item_user_features=True, name="toy")
+        # stanscofi's shared-feature branch uses a pandas class-name string
+        # that changed in pandas 3; the adapter does not depend on that flag.
+        same_item_user_features=False, name="toy")
 
 
 def _split(dataset, seed=1):
@@ -105,7 +107,7 @@ def test_bnnr_numpy_label_isolation():
                            columns=dataset.item_list),
         users=pd.DataFrame(dataset.users.toarray(), index=dataset.user_features,
                            columns=dataset.user_list),
-        same_item_user_features=True, name="toy2")
+        same_item_user_features=False, name="toy2")
     other_train = other.subset(coo_array(mask.astype(float)))
     model = BNNRNumpy(); model.fit(other_train)
     np.testing.assert_array_equal(base.estimator["predictions"], model.estimator["predictions"])

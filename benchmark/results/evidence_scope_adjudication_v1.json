@@ -1,0 +1,30 @@
+{
+  "status": "retrospective_abstract_level_adjudication_not_independent_clinical_review",
+  "frozen_source_sha256": "c4c46e9755858582c70e3ae872441cfc9000eff846701d6c6d83aee994bd9205",
+  "policy": "A PubMed title/abstract can establish only the intervention, model and endpoint it actually describes. Acronyms are resolved from the same abstract. Errata are not primary efficacy or safety evidence. No entry changes the frozen v1 tier.",
+  "decisions": [
+    {"case_id":"rank01_contradiction_01","decision":"exclude_candidate_specific","reason":"The report names steroid replacement, not hydrocortisone; it concerns an endocrine event during pembrolizumab treatment, not hydrocortisone's LUAD efficacy."},
+    {"case_id":"rank02_support_03","decision":"retain_narrowed","reason":"The abstract explicitly expands BDP to beclomethasone dipropionate and describes CYP3A4/3A5 metabolism plus A549 M1/CYP3A5 observations; this is pharmacology, not LUAD treatment benefit."},
+    {"case_id":"rank02_support_04","decision":"retain_narrowed","reason":"The abstract defines BDP and reports cytokine suppression in A549/16HBE cells for a delivery formulation; this is an inflammation assay, not tumor inhibition."},
+    {"case_id":"rank02_support_05","decision":"retain_narrowed","reason":"BDP is expanded in the abstract and its dissolution is measured in synthetic lung fluid. A549 cells assess fluid biocompatibility, not BDP anticancer activity."},
+    {"case_id":"rank02_contradiction_00","decision":"exclude_wrong_direction","reason":"The quoted lung/liver metabolite difference is contextual pharmacology and does not contradict the claim that BDP is metabolized by CYP3A4/3A5."},
+    {"case_id":"rank02_contradiction_02","decision":"exclude_claim_mismatch","reason":"CYP3A7 not metabolizing BDP does not challenge the asserted glucocorticoid-receptor/CYP3A4-5 mechanism in A549."},
+    {"case_id":"rank02_contradiction_04","decision":"exclude_nonprimary","reason":"PMID 41376996 is an erratum notice with no candidate-specific experiment or clinical endpoint."},
+    {"case_id":"rank03_contradiction_03","decision":"exclude_nonprimary","reason":"PMID 41376996 is an erratum notice; neither clocortolone pivalate nor candidate-level treatment is evaluated."},
+    {"case_id":"rank04_support_03","decision":"retain_narrowed","reason":"MF is defined as mometasone furoate in the abstract; the measured endpoint is rhinovirus-induced ICAM-1 in respiratory epithelial/A549 cells, not LUAD response."},
+    {"case_id":"rank04_support_04","decision":"retain_narrowed","reason":"MF is defined as mometasone furoate and nanoparticle-associated antiproliferative activity is reported in A549 cells; formulation and in-vitro context must remain explicit."},
+    {"case_id":"rank04_support_05","decision":"retain_narrowed","reason":"MF and FP are defined as mometasone furoate and fluticasone propionate; AP-1/NF-kappaB/RANTES assays in A549 support transcriptional potency only."},
+    {"case_id":"rank04_contradiction_01","decision":"retain_class_caution_only","reason":"The abstract raises systemic adverse-effect risk at high inhaled doses for MF/FP; it does not test NSCLC patients, combination anticancer therapy, or clinical safety."},
+    {"case_id":"rank05_contradiction_02","decision":"exclude_nonprimary","reason":"PMID 41376996 is an erratum notice and cannot establish a robust LUAD subtype or immunotherapy-guidance index."},
+    {"case_id":"rank07_contradiction_03","decision":"exclude_nonprimary","reason":"PMID 41376996 is an erratum notice with no hydrocortisone hemisuccinate candidate-level evidence."},
+    {"case_id":"rank08_contradiction_00","decision":"exclude_candidate_specific","reason":"The case report does not name fluorometholone and addresses pembrolizumab-associated hypophysitis rather than fluorometholone efficacy."},
+    {"case_id":"rank08_contradiction_01","decision":"exclude_candidate_specific","reason":"The durvalumab case report does not name fluorometholone; unspecified glucocorticoid use cannot be attributed to this candidate."},
+    {"case_id":"rank08_contradiction_02","decision":"exclude_candidate_specific","reason":"The durvalumab case report does not name fluorometholone and does not establish that glucocorticoid regimens reliably manage all NSCLC immune events."},
+    {"case_id":"rank08_contradiction_03","decision":"exclude_nonprimary","reason":"PMID 41376996 is an erratum notice, not primary evidence for stable LUAD glucocorticoid signatures."},
+    {"case_id":"rank09_support_01","decision":"retain_narrowed","reason":"The abstract names fluticasone propionate as one of both tested steroids and reports cytokine suppression in A549 cells; it is an inflammation, not anticancer, result."},
+    {"case_id":"rank09_support_05","decision":"retain_narrowed","reason":"FTZ is defined in the abstract as fluticasone, and the title specifies propionate; A549 viability and mouse lung accumulation concern formulation, not tumor efficacy."},
+    {"case_id":"rank09_contradiction_01","decision":"retain_narrowed","reason":"The same fluticasone/budesonide study reports only partial IL-8 inhibition in alveolar macrophages; this limits broad cytokine claims without negating all anti-inflammatory action."},
+    {"case_id":"rank09_contradiction_02","decision":"exclude_wrong_direction","reason":"The quoted MF/FP transcriptional repression supports rather than contradicts the asserted anti-inflammatory transcriptional potency."},
+    {"case_id":"rank09_contradiction_06","decision":"exclude_wrong_drug","reason":"The A549 anticancer outcome belongs to naringenin nanoparticles; fluticasone is mentioned only as an inflammation-assay positive control."}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "status": "all_provider_visible_payloads_and_responses_match",
+  "frozen_config_sha256": "01b2486a85a9572fbca3eeb9a1df49fef12e543b1c57a331e2096b31359ec252",
+  "policy_sha256": "022198d36e0fd4370271c4011c3b354226227c6ed5305ad22372e6905dd28a49",
+  "result_sha256": "9eb2f9fa0fa1b0cefc2e5fa2b992a56d4a85a9f5278f9e9e7527cb52dacec85c",
+  "checkpoint_sha256": "ed716847edecb7bfd79947063273dfc0fba3596bd2eccc44c438a090c6bef56a",
+  "provider_records_checked": 80,
+  "distinct_cases": 40,
+  "request_matches": 80,
+  "response_matches": 80,
+  "hidden_label_leaks": 0,
+  "trace": "artifacts\\decision_eval_v2\\traces\\20260929T135654439169Z_decision_eval_v2_trace_grade_bb5a800532df4916bbc318610bd2f4b6.jsonl"
+}

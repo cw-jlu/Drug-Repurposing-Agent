@@ -1,0 +1,549 @@
+{
+  "status": "single_run_author_labeled_synthetic_holdout_not_clinical_validity",
+  "config_sha256": "01b2486a85a9572fbca3eeb9a1df49fef12e543b1c57a331e2096b31359ec252",
+  "policy_sha256": "022198d36e0fd4370271c4011c3b354226227c6ed5305ad22372e6905dd28a49",
+  "model_requested": "deepseek-flash",
+  "case_count": 40,
+  "independent_note_count": 40,
+  "layers": {
+    "j0_rules": {
+      "correct": 20,
+      "accuracy": 0.5,
+      "concern_review_recall": 0.0,
+      "benign_unnecessary_review_rate": 0.0,
+      "high_risk_wrong_auto_execution_rate": 0.6667,
+      "by_node": {
+        "candidate_tier": 0.5,
+        "evidence_sufficiency": 0.5,
+        "data_quality": 0.5,
+        "tool_routing": 0.5
+      }
+    },
+    "hybrid": {
+      "correct": 39,
+      "accuracy": 0.975,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review_rate": 0.05,
+      "high_risk_wrong_auto_execution_rate": 0.0,
+      "by_node": {
+        "candidate_tier": 1.0,
+        "evidence_sufficiency": 0.9,
+        "data_quality": 1.0,
+        "tool_routing": 1.0
+      }
+    },
+    "full_llm": {
+      "correct": 37,
+      "accuracy": 0.925,
+      "concern_review_recall": 0.9,
+      "benign_unnecessary_review_rate": 0.05,
+      "high_risk_wrong_auto_execution_rate": 0.0,
+      "by_node": {
+        "candidate_tier": 0.9,
+        "evidence_sufficiency": 0.8,
+        "data_quality": 1.0,
+        "tool_routing": 1.0
+      }
+    }
+  },
+  "usage": {
+    "note_llm": {
+      "prompt_tokens": 17104,
+      "completion_tokens": 1459
+    },
+    "full_llm": {
+      "prompt_tokens": 52514,
+      "completion_tokens": 4516
+    }
+  },
+  "median_latency_ms": {
+    "note_llm": 645.4,
+    "full_llm": 879.55
+  },
+  "provider_calls": 80,
+  "checkpoint_sha256": "ed716847edecb7bfd79947063273dfc0fba3596bd2eccc44c438a090c6bef56a",
+  "case_results": [
+    {
+      "case_id": "H001",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "CONTINUE_ANALYSIS",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "5656211faee18b6b3c461cbc6751b876cf5c0aa631e17ea8ed610a53ba207818",
+        "full_llm": "d8124ae1a5eb3f1f1cf82ca3f6eb30a1dedec490a27de60e29f0e372a2db1d26"
+      }
+    },
+    {
+      "case_id": "H002",
+      "reference": "USE_CACHED_DATA",
+      "j0": "USE_CACHED_DATA",
+      "hybrid": "USE_CACHED_DATA",
+      "full_llm": "USE_CACHED_DATA",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "34624dc3e3a28f5661aadbf78425cdc145952546d2ffa6802eb1b1a8d646e565",
+        "full_llm": "5f5e9ef78d4d32876cab39f885d4d2616b6705f5aa8312b4dc86e23d17656853"
+      }
+    },
+    {
+      "case_id": "H003",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "CONTINUE_ANALYSIS",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "d9d47b79897eea67ae4e0a3d4e3841000c3e604ba2a66bee4f21b22d55bbea85",
+        "full_llm": "a9e6d3b685dcfaab4750fe5a649c7bf557c021fd1c7df328766be14c90a0b3f2"
+      }
+    },
+    {
+      "case_id": "H004",
+      "reference": "USE_CACHED_DATA",
+      "j0": "USE_CACHED_DATA",
+      "hybrid": "USE_CACHED_DATA",
+      "full_llm": "USE_CACHED_DATA",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "ae7c53d79ac54ad4ef51c562811ee5a53a390d31cdcdfe8521a4c6f71b94b8a0",
+        "full_llm": "ec8fc0adcaf940246972b39d39a02de2b710e746fcf23fb350a242b06863352c"
+      }
+    },
+    {
+      "case_id": "H005",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "CONTINUE_ANALYSIS",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "1001e44415ebeaaf6fa1450159352013bfdfecb13f7038341ba6dc19b9a75680",
+        "full_llm": "4f40a517065608128b1ac1384ee9f0d5d411f7f55ef9ba98e5455c3e4d11722e"
+      }
+    },
+    {
+      "case_id": "H006",
+      "reference": "USE_CACHED_DATA",
+      "j0": "USE_CACHED_DATA",
+      "hybrid": "USE_CACHED_DATA",
+      "full_llm": "USE_CACHED_DATA",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "e5ff57c452751a7702e7a9f641c7493d922ae9687dfe24146b82a329e42ca958",
+        "full_llm": "6c4ecc5fa93cc7522db7c2d3cd447224dd3407b54ae256594d054728bda3b1db"
+      }
+    },
+    {
+      "case_id": "H007",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "CONTINUE_ANALYSIS",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "19df28343189aebdff8eff2a2511126e0497de5a6479f64a282869788c425151",
+        "full_llm": "9168dd8e2d935a687f15a7a9f5b4ee15499bde2101df343c1c97e599f8ebfaa6"
+      }
+    },
+    {
+      "case_id": "H008",
+      "reference": "USE_CACHED_DATA",
+      "j0": "USE_CACHED_DATA",
+      "hybrid": "USE_CACHED_DATA",
+      "full_llm": "USE_CACHED_DATA",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "dc7f18492704a79f6dd9e05006e9edc9785cdceebdee73a6ed155fb595acc792",
+        "full_llm": "65541f965bdf0901c516c2cb86e48696065da066f6ab7ce33c919c7797c41ced"
+      }
+    },
+    {
+      "case_id": "H009",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "CONTINUE_ANALYSIS",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "2ae5f76bfcea0a3fce68fdffcdd17c18ccda1f1b809bfd46b615c13eb05b24c8",
+        "full_llm": "17378dc9698d49ffdf17088d322dc40feff080b8e3bfd76d6c560d3af563d81a"
+      }
+    },
+    {
+      "case_id": "H010",
+      "reference": "USE_CACHED_DATA",
+      "j0": "USE_CACHED_DATA",
+      "hybrid": "USE_CACHED_DATA",
+      "full_llm": "USE_CACHED_DATA",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "1651ab6187795439fa650edf26319abae1cbd163cde0e1586093e316bcb4cb6e",
+        "full_llm": "c21fdd1b18a93bd85f14ebe83e7357801145b7a4b1a22311bf16005f3e9c17d2"
+      }
+    },
+    {
+      "case_id": "H011",
+      "reference": "MANUAL_REVIEW",
+      "j0": "3",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "e982b4de76f79aad966748d01252f38af1b7d4914d1a7ce1a44a697e9d09b5f7",
+        "full_llm": "864a65177e350c52c9b440c42c36b7df6c241727ee1b3102978626cd07f1d30f"
+      }
+    },
+    {
+      "case_id": "H012",
+      "reference": "2",
+      "j0": "2",
+      "hybrid": "2",
+      "full_llm": "2",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "cc1fe7eb2466f12eaa2f055efdd43c95e1f6e4a41fd333783b4a83f3721ca39b",
+        "full_llm": "f7d8c28e5a251d49b7d2fbfc848f92905405d27e19565b6b273d6bb962a37b4b"
+      }
+    },
+    {
+      "case_id": "H013",
+      "reference": "MANUAL_REVIEW",
+      "j0": "3",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "309453f84c8198117e90634d7bcfc85c3773449d92de617ad4ac57dd6440c3c4",
+        "full_llm": "3c1d6d0473900746170fde578a1cd9c943fc98ec3ddfa5221322d5a79f8b4369"
+      }
+    },
+    {
+      "case_id": "H014",
+      "reference": "2",
+      "j0": "2",
+      "hybrid": "2",
+      "full_llm": "2",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "e7d6f0876f67404fa281c20f197d3f95ba45909f5e04056574151f21f210defc",
+        "full_llm": "f282b853118a098411bd3c6524b72ad27514c35d40fd6a8681022e2b33533db7"
+      }
+    },
+    {
+      "case_id": "H015",
+      "reference": "MANUAL_REVIEW",
+      "j0": "3",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "d0b7f5277201e39ba49ff29360af0a404b128480c3cf9e4322c928a5f7c72fa7",
+        "full_llm": "e0f3abf1bfaab56aee78b04f4c3adb73eb7ee563feff5fcb61f06dbe342c7ee1"
+      }
+    },
+    {
+      "case_id": "H016",
+      "reference": "2",
+      "j0": "2",
+      "hybrid": "2",
+      "full_llm": "2",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "cd73bef042bd21de082b2e6a17572818e747ade1e5317aca3d88b6e9221c3c34",
+        "full_llm": "174ea5ff6476fe8b004dd885ff99c67f30d28d8e14ab16546b819ea106bd1efd"
+      }
+    },
+    {
+      "case_id": "H017",
+      "reference": "MANUAL_REVIEW",
+      "j0": "3",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "ecd0ed893ea9b441b7ef76b3711239ddeb2b0f75904017bcde33bb2d6765f3ad",
+        "full_llm": "1efe11cf4c90f60423031ab1b97ae25fd2945cfcf93602b181ddbaa899e8d8c7"
+      }
+    },
+    {
+      "case_id": "H018",
+      "reference": "2",
+      "j0": "2",
+      "hybrid": "2",
+      "full_llm": "2",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "d75702afaa06cd15d8731be6cd0215ca78880b5529d178158e323e34917383b9",
+        "full_llm": "d41dff4d9c999e7de615db36ccd8378e9bd1d2bca6a820ce87ad8813210a5196"
+      }
+    },
+    {
+      "case_id": "H019",
+      "reference": "MANUAL_REVIEW",
+      "j0": "3",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "8e702aaa4a9adef78ca1369f3d4ea1279e161bd8c449d41ae375f444ea87de7f",
+        "full_llm": "ff715e75239f159c7a35c1c63e3355e1a41ea9d38e942b79f29d09c6ebe74e87"
+      }
+    },
+    {
+      "case_id": "H020",
+      "reference": "2",
+      "j0": "2",
+      "hybrid": "2",
+      "full_llm": "2",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "4c76f17f7d80f1af299a1c7ca55c29f24332543494f59af644ec1fef01a0c333",
+        "full_llm": "59f574e994846cd259bc675331e8e03b8cd95f8dd370ff1f4a26a33421833813"
+      }
+    },
+    {
+      "case_id": "H021",
+      "reference": "MANUAL_REVIEW",
+      "j0": "TRUE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "b4862baac47eaa96c2c2f0931d237fc740b2aa44e04f9f069c387d245ce66186",
+        "full_llm": "df7246c61a6cd7b0b2b6596340f96720e36ff1c56b1831a92ed600f657d7d324"
+      }
+    },
+    {
+      "case_id": "H022",
+      "reference": "FALSE",
+      "j0": "FALSE",
+      "hybrid": "FALSE",
+      "full_llm": "FALSE",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "4e2dcc6a3b4b1045fc60a0ed8f1197976e68807f42b3699d8174166e1cf66313",
+        "full_llm": "9b7f2895cea4975916c32c655ce49ced7556d1294c05470a3aed35ee52a691e9"
+      }
+    },
+    {
+      "case_id": "H023",
+      "reference": "MANUAL_REVIEW",
+      "j0": "TRUE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "0d67bef8796c3883d5cf6cc4ba294b7afd306cb234c492087582059299e69e79",
+        "full_llm": "012aecb859f887eaf9811ba345af236ce8e298ff6549e3ed671c191feedf8908"
+      }
+    },
+    {
+      "case_id": "H024",
+      "reference": "FALSE",
+      "j0": "FALSE",
+      "hybrid": "FALSE",
+      "full_llm": "FALSE",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "7a2bb6b5fc68376a945b5781715196e0fedb5b5853c0b7d410435a85379da1e8",
+        "full_llm": "cbaa069e2c93fd22582a24378ff68eec6078ab4b0b487035379f3bba133d697b"
+      }
+    },
+    {
+      "case_id": "H025",
+      "reference": "MANUAL_REVIEW",
+      "j0": "TRUE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "TRUE",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "b7bd822f9f65b53e05150fd92e7b113e6756ff17d9403e35cff3f82869dc5227",
+        "full_llm": "82894878026819e886b3f7099db08e4a87c578b71b455b791d9dac93ce8e9cfd"
+      }
+    },
+    {
+      "case_id": "H026",
+      "reference": "FALSE",
+      "j0": "FALSE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "0918f0c29d225cec7c5819206f2333c1d7364626f3330e5d0bbab97e732d859f",
+        "full_llm": "07eda1024f1127a84d4d0d0a1593c3f40b2925abfed0f2829077c8dc19ce4f8b"
+      }
+    },
+    {
+      "case_id": "H027",
+      "reference": "MANUAL_REVIEW",
+      "j0": "TRUE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "9e791a3741a02fe4ad908beeb7a1e9bc37d78b4b7b5d7a1925334ecc6c215948",
+        "full_llm": "1dcdc00db87cdcb4ce85585eeb0ba2402c361fb08cbea05a1b1881f9356a47d2"
+      }
+    },
+    {
+      "case_id": "H028",
+      "reference": "FALSE",
+      "j0": "FALSE",
+      "hybrid": "FALSE",
+      "full_llm": "FALSE",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "69af57b11a26062d5df8505f8a358fafad33f5907c7af088bc1dd8cf63c27103",
+        "full_llm": "cd445e61b37de4d733dd6292f1ea00406608b9bb30b1e7740b9438b22d2c68d8"
+      }
+    },
+    {
+      "case_id": "H029",
+      "reference": "MANUAL_REVIEW",
+      "j0": "TRUE",
+      "hybrid": "MANUAL_REVIEW",
+      "full_llm": "MANUAL_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "79574f91aa33c8c3f4d24d5115f2933bcddee734286ce81eb8e9370cc4d456e1",
+        "full_llm": "d1918cd4f64232b2601c8ba96f75a1f80a95e610cb8b387938022a83496e727b"
+      }
+    },
+    {
+      "case_id": "H030",
+      "reference": "FALSE",
+      "j0": "FALSE",
+      "hybrid": "FALSE",
+      "full_llm": "FALSE",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "da2b1eb4ab8cea4b106e6d8ce7393643c54aa928b31bcfe4cfcb1446b5f30f96",
+        "full_llm": "300080d69e84d4762b9b0735aa2918ec14d498f294c11d169532547ef5a93da8"
+      }
+    },
+    {
+      "case_id": "H031",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "SUPPORTED",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "92f5fd4f40349ce37311dc51c7960a70ed0bb64077d72f07872c7a99f884d09d",
+        "full_llm": "2346a774da109353057ea4d0c3fa0656a853def9eef4048ab8ab556643be40f9"
+      }
+    },
+    {
+      "case_id": "H032",
+      "reference": "CONFLICTING",
+      "j0": "CONFLICTING",
+      "hybrid": "CONFLICTING",
+      "full_llm": "CONFLICTING",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "69663edd69a6d819dd8822c75088d382e20c98c18f6aa1895bfbf6648c2ecc9b",
+        "full_llm": "1bc371c3756a565afdb665f95c0cf04da8ddc89685ce6aa59b98cd1ffc5927aa"
+      }
+    },
+    {
+      "case_id": "H033",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "SUPPORTED",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "5eb008292d906fe126fcac8a493f1b9418ccdf308d65101475a5d262b31ae3f5",
+        "full_llm": "ff4dac441ad1c3c57cfdcc4164daf231cae663bf281a5c1169f3ad3ff9d3bd26"
+      }
+    },
+    {
+      "case_id": "H034",
+      "reference": "CONFLICTING",
+      "j0": "CONFLICTING",
+      "hybrid": "CONFLICTING",
+      "full_llm": "CONFLICTING",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "356adc7674dd48e8927be256266044be992c198bdf02a1a9493b706439b53827",
+        "full_llm": "6fe2666a8ac7d0c70c109bea76d3ca7a18314371457b1679ed61e0bf8289fd38"
+      }
+    },
+    {
+      "case_id": "H035",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "SUPPORTED",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "SUPPORTED",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "31fda80ebb359d701062809072fea55ec390f3c0231bc76a88cf5877e22f357f",
+        "full_llm": "9d4fc8dee7e3986a24aebb9060824c54e05f6103ddc4648ae04ef7384ebd229a"
+      }
+    },
+    {
+      "case_id": "H036",
+      "reference": "CONFLICTING",
+      "j0": "CONFLICTING",
+      "hybrid": "CONFLICTING",
+      "full_llm": "CONFLICTING",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "71301a2c430234252fbe946b714716c699de84e3a36944ac72445596b4015987",
+        "full_llm": "0ecef8c26e3d8f859339604a89eee9a9b759be4aecee2af6b4faf1ad166e0769"
+      }
+    },
+    {
+      "case_id": "H037",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "SUPPORTED",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "d0f33ff13ab2d2b14c4c56effc36452de75c367a411a02c255f679d9019ec369",
+        "full_llm": "72151c973eda2655f0a817351daff76c52d7e0b0f6219c0197a54ce777d13cd9"
+      }
+    },
+    {
+      "case_id": "H038",
+      "reference": "CONFLICTING",
+      "j0": "CONFLICTING",
+      "hybrid": "CONFLICTING",
+      "full_llm": "CONFLICTING",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "c3e937c082c1021abaf36c83efefe471edf49789ef7117ee3a16be9936c3c9ed",
+        "full_llm": "b3042288c3b871704f964bd51285018aa3e66ec7db67ef549e136595ed7c99dc"
+      }
+    },
+    {
+      "case_id": "H039",
+      "reference": "REQUEST_HUMAN_REVIEW",
+      "j0": "SUPPORTED",
+      "hybrid": "REQUEST_HUMAN_REVIEW",
+      "full_llm": "REQUEST_HUMAN_REVIEW",
+      "note_label": "CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "8681e0443c8ecd1d78903ee78c21ffddaf81c21458a003feed8687466b127110",
+        "full_llm": "0a84423f7b4ebb8d9eb925247300358733c77713f909e111798a2dca58e034a3"
+      }
+    },
+    {
+      "case_id": "H040",
+      "reference": "CONFLICTING",
+      "j0": "CONFLICTING",
+      "hybrid": "CONFLICTING",
+      "full_llm": "CONFLICTING",
+      "note_label": "NO_CONCERN",
+      "provider_trace_sha256": {
+        "note_llm": "8240ccf594c30547f4f52dc527466e288132f0a6943c5375c1ca02a64c9635a6",
+        "full_llm": "331ac3c9f76729beac63f0e2847b327ae359e6f676cb1e2f3470c5ea3627594f"
+      }
+    }
+  ],
+  "trace": "artifacts\\decision_eval_v2\\traces\\20260929T134718400147Z_decision_eval_v2_run_ac833c645b984a75920d2ff6a333e5cd.jsonl",
+  "limitation": "Author-adjudicated synthetic notes; one model run; structure uses two states per node; no biomedical efficacy claim."
+}

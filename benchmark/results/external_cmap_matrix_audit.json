@@ -1,0 +1,39 @@
+{
+  "status": "raw_cmap_matrix_staged_and_read_not_benchmark_scored",
+  "source": "https://ucsf.box.com/s/m54ipylmdytjsqmlp7axnabvjh2q8lwl",
+  "box_file_id": "f_2206971964738",
+  "matrix_bytes": 243722737,
+  "matrix_sha256": "29e7dcbcabc5af810d6fd0d21e534df231494d1c1756cd46cf6518308f68d860",
+  "metadata_sha256": "6e8d90413caa766e2c4cd5b0dd83e81ea4399c9065cf20530b66cc3761558c4e",
+  "reader": "rdata 1.1.0",
+  "objects": {
+    "cmap_signatures": {
+      "python_type": "DataFrame",
+      "shape": [
+        13071,
+        6101
+      ],
+      "index_sample": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "column_sample": [
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5"
+      ]
+    }
+  },
+  "trace": "artifacts\\reports\\traces\\20260929T140140045085Z_external_cmap_matrix_audit_6731ae6b52c54c49a0277d9a4b847453.jsonl",
+  "not_yet_verified": [
+    "gene/disease crosswalk",
+    "drug/indication crosswalk",
+    "positive/negative label policy",
+    "eligible independent units"
+  ]
+}

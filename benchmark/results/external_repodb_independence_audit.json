@@ -1,0 +1,26 @@
+{
+  "status": "source_overlap_audit_only_not_external_benchmark",
+  "repodb_crosswalk_sha256": "04b8c0dd5fafdfa7d718adef4d9303550ebe4749e7f1a548e9424d7514eb40a1",
+  "transcript_users_sha256": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332",
+  "transcript_disease_ids": 151,
+  "mapped_external_disease_ids": 67,
+  "identical_cui_overlap_count": 49,
+  "nonoverlap_disease_ids": 18,
+  "nonoverlap_approved_pairs": 28,
+  "nonoverlap_failed_trial_pairs": 12,
+  "nonoverlap_diseases_with_both_labels": 2,
+  "nonoverlap_max_positive_negative_counts": [
+    {
+      "source_name": "tendinitis",
+      "positive": 8,
+      "negative": 1
+    },
+    {
+      "source_name": "urticaria",
+      "positive": 15,
+      "negative": 1
+    }
+  ],
+  "note": "Different CUI does not prove independent underlying CREEDS GEO cohorts; that requires source-signature provenance matching.",
+  "trace": "artifacts\\reports\\traces\\20260929T142757443810Z_repodb_independence_audit_9ebe9c79587e47559b64ab42f7a28331.jsonl"
+}

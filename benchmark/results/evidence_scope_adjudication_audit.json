@@ -1,0 +1,19 @@
+{
+  "status": "retrospective_abstract_level_adjudication_not_independent_clinical_review",
+  "frozen_source_sha256": "c4c46e9755858582c70e3ae872441cfc9000eff846701d6c6d83aee994bd9205",
+  "scope_audit_sha256": "09c785bf9e5e05a9acfaed4a52705d6ce920c18b46b869fe92c5d0e6c22f9250",
+  "local_review_pack_sha256": "bc708f43f24f0429ee7c6d7c0c8c0e31a7cc0949c8429489885c2f8963c3614c",
+  "adjudication_sha256": "0738f21fabc6a0af0c832ce66392d46518c5f716bcfbedd9f4c20e36cb188200",
+  "reviewed_count": 23,
+  "decision_counts": {
+    "exclude_candidate_specific": 4,
+    "exclude_claim_mismatch": 1,
+    "exclude_nonprimary": 5,
+    "exclude_wrong_direction": 2,
+    "exclude_wrong_drug": 1,
+    "retain_class_caution_only": 1,
+    "retain_narrowed": 9
+  },
+  "trace": "artifacts\\evidence_scope_audit\\traces\\20260929T132346722865Z_evidence_scope_adjudication_86d5468e29b249b79821506ccf07de5b.jsonl",
+  "limitation": "Abstract-level retrospective review; not independent expert review or clinical validation."
+}

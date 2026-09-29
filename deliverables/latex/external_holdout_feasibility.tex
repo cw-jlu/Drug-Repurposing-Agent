@@ -1,0 +1,193 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Independent method-selection v3 holdout: source and label
+gate}\label{independent-method-selection-v3-holdout-source-and-label-gate}
+
+Status (2026-09-29): \textbf{the candidate inputs have been staged and
+aligned, but the prespecified independent NS-AUC comparison is not
+runnable; no external method outcome or new model-selection API choice
+was scored.} Every new download and audit has a chained local trace.
+Source binaries remain under ignored \texttt{artifacts/\allowbreak{}}; the linked
+JSON audits retain hashes, counts and trace paths.
+
+\subsection{Inputs and exact
+alignment}\label{inputs-and-exact-alignment}
+
+The pinned
+\href{https://github.com/enockniyonkuru/cdrpipe-comparative-analysis}{CDRPipe
+comparative-analysis repository} contributed 233 CREEDS
+disease-signature CSVs, CMap metadata and a gene map. The
+\href{../benchmark/results/external_staged_inputs_audit.json}{staged-input
+audit} records 227,110/227,110 finite disease gene/logFC rows. Its
+public
+\href{https://ucsf.box.com/s/m54ipylmdytjsqmlp7axnabvjh2q8lwl}{Box
+release} provided the 243,722,737-byte CMap rank matrix (SHA-256
+\texttt{29e7dcbcabc5af\allowbreak{}810d6fd0d21e53\allowbreak{}4df231494d1c17\allowbreak{}56cd46cf651830\allowbreak{}8f68d860}).
+The
+\href{../benchmark/results/external_cmap_matrix_alignment_audit.json}{matrix
+alignment audit} verifies 13,071 probe IDs against 6,100 drug-experiment
+columns, with no missing rank cells. These are ranks, not yet
+demonstrated to be signed perturbation log-fold changes interchangeable
+with TRANSCRIPT\textquotesingle s expression vectors.
+
+Three pinned
+\href{https://platform-docs.opentargets.org/data-access}{Open Targets
+Platform 26.06} parquets---clinical indications, diseases and drug
+molecules---were downloaded and SHA-256 checked in the
+\href{../benchmark/results/external_opentargets_inputs_audit.json}{input
+receipt}. The
+\href{../benchmark/results/external_exact_crosswalk_audit.json}{exact
+crosswalk audit} uniquely maps 141/233 disease signatures by preferred
+name and another 47 by exact synonym; 894 CMap name/DrugBank
+combinations map by a unique preferred drug name. Their intersection
+contains 3,345 distinct recorded clinical-indication pairs over 167
+disease signatures. This is \textbf{positive/development-activity
+evidence only}: an absent Open Targets link is unknown, not a documented
+failed indication. The newer 26.06 release, matching rules and
+denominator make this count non-comparable with
+CDRPipe\textquotesingle s older published validation count.
+
+The original \href{https://github.com/adam-sam-brown/repoDB}{repoDB
+source} at commit \texttt{cd4edec67e57df\allowbreak{}1d2a5f552e30a6\allowbreak{}960a38d79432}
+supplied a 10,800-row RData table
+(\href{../benchmark/results/external_repodb_2017_source_audit.json}{source
+audit},
+\href{../benchmark/results/external_repodb_2017_domains.json}{status
+domains}). It contains 6,677 \texttt{Approved} and 4,123
+\texttt{Terminated}/\texttt{Withdrawn}/\texttt{Suspended} rows, as
+described by the
+\href{https://www.nature.com/articles/sdata201729}{repoDB paper}. These
+latter statuses mean trial stoppage, \textbf{not necessarily biological
+inefficacy}; recorded reasons include funding and administrative
+closure. The
+\href{../benchmark/results/external_repodb_exact_crosswalk_audit.json}{strict
+crosswalk audit} uses unique normalized disease-name-to-UMLS-CUI matches
+and unambiguous CMap DrugBank IDs, excludes conflicting approved/failed
+pairs, and never turns an unknown into a negative. It finds 67 mapped
+disease signatures, 165 approved pairs, 78 stopped-trial pairs and 14
+diseases with both label types; \textbf{zero} has at least eight of each
+needed as a conservative disease-level five-inner-fold eligibility
+screen.
+
+The
+\href{../benchmark/results/external_repodb_independence_audit.json}{CUI
+overlap audit} finds 49 of those 67 mapped diseases already occur in the
+analyzed TRANSCRIPT disease matrix. Excluding those IDs leaves 18
+disease signatures, only 28 approved and 12 stopped-trial pairs in total
+and only \textbf{two} diseases with both labels. Different CUIs would
+still not prove different upstream GEO/CREEDS cohorts:
+TRANSCRIPT\textquotesingle s README says its disease features also came
+from CREEDS. Therefore the files do not establish independent evaluation
+units. Neither the CMap rank orientation nor feature harmonization for
+B0p/B1k/B1/B2 has been frozen or validated.
+
+A second
+\href{../benchmark/results/external_repodb_ontology_bridge_audit.json}{ontology
+bridge audit} checked Open Targets UMLS cross-references, accepting only
+a unique repoDB CUI per disease and still requiring unambiguous CMap
+DrugBank IDs. This increases the matched set to 107 signatures (347
+approved, 124 stopped-trial pairs), but \textbf{zero} diseases meet the
+conservative eight-per-label screen. The separate
+\href{../benchmark/results/external_repodb_fold_minimum_audit.json}{fold-minimum
+audit} tests the weaker necessary---not sufficient---condition of at
+least five of each label: only two signatures pass, and both overlap
+TRANSCRIPT, leaving \textbf{zero} source-ID-disjoint candidates even at
+that minimum. Removing the 71 overlapping TRANSCRIPT CUIs leaves 36
+signatures (79 approved, 25 stopped-trial pairs), with only five
+containing both labels. The broader bridge therefore does not change the
+feasibility conclusion; ontology cross-references are also not proof of
+independent underlying expression cohorts.
+
+\subsection{Consequence for the frozen v3
+question}\label{consequence-for-the-frozen-v3-question}
+
+The \href{method_selection_v3_protocol.md}{v3 protocol} requires a
+source-independent benchmark, explicit positive and negative
+associations, identical outer splits/five-fold inner tuning and official
+NS-AUC for fixed B2, a deterministic selector and one prescore LLM
+selector choice per independent unit. The staged Open Targets labels
+fail the negative-label gate. The strict repoDB crosswalk fails the
+disease-unit/fold gate and has substantial development-set overlap.
+Pooling diseases, relabeling unknowns, accepting fuzzy ID matches or
+changing the endpoint to positive-only recall \textbf{after seeing these
+feasibility counts} would be a separately named exploratory study, not
+fulfillment of the frozen confirmatory v3 test. No API call has been
+made on external outcomes and no external performance claim follows from
+this audit.
+
+The alternative
+\href{https://data.mendeley.com/datasets/fy93xjjrb8/1}{TRACE release}
+covers three diseases and has curated positive/negative controls, but it
+does not provide a sufficiently large set of independent disease-level
+units with the same raw drug-perturbation feature representation for
+this protocol. A defensible next attempt needs a larger, source-disjoint
+expression-and-label collection (or an explicitly approved redesigned
+endpoint), documented drug/disease crosswalk and fold eligibility, then
+a new prescore protocol freeze before any selector call or outer score.
+
+\end{document}

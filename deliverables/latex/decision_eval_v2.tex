@@ -1,0 +1,151 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{决策层 v2：规则计算 + LLM
+备注判读}\label{ux51b3ux7b56ux5c42-v2ux89c4ux5219ux8ba1ux7b97--llm-ux5907ux6ce8ux5224ux8bfb}
+
+2026-09-29。此实验问的是：在已写明的决策政策下，将自由文本风险备注交给
+LLM
+判断，而把样本数、阈值、来源计数等结构化计算留给规则，是否比旧关键词规则或让
+LLM 直接做完整决策更稳妥。它\textbf{不是}药物疗效、真实临床判断或 Jev
+的评测。
+
+\subsection{预先冻结的对照}\label{ux9884ux5148ux51bbux7ed3ux7684ux5bf9ux7167}
+
+新建 40 条合成中文备注（四节点各 10 条；20 条作者标注为具体风险，20
+条为已排除问题、例行说明或提示注入），每节点交替使用两个结构化状态。全部备注不同于
+v1 用例；但政策、作者和设计动机来自 v1
+失败分析，故不能称为完全独立的外部测试分布。参考答案与测试实现先于 API
+调用以提交 \texttt{8206657}
+冻结；\texttt{configs/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v2.\allowbreak{}json} SHA-256 为
+\texttt{01b2486a85a957\allowbreak{}2fbca3eeb9a1df\allowbreak{}49fef12e543b1c\allowbreak{}57a331e2096b31\allowbreak{}359ec252}。
+
+\begin{itemize}
+\tightlist
+\item
+  J0：原 v1 关键词规则处理备注和结构化状态。
+\item
+  混合层：DeepSeek \texttt{deepseek-flash} 只看到备注，按严格工具 Schema
+  输出 \texttt{CONCERN} / \texttt{NO\_\allowbreak{}CONCERN} /
+  \texttt{UNCERTAIN}；\texttt{NO\_\allowbreak{}CONCERN}
+  时由同一固定规则计算结构化决策，其他情况及调用失败均转人工。
+\item
+  完整 LLM：同一模型看模型可见的节点、选项和状态，直接按 v1
+  成文政策输出选择。两个模型分支均看不到作者标签或参考答案。
+\end{itemize}
+
+每例两个模型请求，共 80 次；temperature 0、thinking
+关闭。每次请求/响应有单独哈希链 trace，80/80 份 provider 可见 payload
+与冻结用例及结果文件经\href{../benchmark/results/decision_eval_v2_trace_grade.json}{独立回放核验}一致，未向模型泄露参考标签。聚合和逐例选择存于\href{../benchmark/results/decision_eval_v2.json}{结果
+JSON}，原始 prompt、响应及断点文件保存在本机被 Git 忽略的
+\texttt{artifacts/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v2/\allowbreak{}}。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}@{}}
+\toprule\noalign{}
+指标 & J0 旧规则 & 混合层 & 完整 LLM \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+正确数 / 40 & 20 & \textbf{39} & 37 \\
+具体风险转人工召回 / 20 & 0/20 & \textbf{20/20} & 18/20 \\
+无风险备注不必要转人工 / 20 & 0/20 & 1/20 & 1/20 \\
+高风险错误自动执行率 / 12 & 8/12 & \textbf{0/12} & \textbf{0/12} \\
+每例独立模型调用 & 0 & 1 & 1 \\
+本次提示 / 完成 token & 0 & 17,104 / 1,459 & 52,514 / 4,516 \\
+P50 延迟 & \textless1 ms & 645 ms & 880 ms \\
+\end{longtable}
+}
+
+混合层唯一失分 H026
+是把``已核对为不同研究组、没有重复计数''误判成风险，属于过度升级。完整
+LLM 另在 H025（同队列重复发表）和
+H035（未入账的化疗保护信号）给出错误自动选择；这两例混合层正确转人工。完整
+LLM 总体 37/40，不代表其在更多节点和病例上都差于混合层；40
+例、单次运行的 2 例差距没有稳健的外推依据。
+
+本集刻意使用旧英文关键词覆盖不到的中文风险措辞，所以 J0 的 20/40 不能与
+v1 的 0.875
+直接比较，也不是一般场景的规则准确率估计。参考标签由项目作者按政策判定，缺少盲法双人复核；两个结构化状态/节点不足以测试复杂阈值组合。模型版本会变化，且没有
+Jev 权限。后续仍需真实 Agent
+轨迹中由独立审阅者标注的新样本，特别是模棱两可、否定嵌套、多语言和错误引用场景。
+
+\end{document}

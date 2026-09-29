@@ -1,0 +1,987 @@
+{
+  "status": "conservative_ontology_bridge_feasibility_only_no_predictions",
+  "inputs_sha256": {
+    "benchmark\\results\\external_ot_repodb_bridge_audit.json": "aaa69c2729e355b62b8ac0302240cb507539182cc57056d1ef5023d6a55d6ae8",
+    "artifacts\\external\\repodb_2017\\shiny.RData": "21e8c95c6e18dc678599bf760f81c435fc21e75e6c68a5f475f68be9adc1cb52",
+    "artifacts\\external\\cdrpipe-comparative-analysis\\drug_signatures\\data\\cmap\\cmap_drug_experiments_new.csv": "6e8d90413caa766e2c4cd5b0dd83e81ea4399c9065cf20530b66cc3761558c4e",
+    "data\\raw\\TRANSCRIPT_dataset_v2.0.0\\users.csv": "f2109466b53806d11841d3f4a3c5c8f7a769fc1aac99787a62874b284a92f332"
+  },
+  "crosswalk": "Unique UMLS CUI among Open Targets dbXRefs that occurs in repoDB; exact-name CUI may confirm; ambiguous CUIs excluded; unambiguous CMap DrugBank IDs only",
+  "mapped_signatures": 107,
+  "mapped_positives": 347,
+  "mapped_failed_trial_negatives": 124,
+  "mapped_with_both_labels": 25,
+  "mapped_five_fold_eligible_min_8_each": 0,
+  "development_cui_overlap": 71,
+  "nonoverlap_signatures": 36,
+  "nonoverlap_positives": 79,
+  "nonoverlap_failed_trial_negatives": 25,
+  "nonoverlap_with_both_labels": 5,
+  "nonoverlap_five_fold_eligible_min_8_each": 0,
+  "rows": [
+    {
+      "signature": "actinic_keratosis_signature.csv",
+      "cui": "C0022602",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_myeloid_leukemia_signature.csv",
+      "cui": "C0023467",
+      "cui_in_transcript": true,
+      "positive": 4,
+      "failed_trial_negative": 4,
+      "conflicting_excluded": 1,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_myocardial_infarction_signature.csv",
+      "cui": "C0155626",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_T_cell_leukemia_signature.csv",
+      "cui": "C1961099",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "alcoholic_hepatitis_signature.csv",
+      "cui": "C0019187",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "allergic_asthma_signature.csv",
+      "cui": "C0155877",
+      "cui_in_transcript": true,
+      "positive": 2,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Alzheimer's_disease_signature.csv",
+      "cui": "C0002395",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "amyotrophic_lateral_sclerosis_signature.csv",
+      "cui": "C0002736",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "anaplastic_thyroid_carcinoma_signature.csv",
+      "cui": "C0238461",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ankylosing_spondylitis_signature.csv",
+      "cui": "C0038013",
+      "cui_in_transcript": true,
+      "positive": 12,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "aplastic_anemia_signature.csv",
+      "cui": "C0002874",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "appendicitis_signature.csv",
+      "cui": "C0003615",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "arthritis_signature.csv",
+      "cui": "C0003864",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "asthma_signature.csv",
+      "cui": "C0004096",
+      "cui_in_transcript": true,
+      "positive": 17,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "astrocytoma_signature.csv",
+      "cui": "C0004114",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "atherosclerosis_signature.csv",
+      "cui": "C0004153",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "atopic_dermatitis_signature.csv",
+      "cui": "C0011615",
+      "cui_in_transcript": false,
+      "positive": 14,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "autoimmune_thrombocytopenic_purpura_signature.csv",
+      "cui": "C0398650",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bacterial_infectious_disease_signature.csv",
+      "cui": "C0004623",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bipolar_disorder_signature.csv",
+      "cui": "C0005586",
+      "cui_in_transcript": false,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bronchopulmonary_dysplasia_signature.csv",
+      "cui": "C0006287",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Cardiomyopathy_signature.csv",
+      "cui": "C0878544",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cervical_cancer_signature.csv",
+      "cui": "C4048328",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cervix_carcinoma_signature.csv",
+      "cui": "C0302592",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_lymphocytic_leukemia_signature.csv",
+      "cui": "C0023434",
+      "cui_in_transcript": true,
+      "positive": 2,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_myeloid_leukemia_signature.csv",
+      "cui": "C0279543",
+      "cui_in_transcript": false,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_obstructive_pulmonary_disease_signature.csv",
+      "cui": "C0024117",
+      "cui_in_transcript": false,
+      "positive": 1,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colon_cancer_signature.csv",
+      "cui": "C0007102",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 9,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colorectal_adenocarcinoma_signature.csv",
+      "cui": "C1319315",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Crohn's_disease_signature.csv",
+      "cui": "C0010346",
+      "cui_in_transcript": true,
+      "positive": 8,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cystic_fibrosis_signature.csv",
+      "cui": "C0010674",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cystitis_signature.csv",
+      "cui": "C0010692",
+      "cui_in_transcript": false,
+      "positive": 3,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dermatomyositis_signature.csv",
+      "cui": "C0011633",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "diabetes_mellitus_signature.csv",
+      "cui": "C0011849",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Diabetic_Nephropathy_signature.csv",
+      "cui": "C0011881",
+      "cui_in_transcript": false,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Diamond-Blackfan_anemia_signature.csv",
+      "cui": "C1260899",
+      "cui_in_transcript": true,
+      "positive": 7,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Duchenne_muscular_dystrophy_signature.csv",
+      "cui": "C0013264",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ductal_carcinoma_in_situ_signature.csv",
+      "cui": "C0007124",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "endometriosis_signature.csv",
+      "cui": "C0014175",
+      "cui_in_transcript": true,
+      "positive": 5,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "esophagus_adenocarcinoma_signature.csv",
+      "cui": "C0279628",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "esophagus_squamous_cell_carcinoma_signature.csv",
+      "cui": "C0279626",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "gastroesophageal_reflux_disease_signature.csv",
+      "cui": "C0017168",
+      "cui_in_transcript": true,
+      "positive": 8,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "gastrointestinal_stromal_tumor_signature.csv",
+      "cui": "C0238198",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "glaucoma_signature.csv",
+      "cui": "C0017601",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hemorrhagic_thrombocythemia_signature.csv",
+      "cui": "C0040028",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hepatocellular_carcinoma_signature.csv",
+      "cui": "C2239176",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Human_immunodeficiency_virus_infectious_disease_signature.csv",
+      "cui": "C0019693",
+      "cui_in_transcript": true,
+      "positive": 3,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hypertension_signature.csv",
+      "cui": "C0020538",
+      "cui_in_transcript": true,
+      "positive": 50,
+      "failed_trial_negative": 6,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "inflammatory_bowel_disease_signature.csv",
+      "cui": "C0021390",
+      "cui_in_transcript": false,
+      "positive": 6,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 1,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "influenza_signature.csv",
+      "cui": "C0021400",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "interstitial_cystitis_signature.csv",
+      "cui": "C0282488",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Ischemic_stroke_signature.csv",
+      "cui": "C0948008",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "juvenile_rheumatoid_arthritis_signature.csv",
+      "cui": "C3495559",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "leukemia_signature.csv",
+      "cui": "C0023418",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 18,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_adenocarcinoma_signature.csv",
+      "cui": "C0152013",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_large_cell_carcinoma_signature.csv",
+      "cui": "C0345958",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_small_cell_carcinoma_signature.csv",
+      "cui": "C0149925",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 1,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_squamous_cell_carcinoma_signature.csv",
+      "cui": "C0149782",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "malignant_pleural_mesothelioma_signature.csv",
+      "cui": "C0812413",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "melanoma_signature.csv",
+      "cui": "C0025202",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "mental_depression_signature.csv",
+      "cui": "C0011581",
+      "cui_in_transcript": false,
+      "positive": 15,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "multiple_myeloma_signature.csv",
+      "cui": "C0026764",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 7,
+      "conflicting_excluded": 3,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "multiple_sclerosis_signature.csv",
+      "cui": "C0026769",
+      "cui_in_transcript": true,
+      "positive": 5,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 2,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "myelodysplastic_syndrome_signature.csv",
+      "cui": "C3463824",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "myocardial_infarction_signature.csv",
+      "cui": "C0027051",
+      "cui_in_transcript": true,
+      "positive": 4,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "NASH_signature.csv",
+      "cui": "C3241937",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nasopharynx_carcinoma_signature.csv",
+      "cui": "C2931822",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nephroblastoma_signature.csv",
+      "cui": "C0027708",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Nicotine_addiction_signature.csv",
+      "cui": "C0028043",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nicotine_dependence_signature.csv",
+      "cui": "C0028043",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "obesity_signature.csv",
+      "cui": "C0028754",
+      "cui_in_transcript": true,
+      "positive": 3,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "osteoarthritis_signature.csv",
+      "cui": "C0029408",
+      "cui_in_transcript": true,
+      "positive": 19,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "osteoporosis_signature.csv",
+      "cui": "C0029456",
+      "cui_in_transcript": true,
+      "positive": 2,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ovarian_cancer_signature.csv",
+      "cui": "C1140680",
+      "cui_in_transcript": true,
+      "positive": 3,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_ductal_adenocarcinoma_signature.csv",
+      "cui": "C1335302",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "papillary_thyroid_carcinoma_signature.csv",
+      "cui": "C0238463",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Parkinson's_disease_signature.csv",
+      "cui": "C0030567",
+      "cui_in_transcript": true,
+      "positive": 9,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "polycystic_ovary_syndrome_signature.csv",
+      "cui": "C0032460",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "post-traumatic_stress_disorder_signature.csv",
+      "cui": "C0038436",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pre-eclampsia_signature.csv",
+      "cui": "C0032914",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "primary_open_angle_glaucoma_signature.csv",
+      "cui": "C0017612",
+      "cui_in_transcript": false,
+      "positive": 14,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "prostate_cancer_signature.csv",
+      "cui": "C0376358",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "psoriasis_signature.csv",
+      "cui": "C0033860",
+      "cui_in_transcript": true,
+      "positive": 8,
+      "failed_trial_negative": 4,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "psoriatic_arthritis_signature.csv",
+      "cui": "C0003872",
+      "cui_in_transcript": true,
+      "positive": 8,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pulmonary_fibrosis_signature.csv",
+      "cui": "C0034069",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pulmonary_hypertension_signature.csv",
+      "cui": "C0020542",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "relapsing-remitting_multiple_sclerosis_signature.csv",
+      "cui": "C0751967",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "renal_cell_carcinoma_signature.csv",
+      "cui": "C0007134",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "rheumatoid_arthritis_signature.csv",
+      "cui": "C0003873",
+      "cui_in_transcript": true,
+      "positive": 29,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 2,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "sarcoidosis_signature.csv",
+      "cui": "C0036202",
+      "cui_in_transcript": true,
+      "positive": 7,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Schizophrenia_signature.csv",
+      "cui": "C0036341",
+      "cui_in_transcript": true,
+      "positive": 15,
+      "failed_trial_negative": 5,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "scleroderma_signature.csv",
+      "cui": "C0011644",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Septic_Shock_signature.csv",
+      "cui": "C0036983",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "sickle_cell_anemia_signature.csv",
+      "cui": "C0002895",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "skin_squamous_cell_carcinoma_signature.csv",
+      "cui": "C0553723",
+      "cui_in_transcript": false,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Squamous_cell_carcinoma_of_mouth_signature.csv",
+      "cui": "C0585362",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "stomach_cancer_signature.csv",
+      "cui": "C0024623",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "systemic_lupus_erythematosus_signature.csv",
+      "cui": "C0024141",
+      "cui_in_transcript": true,
+      "positive": 6,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 2,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "tendinitis_signature.csv",
+      "cui": "C0039503",
+      "cui_in_transcript": false,
+      "positive": 8,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "testicular_cancer_signature.csv",
+      "cui": "C0153594",
+      "cui_in_transcript": true,
+      "positive": 1,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "tuberculosis_signature.csv",
+      "cui": "C0041296",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 3,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Turner_syndrome_signature.csv",
+      "cui": "C0041408",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 0,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "type_1_diabetes_mellitus_signature.csv",
+      "cui": "C0011854",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "type_2_diabetes_mellitus_signature.csv",
+      "cui": "C0011860",
+      "cui_in_transcript": true,
+      "positive": 11,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ulcerative_colitis_signature.csv",
+      "cui": "C0009324",
+      "cui_in_transcript": true,
+      "positive": 4,
+      "failed_trial_negative": 2,
+      "conflicting_excluded": 1,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "urticaria_signature.csv",
+      "cui": "C0042109",
+      "cui_in_transcript": false,
+      "positive": 15,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Waldenstrom_Macroglobulinemia_signature.csv",
+      "cui": "C0024419",
+      "cui_in_transcript": true,
+      "positive": 0,
+      "failed_trial_negative": 1,
+      "conflicting_excluded": 0,
+      "five_fold_eligible_min_8_each": false
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T155900841657Z_repodb_ontology_bridge_audit_f2040ce7080f45c18698c9f0729d7562.jsonl"
+}

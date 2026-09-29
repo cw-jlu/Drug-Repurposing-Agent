@@ -1,0 +1,117 @@
+{
+  "status": "domains_only_no_predictions",
+  "source_sha256": "21e8c95c6e18dc678599bf760f81c435fc21e75e6c68a5f475f68be9adc1cb52",
+  "rows": 10800,
+  "domains": {
+    "status": {
+      "Approved": 6677,
+      "Terminated": 2877,
+      "Withdrawn": 662,
+      "Suspended": 584
+    },
+    "phase": {
+      "<NA>": 6677,
+      "Phase 2": 2076,
+      "Phase 1": 789,
+      "Phase 3": 714,
+      "Phase 1/Phase 2": 382,
+      "Phase 2/Phase 3": 105,
+      "Phase 0": 57
+    },
+    "sem_type": {
+      "Disease or Syndrome": 5743,
+      "Neoplastic Process": 3412,
+      "Sign or Symptom": 603,
+      "Mental or Behavioral Dysfunction": 322,
+      "Finding": 313,
+      "Pathologic Function": 224,
+      "Injury or Poisoning": 123,
+      "Congenital Abnormality": 42,
+      "Acquired Abnormality": 16,
+      "Cell or Molecular Dysfunction": 2
+    },
+    "TrialStatus": {
+      "distinct_values": 1138,
+      "top_five": {
+        "Approved": 6677,
+        "<a href=\"https://clinicaltrials.gov/ct2/show/NCT01652014\" target=\"_blank\">Suspended (Phase 2)</a>": 336,
+        "<a href=\"https://clinicaltrials.gov/ct2/show/NCT01419795\" target=\"_blank\">Terminated (Phase 2)</a>": 93,
+        "<a href=\"https://clinicaltrials.gov/ct2/show/NCT01342887\" target=\"_blank\">Terminated (Phase 1/Phase 2)</a>": 70,
+        "<a href=\"https://clinicaltrials.gov/ct2/show/NCT00096148\" target=\"_blank\">Terminated (Phase 2)</a>": 66
+      }
+    },
+    "DetailedStatus": {
+      "distinct_values": 754,
+      "top_five": {
+        "<NA>": 6677,
+        "": 935,
+        "Funding unavailable": 339,
+        "Administratively complete.": 290,
+        "Lack of funding": 122
+      }
+    }
+  },
+  "first_six_rows": [
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00001\" target=\"_blank\">Lepirudin (DBID: DB00001)</a>",
+      "Indication": "Heparin-induced thrombocytopenia with thrombosis (CUI: C0272275)",
+      "drug_name": "Lepirudin",
+      "drug_id": "DB00001",
+      "ind_name": "Heparin-induced thrombocytopenia with thrombosis",
+      "ind_id": "C0272275",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    },
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00002\" target=\"_blank\">Cetuximab (DBID: DB00002)</a>",
+      "Indication": "Squamous cell carcinoma of mouth (CUI: C0585362)",
+      "drug_name": "Cetuximab",
+      "drug_id": "DB00002",
+      "ind_name": "Squamous cell carcinoma of mouth",
+      "ind_id": "C0585362",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    },
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00002\" target=\"_blank\">Cetuximab (DBID: DB00002)</a>",
+      "Indication": "Squamous cell carcinoma of nose (CUI: C3163899)",
+      "drug_name": "Cetuximab",
+      "drug_id": "DB00002",
+      "ind_name": "Squamous cell carcinoma of nose",
+      "ind_id": "C3163899",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    },
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00002\" target=\"_blank\">Cetuximab (DBID: DB00002)</a>",
+      "Indication": "Squamous cell carcinoma of pharynx (CUI: C1319317)",
+      "drug_name": "Cetuximab",
+      "drug_id": "DB00002",
+      "ind_name": "Squamous cell carcinoma of pharynx",
+      "ind_id": "C1319317",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    },
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00002\" target=\"_blank\">Cetuximab (DBID: DB00002)</a>",
+      "Indication": "Laryngeal Squamous Cell Carcinoma (CUI: C0280324)",
+      "drug_name": "Cetuximab",
+      "drug_id": "DB00002",
+      "ind_name": "Laryngeal Squamous Cell Carcinoma",
+      "ind_id": "C0280324",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    },
+    {
+      "Drug": "<a href=\"http://www.drugbank.ca/drugs/DB00002\" target=\"_blank\">Cetuximab (DBID: DB00002)</a>",
+      "Indication": "Malignant tumor of colon (CUI: C0007102)",
+      "drug_name": "Cetuximab",
+      "drug_id": "DB00002",
+      "ind_name": "Malignant tumor of colon",
+      "ind_id": "C0007102",
+      "TrialStatus": "Approved",
+      "status": "Approved"
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T142416962344Z_repodb_2017_domains_b365f4b35a214c2c87c012864d2d2a12.jsonl"
+}

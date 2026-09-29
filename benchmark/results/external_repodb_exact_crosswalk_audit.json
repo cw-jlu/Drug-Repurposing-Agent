@@ -1,0 +1,2659 @@
+{
+  "status": "crosswalk_feasibility_only_no_method_predictions",
+  "source_hashes": {
+    "artifacts\\external\\repodb_2017\\shiny.RData": "21e8c95c6e18dc678599bf760f81c435fc21e75e6c68a5f475f68be9adc1cb52",
+    "artifacts\\external\\cdrpipe-comparative-analysis\\drug_signatures\\data\\cmap\\cmap_drug_experiments_new.csv": "6e8d90413caa766e2c4cd5b0dd83e81ea4399c9065cf20530b66cc3761558c4e"
+  },
+  "label_policy_audited_not_yet_benchmark_frozen": "Approved=positive; Terminated/Withdrawn/Suspended=failed-trial negative; same-pair conflicting statuses excluded; unmatched/unknown never labeled negative. These trial statuses are not necessarily lack of efficacy.",
+  "crosswalk_policy": "unique normalized exact disease name to UMLS CUI, unique DrugBank ID to one CMap name; no fuzzy/entity inference",
+  "drugbank_ids_in_cmap": 726,
+  "unique_unambiguous_drugbank_ids": 726,
+  "disease_match_counts": {
+    "unmatched": 166,
+    "unique_exact_name": 67
+  },
+  "total_approved_pairs": 165,
+  "total_failed_trial_pairs": 78,
+  "total_conflicting_pairs_excluded": 8,
+  "diseases_with_both_labels": 14,
+  "five_fold_eligible_disease_units_min_8_each": 0,
+  "rows": [
+    {
+      "signature": "abdominal_aortic_aneurysm_signature.csv",
+      "source_name": "abdominal aortic aneurysm",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acne_signature.csv",
+      "source_name": "acne",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "actinic_keratosis_signature.csv",
+      "source_name": "actinic keratosis",
+      "indication_id": "C0022602",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Acute_Lung_Injury_signature.csv",
+      "source_name": "Acute Lung Injury",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_myeloid_leukemia_signature.csv",
+      "source_name": "acute myeloid leukemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_myocardial_infarction_signature.csv",
+      "source_name": "acute myocardial infarction",
+      "indication_id": "C0155626",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "acute_T_cell_leukemia_signature.csv",
+      "source_name": "acute T cell leukemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "adenoma_signature.csv",
+      "source_name": "adenoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "adenosquamous_cell_lung_carcinoma_signature.csv",
+      "source_name": "adenosquamous cell lung carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "adrenoleukodystrophy_signature.csv",
+      "source_name": "adrenoleukodystrophy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "alcohol_abuse_signature.csv",
+      "source_name": "alcohol abuse",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "alcoholic_hepatitis_signature.csv",
+      "source_name": "alcoholic hepatitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "allergic_asthma_signature.csv",
+      "source_name": "allergic asthma",
+      "indication_id": "C0155877",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 2,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "allergic_contact_dermatitis_signature.csv",
+      "source_name": "allergic contact dermatitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "alpha_1-antitrypsin_deficiency_signature.csv",
+      "source_name": "alpha 1-antitrypsin deficiency",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Alzheimer's_disease_signature.csv",
+      "source_name": "Alzheimer's disease",
+      "indication_id": "C0002395",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "amyotrophic_lateral_sclerosis_signature.csv",
+      "source_name": "amyotrophic lateral sclerosis",
+      "indication_id": "C0002736",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "amyotrophic_lateral_sclerosis_type_10_signature.csv",
+      "source_name": "amyotrophic lateral sclerosis type 10",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Anaplasmosis_signature.csv",
+      "source_name": "Anaplasmosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "anaplastic_thyroid_carcinoma_signature.csv",
+      "source_name": "anaplastic thyroid carcinoma",
+      "indication_id": "C0238461",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "androgen_insensitivity_syndrome_signature.csv",
+      "source_name": "androgen insensitivity syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "anemia_signature.csv",
+      "source_name": "anemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ankylosing_spondylitis_signature.csv",
+      "source_name": "ankylosing spondylitis",
+      "indication_id": "C0038013",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 12,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "anterior_horn_cell_disease_signature.csv",
+      "source_name": "anterior horn cell disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "aplastic_anemia_signature.csv",
+      "source_name": "aplastic anemia",
+      "indication_id": "C0002874",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "appendicitis_signature.csv",
+      "source_name": "appendicitis",
+      "indication_id": "C0003615",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "arthritis_signature.csv",
+      "source_name": "arthritis",
+      "indication_id": "C0003864",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "arthropathy_signature.csv",
+      "source_name": "arthropathy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "asthma_signature.csv",
+      "source_name": "asthma",
+      "indication_id": "C0004096",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 17,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "astrocytoma_signature.csv",
+      "source_name": "astrocytoma",
+      "indication_id": "C0004114",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 2
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "atherosclerosis_signature.csv",
+      "source_name": "atherosclerosis",
+      "indication_id": "C0004153",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "atopic_dermatitis_signature.csv",
+      "source_name": "atopic dermatitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "autism_spectrum_disorder_signature.csv",
+      "source_name": "autism spectrum disorder",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "autistic_disorder_signature.csv",
+      "source_name": "autistic disorder",
+      "indication_id": "C0004352",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "autoimmune_thrombocytopenic_purpura_signature.csv",
+      "source_name": "autoimmune thrombocytopenic purpura",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bacterial_infectious_disease_signature.csv",
+      "source_name": "bacterial infectious disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Barrett's_esophagus_signature.csv",
+      "source_name": "Barrett's esophagus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bipolar_disorder_signature.csv",
+      "source_name": "bipolar disorder",
+      "indication_id": "C0005586",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "breast_adenocarcinoma_signature.csv",
+      "source_name": "breast adenocarcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "breast_cancer_signature.csv",
+      "source_name": "breast cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "bronchopulmonary_dysplasia_signature.csv",
+      "source_name": "bronchopulmonary dysplasia",
+      "indication_id": "C0006287",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Carcinoma_in_situ_of_large_intestine_signature.csv",
+      "source_name": "Carcinoma in situ of large intestine",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Cardiomyopathy_signature.csv",
+      "source_name": "Cardiomyopathy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cellular_phase_chronic_idiopathic_myelofibrosis_signature.csv",
+      "source_name": "cellular phase chronic idiopathic myelofibrosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cerebral_palsy_signature.csv",
+      "source_name": "cerebral palsy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cervical_cancer_signature.csv",
+      "source_name": "cervical cancer",
+      "indication_id": "C4048328",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cervix_carcinoma_signature.csv",
+      "source_name": "cervix carcinoma",
+      "indication_id": "C0302592",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "childhood_type_dermatomyositis_signature.csv",
+      "source_name": "childhood type dermatomyositis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_granulomatous_disease_signature.csv",
+      "source_name": "chronic granulomatous disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Chronic_Lymphocytic_Leukemia_(Chronic_B-lymphocytic_leukemia)_signature.csv",
+      "source_name": "Chronic Lymphocytic Leukemia (Chronic B-lymphocytic leukemia)",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_lymphocytic_leukemia_signature.csv",
+      "source_name": "chronic lymphocytic leukemia",
+      "indication_id": "C0023434",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 2,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_myeloid_leukemia_signature.csv",
+      "source_name": "chronic myeloid leukemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "chronic_obstructive_pulmonary_disease_signature.csv",
+      "source_name": "chronic obstructive pulmonary disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cleft_lip_signature.csv",
+      "source_name": "cleft lip",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colitis_signature.csv",
+      "source_name": "colitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colon_adenoma_signature.csv",
+      "source_name": "colon adenoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colon_cancer_signature.csv",
+      "source_name": "colon cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colorectal_adenocarcinoma_signature.csv",
+      "source_name": "colorectal adenocarcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "colorectal_cancer_signature.csv",
+      "source_name": "colorectal cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Crohn's_disease_signature.csv",
+      "source_name": "Crohn's disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cystic_fibrosis_signature.csv",
+      "source_name": "cystic fibrosis",
+      "indication_id": "C0010674",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 3,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 2,
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "cystitis_signature.csv",
+      "source_name": "cystitis",
+      "indication_id": "C0010692",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 3,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dengue_disease_signature.csv",
+      "source_name": "dengue disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dengue_hemorrhagic_fever_signature.csv",
+      "source_name": "dengue hemorrhagic fever",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Dental_cavity,_complex_signature.csv",
+      "source_name": "Dental cavity, complex",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dermatomyositis_signature.csv",
+      "source_name": "dermatomyositis",
+      "indication_id": "C0011633",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "diabetes_mellitus_signature.csv",
+      "source_name": "diabetes mellitus",
+      "indication_id": "C0011849",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 2
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Diabetic_Nephropathy_signature.csv",
+      "source_name": "Diabetic Nephropathy",
+      "indication_id": "C0011881",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Diamond-Blackfan_anemia_signature.csv",
+      "source_name": "Diamond-Blackfan anemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dilated_cardiomyopathy_signature.csv",
+      "source_name": "dilated cardiomyopathy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "discoid_lupus_erythematosus_signature.csv",
+      "source_name": "discoid lupus erythematosus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Down_syndrome_signature.csv",
+      "source_name": "Down syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Duchenne_muscular_dystrophy_signature.csv",
+      "source_name": "Duchenne muscular dystrophy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ductal_carcinoma_in_situ_signature.csv",
+      "source_name": "ductal carcinoma in situ",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "dystonia_signature.csv",
+      "source_name": "dystonia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Ebola_hemorrhagic_fever_signature.csv",
+      "source_name": "Ebola hemorrhagic fever",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Eczema_signature.csv",
+      "source_name": "Eczema",
+      "indication_id": "C0013595",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "endometrial_cancer_signature.csv",
+      "source_name": "endometrial cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "endometriosis_of_ovary_signature.csv",
+      "source_name": "endometriosis of ovary",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "endometriosis_signature.csv",
+      "source_name": "endometriosis",
+      "indication_id": "C0014175",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 5,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "epidermolysis_bullosa_simplex_signature.csv",
+      "source_name": "epidermolysis bullosa simplex",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "epilepsy_syndrome_signature.csv",
+      "source_name": "epilepsy syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Epithelial_proliferation_signature.csv",
+      "source_name": "Epithelial proliferation",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "esophagus_adenocarcinoma_signature.csv",
+      "source_name": "esophagus adenocarcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "esophagus_squamous_cell_carcinoma_signature.csv",
+      "source_name": "esophagus squamous cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "facioscapulohumeral_muscular_dystrophy_signature.csv",
+      "source_name": "facioscapulohumeral muscular dystrophy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "familial_combined_hyperlipidemia_signature.csv",
+      "source_name": "familial combined hyperlipidemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "familial_hypercholesterolemia_signature.csv",
+      "source_name": "familial hypercholesterolemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "fragile_X_syndrome_signature.csv",
+      "source_name": "fragile X syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "gastroesophageal_reflux_disease_signature.csv",
+      "source_name": "gastroesophageal reflux disease",
+      "indication_id": "C0017168",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 8,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "gastrointestinal_stromal_tumor_signature.csv",
+      "source_name": "gastrointestinal stromal tumor",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "glaucoma_signature.csv",
+      "source_name": "glaucoma",
+      "indication_id": "C0017601",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "glioblastoma_multiforme_signature.csv",
+      "source_name": "glioblastoma multiforme",
+      "indication_id": "C1621958",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "head_and_neck_squamous_cell_carcinoma_signature.csv",
+      "source_name": "head and neck squamous cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Helicobacter_pylori_gastrointestinal_tract_infection_signature.csv",
+      "source_name": "Helicobacter pylori gastrointestinal tract infection",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hemorrhagic_thrombocythemia_signature.csv",
+      "source_name": "hemorrhagic thrombocythemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hepatitis_C_signature.csv",
+      "source_name": "hepatitis C",
+      "indication_id": "C0019196",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Suspended": 1,
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hepatitis_C_virus_related_hepatocellular_carcinoma_signature.csv",
+      "source_name": "hepatitis C virus related hepatocellular carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hepatocellular_carcinoma_signature.csv",
+      "source_name": "hepatocellular carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Hereditary_gingival_fibromatosis_signature.csv",
+      "source_name": "Hereditary gingival fibromatosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "HIV_encephalitis_signature.csv",
+      "source_name": "HIV encephalitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Human_immunodeficiency_virus_infectious_disease_signature.csv",
+      "source_name": "Human immunodeficiency virus infectious disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Huntington's_disease_signature.csv",
+      "source_name": "Huntington's disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "hypertension_signature.csv",
+      "source_name": "hypertension",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Hypoxia_signature.csv",
+      "source_name": "Hypoxia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "idiopathic_interstitial_pneumonia_signature.csv",
+      "source_name": "idiopathic interstitial pneumonia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "idiopathic_pulmonary_fibrosis_signature.csv",
+      "source_name": "idiopathic pulmonary fibrosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "inclusion_body_myositis_signature.csv",
+      "source_name": "inclusion body myositis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Infection_by_Aspergillus_fumigatus_signature.csv",
+      "source_name": "Infection by Aspergillus fumigatus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "inflammatory_bowel_disease_signature.csv",
+      "source_name": "inflammatory bowel disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "influenza_signature.csv",
+      "source_name": "influenza",
+      "indication_id": "C0021400",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "intellectual_disability_signature.csv",
+      "source_name": "intellectual disability",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "interstitial_cystitis_signature.csv",
+      "source_name": "interstitial cystitis",
+      "indication_id": "C0282488",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 2
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Intestinal_metaplasia_of_gastric_mucosa_signature.csv",
+      "source_name": "Intestinal metaplasia of gastric mucosa",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "intracranial_aneurysm_signature.csv",
+      "source_name": "intracranial aneurysm",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "invasive_ductal_carcinoma_signature.csv",
+      "source_name": "invasive ductal carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Ischemic_stroke_signature.csv",
+      "source_name": "Ischemic stroke",
+      "indication_id": "C0948008",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "JRA_-_Juvenile_rheumatoid_arthritis_signature.csv",
+      "source_name": "JRA - Juvenile rheumatoid arthritis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "juvenile_rheumatoid_arthritis_signature.csv",
+      "source_name": "juvenile rheumatoid arthritis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "large_cell_neuroendocrine_carcinoma_signature.csv",
+      "source_name": "large cell neuroendocrine carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Leukemia,_Chronic_T-Cell_signature.csv",
+      "source_name": "Leukemia, Chronic T-Cell",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "leukemia_signature.csv",
+      "source_name": "leukemia",
+      "indication_id": "C0023418",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 18,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 15,
+        "Withdrawn": 3
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Lewy_body_dementia_signature.csv",
+      "source_name": "Lewy body dementia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "LGLL_-_Large_granular_lymphocytic_leukemia_signature.csv",
+      "source_name": "LGLL - Large granular lymphocytic leukemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "liver_cirrhosis_signature.csv",
+      "source_name": "liver cirrhosis",
+      "indication_id": "C0023890",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_adenocarcinoma_signature.csv",
+      "source_name": "lung adenocarcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Lung_Injury_signature.csv",
+      "source_name": "Lung Injury",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_large_cell_carcinoma_signature.csv",
+      "source_name": "lung large cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_small_cell_carcinoma_signature.csv",
+      "source_name": "lung small cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lung_squamous_cell_carcinoma_signature.csv",
+      "source_name": "lung squamous cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Lung_transplant_rejection_signature.csv",
+      "source_name": "Lung transplant rejection",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "lupus_erythematosus_signature.csv",
+      "source_name": "lupus erythematosus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "macular_degeneration_signature.csv",
+      "source_name": "macular degeneration",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "malignant_pleural_mesothelioma_signature.csv",
+      "source_name": "malignant pleural mesothelioma",
+      "indication_id": "C0812413",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Marfan_syndrome_signature.csv",
+      "source_name": "Marfan syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "MDS_-_Myelodysplastic_syndrome_signature.csv",
+      "source_name": "MDS - Myelodysplastic syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "melanoma_in_situ_signature.csv",
+      "source_name": "melanoma in situ",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "melanoma_signature.csv",
+      "source_name": "melanoma",
+      "indication_id": "C0025202",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "MELAS_syndrome_signature.csv",
+      "source_name": "MELAS syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Meningococcal_infection_signature.csv",
+      "source_name": "Meningococcal infection",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "mental_depression_signature.csv",
+      "source_name": "mental depression",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "monoclonal_gammopathy_of_uncertain_significance_signature.csv",
+      "source_name": "monoclonal gammopathy of uncertain significance",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "morbid_obesity_signature.csv",
+      "source_name": "morbid obesity",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "multiple_myeloma_signature.csv",
+      "source_name": "multiple myeloma",
+      "indication_id": "C0026764",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 7,
+      "conflicting_pairs_excluded": 3,
+      "failed_status_counts": {
+        "Withdrawn": 2,
+        "Terminated": 5,
+        "Suspended": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "multiple_sclerosis_signature.csv",
+      "source_name": "multiple sclerosis",
+      "indication_id": "C0026769",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 5,
+      "failed_trial_drugs": 3,
+      "conflicting_pairs_excluded": 2,
+      "failed_status_counts": {
+        "Terminated": 3
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "muscular_dystrophy_signature.csv",
+      "source_name": "muscular dystrophy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "myelodysplastic_syndrome_signature.csv",
+      "source_name": "myelodysplastic syndrome",
+      "indication_id": "C3463824",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "myocardial_infarction_signature.csv",
+      "source_name": "myocardial infarction",
+      "indication_id": "C0027051",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 4,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "myotonic_dystrophy_type_1_signature.csv",
+      "source_name": "myotonic dystrophy type 1",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "NASH_signature.csv",
+      "source_name": "NASH",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nasopharynx_carcinoma_signature.csv",
+      "source_name": "nasopharynx carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nephroblastoma_signature.csv",
+      "source_name": "nephroblastoma",
+      "indication_id": "C0027708",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nephrosclerosis_signature.csv",
+      "source_name": "nephrosclerosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Nicotine_addiction_signature.csv",
+      "source_name": "Nicotine addiction",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nicotine_dependence_signature.csv",
+      "source_name": "nicotine dependence",
+      "indication_id": "C0028043",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "nonspecific_interstitial_pneumonia_signature.csv",
+      "source_name": "nonspecific interstitial pneumonia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "obesity_signature.csv",
+      "source_name": "obesity",
+      "indication_id": "C0028754",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 3,
+      "failed_trial_drugs": 3,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 2,
+        "Withdrawn": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "oligodendroglioma_signature.csv",
+      "source_name": "oligodendroglioma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "osteoarthritis_signature.csv",
+      "source_name": "osteoarthritis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Osteolysis_signature.csv",
+      "source_name": "Osteolysis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "osteoporosis_signature.csv",
+      "source_name": "osteoporosis",
+      "indication_id": "C0029456",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 2,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ovarian_cancer_signature.csv",
+      "source_name": "ovarian cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ovarian_serous_carcinoma_signature.csv",
+      "source_name": "ovarian serous carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Overexertion_signature.csv",
+      "source_name": "Overexertion",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_cancer_signature.csv",
+      "source_name": "pancreatic cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_ductal_adenocarcinoma_signature.csv",
+      "source_name": "pancreatic ductal adenocarcinoma",
+      "indication_id": "C1335302",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Suspended": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_intraductal_papillary-mucinous_adenoma_signature.csv",
+      "source_name": "pancreatic intraductal papillary-mucinous adenoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_invasive_intraductal_papillary-mucinous_carcinoma_signature.csv",
+      "source_name": "pancreatic invasive intraductal papillary-mucinous carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pancreatic_non-invasive_intraductal_papillary-mucinous_carcinoma_signature.csv",
+      "source_name": "pancreatic non-invasive intraductal papillary-mucinous carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "papillary_thyroid_carcinoma_signature.csv",
+      "source_name": "papillary thyroid carcinoma",
+      "indication_id": "C0238463",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "parasitic_protozoa_infectious_disease_signature.csv",
+      "source_name": "parasitic protozoa infectious disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Parkinson's_disease_signature.csv",
+      "source_name": "Parkinson's disease",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "peripartum_cardiomyopathy_signature.csv",
+      "source_name": "peripartum cardiomyopathy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "polycystic_ovary_syndrome_signature.csv",
+      "source_name": "polycystic ovary syndrome",
+      "indication_id": "C0032460",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 2
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Polymyositis_signature.csv",
+      "source_name": "Polymyositis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Pompe_disease,_infantile-onset_form_signature.csv",
+      "source_name": "Pompe disease, infantile-onset form",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "post-traumatic_stress_disorder_signature.csv",
+      "source_name": "post-traumatic stress disorder",
+      "indication_id": "C0038436",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pre-eclampsia_signature.csv",
+      "source_name": "pre-eclampsia",
+      "indication_id": "C0032914",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "precursor_B_lymphoblastic_lymphoma_leukemia_signature.csv",
+      "source_name": "precursor B lymphoblastic lymphoma leukemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Premature_aging_signature.csv",
+      "source_name": "Premature aging",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "primary_open_angle_glaucoma_signature.csv",
+      "source_name": "primary open angle glaucoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "prolactinoma_signature.csv",
+      "source_name": "prolactinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "prostate_cancer_signature.csv",
+      "source_name": "prostate cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Pseudomonas_Infection_signature.csv",
+      "source_name": "Pseudomonas Infection",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "psoriasis_signature.csv",
+      "source_name": "psoriasis",
+      "indication_id": "C0033860",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 8,
+      "failed_trial_drugs": 4,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 1,
+        "Terminated": 2,
+        "Suspended": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Psoriasis_vulgaris_signature.csv",
+      "source_name": "Psoriasis vulgaris",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "psoriatic_arthritis_signature.csv",
+      "source_name": "psoriatic arthritis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pulmonary_fibrosis_signature.csv",
+      "source_name": "pulmonary fibrosis",
+      "indication_id": "C0034069",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pulmonary_hypertension_signature.csv",
+      "source_name": "pulmonary hypertension",
+      "indication_id": "C0020542",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 2,
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "pulmonary_sarcoidosis_signature.csv",
+      "source_name": "pulmonary sarcoidosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "relapsing-remitting_multiple_sclerosis_signature.csv",
+      "source_name": "relapsing-remitting multiple sclerosis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "renal_cell_carcinoma_signature.csv",
+      "source_name": "renal cell carcinoma",
+      "indication_id": "C0007134",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Rett_syndrome_signature.csv",
+      "source_name": "Rett syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "rheumatoid_arthritis_signature.csv",
+      "source_name": "rheumatoid arthritis",
+      "indication_id": "C0003873",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 29,
+      "failed_trial_drugs": 3,
+      "conflicting_pairs_excluded": 2,
+      "failed_status_counts": {
+        "Terminated": 3
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Rhinovirus_infection_signature.csv",
+      "source_name": "Rhinovirus infection",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Rotavirus_infection_of_children_signature.csv",
+      "source_name": "Rotavirus infection of children",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "salivary_gland_adenoid_cystic_carcinoma_signature.csv",
+      "source_name": "salivary gland adenoid cystic carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "sarcoidosis_signature.csv",
+      "source_name": "sarcoidosis",
+      "indication_id": "C0036202",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 7,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Schizophrenia_signature.csv",
+      "source_name": "Schizophrenia",
+      "indication_id": "C0036341",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 15,
+      "failed_trial_drugs": 5,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Withdrawn": 3,
+        "Terminated": 2
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "scleroderma_signature.csv",
+      "source_name": "scleroderma",
+      "indication_id": "C0011644",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Senescence_signature.csv",
+      "source_name": "Senescence",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Septic_Shock_signature.csv",
+      "source_name": "Septic Shock",
+      "indication_id": "C0036983",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "serous_cystadenocarcinoma_signature.csv",
+      "source_name": "serous cystadenocarcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Setleis_syndrome_signature.csv",
+      "source_name": "Setleis syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "severe_acute_respiratory_syndrome_signature.csv",
+      "source_name": "severe acute respiratory syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "sickle_cell_anemia_signature.csv",
+      "source_name": "sickle cell anemia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Simian_Acquired_Immune_Deficiency_Syndrome_signature.csv",
+      "source_name": "Simian Acquired Immune Deficiency Syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Sjogren's_syndrome_signature.csv",
+      "source_name": "Sjogren's syndrome",
+      "indication_id": "C1527336",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 1,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "skin_squamous_cell_carcinoma_signature.csv",
+      "source_name": "skin squamous cell carcinoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "smoldering_myeloma_signature.csv",
+      "source_name": "smoldering myeloma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "sporadic_breast_cancer_signature.csv",
+      "source_name": "sporadic breast cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Squamous_cell_carcinoma_of_mouth_signature.csv",
+      "source_name": "Squamous cell carcinoma of mouth",
+      "indication_id": "C0585362",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "stomach_cancer_signature.csv",
+      "source_name": "stomach cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "swine_influenza_signature.csv",
+      "source_name": "swine influenza",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "systemic_lupus_erythematosus_signature.csv",
+      "source_name": "systemic lupus erythematosus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "tendinitis_signature.csv",
+      "source_name": "tendinitis",
+      "indication_id": "C0039503",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 8,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Teratospermia_signature.csv",
+      "source_name": "Teratospermia",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "testicular_cancer_signature.csv",
+      "source_name": "testicular cancer",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "testis_seminoma_signature.csv",
+      "source_name": "testis seminoma",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "tuberculosis_signature.csv",
+      "source_name": "tuberculosis",
+      "indication_id": "C0041296",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 3,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 3
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Turner_syndrome_signature.csv",
+      "source_name": "Turner syndrome",
+      "indication_id": "C0041408",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "type_1_diabetes_mellitus_signature.csv",
+      "source_name": "type 1 diabetes mellitus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "type_2_diabetes_mellitus_signature.csv",
+      "source_name": "type 2 diabetes mellitus",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "ulcerative_colitis_signature.csv",
+      "source_name": "ulcerative colitis",
+      "indication_id": "C0009324",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 4,
+      "failed_trial_drugs": 2,
+      "conflicting_pairs_excluded": 1,
+      "failed_status_counts": {
+        "Terminated": 1,
+        "Withdrawn": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Urothelial_carcinoma_in_situ_signature.csv",
+      "source_name": "Urothelial carcinoma in situ",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "urticaria_signature.csv",
+      "source_name": "urticaria",
+      "indication_id": "C0042109",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 15,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "uterine_fibroid_signature.csv",
+      "source_name": "uterine fibroid",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Venezuelan_equine_encephalitis_signature.csv",
+      "source_name": "Venezuelan equine encephalitis",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Viral_cardiomyopathy_signature.csv",
+      "source_name": "Viral cardiomyopathy",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Vulvar_intraepithelial_tumor_signature.csv",
+      "source_name": "Vulvar intraepithelial tumor",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Waldenstrom_Macroglobulinemia_signature.csv",
+      "source_name": "Waldenstrom Macroglobulinemia",
+      "indication_id": "C0024419",
+      "match_status": "unique_exact_name",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 1,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {
+        "Terminated": 1
+      },
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "West_Nile_fever_signature.csv",
+      "source_name": "West Nile fever",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    },
+    {
+      "signature": "Williams-Beuren_syndrome_signature.csv",
+      "source_name": "Williams-Beuren syndrome",
+      "indication_id": null,
+      "match_status": "unmatched",
+      "approved_drugs": 0,
+      "failed_trial_drugs": 0,
+      "conflicting_pairs_excluded": 0,
+      "failed_status_counts": {},
+      "five_fold_eligible_min_8_each": false
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T142513560746Z_repodb_exact_crosswalk_audit_22e0f2eb40174956baf087e11f97c9da.jsonl"
+}

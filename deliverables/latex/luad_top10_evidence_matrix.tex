@@ -1,0 +1,371 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{LUAD Top-10 identity and evidence
+matrix}\label{luad-top-10-identity-and-evidence-matrix}
+
+Review date: 2026-09-25. This is a research triage artifact, not a
+treatment recommendation. The screen used one A549 perturbation
+condition (10 µM, 24 h). Replaying the published EH3226 metadata filter
+recovered one exact GSE92742 \texttt{sig\_\allowbreak{}id} and \texttt{pert\_\allowbreak{}id} for
+every Top-10 row; the crosswalk is
+\texttt{configs/\allowbreak{}luad\_\allowbreak{}top10\_\allowbreak{}signature\_\allowbreak{}ids.\allowbreak{}csv}. Cross-source chemical
+conflicts with the dated
+\href{https://repo-hub.broadinstitute.org/repurposing}{Broad Drug
+Repurposing Hub} remain where noted.
+
+\subsection{Candidate-level audit}\label{candidate-level-audit}
+
+\textbf{Rank 1 · hydrocortisone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-A75172220}; Hub cross-source stereochemistry differs
+\item
+  \textbf{Name-level targets / mechanism：} ANXA1, NOS2, NR3C1, NR3C2;
+  glucocorticoid-receptor transcription and annexin/eicosanoid signaling
+\item
+  \textbf{LUAD/NSCLC evidence found：} Hydrocortisone shared
+  GR-dependent A549 growth arrest with dexamethasone in vitro
+  (\href{https://pubmed.ncbi.nlm.nih.gov/1533045/}{PMID 1533045}); an
+  independent network study proposed hydrocortisone computationally for
+  NSCLC (\href{https://pubmed.ncbi.nlm.nih.gov/35676421/}{PMID
+  35676421})
+\item
+  \textbf{Evidence against or uncertainty：} GR activation has also been
+  linked to chemotherapy resistance and stemness
+  (\href{https://pubmed.ncbi.nlm.nih.gov/41344105/}{PMID 41344105}); no
+  candidate-specific LUAD animal or clinical efficacy study was found
+\item
+  \textbf{Decision：} Insufficient; source ID resolved, cross-source
+  chemistry and efficacy unresolved
+\end{itemize}
+
+\textbf{Rank 2 · beclomethasone-dipropionate}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-K97810537}; exact Hub InChIKey match
+\item
+  \textbf{Name-level targets / mechanism：} CYP3A5, GPR97, NR3C1;
+  GR-regulated transcription and xenobiotic metabolism
+\item
+  \textbf{LUAD/NSCLC evidence found：} Beclomethasone dipropionate
+  induced CYP3A5 through GR in A549 cells
+  (\href{https://pubmed.ncbi.nlm.nih.gov/12538830/}{PMID 12538830}); its
+  active monopropionate metabolite also induced CYP3A5 in A549
+  (\href{https://pubmed.ncbi.nlm.nih.gov/24555085/}{PMID 24555085})
+\item
+  \textbf{Evidence against or uncertainty：} These are pharmacology
+  observations, not antitumor efficacy. No LUAD animal or clinical
+  efficacy study was found; class-level chemoresistance concerns remain
+\item
+  \textbf{Decision：} Insufficient; verified identity and A549 target
+  engagement, no efficacy evidence
+\end{itemize}
+
+\textbf{Rank 3 · clocortolone-pivalate}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-K38003476}; exact Hub InChIKey match
+\item
+  \textbf{Name-level targets / mechanism：} NR3C1, PLA2G1B;
+  glucocorticoid-receptor agonism and phospholipase/eicosanoid context
+\item
+  \textbf{LUAD/NSCLC evidence found：} No drug-specific LUAD/NSCLC
+  efficacy study was found in the bounded review; only class-level GR
+  evidence applies
+\item
+  \textbf{Evidence against or uncertainty：} No compound-specific
+  validation; topical dermatologic use does not establish tumor exposure
+  or a feasible oncology dose
+\item
+  \textbf{Decision：} Insufficient
+\end{itemize}
+
+\textbf{Rank 4 · mometasone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-K60640630}; GEO/Hub structure mismatch remains
+\item
+  \textbf{Name-level targets / mechanism：} NR3C1;
+  glucocorticoid-receptor agonism
+\item
+  \textbf{LUAD/NSCLC evidence found：} No drug-specific LUAD efficacy
+  evidence was found; inhaled-corticosteroid observational literature is
+  only class-level prevention context
+\item
+  \textbf{Evidence against or uncertainty：} Cross-source structures
+  disagree, so name-level literature may describe another formulation.
+  No treatment-efficacy evidence
+\item
+  \textbf{Decision：} Insufficient; cross-source identity mismatch is a
+  hard stop
+\end{itemize}
+
+\textbf{Rank 5 · flumetasone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-A01346607}; synonym mapping remains ambiguous
+\item
+  \textbf{Name-level targets / mechanism：} Likely flumethasone-class
+  NR3C1 agonism; some Hub synonyms also annotate PLA2G1B or SERPINA6
+\item
+  \textbf{LUAD/NSCLC evidence found：} No exact-name LUAD/NSCLC efficacy
+  study was found
+\item
+  \textbf{Evidence against or uncertainty：} \texttt{flumetasone} may
+  refer to flumethasone or an ester formulation; target transfer across
+  synonyms is not chemically verified
+\item
+  \textbf{Decision：} Insufficient; synonym resolution required
+\end{itemize}
+
+\textbf{Rank 6 · BRD-K84203638}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature and GEO structure
+  recovered; no Hub sample
+\item
+  \textbf{Name-level targets / mechanism：} Unknown
+\item
+  \textbf{LUAD/NSCLC evidence found：} No linked LUAD efficacy evidence
+  was found
+\item
+  \textbf{Evidence against or uncertainty：} The recovered structure and
+  PubChem field permit future reconciliation, but no verified target or
+  oncology study currently supports interpretation
+\item
+  \textbf{Decision：} Insufficient; identity improved, biology
+  unresolved
+\end{itemize}
+
+\textbf{Rank 7 · hydrocortisone-hemisuccinate}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-A07000685}; Hub cross-source stereochemistry differs
+\item
+  \textbf{Name-level targets / mechanism：} Parent-drug inference
+  suggests NR3C1/NR3C2 and ANXA1 signaling; the Hub name row has no
+  target annotation
+\item
+  \textbf{LUAD/NSCLC evidence found：} Hydrocortisone class evidence
+  provides mechanistic context only
+\item
+  \textbf{Evidence against or uncertainty：} Salt/ester and cross-source
+  stereochemistry remain unresolved; hydrocortisone evidence cannot be
+  promoted to this exact material
+\item
+  \textbf{Decision：} Insufficient
+\end{itemize}
+
+\textbf{Rank 8 · fluorometholone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-A13133631}; no Hub sample
+\item
+  \textbf{Name-level targets / mechanism：} NR3C1;
+  glucocorticoid-receptor agonism
+\item
+  \textbf{LUAD/NSCLC evidence found：} No drug-specific LUAD/NSCLC
+  efficacy evidence was found
+\item
+  \textbf{Evidence against or uncertainty：} No Hub sample-level match
+  and no oncology validation; ophthalmic anti-inflammatory use is not
+  evidence of tumor exposure
+\item
+  \textbf{Decision：} Insufficient
+\end{itemize}
+
+\textbf{Rank 9 · fluticasone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-K14791739}; formulation mapping across sources remains
+  ambiguous
+\item
+  \textbf{Name-level targets / mechanism：} Formulation-dependent
+  annotations include NR3C1, NR3C2, PGR and PLA2G4A
+\item
+  \textbf{LUAD/NSCLC evidence found：} Observational studies of inhaled
+  corticosteroids report possible lower lung-cancer incidence, including
+  fluticasone-equivalent dose analyses
+  (\href{https://pubmed.ncbi.nlm.nih.gov/35843928/}{PMID 35843928})
+\item
+  \textbf{Evidence against or uncertainty：} Prevention associations are
+  low/very-low certainty and do not establish treatment of existing
+  LUAD. Systemic GR effects may conflict with immunotherapy
+\item
+  \textbf{Decision：} Insufficient; prevention context only
+\end{itemize}
+
+\textbf{Rank 10 · diflorasone}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity status：} Exact source signature
+  \texttt{BRD-K17674993}; no Hub sample and name variants remain
+\item
+  \textbf{Name-level targets / mechanism：} NR3C1 for
+  diflorasone-diacetate annotations
+\item
+  \textbf{LUAD/NSCLC evidence found：} No drug-specific LUAD/NSCLC
+  efficacy study was found
+\item
+  \textbf{Evidence against or uncertainty：} Cross-source formulation
+  mapping remains unresolved, and no sample-level Hub match exists
+\item
+  \textbf{Decision：} Insufficient
+\end{itemize}
+
+\subsection{Shared pathway evidence and
+contradiction}\label{shared-pathway-evidence-and-contradiction}
+
+Nine of ten names are known or likely glucocorticoids; BRD-K84203638 is
+unresolved. This explains a coherent transcriptional class signal, but
+it also means the Top-10 is not ten independent mechanistic hypotheses.
+
+\begin{itemize}
+\tightlist
+\item
+  Supporting preclinical context: dexamethasone suppressed A549 and
+  Calu-1 proliferation through ERK/MAPK and cell-cycle regulation
+  (\href{https://pubmed.ncbi.nlm.nih.gov/12204894/}{PMID 12204894}). A
+  biomarker-selected study found dexamethasone responses in
+  STK11/LKB1-mutant NSCLC models
+  (\href{https://pubmed.ncbi.nlm.nih.gov/37035141/}{PMID 37035141}).
+  These findings are class-level and biomarker-dependent; they do not
+  validate the nine screened compounds.
+\item
+  Contradicting preclinical context: dexamethasone reduced pemetrexed
+  cytotoxicity in GR-responsive nonsquamous NSCLC models
+  (\href{https://pubmed.ncbi.nlm.nih.gov/24736075/}{PMID 24736075}). A
+  later study linked GR/β-catenin activation to lung-cancer stemness,
+  chemoresistance, worse survival signals, and reduced paclitaxel
+  benefit (\href{https://pubmed.ncbi.nlm.nih.gov/41344105/}{PMID
+  41344105}).
+\item
+  Clinical-context uncertainty: observational inhaled-corticosteroid
+  studies sometimes report lower lung-cancer incidence, but a systematic
+  review found no significant effect in the included randomized trials
+  (\href{https://pubmed.ncbi.nlm.nih.gov/27761973/}{PMID 27761973}); a
+  later meta-analysis rated the evidence low to very low
+  (\href{https://pubmed.ncbi.nlm.nih.gov/35843928/}{PMID 35843928}).
+  This is prevention evidence in COPD/asthma populations, not LUAD
+  treatment evidence.
+\item
+  Immunotherapy context: retrospective NSCLC studies associate baseline
+  or early systemic steroids with worse checkpoint-inhibitor outcomes,
+  although indication-related confounding is material and some analyses
+  differ (\href{https://pubmed.ncbi.nlm.nih.gov/33007977/}{PMID
+  33007977}, \href{https://pubmed.ncbi.nlm.nih.gov/33431285/}{PMID
+  33431285}, \href{https://pubmed.ncbi.nlm.nih.gov/36142204/}{PMID
+  36142204}).
+\end{itemize}
+
+\subsection{Bottom line}\label{bottom-line}
+
+The reconstruction resolves the exact source signature and perturbagen
+IDs, but it does not produce a clinically credible Top-10. Cross-source
+formulation or stereochemistry conflicts remain for several rows. Only
+hydrocortisone and beclomethasone dipropionate have candidate-specific
+A549/NSCLC context, and neither has candidate-specific LUAD efficacy
+evidence. The appropriate output remains a hypothesis list with
+\texttt{insufficient\_\allowbreak{}evidence}. The prespecified dose, subtype,
+mechanism and combination plan is in
+\texttt{docs/\allowbreak{}luad\_\allowbreak{}experimental\_\allowbreak{}validation\_\allowbreak{}protocol.\allowbreak{}md}.
+
+The search was deliberately bounded to exact names, likely formulation
+synonyms, A549/LUAD/NSCLC terms, and shared glucocorticoid evidence.
+``No study found'' means none was identified in this bounded review, not
+proof that no literature exists.
+
+\end{document}

@@ -1,0 +1,10 @@
+{
+  "status": "metadata_only_not_staged_or_scored",
+  "doi": "10.17632/8wjx8yb55n.1",
+  "url": "https://api.data.mendeley.com/datasets/publics/8wjx8yb55n/files?version=1",
+  "version": 1,
+  "api_status": 403,
+  "page_status": 403,
+  "files": [],
+  "trace": "artifacts\\reports\\traces\\20260929T160429207031Z_repairdb_public_source_probe_11e74173a3de4641b8f9d715799d9f22.jsonl"
+}

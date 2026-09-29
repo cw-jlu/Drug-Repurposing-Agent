@@ -1,0 +1,88 @@
+{
+  "status": "raw_cmap_matrix_staged_and_read_not_benchmark_scored",
+  "source": "https://ucsf.box.com/s/m54ipylmdytjsqmlp7axnabvjh2q8lwl",
+  "box_file_id": "f_2206971964738",
+  "matrix_bytes": 243722737,
+  "matrix_sha256": "29e7dcbcabc5af810d6fd0d21e534df231494d1c1756cd46cf6518308f68d860",
+  "metadata_sha256": "6e8d90413caa766e2c4cd5b0dd83e81ea4399c9065cf20530b66cc3761558c4e",
+  "probe_ids_sha256": "955cf272e8b5d2657e2306fd2a74e082987d3a65cc234b5b2948ede0742de96c",
+  "reader": "rdata 1.1.0",
+  "objects": {
+    "cmap_signatures": {
+      "python_type": "DataFrame",
+      "shape": [
+        13071,
+        6101
+      ],
+      "index_sample": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "column_sample": [
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5"
+      ],
+      "first_three_rows_first_three_columns": [
+        [
+          "2",
+          "10860.0",
+          "2628.0"
+        ],
+        [
+          "9",
+          "18440.0",
+          "11991.0"
+        ],
+        [
+          "10",
+          "9265.0",
+          "6891.0"
+        ]
+      ],
+      "first_column_all_matches_probe_ids": true,
+      "metadata_rows": 6100,
+      "metadata_columns": [
+        "id",
+        "name",
+        "concentration",
+        "duration",
+        "cell_line",
+        "array_platform",
+        "vehicle",
+        "vendor",
+        "vendor_catalog_id",
+        "vendor_catalog_name",
+        "drug_concept_id",
+        "cas_number",
+        "DrugBank.ID"
+      ],
+      "metadata_id_first_last": [
+        "1",
+        "6100"
+      ],
+      "probe_rows": 13071,
+      "probe_id_first_last": [
+        "2",
+        "654434"
+      ],
+      "matrix_numeric_min_max": [
+        1.0,
+        22283.0
+      ],
+      "matrix_null_cells": 0
+    }
+  },
+  "trace": "artifacts\\reports\\traces\\20260929T140232893752Z_external_cmap_matrix_audit_85983a34a6b94f23b21fb2af14284e16.jsonl",
+  "not_yet_verified": [
+    "gene/disease crosswalk",
+    "drug/indication crosswalk",
+    "positive/negative label policy",
+    "eligible independent units"
+  ]
+}

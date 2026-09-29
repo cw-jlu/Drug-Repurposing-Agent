@@ -1,0 +1,248 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{LLM
+知识污染探针（TRANSCRIPT，v1）}\label{llm-ux77e5ux8bc6ux6c61ux67d3ux63a2ux9488transcriptv1}
+
+运行日期：2026-09-28。模型：\texttt{deepseek-flash}（DeepSeek beta
+端点，strict function calling，\texttt{temperature=0}）。
+运行器：\texttt{evals/\allowbreak{}contamination\_\allowbreak{}probe.\allowbreak{}py}；聚合结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}contamination\_\allowbreak{}probe\_\allowbreak{}v1.\allowbreak{}json}（只含聚合数字、样本哈希、调用计数和成本估计，不含原始
+prompt/response）。 每次模型请求都由 \texttt{TraceRecorder} 单独写入带
+SHA-256 链的 trace（位于被忽略的
+\texttt{artifacts/\allowbreak{}contamination\_\allowbreak{}probe/\allowbreak{}provider\_\allowbreak{}traces/\allowbreak{}}），入口级
+trace 位于 \texttt{artifacts/\allowbreak{}contamination\_\allowbreak{}probe/\allowbreak{}traces/\allowbreak{}}。
+
+\subsection{目的}\label{ux76eeux7684}
+
+检验"让 LLM
+看到药物/疾病\textbf{名称}"时，它能否凭记忆中的背景知识"找回" TRANSCRIPT
+中已知的适应症，也就是标签泄漏。如果能，那么任何让模型看到身份信息的基准测得的只是记忆，不是发现能力。本项目的
+benchmark 采用 strict 模式（LLM
+永远看不到药物/疾病身份），这个实验用来检验这条规则是否必要。
+
+\subsection{协议}\label{ux534fux8bae}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{ID→名称映射（先查离线来源）}：仓库内的 Repurposing Hub
+  文件只有 Broad ID、名称、InChIKey 和 PubChem CID，没有 DrugBank ID 或
+  MedGen CUI，仓库里也没有现成对照表，所以改用公开 API：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DrugBank ID → mychem.info \texttt{drugbank.\allowbreak{}name}（610 个 DB ID）；
+  \item
+    PubChem CID → PubChem PUG REST \texttt{Title}（3 个 CID）；
+  \item
+    MedGen CUI → NCBI E-utilities
+    \texttt{esearch}/\texttt{esummary}（db=medgen）的 \texttt{title}。
+    映射缓存在
+    \texttt{artifacts/\allowbreak{}contamination\_\allowbreak{}probe/\allowbreak{}}（被忽略），覆盖率汇总见
+    \texttt{mapping\_\allowbreak{}coverage.\allowbreak{}json}。
+  \end{itemize}
+\item
+  \textbf{抽样并冻结}（seed
+  20260928）：在药物名和疾病名都已映射的配对中，抽取阳性（1）并以 300
+  为上限随机抽样，再随机抽取同样数量的未知（0）配对，另外纳入全部 −1
+  配对。样本在\textbf{任何模型调用之前}写成规范化 JSONL 并记录
+  SHA-256；之后每一步都会重新校验哈希，哈希不同的样本拒绝覆盖。
+\item
+  \textbf{三种条件}：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Open-book}：只问 ``Is an approved or established treatment
+    for ?''，要求返回 0--1 概率（strict JSON 工具调用）。
+  \item
+    \textbf{Closed-book}：不提供任何名称或 ID，只提供该配对的 Spearman
+    反转分数（items.csv 与 users.csv 在 12,096 个基因上的负 Spearman
+    相关），以及它在该药物 151
+    个疾病中的排名百分位，问同一个概率问题。运行器在发送前会断言请求中不含名称、ID
+    或标签。
+  \item
+    \textbf{原始反转分数}：直接用 Spearman 反转分数作为排序分数，不经过
+    LLM。
+  \end{itemize}
+\item
+  \textbf{指标}：主指标是阳性 vs 未知的 AUC（Mann--Whitney，并列按 0.5
+  计），用分层 bootstrap（2000 次，seed 20260928）求 95\% CI。open 与
+  closed 的差值用配对分层 bootstrap。阳性 vs −1 只作描述，因为 n=11。
+\end{enumerate}
+
+\subsection{结果}\label{ux7ed3ux679c}
+
+映射覆盖率：药物 611/613（未映射 DB00510、DB01361），疾病
+150/151（未映射 C0023473）；阳性 399/401、−1 11/11 的两端名称都已映射。
+样本：300 个阳性、300 个未知、11 个 −1，共 611 对；SHA-256 为
+\texttt{898a59fe00cc1d\allowbreak{}bcdb22a0690773\allowbreak{}7eb723f1b1bbc9\allowbreak{}c36cc188f59ad4\allowbreak{}22eb4e4b}。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+条件 & AUC（阳性 vs 未知） & 95\% CI & 阳性 / 未知的中位概率 & 阳性 vs
+−1（描述，n=11） \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Open-book（看到名称） & \textbf{0.567} & {[}0.526, 0.609{]} & 0.02 /
+0.02 & 0.516 {[}0.362, 0.672{]} \\
+Closed-book（只看反转数字） & 0.527 & {[}0.482, 0.570{]} & 0.006 / 0.006
+& 0.481 {[}0.312, 0.636{]} \\
+原始 Spearman 反转分数 & 0.519 & {[}0.475, 0.567{]} & --- & 0.489
+{[}0.300, 0.672{]} \\
+Open − Closed（配对差） & +0.040 & {[}−0.022, +0.102{]} & --- & --- \\
+\end{longtable}
+}
+
+调用量：探针共 1222 次模型调用（611 对 × 2 个条件），全部成功，0
+次重试。另有 2 次正式运行前的冒烟调用，不计入上表。共约 56.6 万
+token；按 \texttt{evals/\allowbreak{}run\_\allowbreak{}planner\_\allowbreak{}eval.\allowbreak{}py} 中的价格表估算，费用为
+0.081 美元（off-peak）至 0.162 美元（peak）。
+
+\subsection{解读}\label{ux89e3ux8bfb}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Open-book 的 AUC 显著高于 0.5}（CI 下界 0.526），而
+  closed-book 和原始反转分数的 CI 都包含
+  0.5。看到名称以后，模型确实从记忆中带进了与标签相关的信号。模型给出的高概率几乎都落在教科书级的适应症上，例如四环素类--痤疮（0.97--0.98）、氟哌啶醇--亨廷顿病（0.85）。这是\textbf{记忆/泄漏，不是发现}：模型没有使用任何表达数据。
+\item
+  \textbf{泄漏幅度比预期小}。open 与 closed 的配对差为 +0.04，95\% CI
+  跨过 0（{[}−0.02, 0.10{]}）。原因是 TRANSCRIPT
+  的很多"阳性"并不是常识性的适应症（例如环丙沙星--Wilson
+  病、克拉霉素--Turner 综合征），模型对这些都给出约 0.02
+  的低概率。反过来，一些被标为"未知"的配对其实是真实的临床适应症（辛伐他汀--急性心肌梗死、螺内酯--充血性心衰、氨苄西林--链球菌扁桃体炎，概率均为
+  0.97）。模型的记忆和数据集标签只是部分重合。
+\item
+  \textbf{对 strict
+  模式的意义}：即使在这个标签噪声很大的数据集上，名称可见仍然带来了可检测的、与表达信号无关的判别力（open-book
+  的 CI 排除 0.5，closed-book 与原始反转分数的 CI 不排除 0.5）；但 open
+  与 closed
+  的直接配对差在本样本中还没有达到统计显著。在标签更接近教科书适应症的数据集上，这种泄漏只会更大。因此，凡是报告"LLM
+  辅助药物重定位"的基准，都必须在 LLM 看不到身份信息的 strict
+  模式下运行；open-book 的高分不能当作方法有效的证据。
+\item
+  Closed-book 的 AUC（0.527）和原始反转分数（0.519）相当，并且只输出 6
+  种不同的概率值。模型基本上只是把反转数字单调地映射成很低的概率，没有额外的判别能力。
+\end{itemize}
+
+\subsection{局限}\label{ux5c40ux9650}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{未知≠阴性}：0
+  表示未记录，不表示无效。上面列举的真实适应症被标为 0，会直接压低
+  open-book 的 AUC，所以 AUC
+  是"与该数据集标签的一致性"，不是真实准确率。
+\item
+  \textbf{−1 只有 11 个}，相关的 AUC 只作描述。
+\item
+  \textbf{映射质量}：MedGen 的 title 有时是遗传易感性或亚型的条目（如
+  ``Dermatitis, atopic, 2''、``Influenza, severe, susceptibility
+  to''），这会削弱 open-book 的识别能力，所以泄漏量可能被低估。3
+  个药物/疾病 ID 未映射。
+\item
+  只测了一个模型、一种问法，而且
+  \texttt{temperature=0}；换成更强的模型或 few-shot 提问，泄漏可能更大。
+\item
+  阳性从 399 个中随机抽取了 300
+  个；未知配对是均匀随机抽取，没有按药物或疾病匹配。
+\item
+  Closed-book 的提示里给了约 0.4\%
+  的基准率，这会把输出概率整体压低，但不影响 AUC 的排序比较。
+\end{itemize}
+
+\subsection{复现}\label{ux590dux73b0}
+
+\begin{Verbatim}[breaklines=true,breakanywhere=true]
+python -m evals.contamination_probe map      # 映射（缓存后不再联网）
+python -m evals.contamination_probe sample   # 冻结样本；哈希不同则拒绝覆盖
+python -m evals.contamination_probe run      # 需要 .env 中的 DEEPSEEK_API_KEY；按 checkpoint 断点续跑
+python -m evals.contamination_probe analyze
+\end{Verbatim}
+
+\end{document}

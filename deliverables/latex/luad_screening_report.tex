@@ -1,0 +1,182 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{LUAD transcriptomic screening
+report}\label{luad-transcriptomic-screening-report}
+
+This is a reproducible \emph{in vitro} expression screen, not a
+treatment recommendation. The ranked output is in
+\texttt{artifacts/\allowbreak{}reports/\allowbreak{}luad\_\allowbreak{}eh3226/\allowbreak{}all\_\allowbreak{}candidates.\allowbreak{}csv} after
+running \texttt{scripts/\allowbreak{}rank\_\allowbreak{}luad\_\allowbreak{}eh3226.\allowbreak{}py}; input and output hashes
+are in
+\href{../data/manifests/eh3226-luad.json}{\texttt{data/\allowbreak{}manifests/\allowbreak{}eh3226-luad.\allowbreak{}json}}.
+The 2.46 GB EH3226 input is fetched separately with
+\texttt{scripts/\allowbreak{}fetch\_\allowbreak{}eh3226.\allowbreak{}py}.
+
+\subsection{Prespecified method and
+data}\label{prespecified-method-and-data}
+
+GSE32863 contributes 57 verifiable LUAD tumor/normal pairs. The paired
+exploratory t-test creates the disease log2 fold-change vector.
+ExperimentHub EH3226 contributes A549 drug perturbation signatures at 10
+µM for 24 hours. On 961 aligned landmark genes, the ranking combines
+negative Spearman correlation and an up/down gene-set connectivity score
+using reciprocal-rank fusion (\texttt{k=60}). In the aligned landmark
+set, 57 genes meet the predetermined up threshold and 50 meet the down
+threshold. No positive-control label or drug-target annotation enters
+the score.
+
+\subsection{Top-10 hypotheses}\label{top-10-hypotheses}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}@{}}
+\toprule\noalign{}
+Rank & Drug name in EH3226 & Broad sample identity audit \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & hydrocortisone & Same connectivity; different stereochemistry \\
+2 & beclomethasone-dipropionate & Exact InChIKey \\
+3 & clocortolone-pivalate & Exact InChIKey \\
+4 & mometasone & Identity mismatch \\
+5 & flumetasone & Ambiguous GEO name \\
+6 & BRD-K84203638 & No Hub sample \\
+7 & hydrocortisone-hemisuccinate & Same connectivity; different
+stereochemistry \\
+8 & fluorometholone & No Hub sample \\
+9 & fluticasone & Ambiguous GEO name \\
+10 & diflorasone & No Hub sample \\
+\end{longtable}
+}
+
+The \href{https://repo-hub.broadinstitute.org/repurposing}{Broad Drug
+Repurposing Hub} annotates several of these names as steroids or
+glucocorticoid-receptor agonists. The strong class concentration may
+reflect a common A549 transcriptional response; it does not establish
+therapeutic benefit in LUAD. Replaying the upstream first-duplicate
+selection against official GSE92742 metadata recovers one source
+\texttt{sig\_\allowbreak{}id} and \texttt{pert\_\allowbreak{}id} for every Top-10 column; see
+\texttt{configs/\allowbreak{}luad\_\allowbreak{}top10\_\allowbreak{}signature\_\allowbreak{}ids.\allowbreak{}csv}. The Broad comparison
+remains a separate cross-source audit, so an exact source ID does not
+resolve stereochemistry, annotation mismatches, or absent Hub samples.
+
+\subsection{Frozen-reference check}\label{frozen-reference-check}
+
+Eleven reference names were fixed before ranking. Five exist in the
+4,920-name EH3226 A549 subset: docetaxel ranks 106, crizotinib 241,
+gefitinib 2,444, paclitaxel 2,962, and erlotinib 3,147. The other six
+are absent and are \textbf{unmeasured}, not failures. The spread of
+these ranks and the top-ranked steroid cluster mean this screen has not
+demonstrated LUAD drug recovery. No AUC was calculated by treating
+unmeasured or unknown drugs as negatives.
+
+\subsection{Evidence and limitations}\label{evidence-and-limitations}
+
+All ten candidates retain \texttt{insufficient\_\allowbreak{}evidence} in their
+structured ledgers. A frozen
+\href{https://www.ncbi.nlm.nih.gov/books/NBK25499/}{NCBI PubMed
+E-utilities} title/abstract search for each exact drug name with
+LUAD/NSCLC terms returned 39 hits for hydrocortisone, one for
+beclomethasone dipropionate, and zero for the other eight names. This
+narrow query is a retrieval snapshot, not an evidence-absence test;
+synonyms and broader terms were not searched. Two records were checked
+at the abstract level and placed in \texttt{context\_\allowbreak{}evidence} only:
+\href{https://pubmed.ncbi.nlm.nih.gov/35676421/}{PMID 35676421}
+independently proposes hydrocortisone as a computational NSCLC
+candidate, without efficacy validation in its abstract;
+\href{https://pubmed.ncbi.nlm.nih.gov/12538830/}{PMID 12538830} reports
+glucocorticoid-receptor-dependent CYP3A5 induction by beclomethasone
+dipropionate in A549 cells, a mechanistic observation rather than
+anticancer efficacy. Other retrieved hits remain unreviewed.
+
+The expanded \href{luad_top10_evidence_matrix.md}{Top-10 identity and
+evidence matrix} resolves the dominant glucocorticoid class, source
+signature IDs, name-level targets and pathways, candidate-specific
+context for hydrocortisone and beclomethasone dipropionate, and shared
+supporting/contradicting evidence. It does not upgrade any candidate: no
+compound has independently validated LUAD efficacy, dose relevance,
+safety, or patient-context evidence. The
+\href{luad_experimental_validation_protocol.md}{experimental validation
+protocol} prespecifies dose, molecular-subtype, mechanism, and
+combination tests, but no wet-lab measurements are claimed. The current
+expression rank is useful for prioritizing research only.
+
+\end{document}

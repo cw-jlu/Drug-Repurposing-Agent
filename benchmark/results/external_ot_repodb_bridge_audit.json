@@ -1,0 +1,1822 @@
+{
+  "status": "cross_reference_probe_only_no_label_merge_or_predictions",
+  "source_sha256": {
+    "artifacts\\external\\opentargets_26_06\\disease.parquet": "b328c5e775bc40d954f2e058aa59e8e972f2883a262d096f8dffe365736a1aed",
+    "benchmark\\results\\external_exact_crosswalk_audit.json": "10e145a393cf234795ae917de9c4254d1c9b370470685eb984a22c25b62703cb",
+    "benchmark\\results\\external_repodb_exact_crosswalk_audit.json": "04b8c0dd5fafdfa7d718adef4d9303550ebe4749e7f1a548e9424d7514eb40a1"
+  },
+  "xref_prefix_counts": {
+    "Reactome": 269,
+    "Wikipedia": 242,
+    "NCIt": 672,
+    "MetaCyc": 34,
+    "RESID": 5,
+    "UM-BBD_pathwayID": 2,
+    "REACTOME": 22,
+    "SNOMEDCT": 409,
+    "MESH": 6601,
+    "GO": 18,
+    "https": 65,
+    "UMLS": 17668,
+    "ICD10": 1789,
+    "SNOMEDCT_US": 1479,
+    "DOID": 8620,
+    "MedDRA": 2001,
+    "MedlinePlus": 1,
+    "ICD9": 4326,
+    "MEDDRA": 40,
+    "Fyler": 73,
+    "NCIT": 5855,
+    "OAE": 4,
+    "OMIM": 8475,
+    "HP": 476,
+    "ICD-10": 14,
+    "EPCC": 5,
+    "MP": 26,
+    "PMID": 17921,
+    "EFO": 2408,
+    "MEDGEN": 14215,
+    "SCTID": 7046,
+    "icd11.foundation": 3521,
+    "OMIMPS": 593,
+    "GARD": 11183,
+    "Orphanet": 7421,
+    "ICD10CM": 1799,
+    "NANDO": 2041,
+    "NORD": 830,
+    "ICD10WHO": 175,
+    "ICDO": 594,
+    "ONCOTREE": 480,
+    "CSP": 36,
+    "NDFRT": 1,
+    "MFOMD": 3,
+    "HGNC": 36,
+    "GTR": 53,
+    "birnlex": 15,
+    "IDO": 1,
+    "DECIPHER": 60,
+    "OBI": 2,
+    "ICD9CM": 2,
+    "MTH": 1,
+    "SCDO": 1,
+    "OMIA": 2,
+    "LIPIDMAPS": 3,
+    "wikipedia": 3,
+    "AcarDv": 1,
+    "BtauDv": 1,
+    "CfamDv": 1,
+    "ChirDv": 1,
+    "CporDv": 1,
+    "DpseDv": 1,
+    "DsimDv": 1,
+    "EcabDv": 1,
+    "FBdv": 1,
+    "FcatDv": 1,
+    "GgalDv": 1,
+    "GgorDv": 1,
+    "HsapDv": 1,
+    "MdomDv": 1,
+    "MmulDv": 1,
+    "MmusDv": 1,
+    "OGES": 1,
+    "OanaDv": 1,
+    "OariDv": 1,
+    "OcunDv": 1,
+    "PpanDv": 1,
+    "PtroDv": 1,
+    "RnorDv": 1,
+    "SsalDv": 1,
+    "SscrDv": 1,
+    "ncithesaurus": 1,
+    "MO": 7,
+    "NIFSTD": 5,
+    "PERSON": 2,
+    "COHD": 2,
+    "NCIm": 1,
+    "uniprot": 2580,
+    "CMO": 18,
+    "http": 22,
+    "ORDO": 7,
+    "MONDO": 19,
+    "modelled on http": 1,
+    "ISBN-10": 1,
+    "ISBN-13": 1,
+    "snomedct": 1,
+    "HMDB": 90,
+    "KEGG COMPOUND": 99,
+    "MedGen": 13,
+    "SYMP": 2,
+    "OMIT": 5,
+    "DI": 1,
+    "ORCID": 6,
+    "doi": 2,
+    " MedDRA": 1,
+    "ENM": 2,
+    "NPO": 2,
+    "TXPO": 1,
+    "Medgen": 13,
+    "ICD11": 1,
+    "Quantification of ethanolamine in a sample.": 1,
+    "CAS": 20,
+    "PubChem": 24,
+    "BTO": 1,
+    "CLO": 1,
+    "RRID": 4,
+    "SNOMED": 2,
+    "MPATH": 1,
+    "MAXO": 1,
+    "ADO": 1,
+    "PR": 1,
+    "chebi": 1,
+    "T3DB": 9,
+    "UKBiobank Data Field": 10,
+    "DC": 3
+  },
+  "ot_mapped_disease_signatures": 188,
+  "with_any_umls_cui_xref": 179,
+  "exact_repo_cui_confirmed_by_ot_xref": 57,
+  "routes": [
+    {
+      "signature": "abdominal_aortic_aneurysm_signature.csv",
+      "ot_id": "MONDO_0005350",
+      "ot_cuis": [
+        "C0162871"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "acne_signature.csv",
+      "ot_id": "MONDO_0011438",
+      "ot_cuis": [
+        "C0702166"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "actinic_keratosis_signature.csv",
+      "ot_id": "MONDO_0005173",
+      "ot_cuis": [
+        "C0022602"
+      ],
+      "repodb_exact_cui": "C0022602",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Acute_Lung_Injury_signature.csv",
+      "ot_id": "MONDO_0015796",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "acute_myeloid_leukemia_signature.csv",
+      "ot_id": "MONDO_0018874",
+      "ot_cuis": [
+        "C0023467"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "acute_myocardial_infarction_signature.csv",
+      "ot_id": "MONDO_0004781",
+      "ot_cuis": [
+        "C0155626"
+      ],
+      "repodb_exact_cui": "C0155626",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "acute_T_cell_leukemia_signature.csv",
+      "ot_id": "MONDO_0004963",
+      "ot_cuis": [
+        "C1961099"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "adenoma_signature.csv",
+      "ot_id": "MONDO_0004972",
+      "ot_cuis": [
+        "C0001430"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "adenosquamous_cell_lung_carcinoma_signature.csv",
+      "ot_id": "MONDO_0004973",
+      "ot_cuis": [
+        "C0279557"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "adrenoleukodystrophy_signature.csv",
+      "ot_id": "MONDO_0018544",
+      "ot_cuis": [
+        "C0162309"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "alcohol_abuse_signature.csv",
+      "ot_id": "MONDO_0002046",
+      "ot_cuis": [
+        "C0085762"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "alcoholic_hepatitis_signature.csv",
+      "ot_id": "MONDO_0001505",
+      "ot_cuis": [
+        "C0019187"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "allergic_asthma_signature.csv",
+      "ot_id": "MONDO_0004784",
+      "ot_cuis": [
+        "C0155877"
+      ],
+      "repodb_exact_cui": "C0155877",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "allergic_contact_dermatitis_signature.csv",
+      "ot_id": "MONDO_0006525",
+      "ot_cuis": [
+        "C0162820"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Alzheimer's_disease_signature.csv",
+      "ot_id": "MONDO_0004975",
+      "ot_cuis": [
+        "C0002395"
+      ],
+      "repodb_exact_cui": "C0002395",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "amyotrophic_lateral_sclerosis_signature.csv",
+      "ot_id": "MONDO_0004976",
+      "ot_cuis": [
+        "C0002736"
+      ],
+      "repodb_exact_cui": "C0002736",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Anaplasmosis_signature.csv",
+      "ot_id": "MONDO_0005118",
+      "ot_cuis": [
+        "C0483368"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "anaplastic_thyroid_carcinoma_signature.csv",
+      "ot_id": "MONDO_0006468",
+      "ot_cuis": [
+        "C0238461"
+      ],
+      "repodb_exact_cui": "C0238461",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "androgen_insensitivity_syndrome_signature.csv",
+      "ot_id": "MONDO_0019154",
+      "ot_cuis": [
+        "C0039585"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "anemia_signature.csv",
+      "ot_id": "MONDO_0002280",
+      "ot_cuis": [
+        "C0002871"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "ankylosing_spondylitis_signature.csv",
+      "ot_id": "MONDO_0005306",
+      "ot_cuis": [
+        "C0038013"
+      ],
+      "repodb_exact_cui": "C0038013",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "anterior_horn_cell_disease_signature.csv",
+      "ot_id": "MONDO_0020128",
+      "ot_cuis": [
+        "C0085084"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "aplastic_anemia_signature.csv",
+      "ot_id": "MONDO_0015909",
+      "ot_cuis": [
+        "C0002874"
+      ],
+      "repodb_exact_cui": "C0002874",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "appendicitis_signature.csv",
+      "ot_id": "MONDO_0005649",
+      "ot_cuis": [
+        "C0003615"
+      ],
+      "repodb_exact_cui": "C0003615",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "arthritis_signature.csv",
+      "ot_id": "HP_0001369",
+      "ot_cuis": [
+        "C0003864"
+      ],
+      "repodb_exact_cui": "C0003864",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "arthropathy_signature.csv",
+      "ot_id": "MONDO_0006816",
+      "ot_cuis": [
+        "C0022408"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "asthma_signature.csv",
+      "ot_id": "MONDO_0004979",
+      "ot_cuis": [
+        "C0004096"
+      ],
+      "repodb_exact_cui": "C0004096",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "astrocytoma_signature.csv",
+      "ot_id": "MONDO_0019781",
+      "ot_cuis": [
+        "C0004114"
+      ],
+      "repodb_exact_cui": "C0004114",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "atherosclerosis_signature.csv",
+      "ot_id": "MONDO_0005311",
+      "ot_cuis": [
+        "C0004153"
+      ],
+      "repodb_exact_cui": "C0004153",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "atopic_dermatitis_signature.csv",
+      "ot_id": "MONDO_0004980",
+      "ot_cuis": [
+        "C0011615"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "autism_spectrum_disorder_signature.csv",
+      "ot_id": "MONDO_0005258",
+      "ot_cuis": [
+        "C1510586"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "autoimmune_thrombocytopenic_purpura_signature.csv",
+      "ot_id": "MONDO_0008558",
+      "ot_cuis": [
+        "C0398650"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "bacterial_infectious_disease_signature.csv",
+      "ot_id": "MONDO_0005113",
+      "ot_cuis": [
+        "C0004623"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Barrett's_esophagus_signature.csv",
+      "ot_id": "MONDO_0013662",
+      "ot_cuis": [
+        "C0004763"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "bipolar_disorder_signature.csv",
+      "ot_id": "MONDO_0004985",
+      "ot_cuis": [
+        "C0005586"
+      ],
+      "repodb_exact_cui": "C0005586",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "breast_adenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0004988",
+      "ot_cuis": [
+        "C0858252"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "breast_cancer_signature.csv",
+      "ot_id": "MONDO_0007254",
+      "ot_cuis": [
+        "C0006142"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "bronchopulmonary_dysplasia_signature.csv",
+      "ot_id": "MONDO_0019091",
+      "ot_cuis": [
+        "C0495402"
+      ],
+      "repodb_exact_cui": "C0006287",
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Cardiomyopathy_signature.csv",
+      "ot_id": "MONDO_0004994",
+      "ot_cuis": [
+        "C0878544"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "cerebral_palsy_signature.csv",
+      "ot_id": "MONDO_0006497",
+      "ot_cuis": [
+        "C0007789"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "cervical_cancer_signature.csv",
+      "ot_id": "MONDO_0002974",
+      "ot_cuis": [
+        "C4048328"
+      ],
+      "repodb_exact_cui": "C4048328",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "cervix_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005131",
+      "ot_cuis": [
+        "C0302592"
+      ],
+      "repodb_exact_cui": "C0302592",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "chronic_granulomatous_disease_signature.csv",
+      "ot_id": "MONDO_0018305",
+      "ot_cuis": [
+        "C0018203"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "chronic_lymphocytic_leukemia_signature.csv",
+      "ot_id": "MONDO_0004948",
+      "ot_cuis": [
+        "C0023434"
+      ],
+      "repodb_exact_cui": "C0023434",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "chronic_myeloid_leukemia_signature.csv",
+      "ot_id": "MONDO_0011996",
+      "ot_cuis": [
+        "C0279543"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "chronic_obstructive_pulmonary_disease_signature.csv",
+      "ot_id": "MONDO_0005002",
+      "ot_cuis": [
+        "C0024117"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "cleft_lip_signature.csv",
+      "ot_id": "EFO_0003959",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "colitis_signature.csv",
+      "ot_id": "MONDO_0005292",
+      "ot_cuis": [
+        "C0009319"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "colon_adenoma_signature.csv",
+      "ot_id": "MONDO_0000527",
+      "ot_cuis": [
+        "C4551463"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "colon_cancer_signature.csv",
+      "ot_id": "MONDO_0021063",
+      "ot_cuis": [
+        "C0007102"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "colorectal_adenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0005008",
+      "ot_cuis": [
+        "C1319315"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "colorectal_cancer_signature.csv",
+      "ot_id": "MONDO_0005575",
+      "ot_cuis": [
+        "C0346629"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Crohn's_disease_signature.csv",
+      "ot_id": "MONDO_0005011",
+      "ot_cuis": [
+        "C0010346"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "cystic_fibrosis_signature.csv",
+      "ot_id": "MONDO_0009061",
+      "ot_cuis": [
+        "C0010674"
+      ],
+      "repodb_exact_cui": "C0010674",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "cystitis_signature.csv",
+      "ot_id": "MONDO_0006032",
+      "ot_cuis": [
+        "C0010692"
+      ],
+      "repodb_exact_cui": "C0010692",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "dengue_disease_signature.csv",
+      "ot_id": "MONDO_0005502",
+      "ot_cuis": [
+        "C0011311"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "dengue_hemorrhagic_fever_signature.csv",
+      "ot_id": "MONDO_0005358",
+      "ot_cuis": [
+        "C0019100"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "dermatomyositis_signature.csv",
+      "ot_id": "MONDO_0016367",
+      "ot_cuis": [
+        "C0011633"
+      ],
+      "repodb_exact_cui": "C0011633",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "diabetes_mellitus_signature.csv",
+      "ot_id": "MONDO_0005015",
+      "ot_cuis": [
+        "C0011849"
+      ],
+      "repodb_exact_cui": "C0011849",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Diabetic_Nephropathy_signature.csv",
+      "ot_id": "MONDO_0005016",
+      "ot_cuis": [
+        "C0011881"
+      ],
+      "repodb_exact_cui": "C0011881",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Diamond-Blackfan_anemia_signature.csv",
+      "ot_id": "MONDO_0015253",
+      "ot_cuis": [
+        "C1260899"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "dilated_cardiomyopathy_signature.csv",
+      "ot_id": "MONDO_0005021",
+      "ot_cuis": [
+        "C0007193"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "discoid_lupus_erythematosus_signature.csv",
+      "ot_id": "MONDO_0019558",
+      "ot_cuis": [
+        "C5574816"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Down_syndrome_signature.csv",
+      "ot_id": "MONDO_0008608",
+      "ot_cuis": [
+        "C0013080"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Duchenne_muscular_dystrophy_signature.csv",
+      "ot_id": "MONDO_0010679",
+      "ot_cuis": [
+        "C0013264"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "ductal_carcinoma_in_situ_signature.csv",
+      "ot_id": "MONDO_0005023",
+      "ot_cuis": [
+        "C0007124"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "dystonia_signature.csv",
+      "ot_id": "HP_0001332",
+      "ot_cuis": [
+        "C0013421",
+        "C4020871"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Ebola_hemorrhagic_fever_signature.csv",
+      "ot_id": "MONDO_0005737",
+      "ot_cuis": [
+        "C0282687"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "endometrial_cancer_signature.csv",
+      "ot_id": "MONDO_0011962",
+      "ot_cuis": [
+        "C0007103"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "endometriosis_of_ovary_signature.csv",
+      "ot_id": "MONDO_0006337",
+      "ot_cuis": [
+        "C0156344"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "endometriosis_signature.csv",
+      "ot_id": "MONDO_0005133",
+      "ot_cuis": [
+        "C0014175"
+      ],
+      "repodb_exact_cui": "C0014175",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "epidermolysis_bullosa_simplex_signature.csv",
+      "ot_id": "MONDO_0017610",
+      "ot_cuis": [
+        "C0079298"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "epilepsy_syndrome_signature.csv",
+      "ot_id": "MONDO_0015650",
+      "ot_cuis": [
+        "C4505072"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "esophagus_adenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0005028",
+      "ot_cuis": [
+        "C0279628"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "esophagus_squamous_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005580",
+      "ot_cuis": [
+        "C0279626"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "facioscapulohumeral_muscular_dystrophy_signature.csv",
+      "ot_id": "MONDO_0001347",
+      "ot_cuis": [
+        "C0238288"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "familial_hypercholesterolemia_signature.csv",
+      "ot_id": "MONDO_0005439",
+      "ot_cuis": [
+        "C0020445"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "fragile_X_syndrome_signature.csv",
+      "ot_id": "MONDO_0010383",
+      "ot_cuis": [
+        "C0016667"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "gastroesophageal_reflux_disease_signature.csv",
+      "ot_id": "MONDO_0007186",
+      "ot_cuis": [
+        "C0017168"
+      ],
+      "repodb_exact_cui": "C0017168",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "gastrointestinal_stromal_tumor_signature.csv",
+      "ot_id": "MONDO_0011719",
+      "ot_cuis": [
+        "C0238198"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "glaucoma_signature.csv",
+      "ot_id": "MONDO_0005041",
+      "ot_cuis": [
+        "C0017601"
+      ],
+      "repodb_exact_cui": "C0017601",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "glioblastoma_multiforme_signature.csv",
+      "ot_id": "MONDO_0018177",
+      "ot_cuis": [
+        "C0017636"
+      ],
+      "repodb_exact_cui": "C1621958",
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "head_and_neck_squamous_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0010150",
+      "ot_cuis": [
+        "C1168401"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "hemorrhagic_thrombocythemia_signature.csv",
+      "ot_id": "MONDO_0005029",
+      "ot_cuis": [
+        "C0040028"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "hepatitis_C_virus_related_hepatocellular_carcinoma_signature.csv",
+      "ot_id": "EFO_0008504",
+      "ot_cuis": [
+        "C1333978"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "hepatocellular_carcinoma_signature.csv",
+      "ot_id": "MONDO_0007256",
+      "ot_cuis": [
+        "C2239176"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Hereditary_gingival_fibromatosis_signature.csv",
+      "ot_id": "MONDO_0016070",
+      "ot_cuis": [
+        "C0399440"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Human_immunodeficiency_virus_infectious_disease_signature.csv",
+      "ot_id": "MONDO_0005109",
+      "ot_cuis": [
+        "C0019693"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Huntington's_disease_signature.csv",
+      "ot_id": "MONDO_0007739",
+      "ot_cuis": [
+        "C0020179"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "hypertension_signature.csv",
+      "ot_id": "HP_0000822",
+      "ot_cuis": [
+        "C0020538",
+        "C0497247"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Hypoxia_signature.csv",
+      "ot_id": "EFO_0009444",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "idiopathic_interstitial_pneumonia_signature.csv",
+      "ot_id": "MONDO_0002429",
+      "ot_cuis": [
+        "C2350236"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "idiopathic_pulmonary_fibrosis_signature.csv",
+      "ot_id": "EFO_0000768",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "inclusion_body_myositis_signature.csv",
+      "ot_id": "MONDO_0007827",
+      "ot_cuis": [
+        "C0238190"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "inflammatory_bowel_disease_signature.csv",
+      "ot_id": "MONDO_0005265",
+      "ot_cuis": [
+        "C0021390"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "influenza_signature.csv",
+      "ot_id": "MONDO_0005812",
+      "ot_cuis": [
+        "C0021400"
+      ],
+      "repodb_exact_cui": "C0021400",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "intellectual_disability_signature.csv",
+      "ot_id": "HP_0001249",
+      "ot_cuis": [
+        "C0025362",
+        "C0423903",
+        "C0917816",
+        "C1843367",
+        "C3714756",
+        "C4020876"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "interstitial_cystitis_signature.csv",
+      "ot_id": "MONDO_0018301",
+      "ot_cuis": [
+        "C0282488"
+      ],
+      "repodb_exact_cui": "C0282488",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "invasive_ductal_carcinoma_signature.csv",
+      "ot_id": "MONDO_0004953",
+      "ot_cuis": [
+        "C1412014"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Ischemic_stroke_signature.csv",
+      "ot_id": "MONDO_1060198",
+      "ot_cuis": [],
+      "repodb_exact_cui": "C0948008",
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "juvenile_rheumatoid_arthritis_signature.csv",
+      "ot_id": "MONDO_0011429",
+      "ot_cuis": [
+        "C3495559"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "large_cell_neuroendocrine_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005057",
+      "ot_cuis": [
+        "C1265996"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "leukemia_signature.csv",
+      "ot_id": "MONDO_0005059",
+      "ot_cuis": [
+        "C0023418"
+      ],
+      "repodb_exact_cui": "C0023418",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Lewy_body_dementia_signature.csv",
+      "ot_id": "MONDO_0007488",
+      "ot_cuis": [
+        "C0752347"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "lung_adenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0005061",
+      "ot_cuis": [
+        "C0152013"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "lung_large_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0003050",
+      "ot_cuis": [
+        "C0345958"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "lung_small_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0008433",
+      "ot_cuis": [
+        "C0149925"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "lung_squamous_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005097",
+      "ot_cuis": [
+        "C0149782"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "lupus_erythematosus_signature.csv",
+      "ot_id": "MONDO_0004670",
+      "ot_cuis": [
+        "C0409974"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "macular_degeneration_signature.csv",
+      "ot_id": "MONDO_0003004",
+      "ot_cuis": [
+        "C0024437"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "malignant_pleural_mesothelioma_signature.csv",
+      "ot_id": "MONDO_0005112",
+      "ot_cuis": [
+        "C0812413"
+      ],
+      "repodb_exact_cui": "C0812413",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Marfan_syndrome_signature.csv",
+      "ot_id": "MONDO_0007947",
+      "ot_cuis": [
+        "C0024796"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "melanoma_signature.csv",
+      "ot_id": "MONDO_0005105",
+      "ot_cuis": [
+        "C0025202"
+      ],
+      "repodb_exact_cui": "C0025202",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "MELAS_syndrome_signature.csv",
+      "ot_id": "MONDO_0010789",
+      "ot_cuis": [
+        "C0162671"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Meningococcal_infection_signature.csv",
+      "ot_id": "MONDO_0005373",
+      "ot_cuis": [
+        "C0025303"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "mental_depression_signature.csv",
+      "ot_id": "MONDO_0002050",
+      "ot_cuis": [
+        "C0011581"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "morbid_obesity_signature.csv",
+      "ot_id": "MONDO_0005139",
+      "ot_cuis": [
+        "C0028756"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "multiple_myeloma_signature.csv",
+      "ot_id": "MONDO_0009693",
+      "ot_cuis": [
+        "C0026764"
+      ],
+      "repodb_exact_cui": "C0026764",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "multiple_sclerosis_signature.csv",
+      "ot_id": "MONDO_0005301",
+      "ot_cuis": [
+        "C0026769"
+      ],
+      "repodb_exact_cui": "C0026769",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "muscular_dystrophy_signature.csv",
+      "ot_id": "MONDO_0020121",
+      "ot_cuis": [
+        "C0026850"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "myelodysplastic_syndrome_signature.csv",
+      "ot_id": "MONDO_0018881",
+      "ot_cuis": [
+        "C3463824"
+      ],
+      "repodb_exact_cui": "C3463824",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "myocardial_infarction_signature.csv",
+      "ot_id": "MONDO_0005068",
+      "ot_cuis": [
+        "C0027051"
+      ],
+      "repodb_exact_cui": "C0027051",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "myotonic_dystrophy_type_1_signature.csv",
+      "ot_id": "MONDO_0008056",
+      "ot_cuis": [
+        "C3250443"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "NASH_signature.csv",
+      "ot_id": "MONDO_0007027",
+      "ot_cuis": [
+        "C3241937"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "nasopharynx_carcinoma_signature.csv",
+      "ot_id": "MONDO_0015459",
+      "ot_cuis": [
+        "C2931822"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "nephroblastoma_signature.csv",
+      "ot_id": "Orphanet_654",
+      "ot_cuis": [],
+      "repodb_exact_cui": "C0027708",
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "nephrosclerosis_signature.csv",
+      "ot_id": "MONDO_0006044",
+      "ot_cuis": [
+        "C0027719"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Nicotine_addiction_signature.csv",
+      "ot_id": "MONDO_0008575",
+      "ot_cuis": [
+        "C0028043"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "nicotine_dependence_signature.csv",
+      "ot_id": "MONDO_0008575",
+      "ot_cuis": [
+        "C0028043"
+      ],
+      "repodb_exact_cui": "C0028043",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "obesity_signature.csv",
+      "ot_id": "HP_0001513",
+      "ot_cuis": [
+        "C0028754"
+      ],
+      "repodb_exact_cui": "C0028754",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "oligodendroglioma_signature.csv",
+      "ot_id": "MONDO_0016695",
+      "ot_cuis": [
+        "C0028945"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "osteoarthritis_signature.csv",
+      "ot_id": "MONDO_0005178",
+      "ot_cuis": [
+        "C0029408"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Osteolysis_signature.csv",
+      "ot_id": "HP_0002797",
+      "ot_cuis": [
+        "C0221204"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "osteoporosis_signature.csv",
+      "ot_id": "MONDO_0005298",
+      "ot_cuis": [
+        "C0029456"
+      ],
+      "repodb_exact_cui": "C0029456",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "ovarian_cancer_signature.csv",
+      "ot_id": "MONDO_0008170",
+      "ot_cuis": [
+        "C1140680"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "ovarian_serous_carcinoma_signature.csv",
+      "ot_id": "EFO_1001516",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "pancreatic_cancer_signature.csv",
+      "ot_id": "MONDO_0009831",
+      "ot_cuis": [
+        "C0346647"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "pancreatic_ductal_adenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0005184",
+      "ot_cuis": [
+        "C1335302"
+      ],
+      "repodb_exact_cui": "C1335302",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "papillary_thyroid_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005075",
+      "ot_cuis": [
+        "C0238463"
+      ],
+      "repodb_exact_cui": "C0238463",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Parkinson's_disease_signature.csv",
+      "ot_id": "MONDO_0005180",
+      "ot_cuis": [
+        "C0030567"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "peripartum_cardiomyopathy_signature.csv",
+      "ot_id": "MONDO_0018920",
+      "ot_cuis": [
+        "C0877208"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "polycystic_ovary_syndrome_signature.csv",
+      "ot_id": "MONDO_0008487",
+      "ot_cuis": [
+        "C0032460"
+      ],
+      "repodb_exact_cui": "C0032460",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Polymyositis_signature.csv",
+      "ot_id": "MONDO_0019127",
+      "ot_cuis": [
+        "C0085655"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "post-traumatic_stress_disorder_signature.csv",
+      "ot_id": "MONDO_0005146",
+      "ot_cuis": [
+        "C0038436"
+      ],
+      "repodb_exact_cui": "C0038436",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "pre-eclampsia_signature.csv",
+      "ot_id": "MONDO_0005081",
+      "ot_cuis": [
+        "C0032914"
+      ],
+      "repodb_exact_cui": "C0032914",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "precursor_B_lymphoblastic_lymphoma_leukemia_signature.csv",
+      "ot_id": "MONDO_0004947",
+      "ot_cuis": [
+        "C1292769"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "primary_open_angle_glaucoma_signature.csv",
+      "ot_id": "MONDO_0005338",
+      "ot_cuis": [
+        "C0017612"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "prostate_cancer_signature.csv",
+      "ot_id": "MONDO_0008315",
+      "ot_cuis": [
+        "C0376358"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Pseudomonas_Infection_signature.csv",
+      "ot_id": "MONDO_0005141",
+      "ot_cuis": [
+        "C0033817"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "psoriasis_signature.csv",
+      "ot_id": "MONDO_0005083",
+      "ot_cuis": [
+        "C0033860"
+      ],
+      "repodb_exact_cui": "C0033860",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Psoriasis_vulgaris_signature.csv",
+      "ot_id": "EFO_1001494",
+      "ot_cuis": [],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "psoriatic_arthritis_signature.csv",
+      "ot_id": "MONDO_0011849",
+      "ot_cuis": [
+        "C0003872"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "pulmonary_fibrosis_signature.csv",
+      "ot_id": "MONDO_0002771",
+      "ot_cuis": [
+        "C0034069"
+      ],
+      "repodb_exact_cui": "C0034069",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "pulmonary_hypertension_signature.csv",
+      "ot_id": "MONDO_0005149",
+      "ot_cuis": [
+        "C0020542"
+      ],
+      "repodb_exact_cui": "C0020542",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "pulmonary_sarcoidosis_signature.csv",
+      "ot_id": "MONDO_0001708",
+      "ot_cuis": [
+        "C0036205"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "relapsing-remitting_multiple_sclerosis_signature.csv",
+      "ot_id": "MONDO_0005314",
+      "ot_cuis": [
+        "C0751967"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "renal_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0005086",
+      "ot_cuis": [
+        "C0007134"
+      ],
+      "repodb_exact_cui": "C0007134",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Rett_syndrome_signature.csv",
+      "ot_id": "MONDO_0010726",
+      "ot_cuis": [
+        "C0035372"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "rheumatoid_arthritis_signature.csv",
+      "ot_id": "MONDO_0008383",
+      "ot_cuis": [
+        "C0003873"
+      ],
+      "repodb_exact_cui": "C0003873",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "salivary_gland_adenoid_cystic_carcinoma_signature.csv",
+      "ot_id": "MONDO_0003175",
+      "ot_cuis": [
+        "C0279751"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "sarcoidosis_signature.csv",
+      "ot_id": "MONDO_0019338",
+      "ot_cuis": [
+        "C0036202"
+      ],
+      "repodb_exact_cui": "C0036202",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Schizophrenia_signature.csv",
+      "ot_id": "MONDO_0005090",
+      "ot_cuis": [
+        "C0036341"
+      ],
+      "repodb_exact_cui": "C0036341",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "scleroderma_signature.csv",
+      "ot_id": "MONDO_0019340",
+      "ot_cuis": [
+        "C0011644"
+      ],
+      "repodb_exact_cui": "C0011644",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Septic_Shock_signature.csv",
+      "ot_id": "EFO_0006834",
+      "ot_cuis": [],
+      "repodb_exact_cui": "C0036983",
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "serous_cystadenocarcinoma_signature.csv",
+      "ot_id": "MONDO_0024621",
+      "ot_cuis": [
+        "C0206701"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "severe_acute_respiratory_syndrome_signature.csv",
+      "ot_id": "MONDO_0005091",
+      "ot_cuis": [
+        "C1175175"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "sickle_cell_anemia_signature.csv",
+      "ot_id": "MONDO_0011382",
+      "ot_cuis": [
+        "C0002895"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "skin_squamous_cell_carcinoma_signature.csv",
+      "ot_id": "MONDO_0002529",
+      "ot_cuis": [
+        "C0553723"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "smoldering_myeloma_signature.csv",
+      "ot_id": "MONDO_0005235",
+      "ot_cuis": [
+        "C1531608"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Squamous_cell_carcinoma_of_mouth_signature.csv",
+      "ot_id": "MONDO_0004958",
+      "ot_cuis": [
+        "C0585362"
+      ],
+      "repodb_exact_cui": "C0585362",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "stomach_cancer_signature.csv",
+      "ot_id": "MONDO_0001056",
+      "ot_cuis": [
+        "C0024623"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "swine_influenza_signature.csv",
+      "ot_id": "MONDO_0005460",
+      "ot_cuis": [
+        "C0276357"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "systemic_lupus_erythematosus_signature.csv",
+      "ot_id": "MONDO_0007915",
+      "ot_cuis": [
+        "C0024141"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "tendinitis_signature.csv",
+      "ot_id": "MONDO_0004857",
+      "ot_cuis": [
+        "C0039503"
+      ],
+      "repodb_exact_cui": "C0039503",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Teratospermia_signature.csv",
+      "ot_id": "HP_0012864",
+      "ot_cuis": [
+        "C0403824"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "testicular_cancer_signature.csv",
+      "ot_id": "MONDO_0005447",
+      "ot_cuis": [
+        "C0153594"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "testis_seminoma_signature.csv",
+      "ot_id": "MONDO_0003669",
+      "ot_cuis": [
+        "C5551428"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "tuberculosis_signature.csv",
+      "ot_id": "MONDO_0018076",
+      "ot_cuis": [
+        "C0041296"
+      ],
+      "repodb_exact_cui": "C0041296",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Turner_syndrome_signature.csv",
+      "ot_id": "MONDO_0019499",
+      "ot_cuis": [
+        "C0041408"
+      ],
+      "repodb_exact_cui": "C0041408",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "type_1_diabetes_mellitus_signature.csv",
+      "ot_id": "MONDO_0005147",
+      "ot_cuis": [
+        "C0011854"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "type_2_diabetes_mellitus_signature.csv",
+      "ot_id": "MONDO_0005148",
+      "ot_cuis": [
+        "C0011860"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "ulcerative_colitis_signature.csv",
+      "ot_id": "MONDO_0005101",
+      "ot_cuis": [
+        "C0009324"
+      ],
+      "repodb_exact_cui": "C0009324",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "urticaria_signature.csv",
+      "ot_id": "MONDO_0005492",
+      "ot_cuis": [
+        "C0042109"
+      ],
+      "repodb_exact_cui": "C0042109",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "Venezuelan_equine_encephalitis_signature.csv",
+      "ot_id": "MONDO_0006005",
+      "ot_cuis": [
+        "C0014078"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Vulvar_intraepithelial_tumor_signature.csv",
+      "ot_id": "MONDO_0005198",
+      "ot_cuis": [
+        "C0346210"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Waldenstrom_Macroglobulinemia_signature.csv",
+      "ot_id": "MONDO_0100280",
+      "ot_cuis": [
+        "C0024419"
+      ],
+      "repodb_exact_cui": "C0024419",
+      "repo_cui_in_ot_xrefs": true
+    },
+    {
+      "signature": "West_Nile_fever_signature.csv",
+      "ot_id": "MONDO_0002282",
+      "ot_cuis": [
+        "C0043124"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    },
+    {
+      "signature": "Williams-Beuren_syndrome_signature.csv",
+      "ot_id": "MONDO_0008678",
+      "ot_cuis": [
+        "C0175702"
+      ],
+      "repodb_exact_cui": null,
+      "repo_cui_in_ot_xrefs": false
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T155559690031Z_ot_repodb_bridge_audit_d02c58202e6b4866b2a8997e50495552.jsonl"
+}

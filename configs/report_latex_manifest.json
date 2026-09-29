@@ -1,0 +1,22 @@
+{
+  "scope": "Current course report and substantive research-result reports; excludes protocols, TODOs, data cards, status pages, drafts, archive and PPT.",
+  "reports": [
+    {"source":"docs/课程设计报告_v5.md","stem":"course_report_v5"},
+    {"source":"docs/luad_screening_report.md","stem":"luad_screening_report"},
+    {"source":"docs/benchmark_results.md","stem":"benchmark_results"},
+    {"source":"docs/planner_eval_results.md","stem":"planner_eval_results"},
+    {"source":"docs/recess_official_comparison.md","stem":"recess_official_comparison"},
+    {"source":"docs/b1k_metric_audit.md","stem":"b1k_metric_audit"},
+    {"source":"docs/component_and_llm_adjudication.md","stem":"component_and_llm_adjudication"},
+    {"source":"docs/method_selection_partition_v2.md","stem":"method_selection_partition_v2"},
+    {"source":"docs/agent_v4_claim_results.md","stem":"agent_v4_claim_results"},
+    {"source":"docs/external_holdout_feasibility.md","stem":"external_holdout_feasibility"},
+    {"source":"docs/contamination_probe.md","stem":"contamination_probe"},
+    {"source":"docs/decision_eval_v1.md","stem":"decision_eval_v1"},
+    {"source":"docs/decision_eval_v2.md","stem":"decision_eval_v2"},
+    {"source":"docs/multi_agent_review.md","stem":"multi_agent_review"},
+    {"source":"docs/evidence_scope_audit.md","stem":"evidence_scope_audit"},
+    {"source":"docs/luad_data_audit.md","stem":"luad_data_audit"},
+    {"source":"docs/luad_top10_evidence_matrix.md","stem":"luad_top10_evidence_matrix"}
+  ]
+}

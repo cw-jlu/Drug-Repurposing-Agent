@@ -1,0 +1,30 @@
+{
+  "release": "Open Targets Platform 26.06",
+  "status": "inputs_staged_not_scored",
+  "license_check_required_before_redistribution": true,
+  "datasets": [
+    {
+      "dataset": "clinical_indication",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/opentargets/platform/26.06/output/clinical_indication/clinical_indication.parquet",
+      "path": "artifacts\\external\\opentargets_26_06\\clinical_indication.parquet",
+      "bytes": 4970713,
+      "sha256": "30f0ddca0432de28fd066e87c2831c90e541296fc785704edf909c08bd7d766a"
+    },
+    {
+      "dataset": "disease",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/opentargets/platform/26.06/output/disease/disease.parquet",
+      "path": "artifacts\\external\\opentargets_26_06\\disease.parquet",
+      "bytes": 7150787,
+      "sha256": "b328c5e775bc40d954f2e058aa59e8e972f2883a262d096f8dffe365736a1aed"
+    },
+    {
+      "dataset": "drug_molecule",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/opentargets/platform/26.06/output/drug_molecule/part-00000-5581d2c3-048b-4097-934f-51cec06d7ff0-c000.snappy.parquet",
+      "path": "artifacts\\external\\opentargets_26_06\\drug_molecule.parquet",
+      "bytes": 14647216,
+      "sha256": "d98d7e4e6e3c7a91fdd915c7dd2f5f8e07504da73fec22880bf4aca10fc524da"
+    }
+  ],
+  "trace": "artifacts\\reports\\traces\\20260929T140639061335Z_opentargets_26_06_stage_1088223737ec40f1b5cdb90eaf696df9.jsonl",
+  "next_gate": "schema, disease/drug crosswalk, label policy and fold eligibility"
+}
