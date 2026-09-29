@@ -155,8 +155,11 @@ def add_page_number(paragraph) -> None:
 def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--source", type=Path, default=SOURCE)
+    parser.add_argument("--no-system-break", action="store_true",
+                        help="Do not force a page break before the system section")
     args = parser.parse_args()
-    trace.emit("source_loaded", source=str(SOURCE), source_sha256=sha256_file(SOURCE),
+    trace.emit("source_loaded", source=str(args.source), source_sha256=sha256_file(args.source),
                output=str(args.output))
     doc = Document()
     section = doc.sections[0]
@@ -203,7 +206,7 @@ def _main(trace: TraceRecorder) -> None:
         run.font.color.rgb = RGBColor(90, 100, 108)
     add_page_number(section.footer.paragraphs[0])
 
-    lines = SOURCE.read_text(encoding="utf-8").splitlines()
+    lines = args.source.read_text(encoding="utf-8").splitlines()
     i = 0
     while i < len(lines):
         line = lines[i].strip()
@@ -220,13 +223,30 @@ def _main(trace: TraceRecorder) -> None:
             if rows:
                 add_table(doc, rows)
             continue
+        image = re.fullmatch(r"!\[(.*)\]\((.+)\)", line)
+        if image:
+            picture = Path(image.group(2))
+            if not picture.is_file():
+                raise FileNotFoundError(picture)
+            p = doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.add_run().add_picture(str(picture), width=Inches(6.6))
+            caption = doc.add_paragraph()
+            caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            add_inline(caption, image.group(1))
+            for run in caption.runs:
+                run.font.size = Pt(8.5)
+                run.font.color.rgb = RGBColor(90, 100, 108)
+            trace.emit("figure_embedded", path=str(picture), sha256=sha256_file(picture))
+            i += 1
+            continue
         if line.startswith("# "):
             p = doc.add_paragraph(style="Title")
             add_inline(p, line[2:])
         elif line.startswith("## "):
             p = doc.add_paragraph(style="Heading 1")
             add_inline(p, heading_text(line[3:]))
-            if "数据来源与质量控制" in line or "系统实现与审计" in line:
+            if "数据来源与质量控制" in line or ("系统实现与审计" in line and not args.no_system_break):
                 p.paragraph_format.page_break_before = True
         elif line.startswith("### "):
             p = doc.add_paragraph(style="Heading 2")

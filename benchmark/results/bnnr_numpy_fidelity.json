@@ -1,0 +1,78 @@
+{
+  "purpose": "Fidelity check of the NumPy BNNR port (benchmarks/recess_adapter/bnnr_numpy.py) against the published benchscofi/Octave BNNR results.",
+  "protocol": "Official RECeSS runner (pinned upstream a7f1107 + official_b2/components/b3/b4 patches), TRANSCRIPT, random_simple, N=3, K=5, ptest=0.2, njobs=3; first 3 of the 100 official seeds.",
+  "disclosure": "Official seeds 1-3 were used only to validate port fidelity of a published method, not for any B4 design decision.",
+  "published_results_commit": "cf5d9fdcb1ccd1676c7a0e7a39e784d79557fae0",
+  "published_file": "results_N=100_BNNR_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv",
+  "published_sha256": "f43970686c191fa32296d4bcaae85737e4c1c498d6431bc9216dd22bbb03a13a",
+  "ours_file": "artifacts/recess_official_b4_fidelity/results_BNNRnp/results_N=3_BNNRnp_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv",
+  "ours_sha256": "cf5b353ca1570bf109516085802992d612059e1ec1950d745bfb4bb352f77105",
+  "bnnr_numpy_sha256": "5e4a489a8273f2a5961d0a2fdb7d024b8f702e029cb1947aa2eebe500599c088",
+  "acceptance": "per-seed |delta Lin's AUC| <= 0.01",
+  "max_abs_diff_lins_auc": 0.0,
+  "accepted": true,
+  "per_seed": [
+    {
+      "seed": 17263407,
+      "run": 1,
+      "Lin's AUC": {
+        "BNNRnp": 0.7090433950859473,
+        "published_BNNR": 0.7090433950859473,
+        "abs_diff": 0.0
+      },
+      "global AUC": {
+        "BNNRnp": 0.946859287652866,
+        "published_BNNR": 0.9468591524928904,
+        "abs_diff": 1.3515997554502945e-07
+      },
+      "global NDCG": {
+        "BNNRnp": 0.6898344914873242,
+        "published_BNNR": 0.6897647832003257,
+        "abs_diff": 6.97082869984822e-05
+      },
+      "BNNRnp_training_time_sec": 156.751877784729
+    },
+    {
+      "seed": 22928437,
+      "run": 2,
+      "Lin's AUC": {
+        "BNNRnp": 0.6967727116662715,
+        "published_BNNR": 0.6967727116662715,
+        "abs_diff": 0.0
+      },
+      "global AUC": {
+        "BNNRnp": 0.942469967453478,
+        "published_BNNR": 0.942469561973552,
+        "abs_diff": 4.0547992596895455e-07
+      },
+      "global NDCG": {
+        "BNNRnp": 0.6140024278288,
+        "published_BNNR": 0.6139792726572987,
+        "abs_diff": 2.315517150131008e-05
+      },
+      "BNNRnp_training_time_sec": 160.70376873016355
+    },
+    {
+      "seed": 978124,
+      "run": 3,
+      "Lin's AUC": {
+        "BNNRnp": 0.7496875952008628,
+        "published_BNNR": 0.7496875952008628,
+        "abs_diff": 0.0
+      },
+      "global AUC": {
+        "BNNRnp": 0.9543195100721212,
+        "published_BNNR": 0.954319374912146,
+        "abs_diff": 1.3515997521196255e-07
+      },
+      "global NDCG": {
+        "BNNRnp": 0.6356123403919474,
+        "published_BNNR": 0.6355878805922647,
+        "abs_diff": 2.4459799682685635e-05
+      },
+      "BNNRnp_training_time_sec": 160.90661668777466
+    }
+  ],
+  "wall_clock_sec_N3_njobs3": 201,
+  "trace": "artifacts/traces/20260928T152245366896Z_recess_official_b4_7988fc8fb0d842288c8a68d5b81aeabe.jsonl"
+}

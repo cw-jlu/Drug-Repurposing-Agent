@@ -19,8 +19,8 @@
 | 13 受约束 RSI 演示 | 无 | 未完成 |
 | 14 Docker 或锁定环境 | `requirements-benchmark.lock`、`scripts/setup_benchmark.ps1`；全新 Python 3.10 环境测试通过 | 已有 Python 环境；R/limma 另记版本 |
 | 15 数据卡、系统卡和限制说明 | `docs/data_card.md`、`docs/system_card.md`、`docs/limitations.md` | 已有 |
-| 16 课程设计报告 | `docs/课程设计报告_草稿.md`、`deliverables/药物重定位Agent_课程设计报告_v4.docx` | v4 写入五分区负结果、B1k 指标核查及单例分诊审计，并保留无湿实验结论 |
-| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v6.pptx` | v6 九页更新方法选择负结果与限制，保留原生可编辑图表与实验边界 |
+| 16 课程设计报告 | `docs/课程设计报告_v5.md`、`deliverables/药物重定位Agent_课程设计报告_v5.docx` | v5 在 v4 基础上加入 B3/B4 官方结果、污染探针、决策层消融、多 Agent 审阅与图表；v4 已归档 |
+| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v7.pptx` | v7 十一页由脚本从已提交结果生成，三张原生可编辑图表；v6 已归档 |
 | 18 演示视频 | 无 | 未完成 |
 
 外部阻碍：TypeSafe Jev 凭据尚未提供；剂量、亚型和组合验证需要湿实验资源。课程 PDF 已完成核对，DeepSeek 通用 LLM 已真实实测，100 例 v3 独立 holdout、逐签名 ID 恢复和三种官方基线的五种子嵌套调参均已完成。表达反转没有超过强基线，不能通过修改结论把尚未执行的实验视为完成。

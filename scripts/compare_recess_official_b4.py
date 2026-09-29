@@ -1,4 +1,4 @@
-"""Pair official B3/B3noREV runs with B2 and the 11 published TRANSCRIPT models."""
+"""Pair the official round-2 B4 run with B3, B2 and the 11 published TRANSCRIPT models."""
 
 from __future__ import annotations
 
@@ -17,7 +17,8 @@ from scripts.compare_recess_official_b2 import (
     METRICS, MODELS, PUBLISHED_COMMIT, load_run, paired_summary, summarize,
 )
 
-OURS = {"B3": "benchmark/results/recess_official_b3",
+OURS = {"B4": "benchmark/results/recess_official_b4",
+        "B3": "benchmark/results/recess_official_b3",
         "B3noREV": "benchmark/results/recess_official_b3",
         "B2": "benchmark/results/recess_official_b2"}
 
@@ -26,7 +27,7 @@ def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--published", type=Path, required=True)
     parser.add_argument("--output", type=Path,
-                        default=Path("benchmark/results/recess_official_b3_vs_11.json"))
+                        default=Path("benchmark/results/recess_official_b4_vs_11.json"))
     args = parser.parse_args()
     published = args.published.resolve(strict=True)
     head = subprocess.check_output(["git", "-C", str(published), "rev-parse", "HEAD"],
@@ -39,6 +40,12 @@ def _main(trace: TraceRecorder) -> None:
         "protocol": "RECeSS TRANSCRIPT official runner, N=100, K=5, ptest=0.2",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "primary_metric": "Lin's AUC (paper NS-AUC)",
+        "b4_config": "configs/b4_ensemble_v1.json",
+        "b4_config_sha256": sha256_file(repo / "configs" / "b4_ensemble_v1.json"),
+        "b4_implementation_sha256": sha256_file(
+            repo / "benchmarks" / "recess_adapter" / "official_b4.py"),
+        "bnnr_numpy_sha256": sha256_file(
+            repo / "benchmarks" / "recess_adapter" / "bnnr_numpy.py"),
         "b3_config": "configs/b3_row_fusion_v1.json",
         "b3_config_sha256": sha256_file(repo / "configs" / "b3_row_fusion_v1.json"),
         "b3_implementation_sha256": sha256_file(
@@ -46,7 +53,8 @@ def _main(trace: TraceRecorder) -> None:
         "b3_patch_sha256": sha256_file(
             repo / "benchmarks" / "recess_adapter" / "official_b3.patch"),
         "published_results_commit": head,
-        "notes": ["B3 is the primary model frozen before official scoring.",
+        "notes": ["B4 (round 2) was frozen at e5ff7e7 before official scoring, designed on 10 random_simple dev seeds disjoint from the official 100.",
+                  "B3 is the primary round-1 model frozen before official scoring.",
                   "B3noREV is post-hoc: its weak-split development score was seen first.",
                   "weakly_correlated repeats one outer holdout across all 100 seeds; its "
                   "seed-paired tests are not independent replications."],
@@ -69,7 +77,7 @@ def _main(trace: TraceRecorder) -> None:
         ranking = sorted(rows, key=lambda n: -(rows[n]["NS-AUC"]["mean"] or -1))
         best_published = next(n for n in ranking if n in MODELS)
         paired = {}
-        for ours in [n for n in ("B3", "B3noREV") if n in runs]:
+        for ours in [n for n in ("B4", "B3", "B3noREV") if n in runs]:
             paired[ours] = {}
             for other in [best_published, "B2"]:
                 a = runs[ours]["series"]["NS-AUC"]; b = runs[other]["series"]["NS-AUC"]
@@ -105,7 +113,7 @@ def _main(trace: TraceRecorder) -> None:
 
 
 def main() -> None:
-    traced_run("recess_b3_comparison", _main)
+    traced_run("recess_b4_comparison", _main)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,54 @@
+{
+  "name": "B4 row-rank ensemble of B3 and NumPy BNNR",
+  "round": 2,
+  "version": 1,
+  "frozen_on": "2026-09-28",
+  "frozen_before_official_scoring": true,
+  "primary_model": "B4",
+  "frozen_spec": {
+    "mode": "block",
+    "b3_weight": 1.0,
+    "bnnr_weight": 2.0
+  },
+  "components": {
+    "B3": "benchmarks/recess_adapter/official_b3.py row_fusion_scores (frozen configs/b3_row_fusion_v1.json: DP, DK, SK, LD, LS, REV)",
+    "BNNR": "benchmarks/recess_adapter/bnnr_numpy.py BNNRNumpy (benchscofi BNNR preprocessing and defaults alpha=1, beta=10, tol1=2e-3, tol2=1e-5, maxiter=300, bounds [0,1]; Octave call replaced by a line-by-line NumPy port of BNNR.m/svt.m)"
+  },
+  "fusion": "(1 * rowrank(B3) + 2 * rowrank(BNNR)) / 3 within each drug row over all diseases, + 1e-6 x within-row rank of training disease popularity",
+  "selection_rule": "Stated before running artifacts/b4_dev/dev.py: among ensemble candidates {block 1:1, block 1:2, block 2:1, block 1:3, flat7}, choose the highest mean official Lin's AUC on 10 random_simple development seeds (first 10 integers >= 1 not among the 100 official seeds); exact ties go to the earlier candidate. B3 and BNNRnp alone are references only. The dev harness mirrors the official runner (random_simple split, 5-fold cv_training fold selection by fold-test AUC, Lin's AUC on the validation set).",
+  "development_seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "development_results_random_simple": {
+    "B3": 0.7271,
+    "BNNRnp": 0.7331,
+    "block_1:1": 0.7477,
+    "block_1:2": 0.7491,
+    "block_2:1": 0.743,
+    "block_1:3": 0.7484,
+    "flat7": 0.7439
+  },
+  "development_sd_random_simple": {
+    "B3": 0.0342,
+    "BNNRnp": 0.0317,
+    "block_1:1": 0.0295,
+    "block_1:2": 0.0284,
+    "block_2:1": 0.032,
+    "block_1:3": 0.0281,
+    "flat7": 0.0303
+  },
+  "selected_candidate": "block_1:2",
+  "weakly_correlated": "Not evaluated for any B4 candidate: its single outer holdout is the official test set.",
+  "disclosure": "BNNR port fidelity was checked on the first 3 official random_simple seeds (benchmark/results/bnnr_numpy_fidelity.json: Lin's AUC identical to published BNNR, 0.709043/0.696773/0.749688). That check validated a port of a published method and informed no B4 design choice. After the fidelity check, bnnr_numpy.py gained an optional exact-result disk cache (BNNR_NUMPY_CACHE_DIR) keyed by input SHA-256; the solver code is unchanged. B4's inner B3 is the frozen B3; the post-hoc B3noREV was not a candidate.",
+  "development_script": "artifacts/b4_dev/dev.py (ignored scratch harness); results artifacts/b4_dev/dev_results.json",
+  "development_trace": "artifacts/b4_dev/traces/20260928T152726253051Z_b4_dev_selection_29490357f1804ff489e2701875754441.jsonl"
+}

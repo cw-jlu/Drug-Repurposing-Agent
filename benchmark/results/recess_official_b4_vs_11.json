@@ -1,20 +1,29 @@
 {
   "protocol": "RECeSS TRANSCRIPT official runner, N=100, K=5, ptest=0.2",
-  "generated_at": "2026-09-28T15:35:17.873354+00:00",
+  "generated_at": "2026-09-29T02:55:00.654335+00:00",
   "primary_metric": "Lin's AUC (paper NS-AUC)",
+  "b4_config": "configs/b4_ensemble_v1.json",
+  "b4_config_sha256": "6301ea4cc6b27829f226e96fcea5d5f3d1fc247587cfdef1d50944ce27f90cf8",
+  "b4_implementation_sha256": "6aef1f8a80ea47c2bf0266d8ad2951726a2d2c0cd697cdde621adf2f729de995",
+  "bnnr_numpy_sha256": "cf6937c1f85ae7a7ae317cd5a6306da0c22a6e0920c2f8d7ae8b0f536c6a87ee",
   "b3_config": "configs/b3_row_fusion_v1.json",
   "b3_config_sha256": "9ac90b0d910cce1afb1e8b2ef0504623cd42847ccc55840f1941a67b96711c8a",
   "b3_implementation_sha256": "a5638367709c2574ccdba3deac2b1e474afecf3d9ccb41e44c36e58609ef04d6",
   "b3_patch_sha256": "35d440cece653b519f6045be0beb78a2d76cebf901fa1b4d8843dc7963e645ab",
   "published_results_commit": "cf5d9fdcb1ccd1676c7a0e7a39e784d79557fae0",
   "notes": [
-    "B3 is the primary model frozen before official scoring.",
+    "B4 (round 2) was frozen at e5ff7e7 before official scoring, designed on 10 random_simple dev seeds disjoint from the official 100.",
+    "B3 is the primary round-1 model frozen before official scoring.",
     "B3noREV is post-hoc: its weak-split development score was seen first.",
     "weakly_correlated repeats one outer holdout across all 100 seeds; its seed-paired tests are not independent replications."
   ],
   "splits": {
     "random_simple": {
       "rank_in_published_field": {
+        "B4": {
+          "rank": 1,
+          "of": 13
+        },
         "B3": {
           "rank": 2,
           "of": 13
@@ -30,92 +39,118 @@
       },
       "ranking_by_ns_auc": [
         {
-          "model": "BNNR",
+          "model": "B4",
           "rank": 1,
+          "ns_auc_mean": 0.7452699071949689,
+          "ns_auc_sd": 0.03333301100883872
+        },
+        {
+          "model": "BNNR",
+          "rank": 2,
           "ns_auc_mean": 0.7331069021516421,
           "ns_auc_sd": 0.03718595514390611
         },
         {
           "model": "B3",
-          "rank": 2,
+          "rank": 3,
           "ns_auc_mean": 0.7233662036715827,
           "ns_auc_sd": 0.03391438370510172
         },
         {
           "model": "B3noREV",
-          "rank": 3,
+          "rank": 4,
           "ns_auc_mean": 0.712408534180062,
           "ns_auc_sd": 0.04153181329814512
         },
         {
           "model": "MBiRW",
-          "rank": 4,
+          "rank": 5,
           "ns_auc_mean": 0.6981368786044032,
           "ns_auc_sd": 0.03252260606027011
         },
         {
           "model": "LogisticMF",
-          "rank": 5,
+          "rank": 6,
           "ns_auc_mean": 0.6703670590344557,
           "ns_auc_sd": 0.048277958556710195
         },
         {
           "model": "SCPMF",
-          "rank": 6,
+          "rank": 7,
           "ns_auc_mean": 0.5990855287503954,
           "ns_auc_sd": 0.05027929761854323
         },
         {
           "model": "HAN",
-          "rank": 7,
+          "rank": 8,
           "ns_auc_mean": 0.5978733341040238,
           "ns_auc_sd": 0.05085027558750899
         },
         {
           "model": "PMF",
-          "rank": 8,
+          "rank": 9,
           "ns_auc_mean": 0.574641390680278,
           "ns_auc_sd": 0.035443974234881076
         },
         {
           "model": "FastaiCollabWrapper",
-          "rank": 9,
+          "rank": 10,
           "ns_auc_mean": 0.5515590324602769,
           "ns_auc_sd": 0.057268628533697116
         },
         {
           "model": "ALSWR",
-          "rank": 10,
+          "rank": 11,
           "ns_auc_mean": 0.5511261568031048,
           "ns_auc_sd": 0.03986583019133132
         },
         {
           "model": "B2",
-          "rank": 11,
+          "rank": 12,
           "ns_auc_mean": 0.5222166242700292,
           "ns_auc_sd": 0.03540016899077052
         },
         {
           "model": "NIMCGCN",
-          "rank": 12,
+          "rank": 13,
           "ns_auc_mean": 0.477766996591897,
           "ns_auc_sd": 0.03245160325050036
         },
         {
           "model": "DDA_SKF",
-          "rank": 13,
+          "rank": 14,
           "ns_auc_mean": 0.32999967988254786,
           "ns_auc_sd": 0.043811526531321136
         },
         {
           "model": "LibMF",
-          "rank": 14,
+          "rank": 15,
           "ns_auc_mean": 0.25695668350466905,
           "ns_auc_sd": 0.030501865882173233
         }
       ],
       "best_published": "BNNR",
       "models": {
+        "B4": {
+          "NS-AUC": {
+            "n": 100,
+            "mean": 0.7452699071949689,
+            "sd": 0.03333301100883872,
+            "median": 0.7452059187754282
+          },
+          "global AUC": {
+            "n": 100,
+            "mean": 0.9530491245688397,
+            "sd": 0.00623521747059257,
+            "median": 0.9524307845766249
+          },
+          "global NDCG": {
+            "n": 100,
+            "mean": 0.4669905558363244,
+            "sd": 0.028934212414701496,
+            "median": 0.4661893790614424
+          }
+        },
         "B3": {
           "NS-AUC": {
             "n": 100,
@@ -398,6 +433,38 @@
         }
       },
       "paired_ns_auc": {
+        "B4": {
+          "BNNR": {
+            "wins": 87,
+            "losses": 13,
+            "ties": 0,
+            "n": 100,
+            "mean": 0.01216300504332645,
+            "sd": 0.01283339822176758,
+            "median": 0.011322555808603585,
+            "mean_ci95": [
+              0.009610533962325467,
+              0.014682860416232624
+            ],
+            "b2_wins": 87,
+            "wilcoxon_p": 5.877654132278269e-13
+          },
+          "B2": {
+            "wins": 100,
+            "losses": 0,
+            "ties": 0,
+            "n": 100,
+            "mean": 0.22305328292493953,
+            "sd": 0.04138526302497632,
+            "median": 0.2228616496264515,
+            "mean_ci95": [
+              0.2149762071713336,
+              0.23118106694535637
+            ],
+            "b2_wins": 100,
+            "wilcoxon_p": 3.8965598450959084e-18
+          }
+        },
         "B3": {
           "BNNR": {
             "wins": 35,
@@ -464,6 +531,10 @@
         }
       },
       "source_sha256": {
+        "B4": {
+          "results_N=100_B4_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv": "1983a9ff0c13830c7012ee81d61e662ae5c30c6309ab2319f908079cb019ef90",
+          "seeds_N=100_B4_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv": "710c591d397c88f8bc47289745cf30602cc14a30679e176daa7e1c43759355be"
+        },
         "B3": {
           "results_N=100_B3_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv": "84770f2a633eff173ecd223735b6149914cda7331261cc985b2fc14ed916712e",
           "seeds_N=100_B3_TRANSCRIPT_random_simple_AUC_1.000000_5_0.200000.csv": "bfd87a91938c0cae6ed205583d90f8eca7be41dea1199146d522aaac3d6549f4"
@@ -524,6 +595,10 @@
     },
     "weakly_correlated": {
       "rank_in_published_field": {
+        "B4": {
+          "rank": 3,
+          "of": 13
+        },
         "B3": {
           "rank": 3,
           "of": 13
@@ -563,68 +638,94 @@
           "ns_auc_sd": 0.008783459691182051
         },
         {
-          "model": "LogisticMF",
+          "model": "B4",
           "rank": 5,
+          "ns_auc_mean": 0.6584640573154235,
+          "ns_auc_sd": 0.018700398888882218
+        },
+        {
+          "model": "LogisticMF",
+          "rank": 6,
           "ns_auc_mean": 0.6575153333987147,
           "ns_auc_sd": 0.05832918459498267
         },
         {
           "model": "ALSWR",
-          "rank": 6,
+          "rank": 7,
           "ns_auc_mean": 0.6538530576679927,
           "ns_auc_sd": 0.02285227522093391
         },
         {
           "model": "BNNR",
-          "rank": 7,
+          "rank": 8,
           "ns_auc_mean": 0.6060696885050001,
           "ns_auc_sd": 0.024162049238998045
         },
         {
           "model": "FastaiCollabWrapper",
-          "rank": 8,
+          "rank": 9,
           "ns_auc_mean": 0.6059461688980239,
           "ns_auc_sd": 0.05079737445996854
         },
         {
           "model": "PMF",
-          "rank": 9,
+          "rank": 10,
           "ns_auc_mean": 0.585183001220427,
           "ns_auc_sd": 0.017348662611583767
         },
         {
           "model": "B2",
-          "rank": 10,
+          "rank": 11,
           "ns_auc_mean": 0.5018510639617546,
           "ns_auc_sd": 0.0035554749997391533
         },
         {
           "model": "DDA_SKF",
-          "rank": 11,
+          "rank": 12,
           "ns_auc_mean": 0.5,
           "ns_auc_sd": 0.0
         },
         {
           "model": "NIMCGCN",
-          "rank": 12,
+          "rank": 13,
           "ns_auc_mean": 0.48583682615098056,
           "ns_auc_sd": 0.008686197624999406
         },
         {
           "model": "SCPMF",
-          "rank": 13,
+          "rank": 14,
           "ns_auc_mean": 0.429909215333083,
           "ns_auc_sd": 0.0742132228224348
         },
         {
           "model": "LibMF",
-          "rank": 14,
+          "rank": 15,
           "ns_auc_mean": 0.22473076918908094,
           "ns_auc_sd": 5.579080615598709e-17
         }
       ],
       "best_published": "MBiRW",
       "models": {
+        "B4": {
+          "NS-AUC": {
+            "n": 100,
+            "mean": 0.6584640573154235,
+            "sd": 0.018700398888882218,
+            "median": 0.658759135202756
+          },
+          "global AUC": {
+            "n": 100,
+            "mean": 0.9313881883702799,
+            "sd": 0.0032839813872495892,
+            "median": 0.9314992659946494
+          },
+          "global NDCG": {
+            "n": 100,
+            "mean": 0.4346009077303692,
+            "sd": 0.023640742783450585,
+            "median": 0.43609332581840465
+          }
+        },
         "B3": {
           "NS-AUC": {
             "n": 100,
@@ -907,6 +1008,38 @@
         }
       },
       "paired_ns_auc": {
+        "B4": {
+          "MBiRW": {
+            "wins": 0,
+            "losses": 100,
+            "ties": 0,
+            "n": 100,
+            "mean": -0.07992872308113907,
+            "sd": 0.023921482666547252,
+            "median": -0.08103621756280399,
+            "mean_ci95": [
+              -0.08460420506189757,
+              -0.07517864666783823
+            ],
+            "b2_wins": 0,
+            "wilcoxon_p": 3.8965598450959084e-18
+          },
+          "B2": {
+            "wins": 100,
+            "losses": 0,
+            "ties": 0,
+            "n": 100,
+            "mean": 0.1566129933536689,
+            "sd": 0.01996025317535766,
+            "median": 0.15673307224829391,
+            "mean_ci95": [
+              0.1525751084460665,
+              0.16049616798160762
+            ],
+            "b2_wins": 100,
+            "wilcoxon_p": 3.8965598450959084e-18
+          }
+        },
         "B3": {
           "MBiRW": {
             "wins": 0,
@@ -973,6 +1106,10 @@
         }
       },
       "source_sha256": {
+        "B4": {
+          "results_N=100_B4_TRANSCRIPT_weakly_correlated_AUC_1.000000_5_0.200000.csv": "f52cf5a1835cce6f959dd91432309aa197d2ea35cd1b6e434c2d1ba8d4d26947",
+          "seeds_N=100_B4_TRANSCRIPT_weakly_correlated_AUC_1.000000_5_0.200000.csv": "710c591d397c88f8bc47289745cf30602cc14a30679e176daa7e1c43759355be"
+        },
         "B3": {
           "results_N=100_B3_TRANSCRIPT_weakly_correlated_AUC_1.000000_5_0.200000.csv": "3fb1a4b4fa537fa55a723502a1d5b9400f9ba769ee5e4f51a657d26b19f67e82",
           "seeds_N=100_B3_TRANSCRIPT_weakly_correlated_AUC_1.000000_5_0.200000.csv": "bfd87a91938c0cae6ed205583d90f8eca7be41dea1199146d522aaac3d6549f4"
@@ -1032,5 +1169,5 @@
       }
     }
   },
-  "trace_file": "artifacts\\traces\\20260928T153510116692Z_recess_b3_comparison_ecdb3e0637dc41cc8aff2ac709f94d4f.jsonl"
+  "trace_file": "artifacts\\traces\\20260929T025454140930Z_recess_b4_comparison_7b80bb348a6348a0a07c85f698d9f1fa.jsonl"
 }

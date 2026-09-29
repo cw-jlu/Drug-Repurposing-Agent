@@ -1,0 +1,1265 @@
+{
+  "experiment": "multi_agent_review_v1",
+  "created_at": "2026-09-28T14:30:57.794930+00:00",
+  "status": "literature_triage_only_not_efficacy_evidence",
+  "model": "deepseek-flash",
+  "tiers_allowed": [
+    "SUPPORTED",
+    "PROMISING_BUT_INCOMPLETE",
+    "CONFLICTING",
+    "INSUFFICIENT_EVIDENCE"
+  ],
+  "input_sha256": {
+    "evidence": "e64735c71634cbb32c8a5ed750bb40bb8abbc7a81b965a0562482e25a0d39c7d"
+  },
+  "tier_counts": {
+    "SUPPORTED": 0,
+    "PROMISING_BUT_INCOMPLETE": 0,
+    "CONFLICTING": 0,
+    "INSUFFICIENT_EVIDENCE": 10
+  },
+  "candidates": [
+    {
+      "rank": 1,
+      "name": "hydrocortisone",
+      "search_term": "hydrocortisone",
+      "identity_status": "exact_GSE_signature_and_pert_id; Hub_stereochemistry_differs",
+      "retrieval": {
+        "support_query": "\"hydrocortisone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 61,
+        "support_pmids_with_abstract": [
+          "28824067",
+          "29151505",
+          "33335085",
+          "33693506",
+          "34657060",
+          "35135922",
+          "36195556",
+          "40400852"
+        ],
+        "critic_query": "\"hydrocortisone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 33,
+        "critic_pmids_with_abstract": [
+          "28824067",
+          "30909965",
+          "31610523",
+          "33290748",
+          "34657060",
+          "38750379",
+          "39516983",
+          "41376996",
+          "42205670",
+          "42586593",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "All six supporting claims describe hydrocortisone as supportive management of ICI-induced hypophysitis/adrenal insufficiency in single case reports, not antitumor activity; S2 is class-level only. Every claim is critic-weakened (mechanism-not-efficacy, confounding, low dose, unmasked diabetes insipidus). Contradicting evidence flags steroid-related harms (hypernatremia, DKA). Identity caveat: Hub stereochemistry differs.",
+      "key_pmids": [
+        "28824067",
+        "29151505",
+        "34657060",
+        "40400852",
+        "36195556",
+        "33335085",
+        "42205670"
+      ],
+      "validated_supporting_claims": [
+        {
+          "claim": "In a patient with metastatic lung adenocarcinoma who developed isolated ACTH deficiency from nivolumab-induced hypophysitis, hydrocortisone replacement therapy was successful.",
+          "pmid": "28824067",
+          "quote": "Endocrine test results supported a diagnosis of isolated adrenocorticotropic hormone deficiency due to hypophysitis, and replacement therapy using hydrocortisone has been successful.",
+          "evidence_type": "other",
+          "scope": "candidate",
+          "claim_id": "S1"
+        },
+        {
+          "claim": "In a patient with advanced lung adenocarcinoma and ICI-related hypophysitis, prompt corticosteroid replacement therapy relieved secondary adrenal insufficiency symptoms and permitted continuation of nivolumab that was controlling the lung adenocarcinoma; hydrocortisone is the glucocorticoid class agent used in such replacement.",
+          "pmid": "29151505",
+          "quote": "Prompt corticosteroid replacement therapy effectively relieved her secondary adrenal insufficiency symptoms and allowed her to pursue nivolumab therapy, which had been effective for the control of lung adenocarcinoma.",
+          "evidence_type": "other",
+          "scope": "class",
+          "claim_id": "S2"
+        },
+        {
+          "claim": "In a patient with stage IVB lung adenocarcinoma on pembrolizumab, immune-related adverse events affecting lungs, skin, and pituitary all resolved upon treatment with hydrocortisone.",
+          "pmid": "34657060",
+          "quote": "All the adverse events resolved upon treatment with hydrocortisone.",
+          "evidence_type": "other",
+          "scope": "candidate",
+          "claim_id": "S3"
+        },
+        {
+          "claim": "In a patient with metastatic NSCLC and pembrolizumab-induced hypophysitis with secondary adrenal insufficiency, hydrocortisone (with levothyroxine) replacement was started and symptoms improved within one week, allowing pembrolizumab to be resumed.",
+          "pmid": "40400852",
+          "quote": "Pembrolizumab was temporarily withheld, and the patient was started on hydrocortisone and levothyroxine replacement.",
+          "evidence_type": "other",
+          "scope": "candidate",
+          "claim_id": "S4"
+        },
+        {
+          "claim": "In a patient with metastatic NSCLC on nivolumab plus ipilimumab who developed ICI-associated adrenal insufficiency, hydrocortisone replacement therapy (10 mg/day) was initiated for endocrine toxicity.",
+          "pmid": "36195556",
+          "quote": "the patient developed ICI-associated diabetes mellitus and adrenal insufficiency, and insulin and hydrocortisone replacement therapy (10 mg/day) were initiated for endocrine toxicity",
+          "evidence_type": "other",
+          "scope": "candidate",
+          "claim_id": "S5"
+        },
+        {
+          "claim": "In a patient with lung adenocarcinoma and pituitary metastasis causing panhypopituitarism with secondary adrenal insufficiency, hydrocortisone replacement revealed masked diabetes insipidus, informing glucocorticoid replacement management in this setting.",
+          "pmid": "33335085",
+          "quote": "Hydrocortisone replacement revealed masked diabetes insipidus with elevation of serum sodium levels that reached 151 mmol/L.",
+          "evidence_type": "observational",
+          "scope": "candidate",
+          "claim_id": "S6"
+        }
+      ],
+      "critic_challenges": [
+        {
+          "claim_id": "S1",
+          "verdict": "weakened",
+          "issue": "mechanism_not_efficacy",
+          "rationale": "The quote documents successful hydrocortisone replacement for a treatment-emergent endocrine toxicity (nivolumab-induced isolated ACTH deficiency), not an anticancer effect of hydrocortisone on lung adenocarcinoma. Single case report, n=1, no control; the claim's framing risks reading as efficacy against the tumor when it is supportive management of an irAE."
+        },
+        {
+          "claim_id": "S2",
+          "verdict": "weakened",
+          "issue": "class_level_only",
+          "rationale": "The quoted abstract sentence (PMID 29151505) says 'corticosteroid replacement therapy' and never names hydrocortisone; the claim's attribution of hydrocortisone rests on class inference. Also single-case, and the abstract does not appear among the supplied critic records for independent verification of the surrounding text."
+        },
+        {
+          "claim_id": "S3",
+          "verdict": "weakened",
+          "issue": "overstated_scope",
+          "rationale": "'All the adverse events resolved upon treatment with hydrocortisone' covers interstitial pneumonia, hypopituitarism and a drug-induced skin disorder in one 69-year-old man; it is a single case, and resolution of pneumonitis/skin rash alongside steroid therapy cannot be assumed to be hydrocortisone-specific versus concurrent pembrolizumab withdrawal and other management."
+        },
+        {
+          "claim_id": "S4",
+          "verdict": "weakened",
+          "issue": "other",
+          "rationale": "The quoted clause only states that hydrocortisone and levothyroxine were started; it does not itself document the 'symptoms improved within one week' or pembrolizumab resumption elements of the claim, and levothyroxine co-administration confounds attribution of improvement to hydrocortisone."
+        },
+        {
+          "claim_id": "S5",
+          "verdict": "weakened",
+          "issue": "other",
+          "rationale": "The quote describes initiation of 10 mg/day hydrocortisone for ICI-associated adrenal insufficiency together with insulin for concurrent diabetes mellitus; it documents a management action, not demonstrated benefit, and 10 mg/day is a low replacement dose whose adequacy in acute adrenal insufficiency is not established by the abstract."
+        },
+        {
+          "claim_id": "S6",
+          "verdict": "weakened",
+          "issue": "other",
+          "rationale": "The quote is framed as a diagnostic/monitoring pitfall: hydrocortisone replacement unmasked diabetes insipidus with serum sodium rising to 151 mmol/L, i.e., a hazard of steroid replacement in this setting rather than a therapeutic benefit. The claim's neutral phrase 'informing glucocorticoid replacement management' understates the potential harm."
+        }
+      ],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "S2/S4: hydrocortisone replacement in ICI-induced hypophysitis is safe and uncomplicated, and permits continuation of immunotherapy.",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "S6: hydrocortisone replacement unmasks diabetes insipidus as a manageable diagnostic event.",
+          "pmid": "42205670",
+          "quote": "A 68-year-old female patient receiving immunotherapy for lung adenocarcinoma presented with hyponatremia and secondary adrenal insufficiency, followed by abrupt severe hypernatremia after steroid initiation.",
+          "category": "resistance_or_harm",
+          "scope": "candidate"
+        },
+        {
+          "claim": "S2/S3/S4: hydrocortisone controls immune-related adverse events during anti-PD-1 therapy.",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "S1/S2/S3/S4/S5/S6: hydrocortisone use in lung adenocarcinoma is documented as a benefit with no indication of clinical heterogeneity or diagnostic masking.",
+          "pmid": "31610523",
+          "quote": "Hyponatremia due to acute secondary adrenal insufficiency is often the principal sign of PD-1/PD-L1-induced hypophysitis and can be masked by other symptoms due to oncologic disease.",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "S1/S2/S3/S4: hydrocortisone replacement is a complication-free adjunct permitting continued ICI therapy.",
+          "pmid": "42586593",
+          "quote": "Five weeks later, he developed diabetic ketoacidosis, with a glucose level of 30.4 mmol/L (reference range, 3.9-6.1 mmol/L) and a ketone level of 6.3 mmol/L (<0.6 mmol/L).",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "S5: low-dose (10 mg/day) hydrocortisone replacement is adequate for ICI-associated adrenal insufficiency.",
+          "pmid": "33290748",
+          "quote": "Cortisol screening enables hydrocortisone replacement treatment to be prescribed if necessary, preventing risk of adrenal crisis.",
+          "category": "other",
+          "scope": "class"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 6,
+        "contradiction": 6
+      }
+    },
+    {
+      "rank": 2,
+      "name": "beclomethasone-dipropionate",
+      "search_term": "beclomethasone dipropionate",
+      "identity_status": "exact_GSE_signature_and_pert_id; exact_Hub_InChIKey",
+      "retrieval": {
+        "support_query": "\"beclomethasone dipropionate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 7,
+        "support_pmids_with_abstract": [
+          "10903220",
+          "12538830",
+          "23512537",
+          "24555085",
+          "27034001",
+          "28560698",
+          "37111733"
+        ],
+        "critic_query": "\"beclomethasone dipropionate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 2,
+        "critic_pmids_with_abstract": [
+          "23512537",
+          "28560698",
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "All six supporting claims are in-vitro A549 surrogate readouts (CYP3A5 mRNA, trans-repression ranking, cytokine release, dissolution) — no LUAD/NSCLC antitumor, viability, in-vivo, or patient outcome data. BDP ranks below fluticasone/budesonide, is often a class-level property, and is inactivated by CYP3A4/5; immunotherapy-interference signals caution. No candidate-specific antitumor support.",
+      "key_pmids": [
+        "12538830",
+        "10903220",
+        "24555085",
+        "23512537",
+        "37111733",
+        "28560698"
+      ],
+      "validated_supporting_claims": [
+        {
+          "claim": "In A549 lung adenocarcinoma cells, nanomolar concentrations of beclomethasone dipropionate induce CYP3A5 mRNA through a glucocorticoid receptor-mediated pathway.",
+          "pmid": "12538830",
+          "quote": "About 4-fold induction was detected by nanomolar concentrations of dexamethasone and also by budenoside and beclomethasone dipropionate, glucocorticoids used for the inhalation treatment of bronchial asthma, whereas the CYP3A4 inducers mifepristone (RU486), rifampicin, clotrimazole, and nifedipine were without effect.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S1"
+        },
+        {
+          "claim": "Beclomethasone dipropionate shows trans-repression potency in A549 lung cells, inhibiting AP-1- and NF-kappaB-dependent transcription and RANTES release.",
+          "pmid": "10903220",
+          "quote": "The rank order of trans-repression potencies in A549 lung cells transiently transfected with an AP-1- or NF-kappaB-dependent luciferase gene was fluticasone propionate > budesonide > beclomethasone dipropionate, triamcinolone acetonide, and flunisolide.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S2"
+        },
+        {
+          "claim": "In A549 lung adenocarcinoma cells, beclomethasone dipropionate-induced CYP3A5 mRNA induction is attenuated by siRNA-mediated knockdown of the glucocorticoid receptor.",
+          "pmid": "24555085",
+          "quote": "CYP3A5 mRNA induction by five different glucocorticoids was attenuated by inhibiting the glucocorticoid receptor using ketoconazole, and for beclomethasone dipropionate, using siRNA-mediated knock-down of the glucocorticoid receptor.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S3"
+        },
+        {
+          "claim": "Beclomethasone dipropionate is metabolized by CYP3A4 and CYP3A5 to inactive metabolites, with A549 lung cells producing the esterase-dependent metabolite M1 correlating with CYP3A5 mRNA induction.",
+          "pmid": "23512537",
+          "quote": "These studies show that CYP3A4 and CYP3A5 metabolize BDP to inactive metabolites and suggest that differences in the expression or function of these enzymes in the lung and/or liver could influence BDP disposition in humans.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S4"
+        },
+        {
+          "claim": "BDP-loaded polymeric microparticles showed controlled release and were more efficient than free BDP at counteracting cigarette smoke- and LPS-induced IL-6 and IL-8 release in A549 lung adenocarcinoma cells.",
+          "pmid": "37111733",
+          "quote": "Moreover, the BDP loaded into the particles (BDP-Micro and CI-Micro) was more efficient than free BDP to counteract the effects of cigarette smoke and LPS on release of IL-6 and IL-8.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S5"
+        },
+        {
+          "claim": "Solubility and dissolution of beclomethasone dipropionate were enhanced in a biocompatible synthetic lung fluid tested on A549 alveolar epithelial cells.",
+          "pmid": "28560698",
+          "quote": "The solubility and dissolution of BDP and FP in SLF were enhanced compared to Gamble's solution.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S6"
+        }
+      ],
+      "critic_challenges": [
+        {
+          "claim_id": "S1",
+          "verdict": "weakened",
+          "issue": "mechanism_not_efficacy",
+          "rationale": "This is an in-vitro mechanistic reporter-gene/mRNA induction finding in A549 cells; it demonstrates CYP3A5 mRNA upregulation (an enzyme-probe readout) rather than any antitumor or immunomodulatory efficacy in lung adenocarcinoma. The claim is also scoped as a class property of inhaled glucocorticoids ('dexamethasone and also by budenoside and beclomethasone dipropionate'), so the BDP-specific attribution is not isolated. Chosen verdict is 'stands' on the narrow biochemical statement but must not be read as therapeutic relevance for NSCLC."
+        },
+        {
+          "claim_id": "S2",
+          "verdict": "weakened",
+          "issue": "class_level_only",
+          "rationale": "The claim itself reports a rank ordering in which beclomethasone dipropionate is placed after fluticasone propionate and budesonide, i.e. BDP is not the most potent trans-repressor in A549 cells and is grouped with triamcinolone acetonide and flunisolide. This is an in-vitro comparison among a drug class, with no tumor-cell-killing, no viability, and no in-vivo or patient outcome data in lung adenocarcinoma."
+        },
+        {
+          "claim_id": "S3",
+          "verdict": "stands",
+          "issue": "mechanism_not_efficacy",
+          "rationale": "The cited record directly supports a GR-dependent mechanism for BDP-induced CYP3A5 mRNA in the A549 model, so the mechanistic statement is internally supported. It remains a mechanism/induction readout in a single cell line, not evidence of efficacy or harm in lung adenocarcinoma; the same record notes BDP is metabolized by CYP3A4/CYP3A5 to inactive metabolites."
+        },
+        {
+          "claim_id": "S4",
+          "verdict": "weakened",
+          "issue": "contradicted",
+          "rationale": "The claim states BDP is metabolized by CYP3A4 and CYP3A5 to inactive metabolites, but the cited abstract also reports that CYP3A7 does not metabolize BDP and that lung cells produced only the dehydrogenated metabolite [M5] while liver cells produced hydroxylated plus dehydrogenated metabolites — so the metabolic picture is tissue-dependent and enzyme-selective, not a simple two-enzyme inactivation route. Additionally, the same record frames roughly 30% of patients as deriving little to no benefit from inhaled glucocorticoid treatment, and it is an in-vitro study, so any implication of clinical benefit for lung adenocarcinoma is unsupported."
+        },
+        {
+          "claim_id": "S5",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "This is a formulation-engineering claim about controlled release and superiority of BDP-loaded microparticles versus free BDP in a cytokine-release (IL-6/IL-8) assay in A549 cells — a surrogate anti-inflammatory readout, not an antitumor or patient-relevant endpoint. No tumor growth, survival, or in-vivo data are provided; the A549 line is being used as a convenient alveolar/epithelial model, and the result speaks to delivery, not to activity against lung adenocarcinoma."
+        },
+        {
+          "claim_id": "S6",
+          "verdict": "weakened",
+          "issue": "not_luad_specific",
+          "rationale": "This describes a solubilization/biopharmaceutics property of BDP in a simulated lung fluid, with A549 cells used only in an MTT biocompatibility assay. It provides no evidence of pharmacologic activity or efficacy in lung adenocarcinoma, and the abstract notes that exposure produced 'some metabolic changes' in the cells, i.e. the model itself responded to the medium rather than to a therapeutic effect."
+        }
+      ],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "S4: BDP is metabolized by CYP3A4 and CYP3A5 to inactive metabolites, with lung cells producing the esterase-dependent metabolite M1 correlating with CYP3A5 mRNA induction.",
+          "pmid": "23512537",
+          "quote": "Liver cells produced both hydroxylated and dehydrogenated metabolites [M4, M5, and M6], but lung cells produced only the dehydrogenated metabolite [M5].",
+          "category": "other",
+          "scope": "candidate"
+        },
+        {
+          "claim": "S4: BDP is metabolized by CYP3A4 and CYP3A5 to inactive metabolites, with lung cells producing the esterase-dependent metabolite M1 correlating with CYP3A5 mRNA induction.",
+          "pmid": "23512537",
+          "quote": "Inhaled glucocorticoids, such as beclomethasone dipropionate (BDP), are the mainstay treatment of asthma. However, ≈ 30% of patients exhibit little to no benefit from treatment.",
+          "category": "no_effect",
+          "scope": "candidate"
+        },
+        {
+          "claim": "S1/S3/S4: BDP engagement of the glucocorticoid receptor / CYP3A axis in A549 cells is mechanistically informative.",
+          "pmid": "23512537",
+          "quote": "CYP3A7 did not metabolize BDP.",
+          "category": "other",
+          "scope": "candidate"
+        },
+        {
+          "claim": "S6: BDP is well tolerated in the A549 alveolar epithelial model, supporting its use in lung-directed delivery.",
+          "pmid": "28560698",
+          "quote": "No adverse effect on A549 cells was apparent after exposure to the SLF for 24 h, although some metabolic changes were identified consistent with the change of culture medium to a more lung-like composition.",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "S1/S2: glucocorticoid receptor agonism in lung adenocarcinoma is a favorable therapeutic strategy.",
+          "pmid": "41376996",
+          "quote": "[This corrects the article DOI: 10.21037/jtd-24-1083.]",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "Any implication that glucocorticoid-based modulation is straightforwardly beneficial in NSCLC patients.",
+          "pmid": "42205670",
+          "quote": "Immune checkpoint inhibitors are increasingly associated with complex immune-related endocrine adverse events that may evolve dynamically over time.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Any implication that adding or timing glucocorticoid exposure is safe in immunotherapy-treated NSCLC.",
+          "pmid": "42684586",
+          "quote": "Immune checkpoint inhibitors have improved cancer prognosis, but are associated with immune-related adverse events, including rare renal complications.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 6,
+        "contradiction": 7
+      }
+    },
+    {
+      "rank": 3,
+      "name": "clocortolone-pivalate",
+      "search_term": "clocortolone pivalate",
+      "identity_status": "exact_GSE_signature_and_pert_id; exact_Hub_InChIKey",
+      "retrieval": {
+        "support_query": "\"clocortolone pivalate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"clocortolone pivalate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "No validated candidate-specific antitumor support for clocortolone pivalate in LUAD/NSCLC. Existing evidence is class-level glucocorticoid harm/interference (hypophysitis with DI, proteinuria) plus a correction notice, none demonstrating benefit; if anything they argue against efficacy. Identity is exact but no candidate-specific findings exist.",
+      "key_pmids": [
+        "42205670",
+        "42684586",
+        "41376996"
+      ],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Clocortolone pivalate (a topical glucocorticoid) has anti-tumor or supportive efficacy in lung adenocarcinoma/NSCLC",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid-class agents are safe/beneficial adjuncts in immunotherapy-treated lung adenocarcinoma",
+          "pmid": "42205670",
+          "quote": "This case highlights the diagnostic challenges posed by overlapping pituitary dysfunction and emphasizes the importance of dynamic endocrine reassessment when electrolyte disturbances evolve during immunotherapy.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid use in NSCLC patients on immune checkpoint inhibitors is without significant renal risk",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "toxicity",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid-related gene signatures in lung adenocarcinoma provide a robust immunotherapy guidance index",
+          "pmid": "41376996",
+          "quote": "[This corrects the article DOI: 10.21037/jtd-24-1083.]",
+          "category": "other",
+          "scope": "candidate"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 4
+      }
+    },
+    {
+      "rank": 4,
+      "name": "mometasone",
+      "search_term": "mometasone",
+      "identity_status": "exact_GSE_signature_and_pert_id; GEO_Hub_structure_mismatch",
+      "retrieval": {
+        "support_query": "\"mometasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 6,
+        "support_pmids_with_abstract": [
+          "10669853",
+          "11698053",
+          "12859444",
+          "12948397",
+          "18446484",
+          "19177906"
+        ],
+        "critic_query": "\"mometasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 3,
+        "critic_pmids_with_abstract": [
+          "12859444",
+          "18446484",
+          "19177906",
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "All six supporting claims are in-vitro A549 inflammation/formulation studies, not LUAD efficacy; critics flag in_vitro_only, class_level_only (S2), and overstated_scope. Contradicting class evidence (PMID 19177906) shows no preferential transrepression, and toxicity/immunotherapy-interference signals exist. No candidate-specific, unrefuted antitumor finding in vivo; identity has GEO Hub structure mismatch.",
+      "key_pmids": [
+        "11698053",
+        "12948397",
+        "19177906",
+        "10669853",
+        "18446484",
+        "12859444"
+      ],
+      "validated_supporting_claims": [
+        {
+          "claim": "Mometasone furoate inhibits NF-kappaB-mediated GM-CSF release in A549 lung adenocarcinoma-derived alveolar epithelial cells, a mechanism relevant to suppressing pro-inflammatory signaling in lung cancer.",
+          "pmid": "11698053",
+          "quote": "Interleukin (IL)-1 beta caused a significant increase in NF-kappa B-mediated granulocyte/macrophage colony stimulating factor (GM-CSF) release, which was inhibited by the glucocorticoid mometasone furoate (MF) (EC(50)=2 x 10(-11) M).",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S1"
+        },
+        {
+          "claim": "Mometasone combined with FK506 enhances growth inhibition of A549 lung epithelial cells, indicating mometasone-containing regimens can suppress proliferation of lung adenocarcinoma-derived cells.",
+          "pmid": "12948397",
+          "quote": "Simultaneous treatment of FK506 together with the glucocorticoids dexamethasone, methyl-prednisolone, fluticasone or mometasone (10 nM) enhances the growth inhibitory effect of these steroids.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S2"
+        },
+        {
+          "claim": "Mometasone furoate demonstrates transrepression of NF-kappaB and AP-1 in A549 lung epithelial cells, supporting a mechanistic rationale for modulating inflammatory transcription in lung adenocarcinoma/NSCLC.",
+          "pmid": "19177906",
+          "quote": "For eight glucocorticoids (budesonide, desisobutyryl-cicle-sonide, dexamethasone, flunisolide, fluocortolone, fluticasone propionate, mometasone furoate, prednisolone) the EC50 for NF-kappaB mediated transrepression was significantly larger than that for both transactivation and transrepression via AP-1.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S3"
+        },
+        {
+          "claim": "Mometasone furoate inhibits rhinovirus-induced ICAM-1 up-regulation and promoter activation in A549 respiratory epithelial cells, showing mometasone can suppress NF-kappaB-dependent transcriptional programs in lung epithelial cells.",
+          "pmid": "10669853",
+          "quote": "MF also inhibited ICAM-1 messenger RNA induction by rhinovirus infection in a dose-dependent manner.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S4"
+        },
+        {
+          "claim": "Mometasone furoate in nanoparticle formulations shows improved and prolonged antiproliferative activity against A549 alveolar epithelial cells, supporting its potential local delivery against lung adenocarcinoma cells.",
+          "pmid": "18446484",
+          "quote": "The in-vitro antiproliferative activity was improved and prolonged significantly after wheat germ agglutinin-conjugation.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S5"
+        },
+        {
+          "claim": "Mometasone furoate is equipotent to fluticasone propionate in inhibiting AP-1 and NF-kappaB activities and RANTES production in A549 lung epithelial cells, supporting its anti-inflammatory transcriptional potency in lung tissue.",
+          "pmid": "12859444",
+          "quote": "Both molecules show globally the same potency to inhibit AP-1 and NF-kappaB activities and RANTES production.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S6"
+        }
+      ],
+      "critic_challenges": [
+        {
+          "claim_id": "S1",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "PMID 11698053 addresses IL-1beta-driven GM-CSF release in A549 alveolar epithelial cells, an inflammation model, not lung adenocarcinoma biology. No proliferation, survival, or tumor outcome endpoint is reported for mometasone; the claim's leap to 'relevant to suppressing pro-inflammatory signaling in lung cancer' is an inference from a single in-vitro cell line. A549 is often classified as a type II alveolar-like carcinoma line but is not a validated LUAD efficacy model."
+        },
+        {
+          "claim_id": "S2",
+          "verdict": "weakened",
+          "issue": "class_level_only",
+          "rationale": "PMID 12948397 reports a class-level effect: FK506 augmented growth inhibition of dexamethasone, methyl-prednisolone, fluticasone and mometasone alike at 10 nM. Mometasone is one of four steroids, so the finding is not mometasone-specific, and the combination partner (FK506/tacrolimus) is itself immunosuppressive — co-administration with a glucocorticoid in an NSCLC context raises an immunosuppression rather than anti-tumor concern. In-vitro growth inhibition in A549 does not establish tumor suppression in vivo."
+        },
+        {
+          "claim_id": "S3",
+          "verdict": "weakened",
+          "issue": "contradicted",
+          "rationale": "The cited abstract (PMID 19177906) itself undercuts the framing of a preferential anti-inflammatory mechanism: it concludes that inhaled corticosteroids 'did not exhibit preferential transrepression, but had higher potencies for transactivation than for transrepression via NF-kappaB'. That is a mechanistic liability, not support for selective NF-kappaB modulation in lung cancer. The claim also asserts mometasone 'demonstrates transrepression' while the source reports mometasone within a nine-drug panel showing comparatively weaker NF-kappaB transrepression potency."
+        },
+        {
+          "claim_id": "S4",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "PMID 10669853 is a rhinovirus-infection model of airway inflammation in A549 cells. Suppressing ICAM-1 induction in the context of viral infection is an anti-inflammatory/antiviral-interference readout, not evidence of anti-tumor activity in lung adenocarcinoma. Extrapolating to 'NF-kappaB-dependent transcriptional programs in lung epithelial cells' as a cancer rationale is an overreach from a single viral stimulus."
+        },
+        {
+          "claim_id": "S5",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "PMID 18446484 is an in-vitro nanocarrier/formulation study in A549 cells explicitly framing mometasone as an 'antiasthmatic drug' with the goal of 'targeting any segment of lungs for more improved therapeutic response in other lung disorders'. The reported improvement is a delivery/AUC effect of WGA-conjugated nanoparticles, not evidence of anti-tumor efficacy; the abstract's own stated use case is asthma, not lung adenocarcinoma."
+        },
+        {
+          "claim_id": "S6",
+          "verdict": "weakened",
+          "issue": "overstated_scope",
+          "rationale": "PMID 12859444 is explicitly comparative potency between two topical steroids ('have equivalent transcriptional potencies'; 'FP and MF have the same ability'). Equipotency to fluticasone is not evidence of anti-cancer activity, and the abstract notes systemic exposure at 2x10(-10) M 'with the risk of provoking concomitant adverse effects at high dosages', i.e., an effector/toxicity and systemic-liability caveat rather than a therapeutic window for cancer."
+        }
+      ],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Mometasone furoate provides anti-inflammatory/anti-tumor-relevant transcriptional modulation with a favorable profile in lung cells.",
+          "pmid": "19177906",
+          "quote": "It is concluded that, within the studied cell system, inhaled corticosteroids did not exhibit preferential transrepression, but had higher potencies for transactivation than for transrepression via NF-kappaB and had differential potencies for the two transrepression pathways.",
+          "category": "no_effect",
+          "scope": "class"
+        },
+        {
+          "claim": "Mometasone furoate is safe to use in the lung cancer / NSCLC setting, including alongside other anticancer therapy.",
+          "pmid": "12859444",
+          "quote": "Their strong transcriptional effects at 2x10(-10) M suggest that these compounds act not only topically but also systemically, with the risk of provoking concomitant adverse effects at high dosages.",
+          "category": "toxicity",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Mometasone furoate is safe to use in the lung cancer / NSCLC setting, including alongside other anticancer therapy.",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Mometasone furoate-containing treatments are compatible with immunotherapy-based NSCLC management.",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "other",
+          "scope": "class"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 6,
+        "contradiction": 4
+      }
+    },
+    {
+      "rank": 5,
+      "name": "flumetasone",
+      "search_term": "flumetasone",
+      "identity_status": "exact_GSE_signature_and_pert_id; cross_source_synonym_ambiguous",
+      "retrieval": {
+        "support_query": "\"flumetasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"flumetasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "No validated candidate-specific supporting claims for flumetasone in LUAD/NSCLC. Contradicting evidence is class-level glucocorticoid/steroid findings (immunotherapy interference, steroid safety) plus a correction notice, none directly refuting flumetasone antitumor activity. Identity also ambiguous (cross-source synonym). No direct LUAD antitumor evidence either way.",
+      "key_pmids": [
+        "42205670",
+        "42684586",
+        "41376996"
+      ],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Flumetasone (a synthetic glucocorticoid) may be relevant/beneficial in lung adenocarcinoma via glucocorticoid-related mechanisms",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Steroid exposure in lung adenocarcinoma patients is safe/neutral",
+          "pmid": "42684586",
+          "quote": "Notably, his proteinuria improved following discontinuation of durvalumab and treatment with losartan potassium, dapagliflozin, and finerenone, without a substantial increase in the glucocorticoid dose.",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid-related gene signatures define lung adenocarcinoma subtypes for immunotherapy guidance",
+          "pmid": "41376996",
+          "quote": "[This corrects the article DOI: 10.21037/jtd-24-1083.].",
+          "category": "other",
+          "scope": "candidate"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 3
+      }
+    },
+    {
+      "rank": 6,
+      "name": "BRD-K84203638",
+      "search_term": "BRD K84203638",
+      "identity_status": "exact_GSE_signature_pert_id_and_structure; no_Hub_sample",
+      "retrieval": {
+        "support_query": "\"BRD K84203638\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"BRD K84203638\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [],
+        "class_level_contradiction_search_used": false
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": null,
+      "tier_source": "deterministic_no_evidence",
+      "guard_notes": [],
+      "rationale": "No validated supporting or contradicting claim was retrieved for this exact name; deterministic short-circuit.",
+      "key_pmids": [],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 0
+      }
+    },
+    {
+      "rank": 7,
+      "name": "hydrocortisone-hemisuccinate",
+      "search_term": "hydrocortisone hemisuccinate",
+      "identity_status": "exact_GSE_signature_and_pert_id; Hub_stereochemistry_differs",
+      "retrieval": {
+        "support_query": "\"hydrocortisone hemisuccinate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"hydrocortisone hemisuccinate\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "No validated candidate-specific antitumor findings for hydrocortisone-hemisuccinate in LUAD/NSCLC. All contradicting claims are glucocorticoid class-level (immune-related adverse events, immunotherapy interference, proteinuria), and the sole candidate-scope item is a correction notice, not evidence. Identity caveat: hub stereochemistry differs from GSE signature. Little candidate-specific support.",
+      "key_pmids": [
+        "42205670",
+        "42684586",
+        "41376996"
+      ],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Hydrocortisone-hemisuccinate (or its glucocorticoid class) is safely co-administered with immune checkpoint inhibitors in NSCLC without endocrine or renal complications.",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid treatment during immunotherapy for NSCLC does not precipitate serious renal adverse events.",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "Discontinuation of glucocorticoid escalation is sufficient to manage glucocorticoid-associated renal toxicity in immunotherapy-treated NSCLC patients.",
+          "pmid": "42684586",
+          "quote": "his proteinuria improved following discontinuation of durvalumab and treatment with losartan potassium, dapagliflozin, and finerenone, without a substantial increase in the glucocorticoid dose",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid-related gene signatures in lung adenocarcinoma provide established candidate-level evidence for hydrocortisone-hemisuccinate as a therapeutic or prognostic agent.",
+          "pmid": "41376996",
+          "quote": "[This corrects the article DOI: 10.21037/jtd-24-1083.]",
+          "category": "other",
+          "scope": "candidate"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 4
+      }
+    },
+    {
+      "rank": 8,
+      "name": "fluorometholone",
+      "search_term": "fluorometholone",
+      "identity_status": "exact_GSE_signature_pert_id_and_structure; no_Hub_sample",
+      "retrieval": {
+        "support_query": "\"fluorometholone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"fluorometholone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "No validated supporting claims for fluorometholone in LUAD/NSCLC. Only evidence is contradicting/class-level glucocorticoid material: immunotherapy interference, proteinuria during glucocorticoid therapy, one correction notice. Identity lacks Hub sample; no candidate-specific antitumor data. Triage, not efficacy.",
+      "key_pmids": [
+        "42205670",
+        "42684586",
+        "41376996"
+      ],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Support for fluorometholone (a glucocorticoid) as a therapeutic candidate in lung adenocarcinoma / NSCLC",
+          "pmid": "42205670",
+          "quote": "This case highlights the diagnostic challenges posed by overlapping pituitary dysfunction and emphasizes the importance of dynamic endocrine reassessment when electrolyte disturbances evolve during immunotherapy.",
+          "category": "resistance_or_harm",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Use of glucocorticoids as adjunct supportive therapy in NSCLC patients on immunotherapy",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "immunotherapy_interference",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Glucocorticoid-based regimens are clinically reliable for managing immune-related adverse events in NSCLC",
+          "pmid": "42684586",
+          "quote": "Notably, his proteinuria improved following discontinuation of durvalumab and treatment with losartan potassium, dapagliflozin, and finerenone, without a substantial increase in the glucocorticoid dose.",
+          "category": "no_effect",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Glucocorticoid-related gene signatures in lung adenocarcinoma are established and stable",
+          "pmid": "41376996",
+          "quote": "[This corrects the article DOI: 10.21037/jtd-24-1083.].",
+          "category": "other",
+          "scope": "class"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 4
+      }
+    },
+    {
+      "rank": 9,
+      "name": "fluticasone",
+      "search_term": "fluticasone",
+      "identity_status": "exact_GSE_signature_and_pert_id; cross_source_formulation_ambiguous",
+      "retrieval": {
+        "support_query": "\"fluticasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 24,
+        "support_pmids_with_abstract": [
+          "10442524",
+          "10619824",
+          "12924514",
+          "19390482",
+          "31658657",
+          "36807406",
+          "42589695",
+          "9371735"
+        ],
+        "critic_query": "\"fluticasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 14,
+        "critic_pmids_with_abstract": [
+          "10442524",
+          "12859444",
+          "19177906",
+          "28560698",
+          "31537701",
+          "33249629",
+          "37290201",
+          "41376996",
+          "42196603",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "All supporting claims are A549 in-vitro anti-inflammatory/secretome or cytoprotection readouts, not LUAD/NSCLC antitumor endpoints; several are class-level or mechanism-not-efficacy (S3, S4), and critics note ceiling effects and neutral phagocyte function (PMID 42196603, 12859444). No candidate-specific, unrefuted antitumor finding exists.",
+      "key_pmids": [
+        "12924514",
+        "42589695",
+        "42196603",
+        "12859444",
+        "19177906"
+      ],
+      "validated_supporting_claims": [
+        {
+          "claim": "Fluticasone propionate inhibits the organic dust-induced activation of NF-kappaB and the secretion of IL-6 and IL-8 by human lung epithelial A549 cells.",
+          "pmid": "12924514",
+          "quote": "Fluticasone inhibited the organic dust-induced NF-kappaB activation and IL-6 and IL-8 secretion.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S1"
+        },
+        {
+          "claim": "Fluticasone propionate causes a dose-dependent, almost total inhibition of swine dust-induced IL-6 and IL-8 release from human lung epithelial A549 cells in vitro.",
+          "pmid": "10442524",
+          "quote": "Both steroids caused a dose-dependent, almost total, inhibition of swine dust-induced IL-6 and IL-8 release from epithelial cells and LPS-induced IL-6 and TNF-alpha from alveolar macrophages.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S2"
+        },
+        {
+          "claim": "Fluticasone propionate suppresses the epithelial secretion of pro-angiogenic mediators VEGF, IL-8, MCP-1, TNF-alpha, and IL-6 in lung epithelial cell models, supporting an effect on the epithelial secretome relevant to pulmonary microvasculature.",
+          "pmid": "42589695",
+          "quote": "An independent set of experiments showed that fluticasone propionate similarly reduced VEGF, IL-8, MCP-1, TNF-α, and IL-6, supporting a class effect of corticosteroids on the epithelial secretome.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S3"
+        },
+        {
+          "claim": "Fluticasone reduces cytokine-induced activation of the E-selectin promoter in stably transfected A549 lung epithelial cells, with potency greater than beclomethasone and dexamethasone, via glucocorticoid receptor-dependent mechanisms.",
+          "pmid": "9371735",
+          "quote": "The relative potencies of GC drugs as inhibitors of IL-1beta (10 pM)-stimulated ESAP-gene activation were fluticasone> beclomethasone>dexamethasone, with IC50 values of 0.13, 1.1 and 2.7 nM respectively.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S4"
+        },
+        {
+          "claim": "Fluticasone, along with other glucocorticoids, protects tissue cells (including A549 cells against other pore-forming toxins) against pore-forming toxin-induced cell damage, dependent on the glucocorticoid receptor and HMGCR.",
+          "pmid": "36807406",
+          "quote": "Hydrocortisone and fluticasone also protected against pyolysin-induced cell damage.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S5"
+        },
+        {
+          "claim": "Fluticasone (FTZ) formulations show no toxic effects on A549 cells, with cellular viability above 90%, and liposomal FTZ achieved substantially higher lung accumulation after intranasal administration in mice.",
+          "pmid": "31658657",
+          "quote": "The in vitro tests revealed no toxic effects of FTZ formulations, as cellular viability was always superior to 90% for FTZ concentrations ranging from 5 to 60 µM 72 h after incubation.",
+          "evidence_type": "in_vitro",
+          "scope": "candidate",
+          "claim_id": "S6"
+        }
+      ],
+      "critic_challenges": [
+        {
+          "claim_id": "S1",
+          "verdict": "stands",
+          "issue": "in_vitro_only",
+          "rationale": "Quote matches PMID 12924514 and the claim is correctly framed as an A549 in-vitro, dust-stimulated, anti-inflammatory (NF-kappaB/IL-6/IL-8) readout. It is mechanistic/anti-inflammatory, not an anti-tumor efficacy claim, and no supplied critic record contradicts it. Limitation: single transformed epithelial line, stimulus-specific, no LUAD-relevant endpoint."
+        },
+        {
+          "claim_id": "S2",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "PMID 10442524 itself reports only partial inhibition of IL-8 from alveolar macrophages ('The steroids only partially inhibited IL-8 release from alveolar macrophages'), so the 'almost total inhibition' wording applies strictly to epithelial cells and only to two cytokines; the claim's superlative framing is fragile. Critic record PMID 42196603 (A549, fluticasone 10^-8-10^-6 M) shows fluticasone did not change efferocytic capacity in any phagocyte tested, indicating other epithelial/immune functions are unaffected, undercutting any generalized 'protects/restores lung epithelial function' inference."
+        },
+        {
+          "claim_id": "S3",
+          "verdict": "weakened",
+          "issue": "class_level_only",
+          "rationale": "The quoted abstract text itself attributes the VEGF/IL-8/MCP-1/TNF-alpha/IL-6 reduction to 'a class effect of corticosteroids on the epithelial secretome', so the observation is not fluticasone-specific and the claim already concedes this. Additionally, cytokine/VEGF suppression in vitro is a mechanism, not evidence of anti-tumor activity in LUAD."
+        },
+        {
+          "claim_id": "S4",
+          "verdict": "weakened",
+          "issue": "mechanism_not_efficacy",
+          "rationale": "PMID 9371735 is a promoter-reporter (ESAP) potency comparison in stably transfected A549 cells; higher potency in repressing an adhesion-molecule promoter is a pharmacodynamic mechanism marker, not evidence of tumor benefit. Critic record PMID 12859444 (A549, AP-1/NF-kappaB/RANTES) reports fluticasone is equipotent to mometasone furoate and only 'inhibit AP-1 activity, NF-kappaB activity and RANTES release by approximately 40%' — a ceiling far below the 'almost total' inhibition framing used across these claims."
+        },
+        {
+          "claim_id": "S5",
+          "verdict": "weakened",
+          "issue": "in_vitro_only",
+          "rationale": "Quote matches PMID 36807406, but this is a cytoprotection assay against a bacterial pore-forming toxin (pyolysin), a co-treatment with other glucocorticoids (hydrocortisone and fluticasone), and has no LUAD/NSCLC-relevant endpoint. Critic records PMID 42196603 and PMID 42196603-context show fluticasone's in-vitro effects on phagocyte function are neutral/absent, and PMID 42196603 reports fluticasone 'significantly improved 24 h neutrophil survival and reduced early apoptosis', i.e., the direction of effect on inflammatory cell survival is pro-survival, not uniformly cytoprotective/anti-tumor."
+        },
+        {
+          "claim_id": "S6",
+          "verdict": "stands",
+          "issue": "none",
+          "rationale": "Quote matches PMID 31658657 and the claim is narrow (absence of overt A549 cytotoxicity in a formulation study). No supplied critic record contradicts it. Note the scope is a safety/viability and lung-accumulation claim, not an efficacy claim, and viability >90% in vitro does not establish in-vivo safety or anti-tumor effect."
+        }
+      ],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Fluticasone propionate suppresses key lung epithelial/phagocyte inflammatory functions and restores defective innate clearance relevant to the COPD-lung cancer interface.",
+          "pmid": "42196603",
+          "quote": "Neither fluticasone nor salmeterol, individually or in combination, significantly altered efferocytic capacity in any phagocyte tested (all ANOVA p > 0.26).",
+          "category": "no_effect",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Fluticasone propionate reduces inflammatory mediator release broadly across lung cell types.",
+          "pmid": "10442524",
+          "quote": "The steroids only partially inhibited IL-8 release from alveolar macrophages.",
+          "category": "no_effect",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Fluticasone propionate is a highly potent repressor of pro-inflammatory transcription in lung epithelial cells.",
+          "pmid": "12859444",
+          "quote": "Indeed, they produce a 17-fold induction of luciferase in the transactivation assay, and inhibit AP-1 activity, NF-kappaB activity and RANTES release by approximately 40%.",
+          "category": "other",
+          "scope": "candidate"
+        },
+        {
+          "claim": "Fluticasone propionate acts preferentially through anti-inflammatory transrepression with a favorable safety profile on lung cells.",
+          "pmid": "19177906",
+          "quote": "It is concluded that, within the studied cell system, inhaled corticosteroids did not exhibit preferential transrepression, but had higher potencies for transactivation than for transrepression via NF-kappaB and had differential potencies for the two transrepression pathways.",
+          "category": "other",
+          "scope": "class"
+        },
+        {
+          "claim": "Inhaled fluticasone-associated corticosteroid exposure is purely beneficial and free of harm in lung cancer patients receiving immunotherapy.",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid use around immune checkpoint inhibitor therapy for NSCLC is clinically uncomplicated.",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "resistance_or_harm",
+          "scope": "class"
+        },
+        {
+          "claim": "Fluticasone propionate exerts anticancer effects against lung adenocarcinoma cells.",
+          "pmid": "33249629",
+          "quote": "Naringenin LCNs showed promising antiproliferative, antimigratory, and anticolony formation activities in A549 cells, in vitro.",
+          "category": "no_effect",
+          "scope": "candidate"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 6,
+        "contradiction": 7
+      }
+    },
+    {
+      "rank": 10,
+      "name": "diflorasone",
+      "search_term": "diflorasone",
+      "identity_status": "exact_GSE_signature_pert_id_and_structure; no_Hub_sample",
+      "retrieval": {
+        "support_query": "\"diflorasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract])",
+        "support_total_hits": 0,
+        "support_pmids_with_abstract": [],
+        "critic_query": "\"diflorasone\"[Title/Abstract] AND (\"lung adenocarcinoma\"[Title/Abstract] OR \"non-small cell lung cancer\"[Title/Abstract] OR NSCLC[Title/Abstract] OR A549[Title/Abstract]) AND (resistance[Title/Abstract] OR toxicity[Title/Abstract] OR adverse[Title/Abstract] OR \"no effect\"[Title/Abstract] OR \"did not\"[Title/Abstract] OR failed[Title/Abstract] OR worse[Title/Abstract] OR reduced[Title/Abstract] OR survival[Title/Abstract])",
+        "critic_total_hits": 0,
+        "critic_pmids_with_abstract": [
+          "41376996",
+          "42205670",
+          "42684586"
+        ],
+        "class_level_contradiction_search_used": true
+      },
+      "tier": "INSUFFICIENT_EVIDENCE",
+      "model_tier": "INSUFFICIENT_EVIDENCE",
+      "tier_source": "coordinator_agent",
+      "guard_notes": [],
+      "rationale": "No candidate-specific validated supporting claims exist for diflorasone in LUAD/NSCLC; only class-level (glucocorticoid) contradicting signals are shown (PMIDs 42205670, 42684586), which argue for a lower tier. Identity is exact for signature/pert/structure but lacks a Hub sample, and evidence is not candidate-specific, so support is little to none.",
+      "key_pmids": [
+        "42205670",
+        "42684586"
+      ],
+      "validated_supporting_claims": [],
+      "critic_challenges": [],
+      "unchallenged_claim_ids": [],
+      "validated_contradicting_evidence": [
+        {
+          "claim": "Glucocorticoid use is safe/neutral or beneficial alongside immunotherapy in NSCLC.",
+          "pmid": "42205670",
+          "quote": "We report a rare case of pembrolizumab-induced hypophysitis complicated by central diabetes insipidus, which was unmasked following glucocorticoid replacement.",
+          "category": "immunotherapy_interference",
+          "scope": "class"
+        },
+        {
+          "claim": "Glucocorticoid treatment can be used in NSCLC patients on checkpoint inhibitors without added renal risk.",
+          "pmid": "42684586",
+          "quote": "The patient developed significant proteinuria during glucocorticoid treatment for organizing pneumonia.",
+          "category": "toxicity",
+          "scope": "class"
+        }
+      ],
+      "rejected_claims": {
+        "support": 0,
+        "contradiction": 0,
+        "details": []
+      },
+      "dropped_valid_claims_over_limit": 0,
+      "proposed_claims": {
+        "support": 0,
+        "contradiction": 2
+      }
+    }
+  ],
+  "comparison_with_single_pass": [
+    {
+      "rank": 1,
+      "name": "hydrocortisone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 2,
+      "name": "beclomethasone-dipropionate",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 3,
+      "name": "clocortolone-pivalate",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 4,
+      "name": "mometasone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 5,
+      "name": "flumetasone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 6,
+      "name": "BRD-K84203638",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 7,
+      "name": "hydrocortisone-hemisuccinate",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 8,
+      "name": "fluorometholone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 9,
+      "name": "fluticasone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    },
+    {
+      "rank": 10,
+      "name": "diflorasone",
+      "single_pass_confidence": "insufficient_evidence",
+      "multi_agent_tier": "INSUFFICIENT_EVIDENCE",
+      "agrees": true
+    }
+  ],
+  "citation_validation": {
+    "proposed_quoted_items": 65,
+    "rejected_quoted_items": 0,
+    "rejection_rate": 0.0,
+    "rejection_reasons": {},
+    "rule": "PMID must be in the agent's retrieved set and the quote must be a whitespace-normalized verbatim substring (>=20 chars) of that abstract"
+  },
+  "call_counts": {
+    "attempts": 22,
+    "successes": 22,
+    "failures": 0,
+    "usage": {
+      "prompt_tokens": 50916,
+      "completion_tokens": 12220,
+      "total_tokens": 63136,
+      "prompt_cache_hit_tokens": 7296,
+      "prompt_cache_miss_tokens": 43620
+    }
+  },
+  "cost_estimate": {
+    "currency": "USD",
+    "pricing_checked_on": "2026-09-24",
+    "price_source": "same table as evals/run_planner_eval.py estimate_cost",
+    "per_million_tokens": {
+      "offpeak": {
+        "cache_hit": 0.003,
+        "cache_miss": 0.15,
+        "output": 0.6
+      },
+      "peak": {
+        "cache_hit": 0.006,
+        "cache_miss": 0.3,
+        "output": 1.2
+      }
+    },
+    "estimated_cost_usd": {
+      "offpeak": 0.013897,
+      "peak": 0.027794
+    }
+  },
+  "trace_file": "artifacts\\multi_agent_review\\traces\\20260928T142908688724Z_multi_agent_review_53f47de954eb47759fd6f9b17a8670a4.jsonl",
+  "checkpoint_sha256": "a16c323147be98e04c4a3b5f5ff5cc8fb5b026bd1778b706af4b333a39a65e1d",
+  "interpretation": "Tiers triage retrievable literature for follow-up research. They are not treatment recommendations and do not establish LUAD efficacy."
+}

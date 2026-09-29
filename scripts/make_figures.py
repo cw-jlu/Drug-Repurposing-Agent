@@ -43,7 +43,8 @@ PUBLISHED_MODELS = ["ALSWR", "BNNR", "DDA_SKF", "FastaiCollabWrapper", "HAN", "L
 # Our methods: add a new entry when a teammate's run lands (same CSV format).
 # Missing directories are skipped.
 OUR_RESULT_DIRS = {"B2": "benchmark/results/recess_official_b2",
-                   "B3": "benchmark/results/recess_official_b3"}
+                   "B3": "benchmark/results/recess_official_b3",
+                   "B4": "benchmark/results/recess_official_b4"}
 METRIC_ROW = "Lin's AUC"  # = NS-AUC in the RECeSS analysis
 
 # Palette: dataviz reference palette, checked with validate_palette.js.
