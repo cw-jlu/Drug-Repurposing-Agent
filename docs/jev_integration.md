@@ -19,3 +19,7 @@ decision = gate_choice(question, response["answers"]["route"], high_risk=True)
 ```
 
 The current LUAD case runs fully with deterministic rules and records zero external-model calls. `python scripts/build_luad_case.py --use-jev` explicitly enables one advisory research-task routing question when `TYPESAFE_API_KEY` is present. Any API or schema failure falls back to manual review; the case can never be promoted to clinical evidence by this choice. A live Jev-versus-rule/LLM comparison requires API credentials, a frozen decision-eval set with reference labels, and measured usage, latency, calibration, and error rates. No such comparison is claimed.
+
+## Live evaluation (2026-10-01)
+
+Jev is now reachable through OpenCode Zen (`https://opencode.ai/zen/v1/systemone`) with an `OPENCODE_API_KEY` kept in the ignored `.env`. `JevClient.from_env()` prefers `TYPESAFE_API_KEY` and otherwise routes the OpenCode key to Zen. It sends an explicit User-Agent because Cloudflare rejects urllib's default (error 1010). The response schema matched the existing validator unchanged. The paid `jev-1.13` returned HTTP 402 (insufficient account funds) before any answer, so the frozen decision evals were run on `jev-1.13-free`. The results, which compare Jev with rules, deepseek-flash and deepseek-v4-pro on the same frozen cases and gate, are in [jev_evaluation.md](jev_evaluation.md).

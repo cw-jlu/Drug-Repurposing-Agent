@@ -10,7 +10,7 @@
 | 4 内部 Eval Suite | `tests/`、冻结的 20 项 v1、61 项 v2 和独立 100 项 v3 Planner Eval；另有单例 LUAD 研究分诊审计 | 已有：旧 v3 规则为 90/100、DeepSeek 为 98/100；新 trace 评分是回归检查，不是第二个独立 holdout。15/15 provider-visible 方法选择 trace 核验通过，但事后正例/未知修订实验中选法不及固定 B2（−0.11031 NS-AUC）。LUAD 单例审计不是独立 Agent holdout |
 | 5 Jev Choice、Score、Noul 接入层 | `src/drug_repurposing_agent/jev.py` | 部分：协议与本地模拟测试通过，缺少真实凭据与调用验证 |
 | 6 Jev 置信度门控和降级 | `gate_choice` 与测试 | 部分：规则与失败回退已实现，阈值未用真实数据校准 |
-| 7 Jev 与规则、通用 LLM 对比 | `planner_eval_results.md` 已完成规则与 DeepSeek 对比 | 部分：通用 LLM 对比已有，Jev 仍无真实凭据和结果 |
+| 7 Jev 与规则、通用 LLM 对比（2026-10-01 已实测，见 `docs/jev_evaluation.md`） | `planner_eval_results.md` 已完成规则与 DeepSeek 对比 | 部分：通用 LLM 对比已有，Jev 仍无真实凭据和结果 |
 | 8 LUAD 端到端案例 | `artifacts/reports/luad_case/case_report.json`、`configs/luad_top10_signature_ids.csv`、`docs/luad_top10_evidence_matrix.md` | 部分：完成表达筛选、逐签名 ID 恢复、溯源和文献/靶点分诊；湿实验尚未执行 |
 | 9 Top-10 候选药物证据报告 | `docs/luad_screening_report.md`、`docs/luad_top10_evidence_matrix.md` | 已完成候选级核查；结论仍是全部证据不足，不构成疗效报告 |
 | 10 Evidence Ledger | `artifacts/reports/luad_eh3226/evidence_ledger/` | 部分：十份账本存在，身份与支持/反对证据不完整 |

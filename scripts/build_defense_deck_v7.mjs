@@ -192,23 +192,34 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 
 // 8 Decision layer
 {
-  const L = dec.layers, keys = ["J0_fixed_rules", "J1_deepseek_structured", "J3_deepseek_plus_gate"];
-  const lab = ["J0 固定规则", "J1 通用 LLM", "J3 LLM + 置信门控"];
+  const L = dec.layers;
+  const jevPath = "benchmark/results/decision_eval_v1_jev.json";
+  const jev = has(jevPath) ? J(jevPath) : null;
+  const jev2 = has("benchmark/results/decision_eval_v2_jev.json") ? J("benchmark/results/decision_eval_v2_jev.json") : null;
+  const series = [["J0 规则", L.J0_fixed_rules], ["J1 flash", L.J1_deepseek_structured],
+    ["J3 flash+门控", L.J3_deepseek_plus_gate]];
+  if (jev) series.push(["J2 Jev", jev.layers.J2_jev], ["J3 Jev+门控", jev.layers.J3_jev_gate]);
+  const lab = series.map((x) => x[0]);
   const cases = Object.values(dec.case_counts_by_node).reduce((a, b) => a + b, 0);
-  const s = content("决策层消融：规则 vs LLM vs 门控（Jev 接口已预留）",
-    `约 50 秒。图为 v1 的 ${cases} 个封闭合成决策用例：J0 与 J1 准确率都是 ${f3(L[keys[0]].accuracy)}，J1 高风险误执行 ${f3(L[keys[1]].high_risk_wrong_auto_execution_rate)}；置信门控降到 ${f3(L[keys[2]].high_risk_wrong_auto_execution_rate)}，但增加人工升级。新 v2 是另一个在任何调用前冻结的 40 条中文风险备注压力测试：混合层 ${dec2.layers.hybrid.correct}/40、完整 LLM ${dec2.layers.full_llm.correct}/40、旧关键词规则 ${dec2.layers.j0_rules.correct}/40；80/80 provider trace 通过回放。v2 是作者标注的合成新用例，不与 v1 准确率直接比较，也不代表临床正确率。${rep ? `换模型复现（deepseek-v4-pro，同一冻结用例）：规划 ${rep.planner_v3["deepseek-v4-pro"].correct}/100（flash ${rep.planner_v3["deepseek-flash"].correct}/100）；v1 门控在 flash 上拦下 ${rep.decision_v1["deepseek-flash"].gate_reason_counts.low_confidence} 个低置信判断，在 v4-pro 上一次都没触发——v4-pro 更自信但 Brier 相近，门控阈值不能跨模型照搬；v2 混合层在两个模型上都是 0 高风险误执行，而完整 LLM 在 v4-pro 上升到 ${(rep.decision_v2["deepseek-v4-pro"].full_llm.high_risk_wrong_auto * 100).toFixed(0)}%。` : ""}Jev 未获访问。`);
+  const jevNote = jev ? `Jev（TypeSafe System One，经 OpenCode Zen 调用 ${jev.model_requested}；付费版因余额不足在得到答案前改用免费版）不加门控准确率 ${f3(jev.layers.J2_jev.accuracy)}，为所有决策器最高；Brier ${f3(jev.jev_calibration.brier_multiclass)}，低于 flash 0.221 与 v4-pro 0.228，但 ECE ${f3(jev.jev_calibration.ece_10bin_reported_confidence)} 略高于 flash 的 0.025。Jev 加门控后高风险误执行为 ${f3(jev.layers.J3_jev_gate.high_risk_wrong_auto_execution_rate)}，代价是 ${f3(jev.layers.J3_jev_gate.escalation_rate)} 的升级率；低置信交给 flash 的 J4 准确率 ${f3(jev.layers.J4_jev_gate_llm_fallback.accuracy)}。` : "";
+  const v2Note = jev2 ? `（Jev ${jev2.layers.hybrid_jev.correct}/40）；让模型包办整个决策时，完整 Jev 只有 ${jev2.layers.full_jev.correct}/40 并出现高风险误执行` : "";
+  const s = content(jev ? "决策层：规则 vs 通用 LLM vs Jev（实测）" : "决策层消融：规则 vs LLM vs 门控（Jev 接口已预留）",
+    `约 60 秒。图为 v1 的 ${cases} 个封闭合成决策用例，所有决策器看到同样的策略文本与用例字段，门控阈值（0.8/0.9）在调用前固定。规则与 flash 准确率都是 ${f3(L.J0_fixed_rules.accuracy)}；flash 高风险误执行 ${f3(L.J1_deepseek_structured.high_risk_wrong_auto_execution_rate)}，加门控降到 ${f3(L.J3_deepseek_plus_gate.high_risk_wrong_auto_execution_rate)}。${jevNote}v2 的 40 条中文风险备注上，“规则算结构化字段、模型只判备注”的混合层，无论 flash、v4-pro 还是 Jev 判备注，高风险误执行都是 0${v2Note}。${rep ? "换 v4-pro 时门控一次都没触发，阈值需要按模型校准。" : ""}用例为合成数据、单次运行，不代表临床正确率。`);
   s.addChart(pres.charts.BAR, [
-    { name: "准确率", labels: lab, values: keys.map((k) => +f3(L[k].accuracy)) },
-    { name: "模糊用例升级召回", labels: lab, values: keys.map((k) => +f3(L[k].review_recall_on_ambiguous_cases)) },
-    { name: "高风险误执行率", labels: lab, values: keys.map((k) => +f3(L[k].high_risk_wrong_auto_execution_rate)) }],
-    { x: 0.5, y: 1.3, w: 8.2, h: 5.4, barDir: "col", barGrouping: "clustered", chartColors: [C.navy, C.teal, C.red],
+    { name: "准确率", labels: lab, values: series.map((x) => +f3(x[1].accuracy)) },
+    { name: "模糊用例转人工", labels: lab, values: series.map((x) => +f3(x[1].review_recall_on_ambiguous_cases)) },
+    { name: "高风险误执行率", labels: lab, values: series.map((x) => +f3(x[1].high_risk_wrong_auto_execution_rate)) }],
+    { x: 0.4, y: 1.3, w: 8.5, h: 5.4, barDir: "col", barGrouping: "clustered", chartColors: [C.navy, C.teal, C.red],
       showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.00", valAxisMinVal: 0,
-      valAxisMaxVal: 1.1, showLegend: true, legendPos: "b", showTitle: false, ...axis() });
-  bullets(s, [`图：v1 ${cases} 个冻结合成决策用例`,
-    "v1 规则与 LLM 准确率持平；门控减少高风险误执行",
-    `新 v2 中文备注：混合 ${dec2.layers.hybrid.correct}/40，完整 LLM ${dec2.layers.full_llm.correct}/40`,
-    rep ? `换 v4-pro：门控 ${rep.decision_v1["deepseek-v4-pro"].gate_reason_counts.low_confidence ?? 0}/120 触发；混合层仍 0 高风险误执行` : "v2 作者标注、合成；两集结果不能直接比",
-    "Jev 未获访问：接口保留"], 9.0, 1.5, 3.8, 5.0, 14);
+      valAxisMaxVal: 1.1, showLegend: true, legendPos: "b", showTitle: false, ...axis(), catAxisLabelFontSize: 11,
+      dataLabelFontSize: 9 });
+  const items = jev ? [`v1 ${cases} 例：Jev 准确率 ${f3(jev.layers.J2_jev.accuracy)} 最高，Brier ${f3(jev.jev_calibration.brier_multiclass)} 最低`,
+    `Jev + 门控：高风险误执行 ${f3(jev.layers.J3_jev_gate.high_risk_wrong_auto_execution_rate)}，但升级率 ${f3(jev.layers.J3_jev_gate.escalation_rate)}`,
+    jev2 ? `v2 混合层（Jev 判备注）${jev2.layers.hybrid_jev.correct}/40、0 高风险误执行；完整 Jev ${jev2.layers.full_jev.correct}/40` : "",
+    "混合设计换 flash / v4-pro / Jev 都是 0 高风险误执行",
+    "合成用例、单次运行；Jev 用免费版"].filter(Boolean) : [`图：v1 ${cases} 个冻结合成决策用例`,
+    "v1 规则与 LLM 准确率持平；门控减少高风险误执行", "Jev 未获访问：接口保留"];
+  bullets(s, items, 9.1, 1.4, 3.8, 5.3, 13);
 }
 
 // 9 LUAD biology
@@ -259,7 +270,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
     ["提分", `对齐指标方向${b4 ? "并集成 BNNR " : ""}后 ${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}、弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}${rankOf(main, R, mainName) === 1 ? (b4Significant === false ? "；随机拆分与 BNNR 持平（校正检验不显著），弱相关未超过" : "；随机拆分超过全部发表模型，弱相关未超过") : "，接近但未全面超过最强基线"}`],
     ["可信", "Strict 模式隔离标签；探针证实 LLM 看到药名会“背答案”"],
     ["Agent", "规划 98/100；23 条范围预筛引用中 13 条原样需排除"],
-    ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；外部 v3 未跑；Jev/湿实验未做"]];
+    ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；外部 v3 未跑；无湿实验；Jev 仅免费版单次运行"]];
   items.forEach(([h, d], i) => {
     const y = 1.6 + i * 1.0;
     txt(s, h, 0.8, y, 1.6, 0.6, 20, { bold: true, color: i === 4 ? "F2B8A8" : "9FE0D8" });

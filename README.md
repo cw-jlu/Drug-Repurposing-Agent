@@ -4,7 +4,7 @@ An auditable agent for transcriptomic drug repurposing, biomedical evidence retr
 
 The first comparison baseline is frozen as `v0.1.0`; its scope, metrics, API boundaries, and comparison rules are recorded in [the release note](docs/releases/v0.1.0.md).
 
-The repository contains a controlled natural-language task router, a deterministic expression-ranking core, a strict-mode CLI, a RECeSS-compatible five-method adapter, three nested-tuned official benchmark baselines, a bounded LUAD A549 expression screen, and internal contract tests. The current computational study and course deliverables are complete; wet-lab validation and live Jev evaluation remain outside the completed scope.
+The repository contains a controlled natural-language task router, a deterministic expression-ranking core, a strict-mode CLI, a RECeSS-compatible five-method adapter, three nested-tuned official benchmark baselines, a bounded LUAD A549 expression screen, and internal contract tests. The current computational study and course deliverables are complete; wet-lab validation remains outside the completed scope. Jev was evaluated live on 2026-10-01 (free model via OpenCode Zen; see [docs/jev_evaluation.md](docs/jev_evaluation.md)).
 
 A pilot check on TRANSCRIPT (`pilot_transcript/`, our own simplified evaluation, not the official RECeSS protocol) found that pure signature reversal scores AUC ≈ 0.48, no better than random, while a training-fold drug popularity baseline scores ≈ 0.73. Section 23 of the plan covers these results and the revised benchmark strategy.
 
