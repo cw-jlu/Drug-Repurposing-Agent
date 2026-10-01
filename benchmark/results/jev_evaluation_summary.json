@@ -1,0 +1,147 @@
+{
+  "generated_at": "2026-10-01T13:36:31.037296+00:00",
+  "jev_model": "jev-1.13-free",
+  "jev_endpoint": "https://opencode.ai/zen/v1/systemone",
+  "v1": {
+    "J0 固定规则": {
+      "accuracy": 0.875,
+      "review_recall_on_ambiguous_cases": 0.6875,
+      "escalation_rate": 0.225,
+      "high_risk_wrong_auto_execution_rate": 0.0333
+    },
+    "J1 flash": {
+      "accuracy": 0.875,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.2833,
+      "high_risk_wrong_auto_execution_rate": 0.15
+    },
+    "J1 v4-pro": {
+      "accuracy": 0.8833,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.2917,
+      "high_risk_wrong_auto_execution_rate": 0.1333
+    },
+    "J2 Jev（无门控）": {
+      "accuracy": 0.9,
+      "review_recall_on_ambiguous_cases": 0.9375,
+      "escalation_rate": 0.2583,
+      "high_risk_wrong_auto_execution_rate": 0.1167
+    },
+    "J3 flash + 门控": {
+      "accuracy": 0.7917,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.4,
+      "high_risk_wrong_auto_execution_rate": 0.0833
+    },
+    "J3 v4-pro + 门控": {
+      "accuracy": 0.8833,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.2917,
+      "high_risk_wrong_auto_execution_rate": 0.1333
+    },
+    "J3 Jev + 门控": {
+      "accuracy": 0.7833,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.4833,
+      "high_risk_wrong_auto_execution_rate": 0.0
+    },
+    "J4 Jev + 门控 + LLM 兜底": {
+      "accuracy": 0.8667,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.3417,
+      "high_risk_wrong_auto_execution_rate": 0.0667
+    }
+  },
+  "v1_calibration": {
+    "flash": {
+      "brier": 0.221,
+      "ece": 0.0253,
+      "noul_auroc": 1.0,
+      "score_spearman": 0.8676,
+      "p50_ms": 896.5,
+      "gate": {
+        "low_confidence": 29,
+        "passed_gate": 91
+      }
+    },
+    "v4pro": {
+      "brier": 0.2277,
+      "ece": 0.1075,
+      "noul_auroc": 0.9545,
+      "score_spearman": 0.8938,
+      "p50_ms": 1775.0,
+      "gate": {
+        "passed_gate": 120
+      }
+    },
+    "jev": {
+      "brier": 0.1475,
+      "ece": 0.0418,
+      "noul_auroc": 1.0,
+      "score_spearman": 0.9286,
+      "p50_ms": 1048.2,
+      "gate": {
+        "low_confidence": 32,
+        "passed_gate": 88
+      }
+    }
+  },
+  "v2": {
+    "J0 旧规则": {
+      "correct": 20,
+      "high_risk_wrong_auto": 0.6667,
+      "concern_review_recall": 0.0,
+      "benign_unnecessary_review": 0.0
+    },
+    "混合 · flash 判备注": {
+      "correct": 39,
+      "high_risk_wrong_auto": 0.0,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review": 0.05
+    },
+    "混合 · v4-pro 判备注": {
+      "correct": 38,
+      "high_risk_wrong_auto": 0.0,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review": 0.1
+    },
+    "混合 · Jev 判备注": {
+      "correct": 39,
+      "high_risk_wrong_auto": 0.0,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review": 0.05
+    },
+    "混合 · Jev + 置信门控": {
+      "correct": 33,
+      "high_risk_wrong_auto": 0.0,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review": 0.35
+    },
+    "完整 flash": {
+      "correct": 37,
+      "high_risk_wrong_auto": 0.0,
+      "concern_review_recall": 0.9,
+      "benign_unnecessary_review": 0.05
+    },
+    "完整 v4-pro": {
+      "correct": 37,
+      "high_risk_wrong_auto": 0.1667,
+      "concern_review_recall": 0.85,
+      "benign_unnecessary_review": 0.0
+    },
+    "完整 Jev": {
+      "correct": 32,
+      "high_risk_wrong_auto": 0.0833,
+      "concern_review_recall": 0.9,
+      "benign_unnecessary_review": 0.05
+    }
+  },
+  "sources": {
+    "benchmark/results/decision_eval_v1.json": "86139a07f7629e01d975d1941fb90f7ac84490751b366e9ccb2f57aa79e09434",
+    "benchmark/results/decision_eval_v1_deepseek_v4_pro.json": "65f9b0f0d1e16e03acebe37fdce22aaca895bd8747b1d4e67a34e8b2da6a23aa",
+    "benchmark/results/decision_eval_v1_jev.json": "cd74978d36f16ec650872a55d251d9da94da1e4a0ca5628134bd6def47d1cb8a",
+    "benchmark/results/decision_eval_v2.json": "9eb2f9fa0fa1b0cefc2e5fa2b992a56d4a85a9f5278f9e9e7527cb52dacec85c",
+    "benchmark/results/decision_eval_v2_deepseek_v4_pro.json": "a06ea5f401fdd9d202e83dc618cbca6dd0ffa4c700038cb7d6fa1e24010d45ba",
+    "benchmark/results/decision_eval_v2_jev.json": "fa515d2600f5bcbf388d359aa14cf08d5eb24f97479b20b0ea20eef0574cf2e9"
+  }
+}
