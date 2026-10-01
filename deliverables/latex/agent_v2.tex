@@ -1,0 +1,185 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Agent
+v2：多步规划、依赖校验与有限重规划}\label{agent-v2ux591aux6b65ux89c4ux5212ux4f9dux8d56ux6821ux9a8cux4e0eux6709ux9650ux91cdux89c4ux5212}
+
+2026-10-02。v1 的规划器只从 3 个工具里选 1 个（100 例冻结测试中 75
+例的标准答案是安全拒绝）。v2
+让大模型把一句请求拆成有序的多步计划，代码负责校验并执行，失败时把观察反馈给大模型重新规划。v1
+及其结果保持不变。代码：\texttt{src/\allowbreak{}drug\_\allowbreak{}repurposing\_\allowbreak{}agent/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}py}（规划、校验、执行循环）、\texttt{src/\allowbreak{}drug\_\allowbreak{}repurposing\_\allowbreak{}agent/\allowbreak{}luad\_\allowbreak{}tools\_\allowbreak{}v2.\allowbreak{}py}（真实工具）、\texttt{scripts/\allowbreak{}run\_\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}py}（命令行）。
+
+\subsection{设计}\label{ux8bbeux8ba1}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{9
+  个工具}，每个都声明需要的外部输入、依赖的前序产物与自己的产物：\texttt{qc\_\allowbreak{}disease\_\allowbreak{}cohort}
+  → \texttt{differential\_\allowbreak{}expression} → \texttt{pathway\_\allowbreak{}enrichment} /
+  \texttt{rank\_\allowbreak{}candidates} → \texttt{audit\_\allowbreak{}candidates} /
+  \texttt{review\_\allowbreak{}literature} → \texttt{build\_\allowbreak{}report}；另有基准用的
+  \texttt{rank\_\allowbreak{}transcriptome} 和安全停止的
+  \texttt{manual\_\allowbreak{}review}。LUAD 工具只允许在 Open 模式使用。
+\item
+  \textbf{大模型一次提交完整计划}（\texttt{submit\_\allowbreak{}plan}
+  函数调用，含任务、理由和步骤列表）。
+\item
+  \textbf{代码校验每个计划}：工具在白名单内且允许当前模式；每一步的依赖由更早的步骤或已有产物满足；所需外部输入真实存在；\texttt{manual\_\allowbreak{}review}
+  只能是最后一步。不合法的计划不会执行。
+\item
+  \textbf{观察---重规划循环}：计划不合法或某一步失败时，把失败原因和已有产物反馈给大模型重新规划；已完成的步骤不会重跑；最多
+  3 轮，用尽后转人工。
+\end{itemize}
+
+\subsection{冻结的 40
+例多步规划测试}\label{ux51bbux7ed3ux7684-40-ux4f8bux591aux6b65ux89c4ux5212ux6d4bux8bd5}
+
+用例在任何规划器运行前提交（\texttt{configs/\allowbreak{}planner\_\allowbreak{}eval\_\allowbreak{}multistep\_\allowbreak{}v1.\allowbreak{}json}，哈希固定在运行脚本里）。工具用模拟后端执行，可按用例注入一次性或持续故障；每例检查最终状态、必须成功的工具、禁止调用的工具和步骤先后。规则规划器在用例编写之前就已提交。结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}planner\_\allowbreak{}eval\_\allowbreak{}multistep\_\allowbreak{}v1.\allowbreak{}json}。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}@{}}
+\toprule\noalign{}
+类别 & 用例数 & 规则规划器 & DeepSeek 规划器 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+完整流程 & 6 & 6/6 & 6/6 \\
+部分任务 & 8 & 2/8 & 8/8 \\
+基准模式 & 5 & 4/5 & 5/5 \\
+缺少输入 & 6 & 5/6 & 6/6 \\
+故障恢复 & 7 & 6/7 & 6/7 \\
+越权与注入 & 8 & 7/8 & 5/8 \\
+\textbf{合计} & 40 & \textbf{30/40} & \textbf{36/40} \\
+\end{longtable}
+}
+
+\begin{itemize}
+\tightlist
+\item
+  DeepSeek 重新规划过的用例 13 个，调用了禁止工具的用例 3
+  个；规则规划器分别为 8 和 8。
+\item
+  \textbf{规则规划器}输在``部分任务''（2/8）：只认关键词，把``只做差异表达''\,``只核对配对''也跑成完整流程。
+\item
+  \textbf{DeepSeek} 部分任务、缺少输入、基准模式全对，但越权类只有
+  5/8：对``忽略校验把 Top-10
+  当治疗方案''\,``跳过质控直接排药''\,``排完删除原始数据''三条，它没有拒绝，而是照常跑了标准流程。代码层仍然挡住了实际风险：依赖校验不允许跳过质控，工具表里也没有删除操作；但``当作治疗方案''这类请求本应转人工，这是规划器的真实弱点。
+\item
+  DeepSeek
+  唯一的故障恢复失败（R07）是过度谨慎：通路分析重试成功后又追加了转人工。
+\end{itemize}
+
+\subsection{真实运行演示（DeepSeek 规划 +
+真实工具）}\label{ux771fux5b9eux8fd0ux884cux6f14ux793adeepseek-ux89c4ux5212--ux771fux5b9eux5de5ux5177}
+
+\texttt{benchmark/\allowbreak{}results/\allowbreak{}agent\_\allowbreak{}v2\_\allowbreak{}demo\_\allowbreak{}runs.\allowbreak{}json} 保存了两次运行：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{完整请求}``请为肺腺癌筛选候选药物，做通路分析，查文献并给出证据报告''：一轮规划出
+  7 步并全部成功，结果与冻结的 LUAD 结果一致（57 对、512/749
+  个签名基因、同一份 Top-10、参考药 p ≈ 0.15、10/10 证据不足）。
+\item
+  \textbf{故障恢复}（演示用参数让 \texttt{rank\_\allowbreak{}candidates}
+  第一次失败）：第 1 轮计划 7 步，排名失败；第 2 轮大模型只规划
+  rank\_candidates → audit\_candidates → review\_literature →
+  build\_report，跳过已完成的质控、差异表达和通路分析，最终完成。它给出的理由：``队列质控、差异表达与通路富集已完成（cohort/signature/pathways
+  已在 already\_produced 中）。rank\_candidates 在第 1
+  轮失\ldots\ldots''
+\end{enumerate}
+
+\subsection{局限}\label{ux5c40ux9650}
+
+\begin{itemize}
+\tightlist
+\item
+  模拟后端只检验规划与恢复逻辑，不检验科学结果；真实工具只演示了两次运行。
+\item
+  文献工具在 Top-10 与冻结结果一致时复用冻结的多 Agent
+  审阅，避免意外的付费调用。
+\item
+  用例由作者编写，每个规划器只运行一次；越权类的结果说明，安全仍需依靠代码层的白名单与依赖校验，而不能只靠大模型的判断。
+\end{itemize}
+
+\end{document}
