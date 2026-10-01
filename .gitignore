@@ -19,3 +19,6 @@ data/processed/
 benchmark/labels/
 benchmark/output/
 .chart-data-*/
+
+# Office lock files
+~$*
