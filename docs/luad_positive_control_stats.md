@@ -1,6 +1,6 @@
 # LUAD 阳性对照的汇总恢复指标（v1）
 
-2026-10-01。排名前预先冻结的 11 个 LUAD 参考药中，5 个在 EH3226 A549 的 4920 个药名里可测：docetaxel 106、crizotinib 241、gefitinib 2444、paclitaxel 2962、erlotinib 3147。其余 6 个未测得，按规则排除，不计为失败。脚本：`python -m evals.luad_positive_control_stats`；结果：`benchmark/results/luad_positive_control_stats_v1.json`。名次来源：docs/luad_screening_report.md (recorded ranks; EH3226 not re-run here)。
+2026-10-01。排名前预先冻结的 11 个 LUAD 参考药中，5 个在 EH3226 A549 的 4920 个药名里可测：docetaxel 106、crizotinib 241、gefitinib 2444、paclitaxel 2962、erlotinib 3147。其余 6 个未测得，按规则排除，不计为失败。脚本：`python -m evals.luad_positive_control_stats`；结果：`benchmark/results/luad_positive_control_stats_v1.json`。名次来源：artifacts\reports\luad_eh3226\positive_control_ranks.csv (sha256 matches data/manifests/eh3226-luad.json)（2026-10-01 下载 EH3226 后重新生成，对照名次文件与冻结哈希逐字节一致，数值不变）。
 
 | 指标 | 观测值 | 随机期望 | 单侧 p |
 |---|---:|---:|---:|

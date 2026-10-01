@@ -39,6 +39,14 @@
 - [ ] ~~轮换 DeepSeek API Key~~：用户决定继续使用现有 key（2026-09-28）。
 - [x] `codex/deepseek-planner` 已合并到 `main` 并推送（`72fe99f`；gh 未登录，因此用 git 合并提交代替 PR 对象）。
 
+## 2026-10-01 补充实验（已完成）
+
+- [x] 重叠校正检验与次要指标（`docs/benchmark_stats_v1.md`）：B4 对 BNNR p = 0.066，不显著。
+- [x] B3 组件消融，仅开发种子（`docs/b3_component_ablation.md`）。
+- [x] LUAD 通路富集（`docs/luad_pathway_enrichment.md`）与 Top-10 通路反转（`docs/luad_pathway_reversal.md`）。
+- [x] 阳性对照汇总统计（`docs/luad_positive_control_stats.md`）：p = 0.15，不显著。
+- [x] Agent 端到端稳定性（`docs/agent_repeatability.md`）。
+
 ## 外部条件：Jev
 
 - [ ] 确认是否提供 TypeSafe Jev 的可用访问凭据。若无法取得，保留接口与模拟测试，但明确标注 Jev 实测及对比未完成。决策层对比先用 J0/J1/J3 完成（见上）。

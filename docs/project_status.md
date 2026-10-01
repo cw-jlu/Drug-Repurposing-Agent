@@ -45,6 +45,8 @@
 
 - Round-2 B4 (B3 + NumPy BNNR, 1:2 row-rank ensemble, frozen at `e5ff7e7`): NS-AUC 0.7453 random simple (rank 1/13) and 0.6585 weakly correlated (rank 3/13). B4 ranks first on random simple but not on weakly correlated, where MBiRW (0.7384) leads. It is therefore not state of the art across both protocols. Correction (2026-10-01): seed test sets overlap, and under the Nadeau–Bengio corrected test the B4 − BNNR difference (+0.0122) has p = 0.066, 95% CI [-0.0008, +0.0251]. The random-split lead is therefore not significant, and BNNR remains stronger on global NDCG and HR@10 ([benchmark_stats_v1](benchmark_stats_v1.md)).
 
+- 2026-10-01 follow-ups: overlap-corrected tests show the B4 − BNNR random-split lead is not significant (p = 0.066). A dev-seed ablation shows disease popularity and label co-occurrence drive B3, while reversal alone is at chance. LUAD Hallmark enrichment finds proliferation and glycolysis up, and inflammatory and complement programmes down. Top-10 pathway reversal concentrates on glycolysis, G2-M/E2F and hypoxia; it is not independent validation. The reference-drug recovery statistic is not significant (p = 0.15). In the Agent repeatability check, DeepSeek completed 10/10 and the rule planner 8/10, with identical outputs across all completed runs.
+
 ## Needed for the planned final deliverable
 
 1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
