@@ -1,9 +1,9 @@
 """Architecture diagram (fig9) and LUAD workflow flowchart (fig10).
 
 Component, tool and status names follow src/drug_repurposing_agent/agent.py
-(TOOLS: rank_transcriptome, package_luad_case, manual_review; statuses
-planning/blocked/needs_input/manual_review_required/completed/failed) and the
-committed scripts. Numbers come from the committed result files.
+and agent_v2.py (nine tools with declared inputs/dependencies, plan validation,
+observe-and-re-plan for up to 3 rounds) and the committed scripts. Numbers come
+from the committed result files.
 """
 
 from __future__ import annotations
@@ -58,8 +58,8 @@ def legend(ax, x, y):
 
 
 def architecture() -> None:
-    planner = json.loads(Path("benchmark/results/planner_eval_v3_deepseek_flash.json").read_text(encoding="utf-8"))
-    p = next(r for r in planner["results"] if r["planner"].startswith("deepseek"))
+    multi = json.loads(Path("benchmark/results/planner_eval_multistep_v1.json").read_text(encoding="utf-8"))
+    ms = multi["planners"]["deepseek_v2:deepseek-flash"]["summary"]
     fig, ax = plt.subplots(figsize=(15, 9.2))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
     ax.text(0.5, 0.995, "系统架构：LLM 只负责理解与编排，数值计算交给确定性工具，代码做最终校验", ha="center",
@@ -72,12 +72,12 @@ def architecture() -> None:
     y1, h1 = 0.735, 0.16
     box(ax, 0.04, y1 + 0.015, 0.16, 0.13, "自然语言请求", "例：请为肺腺癌筛选候选药物\n模式：Strict / Open", kind="user")
     box(ax, 0.26, y1, 0.22, h1, "Planner（LLM）",
-        f"DeepSeek 函数调用；规则规划器兜底\n只看到：模式 + 可用输入名称\n看不到：数据、文件路径、标签\n冻结 holdout {p['correct']}/100",
+        f"一次提交多步计划（submit_plan）\n只看到：模式、可用输入、已完成产物\n看不到：数据、文件路径、标签\n40 例多步规划 {ms['passed']}/40",
         kind="llm", title_color=TEAL)
-    box(ax, 0.54, y1, 0.2, h1, "工具调用校验（代码）",
-        "工具名必须在白名单内\n参数符合 JSON Schema\n当前模式是否允许该工具\n缺输入 → needs_input", kind="code")
+    box(ax, 0.54, y1, 0.2, h1, "计划校验（代码）",
+        "每个工具都在白名单内\n当前模式允许该工具\n依赖由前序步骤产出\n所需外部输入真实存在", kind="code")
     box(ax, 0.8, y1, 0.17, h1, "决策门控",
-        "规则算结构化字段\nLLM 只判读文字备注\n置信度不足 → 转人工\n（Jev 接口已预留）", kind="llm", title_color=TEAL)
+        "规则算结构化字段\nLLM / Jev 只判读文字备注\n置信度不足 → 转人工\n（Jev 已实测）", kind="llm", title_color=TEAL)
     arrow(ax, (0.2, y1 + h1 / 2), (0.26, y1 + h1 / 2))
     arrow(ax, (0.48, y1 + h1 / 2), (0.54, y1 + h1 / 2))
     arrow(ax, (0.74, y1 + h1 / 2), (0.8, y1 + h1 / 2))
@@ -86,7 +86,10 @@ def architecture() -> None:
     yb, hb = 0.58, 0.09
     ax.add_patch(FancyBboxPatch((0.04, yb), 0.93, hb, boxstyle="round,pad=0.008,rounding_size=0.015",
                                 fc="#FFFFFF", ec="#C9D2D8", lw=0.9, ls="--"))
-    label(ax, 0.05, yb + 0.058, "状态机（每一步写入 SHA-256 链式 JSONL 轨迹）", color=NAVY, size=9.5, weight="bold")
+    label(ax, 0.05, yb + 0.058, "执行与状态机（每一步写入 SHA-256 链式 JSONL 轨迹）", color=NAVY, size=9.5, weight="bold")
+    label(ax, 0.47, yb + 0.058, "计划不合法 / 某步失败 → 把观察反馈给 Planner 重新规划（≤3 轮，已完成步骤不重跑）",
+          color=RED, size=9, weight="bold")
+    path(ax, [(0.37, yb + hb), (0.37, y1)], color=RED)
     states = [("planning", MUTED), ("completed", TEAL), ("needs_input", RED), ("blocked", RED),
               ("manual_review_required", RED), ("failed", RED)]
     for (s, c), x in zip(states, (0.06, 0.19, 0.33, 0.48, 0.61, 0.86)):
@@ -96,16 +99,16 @@ def architecture() -> None:
 
     # Row 3: tools
     y3, h3 = 0.33, 0.2
-    tools = [(0.04, 0.28, "rank_transcriptome（Strict + Open）",
-              "按基因 ID 对齐药物/疾病表达矩阵\n负 Spearman 反转 + 上下调基因集连接性\nRRF 融合（k=60），不读任何标签\nBenchmark 适配：B2 / B3 / B4（含 BNNR 移植）", "tool", RED),
-             (0.36, 0.28, "package_luad_case（仅 Open）",
-              "核对冻结输入/输出哈希\n打包 Top-10、身份审计、阳性对照\n证据账本与执行轨迹\nmanual_review：不支持的任务安全停止", "tool", RED),
-             (0.68, 0.29, "证据层（多 Agent）",
-              "文献 Agent：PubMed 检索 + 原文引语\n批评 Agent：独立检索反对证据\n协调者：给出证据分级", "llm", TEAL)]
+    tools = [(0.04, 0.28, "LUAD 工具链（仅 Open，带依赖）",
+              "qc_disease_cohort → differential_expression\n→ pathway_enrichment / rank_candidates\n→ audit_candidates → build_report\n每个工具声明输入、依赖与产物", "tool", RED),
+             (0.36, 0.28, "review_literature（多 Agent）",
+              "文献 Agent：PubMed 检索 + 原文引语\n批评 Agent：独立检索反对证据\n协调者：给出证据分级", "llm", TEAL),
+             (0.68, 0.29, "rank_transcriptome · manual_review",
+              "基准排名（Strict + Open），不读任何标签\nB2 / B3 / B4 适配 RECeSS 官方 Runner\nmanual_review：不安全或无法执行时停止", "tool", RED)]
     for x, w, t, b, k, c in tools:
         box(ax, x, y3, w, h3, t, b, kind=k, title_color=c)
         arrow(ax, (x + w / 2, yb), (x + w / 2, y3 + h3))
-    label(ax, 0.512, yb - 0.03, "completed 路径按计划调用工具", color=MUTED, size=8.6, ha="left")
+    label(ax, 0.512, yb - 0.03, "按通过校验的计划依次调用工具", color=MUTED, size=8.6, ha="left")
 
     # Row 4: validator spanning full width
     y4, h4 = 0.19, 0.09
@@ -142,7 +145,7 @@ def workflow() -> None:
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
     ax.text(0.5, 0.995, "端到端流程：从自然语言请求到肺腺癌候选药物证据报告", ha="center", va="top",
             fontsize=14, weight="bold", color=NAVY)
-    legend(ax, 0.29, 0.948)
+    legend(ax, 0.575, 0.948)
     W, H, DW, DH = 0.16, 0.095, 0.15, 0.105
     col = [0.02, 0.22, 0.42, 0.62, 0.82]
     cx = [c + W / 2 for c in col]
@@ -151,22 +154,22 @@ def workflow() -> None:
     # Row 1: request -> plan -> check -> inputs -> (stop)
     y1 = 0.80; m1 = y1 + H / 2
     box(ax, col[0], y1, W, H, "1. 自然语言请求", "“请为肺腺癌筛选候选药物”", kind="user", size=10)
-    box(ax, col[1], y1, W, H, "2. Planner 生成计划", "LLM 选择允许的工具\n与参数", kind="llm", title_color=TEAL, size=10)
-    diamond(ax, cx[2], m1, DW, DH, "3. 工具与参数\n通过校验？")
-    diamond(ax, cx[3], m1, DW, DH, "4. 所需输入\n都已提供？")
-    box(ax, col[4], y1, W, H, "停止并记录", "blocked / needs_input\n写明原因", kind="out", title_color=RED, size=10)
+    box(ax, col[1], y1, W, H, "2. Planner 多步规划", "LLM 一次提交有序步骤\n（9 个工具，带依赖）", kind="llm", title_color=TEAL, size=10)
+    diamond(ax, cx[2], m1, DW, DH, "3. 计划通过校验？\n白名单/模式/依赖/输入")
+    diamond(ax, cx[3], m1, DW, DH, "4. 计划是否为\n安全停止？")
+    box(ax, col[4], y1, W, H, "转人工并记录", "manual_review_required\n写明原因", kind="out", title_color=RED, size=10)
     arrow(ax, (col[0] + W, m1), (col[1], m1))
     arrow(ax, (col[1] + W, m1), (cx[2] - DW / 2, m1))
     arrow(ax, (cx[2] + DW / 2, m1), (cx[3] - DW / 2, m1)); label(ax, cx[2] + DW / 2 + 0.008, m1 + 0.008, "是", color=TEAL)
-    arrow(ax, (cx[3] + DW / 2, m1), (col[4], m1), color=RED); label(ax, cx[3] + DW / 2 + 0.008, m1 + 0.008, "否", color=RED)
-    # 3 "no": up and over to the stop box
-    path(ax, [(cx[2], m1 + DH / 2), (cx[2], 0.925), (cx[4], 0.925), (cx[4], y1 + H)], color=RED)
-    label(ax, cx[2] + 0.006, 0.905, "否", color=RED)
+    arrow(ax, (cx[3] + DW / 2, m1), (col[4], m1), color=RED); label(ax, cx[3] + DW / 2 + 0.008, m1 + 0.008, "是", color=RED)
+    # 3 "no": feed the reason back to the planner (re-plan, <= 3 rounds)
+    path(ax, [(cx[2], m1 + DH / 2), (cx[2], 0.925), (cx[1], 0.925), (cx[1], y1 + H)], color=RED)
+    label(ax, cx[1] + 0.006, 0.935, "否：反馈原因，重新规划（≤3 轮，用尽则转人工）", color=RED)
     # 4 "yes": down then left to step 5
     y2 = 0.585
     lane12 = 0.735
     path(ax, [(cx[3], m1 - DH / 2), (cx[3], lane12), (cx[0], lane12), (cx[0], y2 + H)], color=TEAL)
-    label(ax, cx[3] + 0.006, lane12 + 0.012, "是：Open 模式执行 LUAD 流程", color=TEAL)
+    label(ax, cx[3] + 0.006, lane12 + 0.012, "否：按计划依次执行（示例为完整 LUAD 计划）", color=TEAL)
 
     # Row 2: data -> DEG -> pathways -> drug signatures -> scoring
     row2 = [T("5. 疾病数据质控", "GSE32863：核实 57 对\n肿瘤/正常，排除 2 份", "tool", RED),
@@ -210,8 +213,7 @@ def workflow() -> None:
     arrow(ax, (cx[1], m4 - (DH + 0.01) / 2), (cx[1], 0.105), color=RED); label(ax, cx[1] + 0.008, 0.125, "否", color=RED)
     arrow(ax, (col[2] + W, m4), (col[3], m4))
 
-    ax.text(0.71, 0.06, "全程：每一步写入 SHA-256 链式轨迹；LLM 不接触数值计算\nBenchmark（Strict）模式只允许 rank_transcriptome，"
-            "LLM 看不到药名与标签", ha="center", va="center", fontsize=9.3, color=NAVY, linespacing=1.5,
+    ax.text(0.71, 0.06, "任一步失败：带着已完成产物回到第 2 步重新规划（≤3 轮）\n全程写入链式轨迹；LLM 不接触数值计算；Strict 模式只允许 rank_transcriptome", ha="center", va="center", fontsize=9.3, color=NAVY, linespacing=1.5,
             bbox={"boxstyle": "round,pad=0.5", "fc": "#F3F6F8", "ec": "#C9D2D8"})
     fig.savefig(OUT / "fig10_workflow.png", dpi=200, bbox_inches="tight")
     fig.savefig(OUT / "fig10_workflow.svg", bbox_inches="tight")
