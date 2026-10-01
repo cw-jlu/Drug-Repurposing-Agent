@@ -1,0 +1,322 @@
+{
+  "generated_at": "2026-10-01T08:51:33.547015+00:00",
+  "frozen_top10": [
+    "hydrocortisone",
+    "beclomethasone-dipropionate",
+    "clocortolone-pivalate",
+    "mometasone",
+    "flumetasone",
+    "BRD-K84203638",
+    "hydrocortisone-hemisuccinate",
+    "fluorometholone",
+    "fluticasone",
+    "diflorasone"
+  ],
+  "default_reproduces_frozen": true,
+  "landmark_genes": 961,
+  "steroid_rule": "(cort|sone|solone|olone|nide|betamethasone|dexamethasone|prednis|triamcinolone|fluocinolone|halcinonide|amcinonide)",
+  "steroid_labels": {
+    "AZ-628": false,
+    "BRD-A47816767": false,
+    "BRD-K18726304": false,
+    "BRD-K84203638": false,
+    "BRD-K97972722": false,
+    "GDC-0941": false,
+    "NVP-BEZ235": false,
+    "alclometasone": true,
+    "beclomethasone-dipropionate": true,
+    "clocortolone-pivalate": true,
+    "diflorasone": true,
+    "floxuridine": false,
+    "flumetasone": true,
+    "fluocinolone": true,
+    "fluorometholone": true,
+    "fluticasone": true,
+    "hydrocortisone": true,
+    "hydrocortisone-hemisuccinate": true,
+    "importazole": false,
+    "medrysone": true,
+    "mometasone": true,
+    "naproxol": false,
+    "wortmannin": false
+  },
+  "hub_moa": {
+    "AZ-628": "RAF inhibitor",
+    "BRD-A47816767": null,
+    "BRD-K18726304": null,
+    "BRD-K84203638": null,
+    "BRD-K97972722": null,
+    "GDC-0941": "PI3K inhibitor",
+    "NVP-BEZ235": "mTOR inhibitor | PI3K inhibitor",
+    "alclometasone": null,
+    "beclomethasone-dipropionate": "glucocorticoid receptor agonist",
+    "clocortolone-pivalate": "steroid",
+    "diflorasone": null,
+    "floxuridine": "DNA synthesis inhibitor",
+    "flumetasone": null,
+    "fluocinolone": null,
+    "fluorometholone": "glucocorticoid receptor agonist",
+    "fluticasone": null,
+    "hydrocortisone": "glucocorticoid receptor agonist",
+    "hydrocortisone-hemisuccinate": null,
+    "importazole": null,
+    "medrysone": "glucocorticoid receptor agonist",
+    "mometasone": "glucocorticoid receptor agonist",
+    "naproxol": null,
+    "wortmannin": "PI3K inhibitor"
+  },
+  "hub_annotation_sha256": "5f8284538e73c19a316d1cf45ea10300de6e15c555d75ced7c1b7387457fc523",
+  "variants": {
+    "FDR<0.01, |log2FC|>=0.58": {
+      "up": 155,
+      "down": 121,
+      "top10": [
+        "AZ-628",
+        "clocortolone-pivalate",
+        "beclomethasone-dipropionate",
+        "hydrocortisone",
+        "importazole",
+        "GDC-0941",
+        "BRD-K97972722",
+        "wortmannin",
+        "NVP-BEZ235",
+        "BRD-A47816767"
+      ],
+      "overlap_with_frozen": 3,
+      "jaccard_with_frozen": 0.176,
+      "steroids_in_top10": 3,
+      "control_mean_percentile": 0.4130081300813008
+    },
+    "FDR<0.01, |log2FC|>=1": {
+      "up": 57,
+      "down": 50,
+      "top10": [
+        "hydrocortisone",
+        "beclomethasone-dipropionate",
+        "clocortolone-pivalate",
+        "mometasone",
+        "flumetasone",
+        "BRD-K84203638",
+        "hydrocortisone-hemisuccinate",
+        "fluorometholone",
+        "fluticasone",
+        "diflorasone"
+      ],
+      "overlap_with_frozen": 10,
+      "jaccard_with_frozen": 1.0,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.3617886178861789
+    },
+    "FDR<0.01, |log2FC|>=1.5": {
+      "up": 16,
+      "down": 18,
+      "top10": [
+        "clocortolone-pivalate",
+        "mometasone",
+        "beclomethasone-dipropionate",
+        "fluticasone",
+        "flumetasone",
+        "hydrocortisone-hemisuccinate",
+        "hydrocortisone",
+        "fluocinolone",
+        "naproxol",
+        "alclometasone"
+      ],
+      "overlap_with_frozen": 7,
+      "jaccard_with_frozen": 0.538,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.4273577235772358
+    },
+    "FDR<0.05, |log2FC|>=0.58": {
+      "up": 155,
+      "down": 121,
+      "top10": [
+        "AZ-628",
+        "clocortolone-pivalate",
+        "beclomethasone-dipropionate",
+        "hydrocortisone",
+        "importazole",
+        "GDC-0941",
+        "BRD-K97972722",
+        "wortmannin",
+        "NVP-BEZ235",
+        "BRD-A47816767"
+      ],
+      "overlap_with_frozen": 3,
+      "jaccard_with_frozen": 0.176,
+      "steroids_in_top10": 3,
+      "control_mean_percentile": 0.4130081300813008
+    },
+    "FDR<0.05, |log2FC|>=1": {
+      "up": 57,
+      "down": 50,
+      "top10": [
+        "hydrocortisone",
+        "beclomethasone-dipropionate",
+        "clocortolone-pivalate",
+        "mometasone",
+        "flumetasone",
+        "BRD-K84203638",
+        "hydrocortisone-hemisuccinate",
+        "fluorometholone",
+        "fluticasone",
+        "diflorasone"
+      ],
+      "overlap_with_frozen": 10,
+      "jaccard_with_frozen": 1.0,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.3617886178861789
+    },
+    "FDR<0.05, |log2FC|>=1.5": {
+      "up": 16,
+      "down": 18,
+      "top10": [
+        "clocortolone-pivalate",
+        "mometasone",
+        "beclomethasone-dipropionate",
+        "fluticasone",
+        "flumetasone",
+        "hydrocortisone-hemisuccinate",
+        "hydrocortisone",
+        "fluocinolone",
+        "naproxol",
+        "alclometasone"
+      ],
+      "overlap_with_frozen": 7,
+      "jaccard_with_frozen": 0.538,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.4273577235772358
+    },
+    "FDR<0.1, |log2FC|>=0.58": {
+      "up": 155,
+      "down": 121,
+      "top10": [
+        "AZ-628",
+        "clocortolone-pivalate",
+        "beclomethasone-dipropionate",
+        "hydrocortisone",
+        "importazole",
+        "GDC-0941",
+        "BRD-K97972722",
+        "wortmannin",
+        "NVP-BEZ235",
+        "BRD-A47816767"
+      ],
+      "overlap_with_frozen": 3,
+      "jaccard_with_frozen": 0.176,
+      "steroids_in_top10": 3,
+      "control_mean_percentile": 0.4130081300813008
+    },
+    "FDR<0.1, |log2FC|>=1": {
+      "up": 57,
+      "down": 50,
+      "top10": [
+        "hydrocortisone",
+        "beclomethasone-dipropionate",
+        "clocortolone-pivalate",
+        "mometasone",
+        "flumetasone",
+        "BRD-K84203638",
+        "hydrocortisone-hemisuccinate",
+        "fluorometholone",
+        "fluticasone",
+        "diflorasone"
+      ],
+      "overlap_with_frozen": 10,
+      "jaccard_with_frozen": 1.0,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.3617886178861789
+    },
+    "FDR<0.1, |log2FC|>=1.5": {
+      "up": 16,
+      "down": 18,
+      "top10": [
+        "clocortolone-pivalate",
+        "mometasone",
+        "beclomethasone-dipropionate",
+        "fluticasone",
+        "flumetasone",
+        "hydrocortisone-hemisuccinate",
+        "hydrocortisone",
+        "fluocinolone",
+        "naproxol",
+        "alclometasone"
+      ],
+      "overlap_with_frozen": 7,
+      "jaccard_with_frozen": 0.538,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.4273577235772358
+    },
+    "top-25 per direction (FDR<0.05)": {
+      "up": 25,
+      "down": 25,
+      "top10": [
+        "hydrocortisone",
+        "mometasone",
+        "clocortolone-pivalate",
+        "naproxol",
+        "fluticasone",
+        "flumetasone",
+        "alclometasone",
+        "diflorasone",
+        "hydrocortisone-hemisuccinate",
+        "beclomethasone-dipropionate"
+      ],
+      "overlap_with_frozen": 8,
+      "jaccard_with_frozen": 0.667,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.3864634146341463
+    },
+    "top-50 per direction (FDR<0.05)": {
+      "up": 50,
+      "down": 50,
+      "top10": [
+        "beclomethasone-dipropionate",
+        "hydrocortisone",
+        "clocortolone-pivalate",
+        "mometasone",
+        "flumetasone",
+        "BRD-K84203638",
+        "hydrocortisone-hemisuccinate",
+        "diflorasone",
+        "medrysone",
+        "fluticasone"
+      ],
+      "overlap_with_frozen": 9,
+      "jaccard_with_frozen": 0.818,
+      "steroids_in_top10": 9,
+      "control_mean_percentile": 0.3610975609756098
+    },
+    "top-100 per direction (FDR<0.05)": {
+      "up": 100,
+      "down": 100,
+      "top10": [
+        "importazole",
+        "AZ-628",
+        "hydrocortisone",
+        "GDC-0941",
+        "clocortolone-pivalate",
+        "BRD-K18726304",
+        "floxuridine",
+        "beclomethasone-dipropionate",
+        "fluticasone",
+        "wortmannin"
+      ],
+      "overlap_with_frozen": 4,
+      "jaccard_with_frozen": 0.25,
+      "steroids_in_top10": 4,
+      "control_mean_percentile": 0.401910569105691
+    }
+  },
+  "summary": {
+    "min_overlap": 3,
+    "min_steroids": 3,
+    "always_in_top10": [
+      "beclomethasone-dipropionate",
+      "clocortolone-pivalate",
+      "hydrocortisone"
+    ]
+  },
+  "deg_sha256": "cbda7ed7a2f2b0bc522b54232907cf3d09d87ecf2db4ae2a18b7af03a94cad3e",
+  "trace_file": "artifacts\\traces\\20261001T085125510238Z_luad_threshold_sensitivity_v1_81575d18788a4cdc9052c96067509864.jsonl"
+}
