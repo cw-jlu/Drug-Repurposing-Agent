@@ -147,7 +147,13 @@ def _score(cases: list[dict], predictions: dict[str, str]) -> dict:
 def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--preflight", action="store_true", help="Validate freeze, no provider calls")
+    parser.add_argument("--model", default=MODEL, help="Provider model (default: the frozen deepseek-flash run)")
+    parser.add_argument("--output", type=Path, default=RESULT)
+    parser.add_argument("--work-dir", type=Path, default=WORK)
     args = parser.parse_args()
+    # Replication runs on another model only change these three paths/names;
+    # cases, policy, prompts and scoring are untouched.
+    globals().update(MODEL=args.model, RESULT=args.output, WORK=args.work_dir)
     config, policy = load_frozen()
     cases = config["cases"]
     trace.emit("frozen_cases_verified", config_sha256=sha256_file(CONFIG),
