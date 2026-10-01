@@ -1,0 +1,186 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Jev 实测：决策层对比（v1 120 例 · v2 40
+例）}\label{jev-ux5b9eux6d4bux51b3ux7b56ux5c42ux5bf9ux6bd4v1-120-ux4f8b--v2-40-ux4f8b}
+
+2026-10-01。Jev 通过 OpenCode Zen
+调用（\texttt{https:/\allowbreak{}/\allowbreak{}opencode.\allowbreak{}ai/\allowbreak{}zen/\allowbreak{}v1/\allowbreak{}systemone}，模型
+\texttt{jev-1.\allowbreak{}13-free}）。付费版 \texttt{jev-1.\allowbreak{}13} 因账户余额不足返回
+HTTP
+402，在得到任何答案前改用限时免费版，修订已单独提交。两组用例、策略文本和门控阈值（低风险
+0.8 / 高风险 0.9）都在调用前冻结，与 LLM
+层完全相同。结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v1\_\allowbreak{}jev.\allowbreak{}json}、\texttt{benchmark/\allowbreak{}results/\allowbreak{}decision\_\allowbreak{}eval\_\allowbreak{}v2\_\allowbreak{}jev.\allowbreak{}json}；汇总：\texttt{benchmark/\allowbreak{}results/\allowbreak{}jev\_\allowbreak{}evaluation\_\allowbreak{}summary.\allowbreak{}json}（\texttt{python\ -m\ evals.\allowbreak{}summarize\_\allowbreak{}jev\_\allowbreak{}evaluation}）。
+
+\subsection{v1：120
+个封闭决策用例}\label{v1120-ux4e2aux5c01ux95edux51b3ux7b56ux7528ux4f8b}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+决策层 & 准确率 & 模糊用例转人工 & 升级率 & 高风险误执行 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+J0 固定规则 & 0.875 & 0.688 & 0.225 & 0.033 \\
+J1 flash & 0.875 & 1.000 & 0.283 & 0.150 \\
+J1 v4-pro & 0.883 & 1.000 & 0.292 & 0.133 \\
+J2 Jev（无门控） & 0.900 & 0.938 & 0.258 & 0.117 \\
+J3 flash + 门控 & 0.792 & 1.000 & 0.400 & 0.083 \\
+J3 v4-pro + 门控 & 0.883 & 1.000 & 0.292 & 0.133 \\
+J3 Jev + 门控 & 0.783 & 1.000 & 0.483 & 0.000 \\
+J4 Jev + 门控 + LLM 兜底 & 0.867 & 1.000 & 0.342 & 0.067 \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}@{}}
+\toprule\noalign{}
+校准与速度 & flash & v4-pro & Jev \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+多分类 Brier（越低越好） & 0.221 & 0.228 & 0.147 \\
+ECE（10 箱，越低越好） & 0.025 & 0.107 & 0.042 \\
+证据充分性 noul AUROC & 1.000 & 0.955 & 1.000 \\
+数据质量评分 Spearman & 0.868 & 0.894 & 0.929 \\
+单次延迟 P50（ms） & 896 & 1775 & 1048 \\
+门控拦下的低置信判断 & 29/120 & 0/120 & 32/120 \\
+\end{longtable}
+}
+
+\subsection{v2：40
+条中文风险备注}\label{v240-ux6761ux4e2dux6587ux98ceux9669ux5907ux6ce8}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+方案 & 正确 / 40 & 高风险误执行 & 风险备注转人工 & 无风险备注误转人工 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+J0 旧规则 & 20 & 0.667 & 0.000 & 0.000 \\
+混合 · flash 判备注 & 39 & 0.000 & 1.000 & 0.050 \\
+混合 · v4-pro 判备注 & 38 & 0.000 & 1.000 & 0.100 \\
+混合 · Jev 判备注 & 39 & 0.000 & 1.000 & 0.050 \\
+混合 · Jev + 置信门控 & 33 & 0.000 & 1.000 & 0.350 \\
+完整 flash & 37 & 0.000 & 0.900 & 0.050 \\
+完整 v4-pro & 37 & 0.167 & 0.850 & 0.000 \\
+完整 Jev & 32 & 0.083 & 0.900 & 0.050 \\
+\end{longtable}
+}
+
+\subsection{结论}\label{ux7ed3ux8bba}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Jev 准确率最高、Brier 最低}：不加门控时准确率
+  0.900，高于规则与两个 DeepSeek 模型；Brier 0.147 明显低于
+  flash（0.221）与 v4-pro（0.228）。但单看校准误差
+  ECE，flash（0.025）略好于
+  Jev（0.042），v4-pro（0.107）最差，所以不能说 Jev
+  在所有校准指标上都最好。数据质量评分的 Spearman 以 Jev 最高（0.929）。
+\item
+  \textbf{Jev + 门控把高风险误执行降到 0}（flash + 门控为 0.083，v4-pro
+  门控从不触发），代价是升级率升至 0.483。J4 把低置信判断交给 flash
+  后，准确率回到 0.867，高风险误执行 0.067，介于两者之间。
+\item
+  \textbf{混合设计对判断器不敏感}：v2
+  中``规则算结构化字段、模型只判备注''的混合层，无论 flash、v4-pro 还是
+  Jev 判备注，高风险误执行都是 0（Jev 39/40）。
+\item
+  \textbf{让模型包办整个决策不稳}：完整 Jev 只有
+  32/40，且出现高风险误执行；完整 v4-pro
+  也出现了。这再次支持``模型只做封闭的窄判断''的分工。
+\item
+  给混合层再叠加置信门控会过度保守（无风险备注 0.350
+  被转人工），不建议在 v2 这类备注判断上使用。
+\item
+  延迟：Jev 单次约 1048 ms，与 flash 相近，明显快于
+  v4-pro。免费模型，未计成本。
+\item
+  局限：用例为按成文策略生成的合成数据，每组一次运行；免费版模型可能与付费版不同。
+\end{itemize}
+
+\end{document}
