@@ -1,0 +1,76 @@
+{
+  "eval_name": "decision_eval_v2_jev",
+  "evaluated_at": "2026-10-01T13:34:54.458815+00:00",
+  "config_sha256": "01b2486a85a9572fbca3eeb9a1df49fef12e543b1c57a331e2096b31359ec252",
+  "model_requested": "jev-1.13-free",
+  "endpoint": "https://opencode.ai/zen/v1/systemone",
+  "design": "Jev on the frozen 40-note decision eval v2 (hybrid note judge and full decision).\n\nDesign fixed before any Jev call (committed with this file):\n* Cases/policy: configs/decision_eval_v2.json + v1 policy, verified by load_frozen().\n* hybrid_jev (primary): Jev answers one `choice` over CONCERN / NO_CONCERN / UNCERTAIN\n  with state {\"note\": <note>} only; the criteria text is the same definition the LLM\n  note judge received. NO_CONCERN -> the frozen J0 rules decide on the structured\n  state with the note removed; any other label or a failed call -> review option.\n  This mirrors the original LLM hybrid exactly.\n* hybrid_jev_gated (secondary): as above, but NO_CONCERN is accepted only when Jev's\n  reported confidence passes the unchanged v1 gate (0.8 low risk / 0.9 high risk).\n* full_jev: Jev answers the case `choice` (v1 gate_question, i.e. the v1 jev_questions\n  decision) with the v1\n  Jev state (policy text + model-visible case), no gate - mirrors full_llm.\nModel: jev-1.13-free via OpenCode Zen. One run; 80 calls.\n",
+  "contains_api_key": false,
+  "layers": {
+    "j0_rules": {
+      "correct": 20,
+      "accuracy": 0.5,
+      "concern_review_recall": 0.0,
+      "benign_unnecessary_review_rate": 0.0,
+      "high_risk_wrong_auto_execution_rate": 0.6667,
+      "by_node": {
+        "evidence_sufficiency": 0.5,
+        "tool_routing": 0.5,
+        "data_quality": 0.5,
+        "candidate_tier": 0.5
+      }
+    },
+    "hybrid_jev": {
+      "correct": 39,
+      "accuracy": 0.975,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review_rate": 0.05,
+      "high_risk_wrong_auto_execution_rate": 0.0,
+      "by_node": {
+        "evidence_sufficiency": 0.9,
+        "tool_routing": 1.0,
+        "data_quality": 1.0,
+        "candidate_tier": 1.0
+      }
+    },
+    "hybrid_jev_gated": {
+      "correct": 33,
+      "accuracy": 0.825,
+      "concern_review_recall": 1.0,
+      "benign_unnecessary_review_rate": 0.35,
+      "high_risk_wrong_auto_execution_rate": 0.0,
+      "by_node": {
+        "evidence_sufficiency": 0.7,
+        "tool_routing": 0.8,
+        "data_quality": 0.8,
+        "candidate_tier": 1.0
+      }
+    },
+    "full_jev": {
+      "correct": 32,
+      "accuracy": 0.8,
+      "concern_review_recall": 0.9,
+      "benign_unnecessary_review_rate": 0.05,
+      "high_risk_wrong_auto_execution_rate": 0.0833,
+      "by_node": {
+        "evidence_sufficiency": 0.8,
+        "tool_routing": 1.0,
+        "data_quality": 0.5,
+        "candidate_tier": 0.9
+      }
+    }
+  },
+  "note_label_counts": {
+    "CONCERN": 21,
+    "NO_CONCERN": 19,
+    "UNCERTAIN": 0
+  },
+  "failures": 0,
+  "calls": 80,
+  "usage": {
+    "input_tokens": 64909,
+    "output_tokens": 4646
+  },
+  "records_sha256": "fb5b344f6b636f10e9ec711cf4028f215c2d9ee9372db80cd30d7bef5dba9f3d",
+  "trace_file": "artifacts\\traces\\20261001T133431867618Z_decision_eval_v2_jev_b0773210593f40b5b73b330ce114b868.jsonl"
+}
