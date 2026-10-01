@@ -1,0 +1,52 @@
+"""Figure 8 and Chinese doc for the Top-10 pathway reversal (reads the committed JSON)."""
+import json
+from pathlib import Path
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
+plt.rcParams["axes.unicode_minus"] = False
+d = json.loads(Path("benchmark/results/luad_pathway_reversal_v1.json").read_text(encoding="utf-8"))
+pct = pd.DataFrame(d["top10_percentile"]).T.loc[d["top10"]]
+order = sorted(pct.columns, key=lambda c: -d["top10_mean_percentile_by_pathway"][c])
+pct = pct[order]
+fig, ax = plt.subplots(figsize=(12, 5.4))
+im = ax.imshow(pct.to_numpy(), cmap="RdBu_r", vmin=0, vmax=1, aspect="auto")
+ax.set_xticks(range(len(order)), [f"{c}\nn={d['pathways'][c]['n_genes']}" for c in order], rotation=30, ha="right", fontsize=9)
+ax.set_yticks(range(len(pct)), [f"#{i+1} {n}" for i, n in enumerate(pct.index)], fontsize=10)
+for i in range(pct.shape[0]):
+    for j in range(pct.shape[1]):
+        v = pct.iat[i, j]
+        ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=8, color="white" if abs(v - 0.5) > 0.35 else "black")
+cb = fig.colorbar(im, ax=ax, fraction=0.03); cb.set_label("在 4,920 个 A549 药物中的反转百分位")
+ax.set_title("Top-10 候选对 LUAD 显著 Hallmark 通路的反转（1 = 最强反转；注意：与排序共用同一疾病签名，非独立验证）", fontsize=11)
+fig.tight_layout()
+for ext in ("png", "svg"):
+    fig.savefig(f"docs/figures/fig8_top10_pathway_reversal.{ext}", dpi=200, bbox_inches="tight")
+
+mean = d["top10_mean_percentile_by_pathway"]
+rows = ["| 通路（方向） | landmark 基因数 | Top-10 平均百分位 |", "|---|---:|---:|"]
+rows += [f"| {c} | {d['pathways'][c]['n_genes']} | {mean[c]:.2f} |" for c in order]
+low = [(n, c, pct.loc[n, c]) for n in pct.index for c in order if pct.loc[n, c] < 0.5]
+low_text = "；".join(f"{n} 在 {c} 上仅 {v:.2f}" for n, c, v in low) or "无"
+doc = f"""# Top-10 候选的通路层面反转（v1）
+
+2026-10-01。规则在计算任何药物分数之前提交（commit `37cac48`）。输入核对在评分前修订并单独提交（`7043665`）：重新生成的排名复现了冻结的 Top-10 与逐字节一致的阳性对照名次，但完整排名文件的哈希{'' if d['all_candidates_sha256_matches_frozen'] else '与冻结版本不一致（不同 NumPy 版本的浮点格式差异）'}。脚本：`python -m scripts.luad_pathway_reversal`；结果：`benchmark/results/luad_pathway_reversal_v1.json`；图：`docs/figures/fig8_top10_pathway_reversal.png`。
+
+**方法**：对疾病签名中 FDR < 0.05 的 Hallmark 通路，取“通路成员 ∩ 该方向疾病差异基因 ∩ 匹配的 LINCS landmark 基因”（至少 5 个）。反转分数 = −方向 × 药物在这些基因上的平均签名值，正值表示药物把这些基因推回正常方向。每个 Top-10 药物在全部 4,920 个 A549 药物中的百分位为最终指标。L1000 只测 978 个 landmark 基因，因此 {len(d['skipped_pathways']['up'])} 条上调、{len(d['skipped_pathways']['down'])} 条下调的显著通路因基因不足被跳过（见 JSON 中 `skipped_pathways`）。
+
+{chr(10).join(rows)}
+
+**解读**
+
+- Top-10 的反转主要集中在肿瘤上调的增殖（G2-M、E2F）与糖酵解基因，以及肿瘤下调的缺氧、TNF-α/NF-κB 基因；这说明排名靠前的药物主要是在把增殖与代谢程序往正常方向推。
+- 少数例外：{low_text}。说明同一类别（糖皮质激素）内部在 EMT 等通路上的作用并不一致。
+- TNF-α/NF-κB 在肿瘤中下调，“反转”意味着药物上调这些基因；这与糖皮质激素经典的抗炎/抑制 NF-κB 作用方向相反，需要谨慎解读：A549 中的 24 小时转录反应不等于体内免疫效应，且这里只用到 11 个 landmark 基因。
+- **重要限制：这不是独立验证。** Top-10 本身就是按反转同一疾病签名选出来的，通路基因又取自同一签名，因此高百分位在很大程度上是选择的必然结果。本分析的价值在于说明反转信号由哪些生物学程序驱动，而不是证明药效。
+"""
+Path("docs/luad_pathway_reversal.md").write_text(doc, encoding="utf-8")
+print("ok", len(low))

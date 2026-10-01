@@ -111,8 +111,10 @@ def _main(trace: TraceRecorder) -> None:
               "input_check": "frozen Top-10 names and byte-exact positive-control ranks reproduced",
               "top10": top10,
               "pathways": {k: {"genes": v, "n_genes": len(v)} for k, v in used.items()},
-              "skipped_pathways": sorted(set(terms["up"]) | set(terms["down"]) -
-                                         {k.rsplit(" (", 1)[0] for k in used}),
+              "skipped_pathways": {
+                  direction: sorted(set(terms[direction]) -
+                                    {k.rsplit(" (", 1)[0] for k in used if k.endswith(label)})
+                  for direction, label in (("up", "(肿瘤上调)"), ("down", "(肿瘤下调)"))},
               "top10_percentile": {d: {k: float(pct.loc[d, k]) for k in pct.columns} for d in top10},
               "top10_score": {d: {k: float(scores.loc[d, k]) for k in scores.columns} for d in top10},
               "top10_mean_percentile_by_pathway": {k: float(pct.loc[top10, k].mean()) for k in pct.columns},
