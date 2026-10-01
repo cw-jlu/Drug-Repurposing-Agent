@@ -46,6 +46,7 @@
 - [x] LUAD 通路富集（`docs/luad_pathway_enrichment.md`）与 Top-10 通路反转（`docs/luad_pathway_reversal.md`）。
 - [x] 阳性对照汇总统计（`docs/luad_positive_control_stats.md`）：p = 0.15，不显著。
 - [x] Agent 端到端稳定性（`docs/agent_repeatability.md`）。
+- [x] LUAD 签名阈值敏感性（`docs/luad_threshold_sensitivity.md`）：糖皮质激素主导只在 |log2FC| ≥ 1 时成立。
 
 ## 外部条件：Jev
 

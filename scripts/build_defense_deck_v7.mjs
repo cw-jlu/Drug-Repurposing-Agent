@@ -217,10 +217,10 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   const H = enr?.libraries?.MSigDB_Hallmark_2020;
   const sigTerms = (d, k) => (H?.[d] ?? []).filter((r) => (r.fdr ?? 1) < 0.05).slice(0, k).map((r) => r.term).join("、");
   const s = content("肺腺癌案例：通路与机制",
-    `约 60 秒。GSE32863 配对差异表达得到 512 上调 / 749 下调基因（FDR<0.05，|log2FC|≥1）。Hallmark 富集：肿瘤上调 ${sigTerms("up", 5)}；肿瘤下调 ${sigTerms("down", 4)}，后者更可能反映正常肺组织免疫/间质成分在肿瘤中减少。右图：Top-10 在这些通路上的反转百分位，主要集中在糖酵解、G2-M/E2F 与缺氧；diflorasone 与 beclomethasone 不反转 EMT 基因。Top-10 中 9/10 属于或很可能属于糖皮质激素，指向 NR3C1 类别假设。注意：Top-10 与通路基因来自同一签名，右图不是独立验证。预先冻结的参考药中 ${pc?.measured_controls ?? 5} 个可测，平均名次百分位 ${pc ? f3(pc.mean_percentile) : "?"}，置换 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著——本筛选没有证明能恢复已知 LUAD 药物。A549 为 KRAS 突变细胞系，结果不能外推到患者。`);
+    `约 60 秒。GSE32863 配对差异表达得到 512 上调 / 749 下调基因（FDR<0.05，|log2FC|≥1）。Hallmark 富集：肿瘤上调 ${sigTerms("up", 5)}；肿瘤下调 ${sigTerms("down", 4)}，后者更可能反映正常肺组织免疫/间质成分在肿瘤中减少。右图：Top-10 在这些通路上的反转百分位，主要集中在糖酵解、G2-M/E2F 与缺氧；diflorasone 与 beclomethasone 不反转 EMT 基因。Top-10 中 9/10 属于或很可能属于糖皮质激素，指向 NR3C1 类别假设；但阈值敏感性分析显示这只在 |log2FC|≥1 及更严时成立，放宽到 0.58 后 Top-10 只剩 3 个原候选，RAF/PI3K/mTOR 抑制剂（Hub 注释）进入，只有 hydrocortisone、beclomethasone、clocortolone 在 12 种设定下都留在 Top-10（docs/luad_threshold_sensitivity.md）。注意：Top-10 与通路基因来自同一签名，右图不是独立验证。预先冻结的参考药中 ${pc?.measured_controls ?? 5} 个可测，平均名次百分位 ${pc ? f3(pc.mean_percentile) : "?"}，置换 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著——本筛选没有证明能恢复已知 LUAD 药物。A549 为 KRAS 突变细胞系，结果不能外推到患者。`);
   s.addImage({ path: "docs/figures/fig7_luad_pathways.png", x: 0.4, y: 1.3, w: 6.3, h: 4.9, sizing: { type: "contain", w: 6.3, h: 4.9 } });
   s.addImage({ path: "docs/figures/fig8_top10_pathway_reversal.png", x: 6.85, y: 1.3, w: 6.1, h: 4.9, sizing: { type: "contain", w: 6.1, h: 4.9 } });
-  txt(s, `9/10 为糖皮质激素（NR3C1 类别假设）；主要反转增殖与糖酵解程序；参考药恢复 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著`, 0.6, 6.4, 11.9, 0.45, 15, { bold: true, color: C.red });
+  txt(s, `预设阈值下 9/10 为糖皮质激素，但放宽阈值后被 RAF/PI3K/mTOR 抑制剂部分取代；参考药恢复 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著`, 0.6, 6.4, 11.9, 0.45, 15, { bold: true, color: C.red });
 }
 
 // 10 Multi-agent review
