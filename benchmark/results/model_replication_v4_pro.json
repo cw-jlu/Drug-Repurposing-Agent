@@ -1,0 +1,133 @@
+{
+  "generated_at": "2026-10-01T12:43:18.779160+00:00",
+  "models": [
+    "deepseek-flash",
+    "deepseek-v4-pro"
+  ],
+  "note": "Same provider and model family; identical frozen cases, prompts and grading. Cost estimates in the source files use the flash price table and are not compared.",
+  "evaluations": {
+    "planner_v3": {
+      "deepseek-flash": {
+        "correct": 98,
+        "cases": 100,
+        "mean_latency_ms": 870.4,
+        "total_tokens": 66540
+      },
+      "deepseek-v4-pro": {
+        "correct": 97,
+        "cases": 100,
+        "mean_latency_ms": 1917.6,
+        "total_tokens": 67566
+      }
+    },
+    "decision_v1": {
+      "deepseek-flash": {
+        "J1_accuracy": 0.875,
+        "J1_high_risk_wrong_auto": 0.15,
+        "J1_review_recall_ambiguous": 1.0,
+        "J1_brier": 0.221,
+        "J1_latency_ms_p50": 896.5,
+        "J3_accuracy": 0.7917,
+        "J3_high_risk_wrong_auto": 0.0833,
+        "J3_escalation_rate": 0.4,
+        "gate_reason_counts": {
+          "low_confidence": 29,
+          "passed_gate": 91
+        }
+      },
+      "deepseek-v4-pro": {
+        "J1_accuracy": 0.8833,
+        "J1_high_risk_wrong_auto": 0.1333,
+        "J1_review_recall_ambiguous": 1.0,
+        "J1_brier": 0.2277,
+        "J1_latency_ms_p50": 1775.0,
+        "J3_accuracy": 0.8833,
+        "J3_high_risk_wrong_auto": 0.1333,
+        "J3_escalation_rate": 0.2917,
+        "gate_reason_counts": {
+          "passed_gate": 120
+        }
+      }
+    },
+    "decision_v2": {
+      "deepseek-flash": {
+        "hybrid": {
+          "correct": 39,
+          "high_risk_wrong_auto": 0.0,
+          "concern_review_recall": 1.0,
+          "benign_unnecessary_review": 0.05
+        },
+        "full_llm": {
+          "correct": 37,
+          "high_risk_wrong_auto": 0.0,
+          "concern_review_recall": 0.9,
+          "benign_unnecessary_review": 0.05
+        }
+      },
+      "deepseek-v4-pro": {
+        "hybrid": {
+          "correct": 38,
+          "high_risk_wrong_auto": 0.0,
+          "concern_review_recall": 1.0,
+          "benign_unnecessary_review": 0.1
+        },
+        "full_llm": {
+          "correct": 37,
+          "high_risk_wrong_auto": 0.1667,
+          "concern_review_recall": 0.85,
+          "benign_unnecessary_review": 0.0
+        }
+      }
+    },
+    "contamination_probe": {
+      "deepseek-flash": {
+        "open_book_auc": 0.5669,
+        "open_book_ci95": [
+          0.5264,
+          0.6088
+        ],
+        "closed_book_auc": 0.5268,
+        "open_minus_closed": 0.0401,
+        "open_minus_closed_ci95": [
+          -0.0221,
+          0.1021
+        ],
+        "calls": 1222,
+        "failures": 0
+      },
+      "deepseek-v4-pro": {
+        "open_book_auc": 0.542,
+        "open_book_ci95": [
+          0.5032,
+          0.5824
+        ],
+        "closed_book_auc": 0.5177,
+        "open_minus_closed": 0.0243,
+        "open_minus_closed_ci95": [
+          -0.0297,
+          0.0783
+        ],
+        "calls": 1222,
+        "failures": 0
+      }
+    }
+  },
+  "sources": {
+    "planner_v3": {
+      "benchmark/results/planner_eval_v3_deepseek_flash.json": "c3e7df7b38b2ef48ca74cadce61fc77ee8bd13eacf2a51906ba0725af611600b",
+      "benchmark/results/planner_eval_v3_deepseek_v4_pro.json": "72add5f0cf572e52cb726f78f2a0973766a8346d0a3bc77d8dc4c4d9901f21e3"
+    },
+    "decision_v1": {
+      "benchmark/results/decision_eval_v1.json": "86139a07f7629e01d975d1941fb90f7ac84490751b366e9ccb2f57aa79e09434",
+      "benchmark/results/decision_eval_v1_deepseek_v4_pro.json": "65f9b0f0d1e16e03acebe37fdce22aaca895bd8747b1d4e67a34e8b2da6a23aa"
+    },
+    "decision_v2": {
+      "benchmark/results/decision_eval_v2.json": "9eb2f9fa0fa1b0cefc2e5fa2b992a56d4a85a9f5278f9e9e7527cb52dacec85c",
+      "benchmark/results/decision_eval_v2_deepseek_v4_pro.json": "a06ea5f401fdd9d202e83dc618cbca6dd0ffa4c700038cb7d6fa1e24010d45ba"
+    },
+    "contamination_probe": {
+      "benchmark/results/contamination_probe_v1.json": "987226fc7476141723ce25716990b0497eeacee78d20dddcc5f948c127b08267",
+      "benchmark/results/contamination_probe_v1_deepseek_v4_pro.json": "b076c1028cae2d6fe212ad011ff4f3acefa2ae3576a482279666fb3ba3bcc257"
+    }
+  }
+}
