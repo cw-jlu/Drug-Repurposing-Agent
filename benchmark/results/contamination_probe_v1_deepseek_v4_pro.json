@@ -1,0 +1,206 @@
+{
+  "experiment": "contamination_probe_v1",
+  "created_at": "2026-10-01T12:41:21.437340+00:00",
+  "status": "aggregate_only_no_raw_prompts",
+  "dataset": "TRANSCRIPT v2.0.0 ratings_mat.csv / items.csv / users.csv",
+  "model": "deepseek-v4-pro",
+  "sample": {
+    "sha256": "898a59fe00cc1dbcdb22a06907737eb723f1b1bbc9c36cc188f59ad422eb4e4b",
+    "seed": 20260928,
+    "positive_cap": 300,
+    "counts": {
+      "1": 300,
+      "0": 300,
+      "-1": 11
+    },
+    "frozen_before_model_calls": true
+  },
+  "mapping_coverage": {
+    "drugs_total": 613,
+    "drugs_mapped": 611,
+    "drugbank_ids": 610,
+    "pubchem_cids": 3,
+    "diseases_total": 151,
+    "diseases_mapped": 150,
+    "positives_total": 401,
+    "positives_both_mapped": 399,
+    "negatives_total": 11,
+    "negatives_both_mapped": 11,
+    "unknown_both_mapped": 91240,
+    "sources": [
+      "mychem.info:drugbank.name",
+      "ncbi_medgen:esummary.title",
+      "pubchem:Title"
+    ],
+    "offline_first_note": "Repurposing Hub files carry Broad IDs, names, InChIKeys and PubChem CIDs but no DrugBank IDs or MedGen CUIs; no in-repo DrugBank/MedGen crosswalk exists, so public APIs were used."
+  },
+  "conditions": {
+    "open_book": {
+      "positive_vs_unknown": {
+        "auc": 0.542,
+        "ci95": [
+          0.5032,
+          0.5824
+        ],
+        "n_positive": 300,
+        "n_negative": 300,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      },
+      "answered": {
+        "1": 300,
+        "0": 300,
+        "-1": 11
+      },
+      "mean_probability": {
+        "1": 0.0351,
+        "0": 0.0303,
+        "-1": 0.0227
+      },
+      "median_probability": {
+        "1": 0.0,
+        "0": 0.0,
+        "-1": 0.0
+      },
+      "count_probability_ge_0_5": {
+        "1": 7,
+        "0": 7,
+        "-1": 0
+      },
+      "distinct_probability_values": 11,
+      "positive_vs_known_negative_descriptive": {
+        "auc": 0.4311,
+        "ci95": [
+          0.2538,
+          0.5959
+        ],
+        "n_positive": 300,
+        "n_negative": 11,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      }
+    },
+    "closed_book": {
+      "positive_vs_unknown": {
+        "auc": 0.5177,
+        "ci95": [
+          0.4859,
+          0.5506
+        ],
+        "n_positive": 300,
+        "n_negative": 300,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      },
+      "answered": {
+        "1": 300,
+        "0": 300,
+        "-1": 11
+      },
+      "mean_probability": {
+        "1": 0.0153,
+        "0": 0.0139,
+        "-1": 0.0251
+      },
+      "median_probability": {
+        "1": 0.004,
+        "0": 0.004,
+        "-1": 0.006
+      },
+      "count_probability_ge_0_5": {
+        "1": 0,
+        "0": 0,
+        "-1": 0
+      },
+      "distinct_probability_values": 7,
+      "positive_vs_known_negative_descriptive": {
+        "auc": 0.3612,
+        "ci95": [
+          0.2251,
+          0.503
+        ],
+        "n_positive": 300,
+        "n_negative": 11,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      }
+    },
+    "raw_reversal_score": {
+      "positive_vs_unknown": {
+        "auc": 0.5194,
+        "ci95": [
+          0.4752,
+          0.5665
+        ],
+        "n_positive": 300,
+        "n_negative": 300,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      },
+      "positive_vs_known_negative_descriptive": {
+        "auc": 0.4894,
+        "ci95": [
+          0.3003,
+          0.6722
+        ],
+        "n_positive": 300,
+        "n_negative": 11,
+        "n_bootstrap": 2000,
+        "bootstrap_seed": 20260928
+      },
+      "mean_score": {
+        "1": -0.0003,
+        "0": -0.0013,
+        "-1": 0.0041
+      }
+    },
+    "open_minus_closed_paired": {
+      "auc_difference": 0.0243,
+      "ci95": [
+        -0.0297,
+        0.0783
+      ],
+      "n_positive": 300,
+      "n_negative": 300,
+      "n_bootstrap": 2000
+    }
+  },
+  "primary_metric": "AUC positives (1) vs unknown (0); -1 comparison is descriptive (tiny n)",
+  "call_counts": {
+    "attempts": 1222,
+    "successes": 1222,
+    "failures": 0,
+    "usage": {
+      "prompt_tokens": 537129,
+      "completion_tokens": 47334,
+      "total_tokens": 584463,
+      "prompt_cache_hit_tokens": 309120,
+      "prompt_cache_miss_tokens": 228009
+    }
+  },
+  "cost_estimate": {
+    "currency": "USD",
+    "pricing_checked_on": "2026-09-24",
+    "price_source": "same table as evals/run_planner_eval.py estimate_cost",
+    "per_million_tokens": {
+      "offpeak": {
+        "cache_hit": 0.003,
+        "cache_miss": 0.15,
+        "output": 0.6
+      },
+      "peak": {
+        "cache_hit": 0.006,
+        "cache_miss": 0.3,
+        "output": 1.2
+      }
+    },
+    "estimated_cost_usd": {
+      "offpeak": 0.063529,
+      "peak": 0.127058
+    }
+  },
+  "trace_file": "artifacts\\contamination_probe\\traces\\20261001T124119394158Z_contamination_probe_5b2ee430ff4e4baa9c99fdc66e3a8dda.jsonl",
+  "checkpoint_sha256": "cca3dcf0a7770c3de54cbbb70f99c4bcb7a204c3192009ca50a0f3fdc9acd3e8",
+  "interpretation": "High open-book AUC indicates name-based recall of memorized indications (label leakage), not discovery; closed-book and raw reversal measure what the expression signal alone supports.",
+  "provider_traces_spot_checked": 20
+}
