@@ -7,7 +7,6 @@ def test_hybrid_requires_no_concern_and_gate_uses_v1_thresholds():
     case = next(c for c in config["cases"] if c["risk_level"] == "high")
     note = {case["id"]: {"label": "NO_CONCERN", "confidence": 0.85}}
     out = decide([case], note, {})
-    assert out["hybrid_jev"][case["id"]] != case["review_option"] or True
     assert out["hybrid_jev_gated"][case["id"]] == case["review_option"]  # 0.85 < 0.9 for high risk
     concern = decide([case], {case["id"]: {"label": "CONCERN", "confidence": 0.99}}, {})
     assert concern["hybrid_jev"][case["id"]] == case["review_option"]

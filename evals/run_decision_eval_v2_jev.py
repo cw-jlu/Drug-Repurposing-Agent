@@ -9,7 +9,8 @@ Design fixed before any Jev call (committed with this file):
   This mirrors the original LLM hybrid exactly.
 * hybrid_jev_gated (secondary): as above, but NO_CONCERN is accepted only when Jev's
   reported confidence passes the unchanged v1 gate (0.8 low risk / 0.9 high risk).
-* full_jev: Jev answers the case `choice` (v1 jev_questions decision) with the v1
+* full_jev: Jev answers the case `choice` (v1 gate_question, i.e. the v1 jev_questions
+  decision) with the v1
   Jev state (policy text + model-visible case), no gate - mirrors full_llm.
 Model: jev-1.13-free via OpenCode Zen. One run; 80 calls.
 """
@@ -27,7 +28,7 @@ from drug_repurposing_agent.data import sha256_file
 from drug_repurposing_agent.jev import JevClient, choice_question
 from drug_repurposing_agent.trace import TraceRecorder, traced_run
 from evals.run_decision_eval_jev_v1 import jev_state
-from evals.run_decision_eval_v1 import j0_decide, jev_questions
+from evals.run_decision_eval_v1 import gate_question, j0_decide
 from evals.run_decision_eval_v2 import FROZEN_SHA256, _score, load_frozen
 
 WORK = Path("artifacts/decision_eval_v2_jev")
@@ -76,7 +77,7 @@ def _main(trace: TraceRecorder) -> None:
         if layer == "note":
             state, questions = {"note": case["state"]["notes"]}, {"label": NOTE_QUESTION}
         else:
-            state, questions = jev_state(case, policy), {"decision": jev_questions(case)["decision"]}
+            state, questions = jev_state(case, policy), {"decision": gate_question(case)}
         try:
             r = client.ask(state, questions)
             a = r["answers"]["label" if layer == "note" else "decision"]
