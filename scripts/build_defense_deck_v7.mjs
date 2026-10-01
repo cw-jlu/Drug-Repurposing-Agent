@@ -165,7 +165,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 // 6 Main benchmark
 {
   const pw = b3.splits[R].paired_ns_auc.B3?.BNNR?.wins;
-  const s = content(`官方 Benchmark：${mainName} 随机拆分均值第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}${b4 && b4Significant === false ? "（与 BNNR 差异不显著）" : ""}，弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}`,
+  const s = content(`Benchmark：${mainName} 随机 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}${b4 && b4Significant === false ? "（与 BNNR 持平）" : ""}、弱相关 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}`,
     `约 70 秒。RECeSS 官方 Runner，与作者公布的 11 个模型逐种子对齐。B3：随机 ${f3(ns(b3, R, "B3"))}（BNNR ${f3(ns(b3, R, "BNNR"))} 第一，B3 在 100 个配对种子中胜 ${pw ?? "?"} 次），弱相关 ${f3(ns(b3, W, "B3"))}（MBiRW ${f3(ns(b3, W, "MBiRW"))} 第一）。${b4 ? `第二轮 B4（B3 + BNNR 的 NumPy 移植，只在开发种子上设计后冻结）：随机 ${f3(ns(b4, R, "B4"))}、弱相关 ${f3(ns(b4, W, "B4"))}。` : ""}${b4 && rankOf(b4, R, "B4") === 1 ? `B4 在随机拆分上的均值高于全部 11 个发表模型（对 BNNR 配对胜 ${b4.splits[R].paired_ns_auc.B4?.BNNR?.wins ?? "?"}/100）。但 100 个种子的测试集互相重叠，用 Nadeau–Bengio 校正检验后，对 BNNR 的差值 p = ${nbB4 ? nbB4.p_two_sided.toFixed(3) : "?"}，95% CI ${nbB4 ? `[${nbB4.mean_ci95[0].toFixed(4)}, ${nbB4.mean_ci95[1].toFixed(4)}]` : "?"}${b4Significant === false ? " 跨 0，只能说与 BNNR 持平" : ""}；global NDCG 与 HR@10 上 BNNR 仍更强。弱相关拆分落后 MBiRW 与 HAN。因此不宣称 SOTA。` : "不训练新模型的方法达到了与训练型协同过滤方法相当的水平，但没有在两种拆分上都超过最强模型，不宣称 SOTA。"}`);
   s.addImage({ path: "docs/figures/fig1_nsauc_boxplot.png", x: 0.55, y: 1.3, w: 12.2, h: 5.55,
     sizing: { type: "contain", w: 12.2, h: 5.55 } });
@@ -211,11 +211,16 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 
 // 9 LUAD biology
 {
-  const s = content("肺腺癌案例：签名与机制",
-    "约 60 秒。GSE32863 配对差异表达得到 512 上调 / 749 下调基因（FDR<0.05，|log2FC|≥1）；肺泡上皮标志物（AGER、SFTPA1、CLDN18）下调，细胞外基质与侵袭相关基因（SPP1、MMP11、COL1A1）上调，符合 LUAD 生物学。A549 签名反转得到的 Top-10 中 8 个是糖皮质激素、共同指向 NR3C1 与 GR 转录通路——这是一个机制假设而不是十个独立发现；A549 为 KRAS 突变细胞系，细胞系结果不能外推到患者。");
-  s.addImage({ path: "docs/figures/fig3_luad_volcano.png", x: 0.4, y: 1.3, w: 6.2, h: 4.9, sizing: { type: "contain", w: 6.2, h: 4.9 } });
-  s.addImage({ path: "docs/figures/fig5_top10_network.png", x: 6.8, y: 1.3, w: 6.1, h: 4.9, sizing: { type: "contain", w: 6.1, h: 4.9 } });
-  txt(s, "Top-10 中 9/10 属于或很可能属于糖皮质激素 → NR3C1 类别假设，而非十个独立疗效证据", 0.6, 6.4, 11.9, 0.45, 15, { bold: true, color: C.red });
+  const enr = has("benchmark/results/luad_pathway_enrichment_v1.json") ? J("benchmark/results/luad_pathway_enrichment_v1.json") : null;
+  const rev9 = has("benchmark/results/luad_pathway_reversal_v1.json") ? J("benchmark/results/luad_pathway_reversal_v1.json") : null;
+  const pc = has("benchmark/results/luad_positive_control_stats_v1.json") ? J("benchmark/results/luad_positive_control_stats_v1.json") : null;
+  const H = enr?.libraries?.MSigDB_Hallmark_2020;
+  const sigTerms = (d, k) => (H?.[d] ?? []).filter((r) => (r.fdr ?? 1) < 0.05).slice(0, k).map((r) => r.term).join("、");
+  const s = content("肺腺癌案例：通路与机制",
+    `约 60 秒。GSE32863 配对差异表达得到 512 上调 / 749 下调基因（FDR<0.05，|log2FC|≥1）。Hallmark 富集：肿瘤上调 ${sigTerms("up", 5)}；肿瘤下调 ${sigTerms("down", 4)}，后者更可能反映正常肺组织免疫/间质成分在肿瘤中减少。右图：Top-10 在这些通路上的反转百分位，主要集中在糖酵解、G2-M/E2F 与缺氧；diflorasone 与 beclomethasone 不反转 EMT 基因。Top-10 中 9/10 属于或很可能属于糖皮质激素，指向 NR3C1 类别假设。注意：Top-10 与通路基因来自同一签名，右图不是独立验证。预先冻结的参考药中 ${pc?.measured_controls ?? 5} 个可测，平均名次百分位 ${pc ? f3(pc.mean_percentile) : "?"}，置换 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著——本筛选没有证明能恢复已知 LUAD 药物。A549 为 KRAS 突变细胞系，结果不能外推到患者。`);
+  s.addImage({ path: "docs/figures/fig7_luad_pathways.png", x: 0.4, y: 1.3, w: 6.3, h: 4.9, sizing: { type: "contain", w: 6.3, h: 4.9 } });
+  s.addImage({ path: "docs/figures/fig8_top10_pathway_reversal.png", x: 6.85, y: 1.3, w: 6.1, h: 4.9, sizing: { type: "contain", w: 6.1, h: 4.9 } });
+  txt(s, `9/10 为糖皮质激素（NR3C1 类别假设）；主要反转增殖与糖酵解程序；参考药恢复 p = ${pc ? f3(pc.permutation_p_one_sided) : "?"}，不显著`, 0.6, 6.4, 11.9, 0.45, 15, { bold: true, color: C.red });
 }
 
 // 10 Multi-agent review
