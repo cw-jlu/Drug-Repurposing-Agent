@@ -1,0 +1,14 @@
+{
+  "MSigDB_Hallmark_2020": {
+    "source": "Enrichr via gseapy.get_library",
+    "terms": 50,
+    "sha256": "11af05d572c37bdbaa6feb311d4109f770c310204bdd0926b3e760ce0db2cc7e",
+    "retrieved": "2026-10-01"
+  },
+  "KEGG_2021_Human": {
+    "source": "Enrichr via gseapy.get_library",
+    "terms": 320,
+    "sha256": "61ff9c4adea608a1c5b15b08e19dbfdf5da0991792edee8f2006d8b4f331e552",
+    "retrieved": "2026-10-01"
+  }
+}
