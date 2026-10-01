@@ -1,0 +1,106 @@
+{
+  "eval_name": "decision_eval_v1_jev",
+  "evaluated_at": "2026-10-01T13:32:45.731799+00:00",
+  "config_file": "D:\\code\\AI\\选修课\\生物医学信息\\tmp\\publish_drug_repurposing_agent\\configs\\decision_eval_v1.json",
+  "config_sha256_lf_normalized": "022198d36e0fd4370271c4011c3b354226227c6ed5305ad22372e6905dd28a49",
+  "model_requested": "jev-1.13-free",
+  "endpoint": "https://opencode.ai/zen/v1/systemone",
+  "provider": "opencode_zen_jev",
+  "design": "Jev layers (J2/J3/J4) on the frozen 120-case decision eval v1.\n\nDesign fixed before any Jev call (committed with this file):\n* Cases: configs/decision_eval_v1.json, verified by the frozen SHA-256 in\n  evals/run_decision_eval_v1.py. Nothing in the case set, policy or gate changes.\n* Jev input: `state` = {\"policy\": the same written policy text the LLM layer saw\n  (general + node rules + risk rule), \"case\": the model-visible case fields}.\n  Reference answers, generator metadata and note kinds are never sent.\n* Questions: evals.run_decision_eval_v1.jev_questions(case) - a `choice` over the\n  case options for every node, plus `score` (data quality) or `noul`\n  (evidence sufficiency) where applicable.\n* Layers (plan section 7.6):\n    J2  Jev choice, no gate;\n    J3  Jev choice through jev.gate_choice (0.8 low risk / 0.9 high risk; fail closed);\n    J4  J3, but cases the gate holds back go to the frozen deepseek-flash decision\n        from the v1 checkpoint, itself passed through the same gate (no new LLM call).\n* Metrics: the v1 layer_metrics plus Brier/ECE of the Jev choice distribution,\n  noul AUROC/Brier on clear evidence cases, expected-score Spearman on clear\n  data-quality cases, latency, usage and schema failures.\nModel: jev-1.13 via OpenCode Zen (OPENCODE_API_KEY). One run.\n\nAmendment (before any scored Jev answer existed): every jev-1.13 call returned\nHTTP 402 \"Insufficient account funds\" (49 failed calls, no answers). The run uses\nthe provider's limited-time free model jev-1.13-free instead; nothing else changes.\n",
+  "contains_api_key": false,
+  "contains_raw_prompts": false,
+  "layers": {
+    "J2_jev": {
+      "cases": 120,
+      "accuracy": 0.9,
+      "accuracy_by_node": {
+        "tool_routing": 1.0,
+        "data_quality": 0.8,
+        "evidence_sufficiency": 0.9,
+        "candidate_tier": 0.9
+      },
+      "macro_accuracy": 0.9,
+      "accuracy_on_clear_cases": 0.8864,
+      "review_recall_on_ambiguous_cases": 0.9375,
+      "escalation_rate": 0.2583,
+      "unnecessary_escalation_rate_on_clear_cases": 0.0114,
+      "auto_execution_coverage": 0.7417,
+      "auto_execution_precision": 0.8764,
+      "wrong_auto_execution_rate": 0.0917,
+      "high_risk_cases": 60,
+      "high_risk_wrong_auto_execution_rate": 0.1167,
+      "no_decision_count": 0
+    },
+    "J3_jev_gate": {
+      "cases": 120,
+      "accuracy": 0.7833,
+      "accuracy_by_node": {
+        "tool_routing": 0.9333,
+        "data_quality": 0.6333,
+        "evidence_sufficiency": 0.7333,
+        "candidate_tier": 0.8333
+      },
+      "macro_accuracy": 0.7833,
+      "accuracy_on_clear_cases": 0.7045,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.4833,
+      "unnecessary_escalation_rate_on_clear_cases": 0.2955,
+      "auto_execution_coverage": 0.5167,
+      "auto_execution_precision": 1.0,
+      "wrong_auto_execution_rate": 0.0,
+      "high_risk_cases": 60,
+      "high_risk_wrong_auto_execution_rate": 0.0,
+      "no_decision_count": 0
+    },
+    "J4_jev_gate_llm_fallback": {
+      "cases": 120,
+      "accuracy": 0.8667,
+      "accuracy_by_node": {
+        "tool_routing": 0.9667,
+        "data_quality": 0.7333,
+        "evidence_sufficiency": 0.8667,
+        "candidate_tier": 0.9
+      },
+      "macro_accuracy": 0.8667,
+      "accuracy_on_clear_cases": 0.8182,
+      "review_recall_on_ambiguous_cases": 1.0,
+      "escalation_rate": 0.3417,
+      "unnecessary_escalation_rate_on_clear_cases": 0.1023,
+      "auto_execution_coverage": 0.6583,
+      "auto_execution_precision": 0.9114,
+      "wrong_auto_execution_rate": 0.0583,
+      "high_risk_cases": 60,
+      "high_risk_wrong_auto_execution_rate": 0.0667,
+      "no_decision_count": 0
+    }
+  },
+  "jev_calibration": {
+    "brier_multiclass": 0.1475,
+    "ece_10bin_reported_confidence": 0.0418,
+    "mean_reported_confidence": 0.8688,
+    "evidence_noul": {
+      "n": 22,
+      "auroc": 1.0,
+      "brier": 0.0463
+    },
+    "data_quality_score_spearman_expected": {
+      "n": 22,
+      "spearman": 0.9286
+    }
+  },
+  "gate_reason_counts": {
+    "low_confidence": 32,
+    "passed_gate": 88
+  },
+  "schema_or_call_failures": 0,
+  "latency_ms_p50": 1048.2,
+  "latency_ms_p95": 1487.3,
+  "usage": {
+    "input_tokens": 148889,
+    "output_tokens": 9177
+  },
+  "api_calls_this_invocation": 120,
+  "flash_checkpoint_sha256": "5ba050ca425e6b23142c4ee62a513f867390e1f2f93e818469cf607acc6df1d4",
+  "jev_checkpoint_sha256": "20ad86831d1f1602b2b2a8117777495b2c63d435a9960c45f5242a7966012f18",
+  "trace_file": "artifacts\\traces\\20261001T133210923512Z_decision_eval_v1_jev_1c1a8594a60443d8928ecd575b3110c5.jsonl"
+}
