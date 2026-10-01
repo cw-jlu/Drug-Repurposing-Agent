@@ -417,6 +417,17 @@ clocortolone-pivalate。因此``糖皮质激素主导''是严格签名下的结�
 = 1.0）。DeepSeek 达到完成率 ≥ 0.9 与排名一致性 ≥ 0.95
 两项门槛，规则规划器未达完成率门槛（\texttt{docs/\allowbreak{}agent\_\allowbreak{}repeatability.\allowbreak{}md}）。
 
+\subsubsection{4.8 换模型复现}\label{48-ux6362ux6a21ux578bux590dux73b0}
+
+把四组冻结的 LLM 评测在 \texttt{deepseek-v4-pro}
+上原样重跑（用例、提示词与评分不变）。规划器 holdout 为 97/100（flash
+98/100）。决策层 v1 中，v4-pro 的 120
+个判断全部高于置信阈值，门控一次都未触发，而 flash 有 29
+个被转人工；两者 Brier 相近，说明门控阈值需要按模型重新校准。决策层 v2
+的混合设计在两个模型上都没有高风险误执行，完整 LLM 方案在 v4-pro 上出现
+2/12。污染探针中 v4-pro 开卷 AUC 为 0.542（flash
+0.567），并未因模型更强而泄漏更多。两者同属一个模型系列，结论不推广到其他厂商（\texttt{docs/\allowbreak{}model\_\allowbreak{}replication\_\allowbreak{}v4\_\allowbreak{}pro.\allowbreak{}md}）。
+
 \subsection{5.
 系统实现与审计}\label{5-ux7cfbux7edfux5b9eux73b0ux4e0eux5ba1ux8ba1}
 
