@@ -1,0 +1,39 @@
+"""Run agent v2 end to end: natural-language request -> multi-step plan -> validated execution.
+
+Example (repository root):
+    python -m scripts.run_agent_v2 --question "请为肺腺癌筛选候选药物并给出证据报告" --planner deepseek
+"""
+
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+from uuid import uuid4
+
+from drug_repurposing_agent.agent_v2 import DeepSeekPlannerV2, RulePlannerV2, run_agent_v2
+from drug_repurposing_agent.luad_tools_v2 import available_inputs, real_backend
+from drug_repurposing_agent.workflow import Mode
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--question", required=True)
+    parser.add_argument("--mode", choices=[m.value for m in Mode], default=Mode.RESEARCH_OPEN.value)
+    parser.add_argument("--planner", choices=["rule", "deepseek"], default="rule")
+    parser.add_argument("--model", default=None)
+    parser.add_argument("--output", type=Path, default=None)
+    args = parser.parse_args()
+    mode = Mode(args.mode)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    output = args.output or Path("artifacts/agent_v2_runs") / f"{stamp}_{uuid4().hex[:8]}"
+    planner = DeepSeekPlannerV2.from_env(args.model) if args.planner == "deepseek" else RulePlannerV2()
+    report = run_agent_v2(args.question, mode, available_inputs(), planner, real_backend(output, mode), output)
+    print(json.dumps({"status": report["status"], "rounds": len(report["rounds"]),
+                      "executed": [(e["tool"], e["status"]) for e in report["executed"]],
+                      "output": str(output)}, ensure_ascii=False, indent=1))
+
+
+if __name__ == "__main__":
+    main()
