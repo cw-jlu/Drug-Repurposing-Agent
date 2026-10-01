@@ -23,6 +23,7 @@
     {"source":"docs/luad_pathway_enrichment.md","stem":"luad_pathway_enrichment"},
     {"source":"docs/luad_pathway_reversal.md","stem":"luad_pathway_reversal"},
     {"source":"docs/luad_positive_control_stats.md","stem":"luad_positive_control_stats"},
-    {"source":"docs/agent_repeatability.md","stem":"agent_repeatability"}
+    {"source":"docs/agent_repeatability.md","stem":"agent_repeatability"},
+    {"source":"docs/luad_threshold_sensitivity.md","stem":"luad_threshold_sensitivity"}
   ]
 }
