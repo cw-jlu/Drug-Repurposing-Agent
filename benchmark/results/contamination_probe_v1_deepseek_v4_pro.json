@@ -1,6 +1,6 @@
 {
   "experiment": "contamination_probe_v1",
-  "created_at": "2026-10-01T12:41:21.437340+00:00",
+  "created_at": "2026-10-01T12:42:09.134805+00:00",
   "status": "aggregate_only_no_raw_prompts",
   "dataset": "TRANSCRIPT v2.0.0 ratings_mat.csv / items.csv / users.csv",
   "model": "deepseek-v4-pro",
@@ -199,7 +199,7 @@
       "peak": 0.127058
     }
   },
-  "trace_file": "artifacts\\contamination_probe\\traces\\20261001T124119394158Z_contamination_probe_5b2ee430ff4e4baa9c99fdc66e3a8dda.jsonl",
+  "trace_file": "artifacts\\contamination_probe\\traces\\20261001T124207203708Z_contamination_probe_0ecd821c44ed44a08907d06eb8dedd12.jsonl",
   "checkpoint_sha256": "cca3dcf0a7770c3de54cbbb70f99c4bcb7a204c3192009ca50a0f3fdc9acd3e8",
   "interpretation": "High open-book AUC indicates name-based recall of memorized indications (label leakage), not discovery; closed-book and raw reversal measure what the expression signal alone supports.",
   "provider_traces_spot_checked": 20

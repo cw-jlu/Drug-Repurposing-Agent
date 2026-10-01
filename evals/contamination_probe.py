@@ -577,7 +577,8 @@ def _main(trace: TraceRecorder) -> None:
                                encoding="utf-8")
         trace.emit("results_saved", output=str(args.output), output_sha256=sha256_file(args.output),
                    conditions={k: v["positive_vs_unknown"] for k, v in result["conditions"].items() if "positive_vs_unknown" in v})
-        print(json.dumps({k: v["positive_vs_unknown"] for k, v in result["conditions"].items()},
+        print(json.dumps({k: v["positive_vs_unknown"] for k, v in result["conditions"].items()
+                          if "positive_vs_unknown" in v},
                          indent=1))
 
 
