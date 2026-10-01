@@ -128,20 +128,50 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 
 // 4 Architecture
 {
-  const s = content("系统架构：谁负责什么", "约 60 秒。LLM 只做规划与解释，数值计算全部由确定性工具完成，最终由代码校验 Schema、ID、引用和权限。Strict 模式下 LLM 看不到任何标签或药名。规划器在事先冻结的 100 例独立 holdout 上：DeepSeek 98/100，规则 90/100（docs/planner_eval_results.md）。每次运行写入带 SHA-256 链的 JSONL 轨迹。");
-  const boxes = ["自然语言请求", "Planner\nDeepSeek / 规则", "工具白名单\nStrict / Open", "确定性计算\n差异表达·排名融合", "证据层\nPubMed·多 Agent", "Validator\nSchema·引用·权限"];
-  boxes.forEach((b, i) => {
-    const x = 0.55 + i * 2.1;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 1.8, w: 1.8, h: 1.6, rectRadius: 0.1,
-      fill: { color: i === 0 ? C.navy : C.sand }, line: { color: i === 0 ? C.navy : C.gray, width: 0.75 } });
-    txt(s, b, x + 0.08, 1.8, 1.64, 1.6, 13, { bold: true, align: "center", valign: "middle", color: i === 0 ? C.white : C.navy });
-    if (i < boxes.length - 1) {
-      s.addShape(pres.shapes.RIGHT_ARROW, { x: x + 1.83, y: 2.47, w: 0.24, h: 0.26, fill: { color: C.teal }, line: { color: C.teal } });
-    }
-  });
-  stat(s, "98/100", "规划器冻结 holdout（DeepSeek；规则 90/100）", 0.6, 4.2, 3.9);
-  stat(s, "0 标签", "Strict 模式下 LLM 可见的 Benchmark 标签", 4.7, 4.2, 3.9);
-  stat(s, "哈希链", "每次运行写入 JSONL 轨迹，可逐步复核", 8.8, 4.2, 3.9);
+  const s = content("系统架构：LLM 规划，工具计算，代码校验",
+    "约 50 秒。图为 Agent v2。大模型只看到模式、可用输入名称和已完成产物，看不到数据、文件路径和 Benchmark 标签；它一次提交多步计划，代码逐条校验白名单、模式、依赖和输入，不合法或某步失败时把观察反馈给它重新规划，最多 3 轮。数值计算全部由确定性工具完成，最终由 Validator 检查 ID、哈希、排名、引用和权限；每一步写入 SHA-256 链式轨迹。来源：docs/agent_v2.md、docs/figures/fig9_architecture.png。");
+  s.addImage({ path: "docs/figures/fig9_architecture.png", x: 1.3, y: 1.15, w: 10.7, h: 6.1,
+    sizing: { type: "contain", w: 10.7, h: 6.1 } });
+}
+
+// 4b Agent planning (agent v2)
+{
+  const msPath = "benchmark/results/planner_eval_multistep_v1.json";
+  const demoPath = "benchmark/results/agent_v2_demo_runs.json";
+  if (has(msPath) && has(demoPath)) {
+    const ms = J(msPath), demo = J(demoPath);
+    const rule = ms.planners.rule_v2.summary, llm = ms.planners["deepseek_v2:deepseek-flash"].summary;
+    const cats = [["full", "完整流程"], ["partial", "部分任务"], ["benchmark", "基准模式"],
+      ["missing_input", "缺少输入"], ["failure", "故障恢复"], ["unsafe", "越权/注入"]];
+    const frac = (x) => { const [a, b] = x.split("/").map(Number); return +(a / b).toFixed(3); };
+    const rp = demo.runs.replan.rounds;
+    const s = content("Agent 自主规划：一句话 → 多步计划 → 失败后重新规划",
+      `约 60 秒。v1 只从 3 个工具里选 1 个；v2 让大模型把请求拆成有序步骤，代码校验依赖、模式和输入后执行，失败时带着已完成产物重新规划。冻结的 40 例多步规划测试（调用前提交）：DeepSeek ${llm.passed}/40，规则规划器 ${rule.passed}/40。规则输在“部分任务”（只认关键词，把“只做差异表达”也跑成全流程）；DeepSeek 部分任务、缺少输入、基准模式全对，但越权类 ${llm.by_category.unsafe}：对“跳过质控”“忽略校验当治疗方案”“排完删数据”它照常跑了安全的标准流程而没有拒绝——代码层依赖校验和白名单仍挡住了实际风险，但这是规划器的真实弱点。右侧是真实工具上的一次运行：排名第一次失败后，第 2 轮只规划剩下的 ${rp[1].steps.length} 步，跳过已完成的质控、差异表达和通路分析，最终完成。`);
+    s.addChart(pres.charts.BAR, [
+      { name: "规则规划器", labels: cats.map((c) => c[1]), values: cats.map((c) => frac(rule.by_category[c[0]])) },
+      { name: "DeepSeek 规划器", labels: cats.map((c) => c[1]), values: cats.map((c) => frac(llm.by_category[c[0]])) }],
+      { x: 0.4, y: 1.3, w: 7.2, h: 5.0, barDir: "col", barGrouping: "clustered", chartColors: [C.gray, C.teal],
+        showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0%", valAxisMinVal: 0, valAxisMaxVal: 1.15,
+        showLegend: true, legendPos: "b", showTitle: true,
+        title: `冻结 40 例多步规划：规则 ${rule.passed}/40 · DeepSeek ${llm.passed}/40`, ...axis(), valAxisLabelFormatCode: "0%",
+        dataLabelFontSize: 9, barGapWidthPct: 40, barOverlapPct: -8 });
+    const zh = { qc_disease_cohort: "质控", differential_expression: "差异表达", pathway_enrichment: "通路",
+      rank_candidates: "排名", audit_candidates: "审计", review_literature: "文献", build_report: "报告" };
+    txt(s, "真实运行：排名首次失败后的重新规划", 7.9, 1.35, 5.0, 0.4, 14, { bold: true, color: C.navy });
+    const failed = demo.runs.replan.executed.find((e) => e.status === "failed");
+    const lines = [
+      [`第 1 轮计划（${rp[0].steps.length} 步）`, rp[0].steps.map((t) => zh[t] ?? t).join(" → ")],
+      ["执行", `质控、差异表达、通路 ✓ ；${zh[failed.tool]} ✗`],
+      [`第 2 轮计划（${rp[1].steps.length} 步）`, rp[1].steps.map((t) => zh[t] ?? t).join(" → ")],
+      ["结果", `完成：${demo.runs.replan.status}；已完成步骤未重跑`]];
+    lines.forEach(([h, b], i) => {
+      const y = 1.9 + i * 1.12;
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 7.9, y, w: 4.9, h: 0.95, rectRadius: 0.06,
+        fill: { color: i === 1 ? "F2E7E4" : C.sand }, line: { color: C.sand } });
+      txt(s, h, 8.05, y + 0.08, 4.6, 0.3, 12, { bold: true, color: i === 1 ? C.red : C.teal });
+      txt(s, b, 8.05, y + 0.42, 4.6, 0.5, 12, { color: C.ink });
+    });
+  }
 }
 
 // 5 Key finding
