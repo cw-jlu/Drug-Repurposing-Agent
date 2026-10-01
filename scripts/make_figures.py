@@ -344,7 +344,8 @@ def fig4(trace: TraceRecorder) -> dict:
             ax.text(v, yv, f" {v:.4f}", va="center", fontsize=8.5, color=INK)
         ax.set_xlabel("RRF 融合分数（负 Spearman + 上/下调基因集连接性，k=60）")
         ax.legend(handles=[Patch(facecolor=c, label=l) for _, l, c in IDENTITY_TIERS],
-                  frameon=False, fontsize=8.5, loc="lower right")
+                  frameon=False, fontsize=8.5, loc="upper center", ncol=2,
+                  bbox_to_anchor=(0.5, -0.12))
         mode = "rrf_scores"
         subtitle = ""
     else:
