@@ -43,7 +43,7 @@
 - A multi-agent LUAD evidence review (`docs/multi_agent_review.md`) runs literature, critic, deterministic citation validation and coordinator steps. 0 of 65 quoted claims were rejected, and all 10 candidates remain insufficient evidence.
 - A NumPy port of BNNR reproduces the published per-seed NS-AUC exactly on official seeds 1–3 (`benchmark/results/bnnr_numpy_fidelity.json`).
 
-- Round-2 B4 (B3 + NumPy BNNR, 1:2 row-rank ensemble, frozen at `e5ff7e7`): NS-AUC 0.7453 random simple (rank 1/13) and 0.6585 weakly correlated (rank 3/13). B4 ranks first on random simple but not on weakly correlated, where MBiRW (0.7384) leads. It is therefore not state of the art across both protocols.
+- Round-2 B4 (B3 + NumPy BNNR, 1:2 row-rank ensemble, frozen at `e5ff7e7`): NS-AUC 0.7453 random simple (rank 1/13) and 0.6585 weakly correlated (rank 3/13). B4 ranks first on random simple but not on weakly correlated, where MBiRW (0.7384) leads. It is therefore not state of the art across both protocols. Correction (2026-10-01): seed test sets overlap, and under the Nadeau–Bengio corrected test the B4 − BNNR difference (+0.0122) has p = 0.066, 95% CI [-0.0008, +0.0251]. The random-split lead is therefore not significant, and BNNR remains stronger on global NDCG and HR@10 ([benchmark_stats_v1](benchmark_stats_v1.md)).
 
 ## Needed for the planned final deliverable
 
