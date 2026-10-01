@@ -1,0 +1,23 @@
+{
+  "measured_controls": 5,
+  "ranks": {
+    "docetaxel": 106,
+    "crizotinib": 241,
+    "gefitinib": 2444,
+    "paclitaxel": 2962,
+    "erlotinib": 3147
+  },
+  "mean_percentile": 0.3617886178861789,
+  "null_mean_percentile": 0.5003179965447156,
+  "permutation_p_one_sided": 0.14677426612866937,
+  "permutation_draws": 200000,
+  "top10pct_count": 2,
+  "top10pct_expected": 0.5,
+  "mann_whitney_p_one_sided": 0.1421841228961357,
+  "generated_at": "2026-10-01T06:50:00.162353+00:00",
+  "rank_source": "docs/luad_screening_report.md (recorded ranks; EH3226 not re-run here)",
+  "n_names": 4920,
+  "prespecified_controls": 11,
+  "unmeasured_controls_excluded": 6,
+  "trace_file": "artifacts\\traces\\20261001T064958245534Z_luad_positive_control_stats_v1_64a181e885f3440da93b8762bb0b0f9e.jsonl"
+}
