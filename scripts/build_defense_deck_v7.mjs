@@ -25,6 +25,10 @@ const evidenceExcluded = Object.entries(evidenceAudit.decision_counts)
   .reduce((sum, [, count]) => sum + count, 0);
 const b4Path = "benchmark/results/recess_official_b4_vs_11.json";
 const b4 = has(b4Path) ? J(b4Path) : null;
+const statsPath = "benchmark/results/benchmark_stats_v1.json";
+const bstats = has(statsPath) ? J(statsPath) : null;
+const nbB4 = bstats?.splits?.random_simple?.paired_ns_auc?.["B4 - BNNR"]?.nadeau_bengio ?? null;
+const b4Significant = nbB4 ? nbB4.p_two_sided < 0.05 : null;
 
 const ns = (report, split, model) => report.splits[split].models[model]?.["NS-AUC"]?.mean;
 // Prefer the fixed field {11 published, B2, model}; fall back to the full ranking list.
@@ -161,8 +165,8 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 // 6 Main benchmark
 {
   const pw = b3.splits[R].paired_ns_auc.B3?.BNNR?.wins;
-  const s = content(`官方 Benchmark：${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}，弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}`,
-    `约 70 秒。RECeSS 官方 Runner，与作者公布的 11 个模型逐种子对齐。B3：随机 ${f3(ns(b3, R, "B3"))}（BNNR ${f3(ns(b3, R, "BNNR"))} 第一，B3 在 100 个配对种子中胜 ${pw ?? "?"} 次），弱相关 ${f3(ns(b3, W, "B3"))}（MBiRW ${f3(ns(b3, W, "MBiRW"))} 第一）。${b4 ? `第二轮 B4（B3 + BNNR 的 NumPy 移植，只在开发种子上设计后冻结）：随机 ${f3(ns(b4, R, "B4"))}、弱相关 ${f3(ns(b4, W, "B4"))}。` : ""}${b4 && rankOf(b4, R, "B4") === 1 ? `B4 在随机拆分上超过全部 11 个发表模型（对 BNNR 配对胜 ${b4.splits[R].paired_ns_auc.B4?.BNNR?.wins ?? "?"}/100），但弱相关拆分仍落后 MBiRW 与 HAN，因此只能说随机拆分协议下排名第一，不宣称两种协议下的 SOTA。` : "不训练新模型的方法达到了与训练型协同过滤方法相当的水平，但没有在两种拆分上都超过最强模型，不宣称 SOTA。"}`);
+  const s = content(`官方 Benchmark：${mainName} 随机拆分均值第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}${b4 && b4Significant === false ? "（与 BNNR 差异不显著）" : ""}，弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}`,
+    `约 70 秒。RECeSS 官方 Runner，与作者公布的 11 个模型逐种子对齐。B3：随机 ${f3(ns(b3, R, "B3"))}（BNNR ${f3(ns(b3, R, "BNNR"))} 第一，B3 在 100 个配对种子中胜 ${pw ?? "?"} 次），弱相关 ${f3(ns(b3, W, "B3"))}（MBiRW ${f3(ns(b3, W, "MBiRW"))} 第一）。${b4 ? `第二轮 B4（B3 + BNNR 的 NumPy 移植，只在开发种子上设计后冻结）：随机 ${f3(ns(b4, R, "B4"))}、弱相关 ${f3(ns(b4, W, "B4"))}。` : ""}${b4 && rankOf(b4, R, "B4") === 1 ? `B4 在随机拆分上的均值高于全部 11 个发表模型（对 BNNR 配对胜 ${b4.splits[R].paired_ns_auc.B4?.BNNR?.wins ?? "?"}/100）。但 100 个种子的测试集互相重叠，用 Nadeau–Bengio 校正检验后，对 BNNR 的差值 p = ${nbB4 ? nbB4.p_two_sided.toFixed(3) : "?"}，95% CI ${nbB4 ? `[${nbB4.mean_ci95[0].toFixed(4)}, ${nbB4.mean_ci95[1].toFixed(4)}]` : "?"}${b4Significant === false ? " 跨 0，只能说与 BNNR 持平" : ""}；global NDCG 与 HR@10 上 BNNR 仍更强。弱相关拆分落后 MBiRW 与 HAN。因此不宣称 SOTA。` : "不训练新模型的方法达到了与训练型协同过滤方法相当的水平，但没有在两种拆分上都超过最强模型，不宣称 SOTA。"}`);
   s.addImage({ path: "docs/figures/fig1_nsauc_boxplot.png", x: 0.55, y: 1.3, w: 12.2, h: 5.55,
     sizing: { type: "contain", w: 12.2, h: 5.55 } });
 }
@@ -245,7 +249,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   txt(s, "结论与局限", 0.7, 0.5, 12, 0.8, 34, { bold: true, color: C.white });
   const items = [
     ["负结果", `纯表达反转在 TRANSCRIPT 上 ≈ 随机（官方 NS-AUC ${f3(comp.splits[R].models.B1["NS-AUC"].mean)}）`],
-    ["提分", `对齐指标方向${b4 ? "并集成 BNNR " : ""}后 ${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}、弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}${rankOf(main, R, mainName) === 1 ? "；随机拆分超过全部发表模型，弱相关未超过" : "，接近但未全面超过最强基线"}`],
+    ["提分", `对齐指标方向${b4 ? "并集成 BNNR " : ""}后 ${mainName} 随机拆分第 ${rankOf(main, R, mainName)}/${total(main, R, mainName)}、弱相关第 ${rankOf(main, W, mainName)}/${total(main, W, mainName)}${rankOf(main, R, mainName) === 1 ? (b4Significant === false ? "；随机拆分与 BNNR 持平（校正检验不显著），弱相关未超过" : "；随机拆分超过全部发表模型，弱相关未超过") : "，接近但未全面超过最强基线"}`],
     ["可信", "Strict 模式隔离标签；探针证实 LLM 看到药名会“背答案”"],
     ["Agent", "规划 98/100；23 条范围预筛引用中 13 条原样需排除"],
     ["局限", "细胞系 ≠ 患者；未知 ≠ 阴性；外部 v3 未跑；Jev/湿实验未做"]];
