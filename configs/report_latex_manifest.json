@@ -17,6 +17,12 @@
     {"source":"docs/multi_agent_review.md","stem":"multi_agent_review"},
     {"source":"docs/evidence_scope_audit.md","stem":"evidence_scope_audit"},
     {"source":"docs/luad_data_audit.md","stem":"luad_data_audit"},
-    {"source":"docs/luad_top10_evidence_matrix.md","stem":"luad_top10_evidence_matrix"}
+    {"source":"docs/luad_top10_evidence_matrix.md","stem":"luad_top10_evidence_matrix"},
+    {"source":"docs/benchmark_stats_v1.md","stem":"benchmark_stats_v1"},
+    {"source":"docs/b3_component_ablation.md","stem":"b3_component_ablation"},
+    {"source":"docs/luad_pathway_enrichment.md","stem":"luad_pathway_enrichment"},
+    {"source":"docs/luad_pathway_reversal.md","stem":"luad_pathway_reversal"},
+    {"source":"docs/luad_positive_control_stats.md","stem":"luad_positive_control_stats"},
+    {"source":"docs/agent_repeatability.md","stem":"agent_repeatability"}
   ]
 }

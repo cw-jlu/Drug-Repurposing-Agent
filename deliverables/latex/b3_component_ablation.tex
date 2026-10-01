@@ -1,0 +1,138 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{B3
+组件消融（仅开发种子）}\label{b3-ux7ec4ux4ef6ux6d88ux878dux4ec5ux5f00ux53d1ux79cdux5b50}
+
+2026-10-01。只在 10 个与官方 100 种子不相交的开发种子（{[}1, 2, 3, 4, 5,
+6, 7, 8, 9,
+10{]}）上运行，每个种子模拟官方流程：随机拆分、五折选模、验证集
+NS-AUC。弱相关拆分不评估，因为其唯一外层留出集就是官方测试集。冻结的 B3
+配置不因本结果改变。脚本：\texttt{python\ -m\ evals.\allowbreak{}b3\_\allowbreak{}component\_\allowbreak{}ablation}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}b3\_\allowbreak{}component\_\allowbreak{}ablation\_\allowbreak{}dev.\allowbreak{}json}。完整
+B3 的开发均值 0.7271 与第二轮开发记录中的 B3
+参考值一致，说明流程复现正确。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+变体 & 含义 & NS-AUC（均值 ± SD） & 相对完整 B3 & 优于完整 B3 的种子 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+full & 全部六个组件 & 0.7271 ± 0.0361 & +0.0000 & 0/10 \\
+-DP & 去掉训练折疾病流行度 & 0.6641 ± 0.0340 & -0.0629 & 0/10 \\
+-DK & 去掉药物表达 kNN & 0.7133 ± 0.0336 & -0.0138 & 0/10 \\
+-SK & 去掉疾病表达 kNN & 0.7246 ± 0.0372 & -0.0025 & 4/10 \\
+-LD & 去掉标签共现·药物 CF & 0.7105 ± 0.0339 & -0.0165 & 0/10 \\
+-LS & 去掉标签共现·疾病 CF & 0.7113 ± 0.0344 & -0.0158 & 0/10 \\
+-REV & 去掉负 Spearman 反转 & 0.7188 ± 0.0389 & -0.0083 & 3/10 \\
+only DP & 只用训练折疾病流行度 & 0.6569 ± 0.0443 & -0.0702 & 0/10 \\
+only DK & 只用药物表达 kNN & 0.6668 ± 0.0437 & -0.0603 & 0/10 \\
+only SK & 只用疾病表达 kNN & 0.6346 ± 0.0361 & -0.0925 & 0/10 \\
+only LD & 只用标签共现·药物 CF & 0.7021 ± 0.0424 & -0.0250 & 2/10 \\
+only LS & 只用标签共现·疾病 CF & 0.7005 ± 0.0415 & -0.0266 & 2/10 \\
+only REV & 只用负 Spearman 反转 & 0.4855 ± 0.0281 & -0.2415 & 0/10 \\
+\end{longtable}
+}
+
+\textbf{结论}
+
+\begin{itemize}
+\tightlist
+\item
+  训练折\textbf{疾病流行度}贡献最大：去掉后下降 0.063，10/10
+  个种子都变差。
+\item
+  单独最强的是两个\textbf{标签共现协同过滤}（LD 0.702、LS
+  0.700）。去掉其中任意一个约降 0.016，说明二者有互补信息。
+\item
+  \textbf{表达反转}单独只有 0.486，与随机无差别；去掉它只降 0.008，且
+  3/10
+  个种子反而更好。它在融合中的作用接近打破同分，而不是提供药理信号。
+\item
+  疾病表达 kNN（SK）几乎可去掉（−0.0025，4/10 更好）。
+\item
+  合起来：B3 的提升来自已知关联结构（流行度 +
+  标签共现），转录组特征贡献很小。这与 TRANSCRIPT
+  上``反转≈随机''的主结论一致。
+\end{itemize}
+
+\end{document}

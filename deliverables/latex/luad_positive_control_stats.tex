@@ -1,0 +1,113 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{LUAD
+阳性对照的汇总恢复指标（v1）}\label{luad-ux9633ux6027ux5bf9ux7167ux7684ux6c47ux603bux6062ux590dux6307ux6807v1}
+
+2026-10-01。排名前预先冻结的 11 个 LUAD 参考药中，5 个在 EH3226 A549 的
+4920 个药名里可测：docetaxel 106、crizotinib 241、gefitinib
+2444、paclitaxel 2962、erlotinib 3147。其余 6
+个未测得，按规则排除，不计为失败。脚本：\texttt{python\ -m\ evals.\allowbreak{}luad\_\allowbreak{}positive\_\allowbreak{}control\_\allowbreak{}stats}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}luad\_\allowbreak{}positive\_\allowbreak{}control\_\allowbreak{}stats\_\allowbreak{}v1.\allowbreak{}json}。名次来源：artifacts\textbackslash reports\textbackslash luad\_eh3226\textbackslash positive\_control\_ranks.csv
+(sha256 matches data/manifests/eh3226-luad.json)（2026-10-01 下载 EH3226
+后重新生成，对照名次文件与冻结哈希逐字节一致，数值不变）。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2250\textwidth}@{}}
+\toprule\noalign{}
+指标 & 观测值 & 随机期望 & 单侧 p \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+平均名次百分位（越小越好） & 0.362 & 0.500 & 0.147（无放回置换，200,000
+次） \\
+进入前 10\% 的个数 & 2 & 0.5 & --- \\
+Mann--Whitney（对照名次 \textless{} 全体名次） & --- & --- & 0.142 \\
+\end{longtable}
+}
+
+\textbf{结论：} 参考药整体略偏向靠前（docetaxel、crizotinib 进入前
+10\%），但只有 5 个可测对照，差异在统计上不显著（p ≈ 0.15）。这与
+TRANSCRIPT
+上``表达反转≈随机''的结论一致：本筛选\textbf{没有证明}能恢复已知 LUAD
+药物。A549 为 KRAS 突变、EGFR 野生型细胞系，EGFR
+抑制剂（gefitinib、erlotinib）名次靠后在生物学上可以预期，但这不能被用来事后挑选对照。
+
+\end{document}

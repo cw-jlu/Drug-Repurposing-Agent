@@ -1,0 +1,143 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Top-10
+候选的通路层面反转（v1）}\label{top-10-ux5019ux9009ux7684ux901aux8defux5c42ux9762ux53cdux8f6cv1}
+
+2026-10-01。规则在计算任何药物分数之前提交（commit
+\texttt{37cac48}）。输入核对在评分前修订并单独提交（\texttt{7043665}）：重新生成的排名复现了冻结的
+Top-10
+与逐字节一致的阳性对照名次，但完整排名文件的哈希与冻结版本不一致（不同
+NumPy
+版本的浮点格式差异）。脚本：\texttt{python\ -m\ scripts.\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}reversal}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}reversal\_\allowbreak{}v1.\allowbreak{}json}；图：\texttt{docs/\allowbreak{}figures/\allowbreak{}fig8\_\allowbreak{}top10\_\allowbreak{}pathway\_\allowbreak{}reversal.\allowbreak{}png}。
+
+\textbf{方法}：对疾病签名中 FDR \textless{} 0.05 的 Hallmark
+通路，取``通路成员 ∩ 该方向疾病差异基因 ∩ 匹配的 LINCS landmark
+基因''（至少 5 个）。反转分数 = −方向 ×
+药物在这些基因上的平均签名值，正值表示药物把这些基因推回正常方向。每个
+Top-10 药物在全部 4,920 个 A549 药物中的百分位为最终指标。L1000 只测 978
+个 landmark 基因，因此 4 条上调、11 条下调的显著通路因基因不足被跳过（见
+JSON 中 \texttt{skipped\_\allowbreak{}pathways}）。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}@{}}
+\toprule\noalign{}
+通路（方向） & landmark 基因数 & Top-10 平均百分位 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Glycolysis (肿瘤上调) & 8 & 0.98 \\
+Hypoxia (肿瘤下调) & 5 & 0.95 \\
+E2F Targets (肿瘤上调) & 9 & 0.94 \\
+G2-M Checkpoint (肿瘤上调) & 11 & 0.93 \\
+Estrogen Response Late (肿瘤上调) & 7 & 0.92 \\
+TNF-alpha Signaling via NF-kB (肿瘤下调) & 11 & 0.87 \\
+Estrogen Response Late (肿瘤下调) & 6 & 0.81 \\
+Epithelial Mesenchymal Transition (肿瘤下调) & 6 & 0.69 \\
+\end{longtable}
+}
+
+\textbf{解读}
+
+\begin{itemize}
+\tightlist
+\item
+  Top-10
+  的反转主要集中在肿瘤上调的增殖（G2-M、E2F）与糖酵解基因，以及肿瘤下调的缺氧、TNF-α/NF-κB
+  基因；这说明排名靠前的药物主要是在把增殖与代谢程序往正常方向推。
+\item
+  少数例外：beclomethasone-dipropionate 在 Epithelial Mesenchymal
+  Transition (肿瘤下调) 上仅 0.43；clocortolone-pivalate 在 Epithelial
+  Mesenchymal Transition (肿瘤下调) 上仅 0.39；diflorasone 在 Estrogen
+  Response Late (肿瘤下调) 上仅 0.41；diflorasone 在 Epithelial
+  Mesenchymal Transition (肿瘤下调) 上仅
+  0.07。说明同一类别（糖皮质激素）内部在 EMT 等通路上的作用并不一致。
+\item
+  TNF-α/NF-κB
+  在肿瘤中下调，``反转''意味着药物上调这些基因；这与糖皮质激素经典的抗炎/抑制
+  NF-κB 作用方向相反，需要谨慎解读：A549 中的 24
+  小时转录反应不等于体内免疫效应，且这里只用到 11 个 landmark 基因。
+\item
+  \textbf{重要限制：这不是独立验证。} Top-10
+  本身就是按反转同一疾病签名选出来的，通路基因又取自同一签名，因此高百分位在很大程度上是选择的必然结果。本分析的价值在于说明反转信号由哪些生物学程序驱动，而不是证明药效。
+\end{itemize}
+
+\end{document}

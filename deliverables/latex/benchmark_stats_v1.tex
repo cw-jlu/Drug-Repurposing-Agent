@@ -1,0 +1,391 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Benchmark
+次要指标与重叠感知的配对检验（v1）}\label{benchmark-ux6b21ux8981ux6307ux6807ux4e0eux91cdux53e0ux611fux77e5ux7684ux914dux5bf9ux68c0ux9a8cv1}
+
+2026-10-01。只读取已提交的 B2/B3/B3noREV/B4 逐种子 CSV 与固定版本的 11
+个作者模型
+CSV，不重跑任何模型，也不改参数。脚本：\texttt{python\ -m\ evals.\allowbreak{}benchmark\_\allowbreak{}stats\_\allowbreak{}v1}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}benchmark\_\allowbreak{}stats\_\allowbreak{}v1.\allowbreak{}json}。
+
+\subsection{为什么要校正}\label{ux4e3aux4ec0ux4e48ux8981ux6821ux6b63}
+
+随机拆分的 100 个种子从同一数据集各抽 20\%
+作外层测试集，测试集彼此重叠，逐种子差值并不独立。朴素 Wilcoxon
+检验把它们当成 100 个独立样本，p 值会严重偏小。这里另报 Nadeau--Bengio
+校正的重复抽样 t 检验：方差乘以 1/J +
+n\_test/n\_train（J=100，n\_test/n\_train=0.25）。弱相关拆分的 100
+个种子复用同一个外层留出集，任何泛化检验都没有意义，只报告描述性数值。
+
+\subsection{配对 NS-AUC 检验}\label{ux914dux5bf9-ns-auc-ux68c0ux9a8c}
+
+\textbf{比较（随机拆分） B4 - B2 · +0.2231}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 100/100
+\item
+  \textbf{朴素 Wilcoxon p：} 3.9e-18
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.000
+\item
+  \textbf{校正 95\% CI：} {[}+0.1812, +0.2649{]}
+\end{itemize}
+
+\textbf{比较（随机拆分） B4 - BNNR · +0.0122}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 87/100
+\item
+  \textbf{朴素 Wilcoxon p：} 5.9e-13
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.066
+\item
+  \textbf{校正 95\% CI：} {[}-0.0008, +0.0251{]}
+\end{itemize}
+
+\textbf{比较（随机拆分） B4 - MBiRW · +0.0471}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 95/100
+\item
+  \textbf{朴素 Wilcoxon p：} 7.3e-17
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.005
+\item
+  \textbf{校正 95\% CI：} {[}+0.0145, +0.0797{]}
+\end{itemize}
+
+\textbf{比较（随机拆分） B3 - B2 · +0.2011}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 100/100
+\item
+  \textbf{朴素 Wilcoxon p：} 3.9e-18
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.000
+\item
+  \textbf{校正 95\% CI：} {[}+0.1675, +0.2348{]}
+\end{itemize}
+
+\textbf{比较（随机拆分） B3 - BNNR · -0.0097}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 35/100
+\item
+  \textbf{朴素 Wilcoxon p：} 7.4e-03
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.591
+\item
+  \textbf{校正 95\% CI：} {[}-0.0455, +0.0261{]}
+\end{itemize}
+
+\textbf{比较（随机拆分） B3 - MBiRW · +0.0252}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{配对胜场：} 76/100
+\item
+  \textbf{朴素 Wilcoxon p：} 4.4e-09
+\item
+  \textbf{Nadeau--Bengio 校正 p：} 0.168
+\item
+  \textbf{校正 95\% CI：} {[}-0.0108, +0.0613{]}
+\end{itemize}
+
+\textbf{更正：} B4 比 BNNR 高 +0.0122，但校正后 p = 0.066，95\% CI
+{[}-0.0008, +0.0251{]} 跨零。随机拆分上 B4 的均值排第一，但与 BNNR
+的差异\textbf{在校正检验下不显著}，应表述为``与最强发表模型持平、均值略高''。B4
+相对 MBiRW 与 B2 的优势在校正后仍显著。B3 与 BNNR、MBiRW
+的差异均不显著。
+
+\subsection{次要指标（100
+种子均值）}\label{ux6b21ux8981ux6307ux6807100-ux79cdux5b50ux5747ux503c}
+
+随机拆分：
+
+\textbf{模型 B4 · 0.745}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.953
+\item
+  \textbf{global NDCG：} 0.467
+\item
+  \textbf{HR@10：} 0.014
+\item
+  \textbf{training time (s)：} 191
+\end{itemize}
+
+\textbf{模型 B3 · 0.723}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.950
+\item
+  \textbf{global NDCG：} 0.559
+\item
+  \textbf{HR@10：} 0.042
+\item
+  \textbf{training time (s)：} 13
+\end{itemize}
+
+\textbf{模型 BNNR · 0.733}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.954
+\item
+  \textbf{global NDCG：} 0.657
+\item
+  \textbf{HR@10：} 0.080
+\item
+  \textbf{training time (s)：} 808
+\end{itemize}
+
+\textbf{模型 MBiRW · 0.698}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.951
+\item
+  \textbf{global NDCG：} 0.424
+\item
+  \textbf{HR@10：} 0.009
+\item
+  \textbf{training time (s)：} 2371
+\end{itemize}
+
+\textbf{模型 HAN · 0.598}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.905
+\item
+  \textbf{global NDCG：} 0.370
+\item
+  \textbf{HR@10：} 0.001
+\item
+  \textbf{training time (s)：} 218
+\end{itemize}
+
+\textbf{模型 LogisticMF · 0.670}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.949
+\item
+  \textbf{global NDCG：} 0.480
+\item
+  \textbf{HR@10：} 0.017
+\item
+  \textbf{training time (s)：} 8
+\end{itemize}
+
+\textbf{模型 B2 · 0.522}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.945
+\item
+  \textbf{global NDCG：} 0.461
+\item
+  \textbf{HR@10：} 0.019
+\item
+  \textbf{training time (s)：} 4
+\end{itemize}
+
+弱相关拆分：
+
+\textbf{模型 B4 · 0.658}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.931
+\item
+  \textbf{global NDCG：} 0.435
+\item
+  \textbf{HR@10：} 0.036
+\item
+  \textbf{training time (s)：} 148
+\end{itemize}
+
+\textbf{模型 B3 · 0.692}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.936
+\item
+  \textbf{global NDCG：} 0.431
+\item
+  \textbf{HR@10：} 0.024
+\item
+  \textbf{training time (s)：} 13
+\end{itemize}
+
+\textbf{模型 BNNR · 0.606}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.925
+\item
+  \textbf{global NDCG：} 0.421
+\item
+  \textbf{HR@10：} 0.027
+\item
+  \textbf{training time (s)：} 939
+\end{itemize}
+
+\textbf{模型 MBiRW · 0.738}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.941
+\item
+  \textbf{global NDCG：} 0.424
+\item
+  \textbf{HR@10：} 0.014
+\item
+  \textbf{training time (s)：} 2630
+\end{itemize}
+
+\textbf{模型 HAN · 0.703}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.937
+\item
+  \textbf{global NDCG：} 0.359
+\item
+  \textbf{HR@10：} 0.001
+\item
+  \textbf{training time (s)：} 246
+\end{itemize}
+
+\textbf{模型 LogisticMF · 0.658}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{global AUC：} 0.929
+\item
+  \textbf{global NDCG：} 0.370
+\item
+  \textbf{HR@10：} 0.001
+\item
+  \textbf{training time (s)：} 8
+\end{itemize}
+
+\textbf{模型 B2 · 0.502}
+
+\begin{itemize}
+\item
+  \textbf{global AUC：} 0.897
+\item
+  \textbf{global NDCG：} 0.345
+\item
+  \textbf{HR@10：} 0.012
+\item
+  \textbf{training time (s)：} 4
+\item
+  \textbf{主指标之外 BNNR 更强}：随机拆分的 global NDCG（BNNR 0.657，B4
+  0.467）和 HR@10（0.080 对 0.014）都明显高于 B4。B4
+  的优势只体现在逐药物行的 NS-AUC 上；global AUC 各强模型都在 0.95
+  左右，区分度低。
+\item
+  \textbf{训练时间不可直接比较}：BNNR 与 MBiRW 是作者环境中的 Octave
+  运行时间；B4 使用本项目的 NumPy BNNR
+  移植，并启用了逐折精确结果缓存。这里只能说明 B3（约 13
+  秒/种子）远快于矩阵补全类方法。
+\item
+  弱相关拆分上 MBiRW 在 NS-AUC 上仍领先 B4 与 B3（100/100
+  种子），但这是同一个留出集的重复测量。
+\end{itemize}
+
+\end{document}

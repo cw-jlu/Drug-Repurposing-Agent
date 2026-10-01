@@ -255,7 +255,11 @@ B3 在同一官方 Runner 中得到随机拆分 0.7234 ± 0.0339（第 2/13，BN
 1/13；对 BNNR 配对胜 87/100，平均差 +0.0122），弱相关拆分 0.6585 ±
 0.0187（第 3/13）。随机拆分排第一；弱相关拆分由
 MBiRW（0.7384）领先，因此不能宣称两种协议下的 SOTA。由于 B3 的官方结果在
-B4 设计时已公开，B4 单独标注为第二轮。
+B4 设计时已公开，B4
+单独标注为第二轮。更正（2026-10-01）：各种子测试集互相重叠，经
+Nadeau--Bengio 校正检验，B4 − BNNR 的差值（+0.0122）p = 0.066，95\% CI
+{[}-0.0008, +0.0251{]} 跨 0，随机拆分的领先不显著；global NDCG 与 HR@10
+上 BNNR 更强（见 \texttt{docs/\allowbreak{}benchmark\_\allowbreak{}stats\_\allowbreak{}v1.\allowbreak{}md}）。
 
 \pandocbounded{\includegraphics[keepaspectratio,alt={图 1 TRANSCRIPT 官方 100 种子 NS-AUC 分布（本项目方法高亮）}]{docs/figures/fig1_nsauc_boxplot.png}}
 
@@ -346,6 +350,64 @@ Agent 独立检索反对证据，确定性校验要求 PMID
 A549 抗癌结果误归给
 fluticasone。详见\href{docs/evidence_scope_audit.md}{逐条审计}。本轮是作者的事后摘要级核查，不是独立双人阅读全文审阅；冻结的
 10/10 分级未重跑，不能将其解释为审计后的分级准确率。
+
+\subsubsection{4.4
+次要指标与重叠校正检验}\label{44-ux6b21ux8981ux6307ux6807ux4e0eux91cdux53e0ux6821ux6b63ux68c0ux9a8c}
+
+随机拆分 100
+个种子的外层测试集互相重叠，朴素的逐种子检验会高估显著性。采用
+Nadeau--Bengio 校正的重复抽样 t 检验后，B4 − BNNR 的 NS-AUC 差值为
++0.0122，p = 0.066，95\% CI {[}-0.0008, +0.0251{]}，\textbf{不显著}；B4
+相对 MBiRW、B2 的优势仍显著。次要指标上 BNNR 的 global NDCG（0.657）与
+HR@10（0.080）均高于 B4（0.467、0.014）。因此 B4
+应表述为``在主指标上与最强发表模型持平''，而不是超过它（\texttt{docs/\allowbreak{}benchmark\_\allowbreak{}stats\_\allowbreak{}v1.\allowbreak{}md}）。
+
+\subsubsection{4.5 B3
+组件消融（开发种子）}\label{45-b3-ux7ec4ux4ef6ux6d88ux878dux5f00ux53d1ux79cdux5b50}
+
+在 10 个与官方种子不相交的开发种子上，完整 B3 为
+0.7271。去掉训练折疾病流行度后降至 0.6641（10/10
+种子变差），是最关键的组件；单独效果最好的是两个标签共现协同过滤（0.702、0.700）；表达反转单独只有
+0.486，去掉它仅降 0.008。B3
+的提升主要来自已知关联结构，而非转录组反转（\texttt{docs/\allowbreak{}b3\_\allowbreak{}component\_\allowbreak{}ablation.\allowbreak{}md}）。
+
+\subsubsection{4.6 LUAD
+通路富集与阳性对照}\label{46-luad-ux901aux8defux5bccux96c6ux4e0eux9633ux6027ux5bf9ux7167}
+
+对 512 个上调、749 个下调基因做 MSigDB Hallmark 富集（超几何检验，BH
+校正）。上调侧以 Estrogen Response Late、G2-M
+Checkpoint、Glycolysis、E2F Targets、KRAS Signaling Up、mTORC1 Signaling
+为主，反映增殖、代谢重编程与基质重塑；下调侧以 TNF-alpha Signaling via
+NF-kB、KRAS Signaling Up、Epithelial Mesenchymal
+Transition、Inflammatory Response、Xenobiotic Metabolism
+为主，更可能反映正常肺组织中免疫与间质成分在肿瘤块中的相对减少（\texttt{docs/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}enrichment.\allowbreak{}md}）。
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 4 LUAD 疾病签名的 Hallmark 通路富集}]{docs/figures/fig7_luad_pathways.png}}
+
+在 Top-10 的通路层面反转中（规则预先提交），共 8 条显著 Hallmark
+通路有至少 5 个 LINCS landmark 签名基因。Top-10 平均反转百分位最高的是
+Glycolysis (肿瘤上调)（0.98）、Hypoxia (肿瘤下调)（0.95）、E2F Targets
+(肿瘤上调)（0.94）、G2-M Checkpoint
+(肿瘤上调)（0.93），即排名靠前的药物主要把增殖与糖酵解程序推回正常方向；diflorasone
+与 beclomethasone-dipropionate 在肿瘤下调的 EMT 基因上不反转。由于
+Top-10
+与通路基因来自同一疾病签名，这一结果只说明反转由哪些程序驱动，不是独立验证（\texttt{docs/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}reversal.\allowbreak{}md}）。
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 5 Top-10 候选在显著 Hallmark 通路上的反转百分位}]{docs/figures/fig8_top10_pathway_reversal.png}}
+
+预先冻结的 11 个参考药中 5 个可测，平均名次百分位 0.362（随机期望
+0.5），置换检验单侧 p = 0.147，有 2 个进入前
+10\%。整体略偏前但不显著，本筛选没有证明能恢复已知 LUAD
+药物（\texttt{docs/\allowbreak{}luad\_\allowbreak{}positive\_\allowbreak{}control\_\allowbreak{}stats.\allowbreak{}md}）。
+
+\subsubsection{4.7 Agent
+端到端稳定性}\label{47-agent-ux7aefux5230ux7aefux7a33ux5b9aux6027}
+
+按计划 10.7 节门槛，用 5 种固定说法 × 2 次运行 Strict 模式 TRANSCRIPT
+全流程。DeepSeek 规划器 10/10 完成、规则规划器 8/10
+完成（一种说法被安全地转人工）；所有完成的运行输出同一个排名矩阵（Spearman
+= 1.0）。DeepSeek 达到完成率 ≥ 0.9 与排名一致性 ≥ 0.95
+两项门槛，规则规划器未达完成率门槛（\texttt{docs/\allowbreak{}agent\_\allowbreak{}repeatability.\allowbreak{}md}）。
 
 \subsection{5.
 系统实现与审计}\label{5-ux7cfbux7edfux5b9eux73b0ux4e0eux5ba1ux8ba1}

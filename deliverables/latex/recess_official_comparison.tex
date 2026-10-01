@@ -340,6 +340,11 @@ across all seeds, so its paired values are not independent replications.
 B4 still trains nothing new: BNNR is a published matrix-completion
 method run through the official protocol, and the ensemble weights were
 fixed on development seeds. Comparison:
-\texttt{benchmark/\allowbreak{}results/\allowbreak{}recess\_\allowbreak{}official\_\allowbreak{}b4\_\allowbreak{}vs\_\allowbreak{}11.\allowbreak{}json}.
+\texttt{benchmark/\allowbreak{}results/\allowbreak{}recess\_\allowbreak{}official\_\allowbreak{}b4\_\allowbreak{}vs\_\allowbreak{}11.\allowbreak{}json}. Correction
+(2026-10-01): seed test sets overlap, and under the Nadeau--Bengio
+corrected test the B4 − BNNR difference (+0.0122) has p = 0.066, 95\% CI
+{[}-0.0008, +0.0251{]}. The random-split lead is therefore not
+significant, and BNNR remains stronger on global NDCG and HR@10
+(\href{benchmark_stats_v1.md}{benchmark\_stats\_v1}).
 
 \end{document}

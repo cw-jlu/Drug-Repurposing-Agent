@@ -1,0 +1,182 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{LUAD
+疾病签名通路富集（v1）}\label{luad-ux75beux75c5ux7b7eux540dux901aux8defux5bccux96c6v1}
+
+2026-10-01。对 GSE32863 57 对配对差异表达的预设签名（FDR \textless{}
+0.05 且 \textbar log2FC\textbar{} ≥ 1：上调 512、下调 749，共检测 19404
+个基因）分别做过度表达分析。基因集为 Enrichr 提供的 MSigDB Hallmark 2020
+与 KEGG 2021 Human，哈希记录在
+\texttt{data/\allowbreak{}manifests/\allowbreak{}enrichr-gene-sets.\allowbreak{}json}。方法为单侧超几何检验，背景为同时出现在检测集与该库中的基因；每个库
+× 方向内做 BH 校正，背景基因不足 10
+个的集合不检验。脚本：\texttt{python\ -m\ scripts.\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}enrichment}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}enrichment\_\allowbreak{}v1.\allowbreak{}json}；图：\texttt{docs/\allowbreak{}figures/\allowbreak{}fig7\_\allowbreak{}luad\_\allowbreak{}pathways.\allowbreak{}png}。
+
+显著通路数（FDR \textless{} 0.05）：Hallmark 上调 8、下调 15；KEGG 上调
+2、下调 23。
+
+\subsection{Hallmark：肿瘤中上调}\label{hallmarkux80bfux7624ux4e2dux4e0aux8c03}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+通路 & 重叠/集合 & 富集倍数 & FDR & 代表基因 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Estrogen Response Late & 25/196 & 2.92 & 4.0e-05 & AGR2, CDC20, CDH1,
+CXCL14, DNAJC12, GALE \\
+G2-M Checkpoint & 24/192 & 2.87 & 4.4e-05 & AURKA, AURKB, BIRC5, CCNB2,
+CCNF, CDC20 \\
+Glycolysis & 24/195 & 2.82 & 4.4e-05 & ABCB6, AGRN, AK4, ANGPTL4, AURKA,
+CHPF \\
+E2F Targets & 22/194 & 2.60 & 3.4e-04 & AURKA, AURKB, BIRC5, CCNB2,
+CCNE1, CDC20 \\
+KRAS Signaling Up & 21/196 & 2.46 & 9.6e-04 & ADAM8, ANGPTL4, BIRC3,
+CFB, CSF2RA, ERO1A \\
+mTORC1 Signaling & 19/194 & 2.25 & 5.6e-03 & AK4, ATP2A2, AURKA, CCNF,
+DAPP1, ERO1A \\
+Estrogen Response Early & 17/190 & 2.05 & 2.4e-02 & CANT1, ELF3, FHL2,
+KCNK5, KRT15, KRT19 \\
+Epithelial Mesenchymal Transition & 17/198 & 1.97 & 3.3e-02 & COL11A1,
+COL1A1, COL1A2, COL3A1, COL5A2, COMP \\
+\end{longtable}
+}
+
+\subsection{Hallmark：肿瘤中下调}\label{hallmarkux80bfux7624ux4e2dux4e0bux8c03}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+通路 & 重叠/集合 & 富集倍数 & FDR & 代表基因 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+TNF-alpha Signaling via NF-kB & 45/198 & 3.07 & 1.1e-10 & ACKR3, ATF3,
+BTG1, BTG2, CCL2, CCL5 \\
+KRAS Signaling Up & 35/196 & 2.41 & 1.1e-05 & ALDH1A2, CA2, CCND2, CD37,
+CFH, CXCR4 \\
+Epithelial Mesenchymal Transition & 35/198 & 2.39 & 1.1e-05 & ABI3BP,
+CD44, CD59, CXCL12, CXCL8, DAB2 \\
+Inflammatory Response & 32/198 & 2.18 & 1.9e-04 & AQP9, BTG2, C5AR1,
+CALCRL, CCL2, CCL5 \\
+Xenobiotic Metabolism & 29/197 & 1.99 & 2.2e-03 & ALDH2, AOX1, AQP9,
+ATOH8, CA2, CAT \\
+Hypoxia & 28/192 & 1.97 & 2.7e-03 & ACKR3, ANXA2, ATF3, BTG1, CAV1,
+CXCR4 \\
+Coagulation & 22/137 & 2.17 & 2.7e-03 & A2M, ANG, APOC1, C1QA, C1R,
+C2 \\
+Apoptosis & 24/158 & 2.05 & 3.0e-03 & ATF3, BTG2, CASP1, CAV1, CCND2,
+CD14 \\
+\end{longtable}
+}
+
+\subsection{KEGG 补充}\label{kegg-ux8865ux5145}
+
+上调：Central carbon metabolism in cancer（FDR 4.1e-02）；ECM-receptor
+interaction（FDR 4.1e-02）。下调前五：Complement and coagulation
+cascades（FDR 3.0e-09）；Systemic lupus erythematosus（FDR
+5.2e-07）；Pertussis（FDR 2.8e-06）；Osteoclast differentiation（FDR
+4.7e-06）；Staphylococcus aureus infection（FDR 5.3e-06）。
+
+\subsection{解读与边界}\label{ux89e3ux8bfbux4e0eux8fb9ux754c}
+
+\begin{itemize}
+\tightlist
+\item
+  上调侧集中在增殖（G2-M 检查点、E2F
+  靶基因）、代谢重编程（糖酵解、mTORC1、KEGG
+  癌症中心碳代谢）与细胞外基质（KEGG
+  ECM-受体相互作用），与肺腺癌已知的肿瘤程序一致。
+\item
+  下调侧以 TNF-α/NF-κB、炎症反应、补体与凝血为主，KEGG
+  中多为免疫相关条目。这更可能反映邻近正常肺组织中免疫与间质细胞成分在肿瘤块中相对减少，而不是肿瘤细胞内这些通路被抑制；批量芯片数据无法区分细胞组成与细胞内调控。
+\item
+  EMT 与 KRAS Signaling Up
+  同时出现在上调和下调两侧，说明这些集合包含方向不同的成员，不能简单解读为``整体激活''。
+\item
+  这是对疾病签名的描述性注释，不检验药物疗效；Top-10
+  候选在这些通路上的反转见
+  \texttt{docs/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}reversal.\allowbreak{}md}（若已运行）。
+\end{itemize}
+
+\end{document}

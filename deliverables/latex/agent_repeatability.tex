@@ -1,0 +1,131 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{ctexart}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Sans}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\usepackage{pdflscape,fvextra}
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+\section{Agent
+端到端稳定性（v1）}\label{agent-ux7aefux5230ux7aefux7a33ux5b9aux6027v1}
+
+2026-10-01。对应项目计划 10.7 节的验收门槛：端到端完成率 ≥
+90\%，固定配置下排名 Spearman ≥ 0.95。任务为 Strict 模式下的 TRANSCRIPT
+全流程排名；5 种固定说法（中英文、不同措辞）× 每种 2 次，规则规划器与
+DeepSeek \texttt{deepseek-flash} 规划器各 10
+次。说法在运行前写入脚本，运行后未修改。脚本：\texttt{python\ -m\ evals.\allowbreak{}agent\_\allowbreak{}repeatability}；结果：\texttt{benchmark/\allowbreak{}results/\allowbreak{}agent\_\allowbreak{}repeatability\_\allowbreak{}v1.\allowbreak{}json}；每次运行的
+Agent trace 位于被忽略的 \texttt{artifacts/\allowbreak{}agent\_\allowbreak{}repeatability/\allowbreak{}}。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}>{\raggedright\arraybackslash}p{0.3000\textwidth}@{}}
+\toprule\noalign{}
+指标 & 规则规划器 & DeepSeek 规划器 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+完成 / 运行 & 8/10 & 10/10 \\
+完成率门槛 ≥ 0.90 & 未通过 & 通过 \\
+已完成运行中不同的工具计划数 & 1 & 1 \\
+不同的 RRF 输出哈希数 & 1 & 1 \\
+与首次运行排名的最小 Spearman & 1.000 & 1.000 \\
+Spearman 门槛 ≥ 0.95 & 通过 & 通过 \\
+单次耗时 P50 / P95（秒） & 2.31 / 2.48 & 3.25 / 3.71 \\
+模型 token（提示 / 完成，合计） & 0 / 0 & 5,600 / 282 \\
+\end{longtable}
+}
+
+\textbf{结论}
+
+\begin{itemize}
+\tightlist
+\item
+  一旦工具计划确定，计算完全可复现：所有完成的运行输出同一个 RRF
+  矩阵（哈希一致，Spearman = 1.0），因为排序由确定性工具完成，LLM
+  不接触数值。
+\item
+  差异只出现在``理解请求''这一步：规则规划器无法识别第 5 种说法（``请对
+  TRANSCRIPT
+  数据运行表达反转并输出排名矩阵''），两次都安全地转人工审核，完成率
+  0.8，未达 0.9 门槛；DeepSeek 10/10 完成，计划始终为同一个工具调用。
+\item
+  失败方式是保守的（转人工），没有执行错误工具。这与 100 例冻结 holdout
+  中规则 90/100、DeepSeek 98/100 的差距方向一致。
+\item
+  局限：只测了一种任务、5 种说法、每种 2 次；DeepSeek 在 temperature 0
+  下的稳定性不代表更换模型版本后的表现。
+\end{itemize}
+
+\end{document}
