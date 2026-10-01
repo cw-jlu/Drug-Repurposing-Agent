@@ -47,6 +47,7 @@
 - [x] 阳性对照汇总统计（`docs/luad_positive_control_stats.md`）：p = 0.15，不显著。
 - [x] Agent 端到端稳定性（`docs/agent_repeatability.md`）。
 - [x] LUAD 签名阈值敏感性（`docs/luad_threshold_sensitivity.md`）：糖皮质激素主导只在 |log2FC| ≥ 1 时成立。
+- [x] 换模型复现：四组冻结 LLM 评测在 deepseek-v4-pro 上重跑（`docs/model_replication_v4_pro.md`）。
 
 ## 外部条件：Jev
 

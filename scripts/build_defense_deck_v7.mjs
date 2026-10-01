@@ -17,6 +17,8 @@ const comp = J("benchmark/results/recess_official_component_ablation.json");
 const probe = J("benchmark/results/contamination_probe_v1.json");
 const dec = J("benchmark/results/decision_eval_v1.json");
 const dec2 = J("benchmark/results/decision_eval_v2.json");
+const repPath = "benchmark/results/model_replication_v4_pro.json";
+const rep = has(repPath) ? J(repPath).evaluations : null;
 const rev = J("benchmark/results/multi_agent_review_v1.json");
 const evidenceAudit = J("benchmark/results/evidence_scope_adjudication_audit.json");
 const evidenceLedger = J("benchmark/results/evidence_scope_adjudication_v1.json");
@@ -194,7 +196,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   const lab = ["J0 固定规则", "J1 通用 LLM", "J3 LLM + 置信门控"];
   const cases = Object.values(dec.case_counts_by_node).reduce((a, b) => a + b, 0);
   const s = content("决策层消融：规则 vs LLM vs 门控（Jev 接口已预留）",
-    `约 50 秒。图为 v1 的 ${cases} 个封闭合成决策用例：J0 与 J1 准确率都是 ${f3(L[keys[0]].accuracy)}，J1 高风险误执行 ${f3(L[keys[1]].high_risk_wrong_auto_execution_rate)}；置信门控降到 ${f3(L[keys[2]].high_risk_wrong_auto_execution_rate)}，但增加人工升级。新 v2 是另一个在任何调用前冻结的 40 条中文风险备注压力测试：混合层 ${dec2.layers.hybrid.correct}/40、完整 LLM ${dec2.layers.full_llm.correct}/40、旧关键词规则 ${dec2.layers.j0_rules.correct}/40；80/80 provider trace 通过回放。v2 是作者标注的合成新用例，不与 v1 准确率直接比较，也不代表临床正确率。Jev 未获访问。`);
+    `约 50 秒。图为 v1 的 ${cases} 个封闭合成决策用例：J0 与 J1 准确率都是 ${f3(L[keys[0]].accuracy)}，J1 高风险误执行 ${f3(L[keys[1]].high_risk_wrong_auto_execution_rate)}；置信门控降到 ${f3(L[keys[2]].high_risk_wrong_auto_execution_rate)}，但增加人工升级。新 v2 是另一个在任何调用前冻结的 40 条中文风险备注压力测试：混合层 ${dec2.layers.hybrid.correct}/40、完整 LLM ${dec2.layers.full_llm.correct}/40、旧关键词规则 ${dec2.layers.j0_rules.correct}/40；80/80 provider trace 通过回放。v2 是作者标注的合成新用例，不与 v1 准确率直接比较，也不代表临床正确率。${rep ? `换模型复现（deepseek-v4-pro，同一冻结用例）：规划 ${rep.planner_v3["deepseek-v4-pro"].correct}/100（flash ${rep.planner_v3["deepseek-flash"].correct}/100）；v1 门控在 flash 上拦下 ${rep.decision_v1["deepseek-flash"].gate_reason_counts.low_confidence} 个低置信判断，在 v4-pro 上一次都没触发——v4-pro 更自信但 Brier 相近，门控阈值不能跨模型照搬；v2 混合层在两个模型上都是 0 高风险误执行，而完整 LLM 在 v4-pro 上升到 ${(rep.decision_v2["deepseek-v4-pro"].full_llm.high_risk_wrong_auto * 100).toFixed(0)}%。` : ""}Jev 未获访问。`);
   s.addChart(pres.charts.BAR, [
     { name: "准确率", labels: lab, values: keys.map((k) => +f3(L[k].accuracy)) },
     { name: "模糊用例升级召回", labels: lab, values: keys.map((k) => +f3(L[k].review_recall_on_ambiguous_cases)) },
@@ -205,7 +207,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
   bullets(s, [`图：v1 ${cases} 个冻结合成决策用例`,
     "v1 规则与 LLM 准确率持平；门控减少高风险误执行",
     `新 v2 中文备注：混合 ${dec2.layers.hybrid.correct}/40，完整 LLM ${dec2.layers.full_llm.correct}/40`,
-    "v2 作者标注、合成；两集结果不能直接比",
+    rep ? `换 v4-pro：门控 ${rep.decision_v1["deepseek-v4-pro"].gate_reason_counts.low_confidence ?? 0}/120 触发；混合层仍 0 高风险误执行` : "v2 作者标注、合成；两集结果不能直接比",
     "Jev 未获访问：接口保留"], 9.0, 1.5, 3.8, 5.0, 14);
 }
 
