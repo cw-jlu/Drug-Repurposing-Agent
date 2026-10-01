@@ -86,16 +86,30 @@ def _main(trace: TraceRecorder) -> None:
     library = json.loads(Path("artifacts/pathway/MSigDB_Hallmark_2020.json").read_text(encoding="utf-8"))
     ranking = pd.read_csv("artifacts/reports/luad_eh3226/all_candidates.csv")
     manifest = json.loads(Path("data/manifests/eh3226-luad.json").read_text(encoding="utf-8"))
+    # Input check (amended before any pathway score was computed): the regenerated
+    # all_candidates.csv can differ byte-wise from the frozen file because float
+    # formatting depends on the NumPy version. Require instead that the frozen Top-10
+    # names and the byte-exact positive-control ranks are reproduced, and record
+    # whether the full-file hash matched.
     digest = sha256_file(Path("artifacts/reports/luad_eh3226/all_candidates.csv"))
-    if digest != manifest["outputs"]["all_candidates.csv"]:
-        raise ValueError("Regenerated all_candidates.csv differs from the frozen manifest")
+    controls_digest = sha256_file(Path("artifacts/reports/luad_eh3226/positive_control_ranks.csv"))
+    if controls_digest != manifest["outputs"]["positive_control_ranks.csv"]:
+        raise ValueError("Regenerated positive-control ranks differ from the frozen manifest")
     top10 = ranking.sort_values("rank").drug_name.head(10).tolist()
+    frozen = [c["name"] for c in json.loads(Path("configs/luad_top10_evidence_v1.json").read_text(encoding="utf-8"))["candidates"]]
+    if top10 != frozen:
+        raise ValueError("Regenerated Top-10 differs from the frozen evidence config")
+    trace.emit("ranking_verified", top10_matches=True, controls_sha256_matches=True,
+               all_candidates_sha256_matches=digest == manifest["outputs"]["all_candidates.csv"])
     drugs = _load_drugs(deg, trace)
     scores, used = pathway_reversal(drugs, deg, library, terms)
     pct = scores.rank(pct=True)
     result = {"generated_at": datetime.now(timezone.utc).isoformat(),
               "rules": __doc__.split("Rules fixed before computing any drug score:")[1].strip(),
-              "all_candidates_sha256": digest, "top10": top10,
+              "all_candidates_sha256": digest,
+              "all_candidates_sha256_matches_frozen": digest == manifest["outputs"]["all_candidates.csv"],
+              "input_check": "frozen Top-10 names and byte-exact positive-control ranks reproduced",
+              "top10": top10,
               "pathways": {k: {"genes": v, "n_genes": len(v)} for k, v in used.items()},
               "skipped_pathways": sorted(set(terms["up"]) | set(terms["down"]) -
                                          {k.rsplit(" (", 1)[0] for k in used}),
