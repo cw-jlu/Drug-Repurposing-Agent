@@ -1,0 +1,402 @@
+{
+  "description": "Real agent v2 runs with the deepseek-flash planner and the real tool backend (one with an injected first-attempt failure of rank_candidates).",
+  "runs": {
+    "full": {
+      "question": "请为肺腺癌筛选候选药物，做通路分析，查文献并给出证据报告",
+      "mode": "research_open",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "rounds": [
+        {
+          "round": 1,
+          "task": "LUAD drug repurposing: cohort QC → differential expression → pathway enrichment → candidate ranking → audit → literature review → report",
+          "rationale": "The request (screen candidate drugs for LUAD, do pathway analysis, review literature, produce an evidence report) is a research-open, non-patient-specific analysis fully supported by the available inputs (disease_series, drug_signatures). The pipeline follows the dependency chain: QC the tumour/normal cohort, derive the paired disease signature, run pathway enrichment, rank LINCS compound signatures by reversal, audit the Top-10, run the multi-agent PubMed review, then assemble the report. rank_transcriptome is not needed (no benchmark task).",
+          "steps": [
+            "qc_disease_cohort",
+            "differential_expression",
+            "pathway_enrichment",
+            "rank_candidates",
+            "audit_candidates",
+            "review_literature",
+            "build_report"
+          ],
+          "invalid_reason": null,
+          "planner_latency_ms": 1749.9
+        }
+      ],
+      "executed": [
+        {
+          "round": 1,
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "samples": 116,
+            "included": 114,
+            "pairs": 57,
+            "excluded": 2
+          }
+        },
+        {
+          "round": 1,
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 19404,
+            "up": 512,
+            "down": 749,
+            "source": "data\\processed\\luad\\luad_deg_all.tsv"
+          }
+        },
+        {
+          "round": 1,
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "Estrogen Response Late",
+              "G2-M Checkpoint",
+              "Glycolysis",
+              "E2F Targets",
+              "KRAS Signaling Up"
+            ],
+            "down": [
+              "TNF-alpha Signaling via NF-kB",
+              "KRAS Signaling Up",
+              "Epithelial Mesenchymal Transition",
+              "Inflammatory Response",
+              "Xenobiotic Metabolism"
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "drugs": 4920,
+            "top10": [
+              "hydrocortisone",
+              "beclomethasone-dipropionate",
+              "clocortolone-pivalate",
+              "mometasone",
+              "flumetasone",
+              "BRD-K84203638",
+              "hydrocortisone-hemisuccinate",
+              "fluorometholone",
+              "fluticasone",
+              "diflorasone"
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "measured_controls": 5,
+            "mean_percentile": 0.362,
+            "permutation_p": 0.145,
+            "top10_matches_frozen_identity_audit": true
+          }
+        },
+        {
+          "round": 1,
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "frozen multi_agent_review_v1 (reused)",
+            "tier_counts": {
+              "SUPPORTED": 0,
+              "PROMISING_BUT_INCOMPLETE": 0,
+              "CONFLICTING": 0,
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "rejected_citations": 0
+          }
+        },
+        {
+          "round": 1,
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\demo_full\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "artefact_summaries": {
+        "cohort": {
+          "samples": 116,
+          "included": 114,
+          "pairs": 57,
+          "excluded": 2
+        },
+        "signature": {
+          "genes": 19404,
+          "up": 512,
+          "down": 749,
+          "source": "data\\processed\\luad\\luad_deg_all.tsv"
+        },
+        "pathways": {
+          "up": [
+            "Estrogen Response Late",
+            "G2-M Checkpoint",
+            "Glycolysis",
+            "E2F Targets",
+            "KRAS Signaling Up"
+          ],
+          "down": [
+            "TNF-alpha Signaling via NF-kB",
+            "KRAS Signaling Up",
+            "Epithelial Mesenchymal Transition",
+            "Inflammatory Response",
+            "Xenobiotic Metabolism"
+          ]
+        },
+        "ranking": {
+          "drugs": 4920,
+          "top10": [
+            "hydrocortisone",
+            "beclomethasone-dipropionate",
+            "clocortolone-pivalate",
+            "mometasone",
+            "flumetasone",
+            "BRD-K84203638",
+            "hydrocortisone-hemisuccinate",
+            "fluorometholone",
+            "fluticasone",
+            "diflorasone"
+          ]
+        },
+        "audit": {
+          "measured_controls": 5,
+          "mean_percentile": 0.362,
+          "permutation_p": 0.145,
+          "top10_matches_frozen_identity_audit": true
+        },
+        "evidence": {
+          "source": "frozen multi_agent_review_v1 (reused)",
+          "tier_counts": {
+            "SUPPORTED": 0,
+            "PROMISING_BUT_INCOMPLETE": 0,
+            "CONFLICTING": 0,
+            "INSUFFICIENT_EVIDENCE": 10
+          },
+          "rejected_citations": 0
+        },
+        "report": {
+          "report": "artifacts\\agent_v2_runs\\demo_full\\candidate_report.json",
+          "evidence_included": true
+        }
+      }
+    },
+    "replan": {
+      "question": "请为肺腺癌筛选候选药物并给出证据报告",
+      "mode": "research_open",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "rounds": [
+        {
+          "round": 1,
+          "task": "为肺腺癌（LUAD）筛选候选药物并生成证据报告",
+          "rationale": "请求属于研究性药物重定位（非患者个体化治疗/剂量、非临床发表），可用输入齐全（disease_series、drug_signatures）。按标准流程：先质控配对队列，再做配对差异表达得到疾病签名，随后通路富集、基于 LINCS 化合物签名做逆转排序，再对 Top-10 做身份/参考药物回收审计与文献证据复核，最后汇总报告。rank_transcriptome 属于基准测试工具，本请求不需要。",
+          "steps": [
+            "qc_disease_cohort",
+            "differential_expression",
+            "pathway_enrichment",
+            "rank_candidates",
+            "audit_candidates",
+            "review_literature",
+            "build_report"
+          ],
+          "invalid_reason": null,
+          "planner_latency_ms": 1679.5
+        },
+        {
+          "round": 2,
+          "task": "为肺腺癌（LUAD）筛选候选药物并给出证据报告",
+          "rationale": "队列质控、差异表达与通路富集已完成（cohort/signature/pathways 已在 already_produced 中）。rank_candidates 在第 1 轮失败一次，按规则可重试一次；若重试成功，则继续审计 Top-10、文献复核并生成报告。若重试仍失败，则安全停止并转人工复核。",
+          "steps": [
+            "rank_candidates",
+            "audit_candidates",
+            "review_literature",
+            "build_report"
+          ],
+          "invalid_reason": null,
+          "planner_latency_ms": 1733.0
+        }
+      ],
+      "executed": [
+        {
+          "round": 1,
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "samples": 116,
+            "included": 114,
+            "pairs": 57,
+            "excluded": 2
+          }
+        },
+        {
+          "round": 1,
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 19404,
+            "up": 512,
+            "down": 749,
+            "source": "data\\processed\\luad\\luad_deg_all.tsv"
+          }
+        },
+        {
+          "round": 1,
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "Estrogen Response Late",
+              "G2-M Checkpoint",
+              "Glycolysis",
+              "E2F Targets",
+              "KRAS Signaling Up"
+            ],
+            "down": [
+              "TNF-alpha Signaling via NF-kB",
+              "KRAS Signaling Up",
+              "Epithelial Mesenchymal Transition",
+              "Inflammatory Response",
+              "Xenobiotic Metabolism"
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "tool": "rank_candidates",
+          "status": "failed",
+          "error": "ToolError: injected demo failure of rank_candidates"
+        },
+        {
+          "round": 2,
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "drugs": 4920,
+            "top10": [
+              "hydrocortisone",
+              "beclomethasone-dipropionate",
+              "clocortolone-pivalate",
+              "mometasone",
+              "flumetasone",
+              "BRD-K84203638",
+              "hydrocortisone-hemisuccinate",
+              "fluorometholone",
+              "fluticasone",
+              "diflorasone"
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "measured_controls": 5,
+            "mean_percentile": 0.362,
+            "permutation_p": 0.145,
+            "top10_matches_frozen_identity_audit": true
+          }
+        },
+        {
+          "round": 2,
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "frozen multi_agent_review_v1 (reused)",
+            "tier_counts": {
+              "SUPPORTED": 0,
+              "PROMISING_BUT_INCOMPLETE": 0,
+              "CONFLICTING": 0,
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "rejected_citations": 0
+          }
+        },
+        {
+          "round": 2,
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\demo_replan\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "artefact_summaries": {
+        "cohort": {
+          "samples": 116,
+          "included": 114,
+          "pairs": 57,
+          "excluded": 2
+        },
+        "signature": {
+          "genes": 19404,
+          "up": 512,
+          "down": 749,
+          "source": "data\\processed\\luad\\luad_deg_all.tsv"
+        },
+        "pathways": {
+          "up": [
+            "Estrogen Response Late",
+            "G2-M Checkpoint",
+            "Glycolysis",
+            "E2F Targets",
+            "KRAS Signaling Up"
+          ],
+          "down": [
+            "TNF-alpha Signaling via NF-kB",
+            "KRAS Signaling Up",
+            "Epithelial Mesenchymal Transition",
+            "Inflammatory Response",
+            "Xenobiotic Metabolism"
+          ]
+        },
+        "ranking": {
+          "drugs": 4920,
+          "top10": [
+            "hydrocortisone",
+            "beclomethasone-dipropionate",
+            "clocortolone-pivalate",
+            "mometasone",
+            "flumetasone",
+            "BRD-K84203638",
+            "hydrocortisone-hemisuccinate",
+            "fluorometholone",
+            "fluticasone",
+            "diflorasone"
+          ]
+        },
+        "audit": {
+          "measured_controls": 5,
+          "mean_percentile": 0.362,
+          "permutation_p": 0.145,
+          "top10_matches_frozen_identity_audit": true
+        },
+        "evidence": {
+          "source": "frozen multi_agent_review_v1 (reused)",
+          "tier_counts": {
+            "SUPPORTED": 0,
+            "PROMISING_BUT_INCOMPLETE": 0,
+            "CONFLICTING": 0,
+            "INSUFFICIENT_EVIDENCE": 10
+          },
+          "rejected_citations": 0
+        },
+        "report": {
+          "report": "artifacts\\agent_v2_runs\\demo_replan\\candidate_report.json",
+          "evidence_included": true
+        }
+      }
+    }
+  }
+}
