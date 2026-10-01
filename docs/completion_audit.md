@@ -19,8 +19,8 @@
 | 13 受约束 RSI 演示 | 无 | 未完成 |
 | 14 Docker 或锁定环境 | `requirements-benchmark.lock`、`scripts/setup_benchmark.ps1`；全新 Python 3.10 环境测试通过 | 已有 Python 环境；R/limma 另记版本 |
 | 15 数据卡、系统卡和限制说明 | `docs/data_card.md`、`docs/system_card.md`、`docs/limitations.md` | 已有 |
-| 16 课程设计报告 | `docs/课程设计报告_v5.md`、`deliverables/药物重定位Agent_课程设计报告_v5.docx` | v5 在 v4 基础上加入 B3/B4 官方结果、污染探针、决策层消融、多 Agent 审阅与图表；v4 已归档 |
-| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v7.pptx` | v7 十一页由脚本从已提交结果生成，三张原生可编辑图表；v6 已归档 |
+| 16 课程设计报告 | `docs/课程设计报告_v5.md`、`deliverables/药物重定位Agent_课程设计报告_v5.docx`、`deliverables/latex/course_report_v5.pdf` | v5 加入 B3/B4 官方结果、污染探针、决策层消融、多 Agent 审阅与图表；文献部分写明 65/65 通过 PMID/逐字校验，但 23 条来源/药物指向经事后裁定后 13 条不再作为候选级证据，10/10 证据不足保持不变；v4 已归档 |
+| 17 答辩 PPT | `deliverables/药物重定位Agent_答辩稿_v7.pptx` | v7 十一页由脚本从已提交结果生成，三张原生可编辑图表；第 10、11 页已加入 23 条范围预筛及 13 条排除的边界；v6 已归档 |
 | 18 演示视频 | 无 | 未完成 |
 
 外部阻碍：TypeSafe Jev 凭据尚未提供；剂量、亚型和组合验证需要湿实验资源。课程 PDF 已完成核对，DeepSeek 通用 LLM 已真实实测，100 例 v3 独立 holdout、逐签名 ID 恢复和三种官方基线的五种子嵌套调参均已完成。表达反转没有超过强基线，不能通过修改结论把尚未执行的实验视为完成。
