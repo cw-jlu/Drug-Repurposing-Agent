@@ -14,10 +14,10 @@
   "top10pct_count": 2,
   "top10pct_expected": 0.5,
   "mann_whitney_p_one_sided": 0.1421841228961357,
-  "generated_at": "2026-10-01T06:50:00.162353+00:00",
-  "rank_source": "docs/luad_screening_report.md (recorded ranks; EH3226 not re-run here)",
+  "generated_at": "2026-10-01T08:37:41.112577+00:00",
+  "rank_source": "artifacts\\reports\\luad_eh3226\\positive_control_ranks.csv (sha256 matches data/manifests/eh3226-luad.json)",
   "n_names": 4920,
   "prespecified_controls": 11,
   "unmeasured_controls_excluded": 6,
-  "trace_file": "artifacts\\traces\\20261001T064958245534Z_luad_positive_control_stats_v1_64a181e885f3440da93b8762bb0b0f9e.jsonl"
+  "trace_file": "artifacts\\traces\\20261001T083739046999Z_luad_positive_control_stats_v1_cce4a1224f334805826c09a8af3ba1f0.jsonl"
 }
