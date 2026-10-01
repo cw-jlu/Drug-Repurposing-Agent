@@ -18,6 +18,10 @@ Design fixed before any Jev call (committed with this file):
   noul AUROC/Brier on clear evidence cases, expected-score Spearman on clear
   data-quality cases, latency, usage and schema failures.
 Model: jev-1.13 via OpenCode Zen (OPENCODE_API_KEY). One run.
+
+Amendment (before any scored Jev answer existed): every jev-1.13 call returned
+HTTP 402 "Insufficient account funds" (49 failed calls, no answers). The run uses
+the provider's limited-time free model jev-1.13-free instead; nothing else changes.
 """
 
 from __future__ import annotations
@@ -92,7 +96,7 @@ def calibration(cases: list[dict], jev: dict[str, dict]) -> dict:
 
 def _main(trace: TraceRecorder) -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="jev-1.13")
+    parser.add_argument("--model", default="jev-1.13-free")
     parser.add_argument("--output", type=Path, default=RESULT)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--max-calls", type=int, default=150)
@@ -132,7 +136,10 @@ def _main(trace: TraceRecorder) -> None:
                 break
             except Exception as exc:  # recorded; schema failures are kept
                 last = {"case_id": case["id"], "model": args.model, "status": "error",
-                        "error": type(exc).__name__, "attempts": attempt, "config_sha256": FROZEN_SHA256}
+                        "error": type(exc).__name__, "http_status": getattr(exc, "code", None),
+                        "attempts": attempt, "config_sha256": FROZEN_SHA256}
+                if getattr(exc, "code", None) in (401, 402, 403):
+                    break  # account/authorisation errors are not retried
                 row = None
         row = row or last
         with lock:
