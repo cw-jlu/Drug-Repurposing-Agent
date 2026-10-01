@@ -62,3 +62,33 @@ def test_jev_http_request_and_response_are_schema_checked(monkeypatch):
     assert result["answers"]["route"]["noul"] == 0.9
     assert seen[0][0].get_header("Authorization") == "Bearer secret-key"
     assert json.loads(seen[0][0].data)["questions"]["route"] == question
+
+
+def test_from_env_routes_opencode_key_to_zen(monkeypatch, tmp_path):
+    monkeypatch.delenv("TYPESAFE_API_KEY", raising=False)
+    monkeypatch.setenv("OPENCODE_API_KEY", "oc-test")
+    monkeypatch.chdir(tmp_path)
+    client = JevClient.from_env()
+    assert client.api_url.startswith("https://opencode.ai/zen/") and client.model == "jev-1.13"
+    assert client.provider == "opencode_zen_jev"
+
+
+def test_request_sends_user_agent(monkeypatch):
+    seen = {}
+
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return b"{}"
+
+    def fake_urlopen(request, timeout):
+        seen["ua"] = request.get_header("User-agent")
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr("drug_repurposing_agent.jev.urlopen", fake_urlopen)
+    question = choice_question("Route", {"a": "A", "b": "B"})
+    try:
+        JevClient("k", api_url="https://opencode.ai/zen/v1/systemone").ask({"x": 1}, {"q": question})
+    except RuntimeError:
+        pass
+    assert seen["ua"].startswith("drug-repurposing-agent/")
