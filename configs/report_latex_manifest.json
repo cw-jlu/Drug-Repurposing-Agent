@@ -26,6 +26,7 @@
     {"source":"docs/agent_repeatability.md","stem":"agent_repeatability"},
     {"source":"docs/luad_threshold_sensitivity.md","stem":"luad_threshold_sensitivity"},
     {"source":"docs/model_replication_v4_pro.md","stem":"model_replication_v4_pro"},
-    {"source":"docs/jev_evaluation.md","stem":"jev_evaluation"}
+    {"source":"docs/jev_evaluation.md","stem":"jev_evaluation"},
+    {"source":"docs/agent_v2.md","stem":"agent_v2"}
   ]
 }

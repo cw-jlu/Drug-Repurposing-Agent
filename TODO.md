@@ -49,6 +49,11 @@
 - [x] LUAD 签名阈值敏感性（`docs/luad_threshold_sensitivity.md`）：糖皮质激素主导只在 |log2FC| ≥ 1 时成立。
 - [x] 换模型复现：四组冻结 LLM 评测在 deepseek-v4-pro 上重跑（`docs/model_replication_v4_pro.md`）。
 
+## 2026-10-02 Agent v2（已完成）
+
+- [x] 多步规划、依赖校验与有限重规划（`docs/agent_v2.md`）；冻结 40 例：DeepSeek 36/40、规则 30/40。
+- [ ] 可选：越权类请求（跳过质控、当作治疗方案）DeepSeek 未拒绝，可在新的冻结集上评估加强提示或 Jev 放行判断，不得在本 40 例上调整。
+
 ## 外部条件：Jev
 
 - [x] Jev 访问已取得（OpenCode Zen；付费版余额不足，使用 jev-1.13-free）。原条目：确认是否提供 TypeSafe Jev 的可用访问凭据。若无法取得，保留接口与模拟测试，但明确标注 Jev 实测及对比未完成。决策层对比先用 J0/J1/J3 完成（见上）。
