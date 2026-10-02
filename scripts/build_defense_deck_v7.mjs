@@ -269,8 +269,10 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
 // 10 Multi-agent review
 {
   const cv = rev.citation_validation, tc = rev.tier_counts;
+  const liveRev = has("benchmark/results/agent_v2_live_review.json") ? J("benchmark/results/agent_v2_live_review.json") : null;
+  const liveNote = liveRev ? `10 月 2 日经 Agent v2 实时重跑一次：${liveRev.per_candidate.filter((c) => c.same).length}/10 分级与冻结版一致，${liveRev.per_candidate.filter((c) => !c.same).map((c) => c.name).join("、")} 分级改变，仍无候选达到“有支持”；审阅代码后来加入引用范围检查，引语被拒 ${liveRev.live_summary.rejected_quoted_items}/${liveRev.live_summary.proposed_quoted_items}，与冻结版不可直接比较。` : "";
   const s = content("多 Agent 证据审阅：逐字引用 ≠ 论断成立",
-    `约 50 秒。每个候选由文献 Agent、批评 Agent 和协调者处理。冻结版 ${cv.proposed_quoted_items} 条引语全部通过 PMID 与逐字校验、${tc.INSUFFICIENT_EVIDENCE}/10 判为证据不足，共 ${rev.call_counts.attempts} 次模型调用。事后来源/药名范围预筛标记 ${evidenceAudit.reviewed_count} 条；当前 PubMed 摘要级复核中 ${evidenceExcluded} 条原样候选级引用需排除，${evidenceAudit.decision_counts.retain_narrowed} 条仅能收窄终点保留，${evidenceAudit.decision_counts.retain_class_caution_only} 条仅作一般安全提示。错误包括勘误当原始研究、未指名类固醇归给具体候选、柚皮素抗癌结果误归给 fluticasone。冻结分级未重跑；这不是独立双人全文审阅。`);
+    `约 50 秒。${liveNote}每个候选由文献 Agent、批评 Agent 和协调者处理。冻结版 ${cv.proposed_quoted_items} 条引语全部通过 PMID 与逐字校验、${tc.INSUFFICIENT_EVIDENCE}/10 判为证据不足，共 ${rev.call_counts.attempts} 次模型调用。事后来源/药名范围预筛标记 ${evidenceAudit.reviewed_count} 条；当前 PubMed 摘要级复核中 ${evidenceExcluded} 条原样候选级引用需排除，${evidenceAudit.decision_counts.retain_narrowed} 条仅能收窄终点保留，${evidenceAudit.decision_counts.retain_class_caution_only} 条仅作一般安全提示。错误包括勘误当原始研究、未指名类固醇归给具体候选、柚皮素抗癌结果误归给 fluticasone。冻结分级未重跑；这不是独立双人全文审阅。`);
   stat(s, String(cv.proposed_quoted_items), "冻结版通过逐字校验", 0.6, 1.4, 2.9);
   stat(s, String(evidenceAudit.reviewed_count), "事后范围预筛标记", 3.7, 1.4, 2.9, C.red);
   stat(s, String(evidenceExcluded), "原样候选级引用需排除", 6.8, 1.4, 2.9, C.red);
