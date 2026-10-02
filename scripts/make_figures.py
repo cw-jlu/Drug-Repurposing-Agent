@@ -4,7 +4,8 @@ Run from the repository root:
 
     python scripts/make_figures.py [--published <RECeSS benchmark-results checkout>]
 
-Writes PNG (dpi 200) and SVG files to ``docs/figures/``. Every input is read
+Writes PNG (dpi 300) and SVG files to ``docs/figures/`` in the shared style of
+``scripts/figure_style.py`` (no headline titles; captions live in the report). Every input is read
 from versioned project files, the pinned published RECeSS results, or raw data
 already under ``data/raw/``; no figure value is typed in by hand. A trace is
 written to ``artifacts/traces/`` as required by AGENTS.md.
@@ -33,6 +34,9 @@ sys.path.insert(0, str(REPO / "src"))
 sys.path.insert(0, str(REPO))
 
 from drug_repurposing_agent.trace import TraceRecorder  # noqa: E402
+from scripts import figure_style as st  # noqa: E402
+from scripts.figure_style import (BLUE, DOWN, GOLD, GRAY, GRID, INK, INK2, LIGHT, MUTED,  # noqa: E402
+                                  NAVY, RED, TEAL, UP, panel)
 
 FIG_DIR = REPO / "docs" / "figures"
 SPLITS = {"random_simple": "Random simple split", "weakly_correlated": "Weakly correlated split"}
@@ -47,35 +51,11 @@ OUR_RESULT_DIRS = {"B2": "benchmark/results/recess_official_b2",
                    "B4": "benchmark/results/recess_official_b4"}
 METRIC_ROW = "Lin's AUC"  # = NS-AUC in the RECeSS analysis
 
-# Palette: dataviz reference palette, checked with validate_palette.js.
-INK, INK2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
-BLUE, ORANGE, AQUA, YELLOW, VIOLET, RED = ("#2a78d6", "#eb6834", "#1baf7a",
-                                           "#eda100", "#4a3aa7", "#e34948")
-PUBLISHED_COLOR = "#c3c2b7"
-OUR_COLORS = [ORANGE, BLUE, AQUA, VIOLET]
-
-
-def setup_fonts() -> None:
-    from matplotlib import font_manager
-    available = {f.name for f in font_manager.fontManager.ttflist}
-    cjk = [name for name in ("Microsoft YaHei", "SimHei", "Noto Sans CJK SC",
-                             "Source Han Sans SC", "PingFang SC") if name in available]
-    if not cjk:
-        raise SystemExit("No CJK font found; install Microsoft YaHei/SimHei/Noto Sans CJK.")
-    plt.rcParams.update({
-        "font.family": "sans-serif", "font.sans-serif": cjk + ["DejaVu Sans"],
-        "axes.unicode_minus": False, "svg.fonttype": "path",
-        "axes.edgecolor": "#c3c2b7", "axes.labelcolor": INK2, "xtick.color": INK2,
-        "ytick.color": INK2, "axes.titlecolor": INK, "axes.spines.top": False,
-        "axes.spines.right": False, "font.size": 10, "axes.titlesize": 11.5,
-        "figure.facecolor": "white", "axes.facecolor": "white"})
+PUBLISHED_COLOR = st.PUBLISHED
 
 
 def save(fig: plt.Figure, name: str, trace: TraceRecorder, **details: object) -> None:
-    FIG_DIR.mkdir(parents=True, exist_ok=True)
-    for ext in ("png", "svg"):
-        fig.savefig(FIG_DIR / f"{name}.{ext}", dpi=200, bbox_inches="tight")
-    plt.close(fig)
+    st.save(fig, FIG_DIR, name)
     trace.emit("figure_written", figure=name, **details)
     print(f"wrote docs/figures/{name}.png/.svg")
 
@@ -134,12 +114,12 @@ def load_fig1(published: Path) -> tuple[dict, dict]:
 def fig1(published: Path, trace: TraceRecorder) -> dict:
     data, notes = load_fig1(published)
     ours = [m for m in OUR_RESULT_DIRS if m in data["random_simple"]]
-    fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.8), sharex=True)
+    fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.6), sharex=True)
     medians = {}
-    for ax, (split, title) in zip(axes, SPLITS.items()):
+    for ax, letter, (split, title) in zip(axes, "ab", SPLITS.items()):
         models = sorted(data[split], key=lambda m: np.median(data[split][m]))
         medians[split] = {m: round(float(np.median(data[split][m])), 4) for m in models[::-1]}
-        colors = [OUR_COLORS[ours.index(m)] if m in ours else PUBLISHED_COLOR for m in models]
+        colors = [st.METHOD_COLORS[m] if m in ours else PUBLISHED_COLOR for m in models]
         bp = ax.boxplot([data[split][m] for m in models], vert=False, widths=0.62,
                         patch_artist=True, showfliers=True,
                         medianprops={"color": INK, "linewidth": 1.6},
@@ -164,18 +144,15 @@ def fig1(published: Path, trace: TraceRecorder) -> dict:
         ax.text(1.01, 1.0, "中位数", transform=ax.transAxes, fontsize=8.5, color=MUTED, va="bottom")
         n = notes[split]
         suffix = "" if n == 100 else f"（仅比较前 {n} 个公开种子）"
-        ax.set_title(f"{title}  (n={n} seeds){suffix}", loc="left")
-        ax.set_xlabel("NS-AUC（行平均 AUC，官方 “Lin's AUC”）")
-        ax.grid(axis="x", color=GRID, linewidth=0.6)
-        ax.set_axisbelow(True)
+        ax.set_title(f"{title}（n = {n} 个种子）{suffix}")
+        panel(ax, letter, x=-0.2)
+        ax.set_xlabel("NS-AUC（官方 Lin's AUC）")
+        st.grid(ax, "x")
     handles = [Patch(facecolor=PUBLISHED_COLOR, label="RECeSS 公开 11 模型")] + \
-              [Patch(facecolor=OUR_COLORS[i], edgecolor=INK, label=f"本项目 {m}") for i, m in enumerate(ours)] + \
+              [Patch(facecolor=st.METHOD_COLORS[m], edgecolor=INK, label=f"本项目 {m}") for m in ours] + \
               [plt.Line2D([], [], color=INK2, linestyle="--", label="0.5 参考线")]
-    fig.legend(handles=handles, loc="upper left", ncol=len(handles), frameon=False,
-               bbox_to_anchor=(0.005, 0.985))
-    fig.suptitle("TRANSCRIPT 官方 RECeSS 流程：每个种子的 NS-AUC 分布（按中位数排序）",
-                 x=0.01, ha="left", y=1.03, fontsize=13, color=INK)
-    fig.subplots_adjust(wspace=0.62, top=0.86)
+    fig.legend(handles=handles, loc="lower center", ncol=len(handles), bbox_to_anchor=(0.5, -0.04))
+    fig.subplots_adjust(wspace=0.62, bottom=0.17)
     save(fig, "fig1_nsauc_boxplot", trace, medians=medians, seeds=notes, our_models=ours)
     return medians
 
@@ -187,8 +164,8 @@ def fig2(trace: TraceRecorder) -> dict:
     models = ["B0p", "B1k", "B1", "B2"]
     labels = {"B0p": "B0p 训练集药物流行度", "B1k": "B1k 表达近邻标签传播",
               "B1": "B1 无标签表达逆转", "B2": "B2 固定 RRF 融合"}
-    colors = [BLUE, YELLOW, AQUA, ORANGE]
-    fig, ax = plt.subplots(figsize=(10, 5.6))
+    colors = [LIGHT, GOLD, NAVY, RED]
+    fig, ax = plt.subplots(figsize=(9, 5))
     width, gap = 0.19, 0.012
     values = {}
     for j, split in enumerate(SPLITS):
@@ -200,23 +177,15 @@ def fig2(trace: TraceRecorder) -> dict:
                    error_kw={"ecolor": INK2, "elinewidth": 0.9, "capsize": 3},
                    label=labels[m] if j == 0 else None)
             ax.text(x, stats["mean"] + stats["sd"] + 0.012, f"{stats['mean']:.3f}",
-                    ha="center", va="bottom", fontsize=8.8, color=INK)
+                    ha="center", va="bottom", fontsize=8.5, color=INK)
     ax.axhline(0.5, color=INK2, linestyle="--", linewidth=1)
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["Random simple", "Weakly correlated"], fontsize=10.5)
-    ax.set_ylim(0, 0.98)
-    ax.set_yticks(np.arange(0, 0.81, 0.1))
-    ax.set_ylabel("NS-AUC（100 种子均值 ± SD）")
-    ax.grid(axis="y", color=GRID, linewidth=0.6)
-    ax.set_axisbelow(True)
-    ax.legend(frameon=False, ncol=4, loc="upper left", bbox_to_anchor=(0, 1.085), fontsize=9)
-    ax.set_title("B2 组件消融（同一官方流程、100 种子、五折选模）", loc="left", pad=30)
-    note = ("B0p = 0.5 是退化回落值，不代表“随机水平”的排序能力：药物流行度在同一药物行内为常数，\n"
-            "行内正/非正样本全部并列；官方行式指标用严格 “>” 比较，并列得 0 分，该行无区分度，结果回落为 0.5。\n"
-            "B1k 远低于 0.5 也主要来自大量并列分数（严格比较下并列计 0），而非分数方向相反（见 b1k_metric_audit.md）。")
-    ax.text(0.01, 0.975, note, transform=ax.transAxes, ha="left", va="top", fontsize=8.3,
-            color=INK2, bbox={"boxstyle": "round,pad=0.5", "facecolor": "#f6f5f2",
-                              "edgecolor": GRID})
+    ax.set_xticklabels(["Random simple", "Weakly correlated"])
+    ax.set_ylim(0, 0.7)
+    ax.set_yticks(np.arange(0, 0.71, 0.1))
+    ax.set_ylabel("NS-AUC（100 个种子均值 ± SD）")
+    st.grid(ax, "y")
+    ax.legend(ncol=4, loc="lower center", bbox_to_anchor=(0.5, -0.2))
     save(fig, "fig2_component_ablation", trace, source=str(src.relative_to(REPO)), values=values)
     return values
 
@@ -266,13 +235,13 @@ def fig3(trace: TraceRecorder) -> dict:
     up = deg.included_default & (deg.direction == "up")
     down = deg.included_default & (deg.direction == "down")
     ns = ~(up | down)
-    fig, ax = plt.subplots(figsize=(9, 6.4))
-    ax.scatter(deg.log2FC[ns], y[ns], s=4, color="#d4d2cb", linewidths=0, rasterized=True,
-               label=f"不显著 ({int(ns.sum()):,})")
-    ax.scatter(deg.log2FC[up], y[up], s=7, color=RED, linewidths=0, rasterized=True,
-               label=f"上调 ({int(up.sum())})")
-    ax.scatter(deg.log2FC[down], y[down], s=7, color=BLUE, linewidths=0, rasterized=True,
-               label=f"下调 ({int(down.sum())})")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.scatter(deg.log2FC[ns], y[ns], s=4, color=LIGHT, linewidths=0, rasterized=True,
+               label=f"不显著（{int(ns.sum()):,}）")
+    ax.scatter(deg.log2FC[up], y[up], s=7, color=UP, linewidths=0, rasterized=True,
+               label=f"肿瘤上调（{int(up.sum())}）")
+    ax.scatter(deg.log2FC[down], y[down], s=7, color=DOWN, linewidths=0, rasterized=True,
+               label=f"肿瘤下调（{int(down.sum())}）")
     ax.axhline(-np.log10(0.05), color=MUTED, linestyle="--", linewidth=0.9)
     for v in (-1, 1):
         ax.axvline(v, color=MUTED, linestyle="--", linewidth=0.9)
@@ -300,12 +269,8 @@ def fig3(trace: TraceRecorder) -> dict:
     ax.set_ylim(0, ymax)
     ax.set_xlabel("log2FC（肿瘤 − 配对正常）")
     ax.set_ylabel("−log10(BH FDR)")
-    ax.set_title(f"GSE32863 LUAD 配对差异表达（57 对，{len(deg):,} 基因，配对 t 检验）\n"
-                 f"阈值 FDR<0.05 且 |log2FC|≥1：上调 {int(up.sum())}、下调 {int(down.sum())}"
-                 "（标注各方向 |log2FC| 最大的 8 个基因）", loc="left")
-    ax.legend(frameon=False, loc="lower right", markerscale=2.5, fontsize=9)
-    ax.grid(color=GRID, linewidth=0.5)
-    ax.set_axisbelow(True)
+    ax.legend(loc="lower right", markerscale=2.5)
+    st.grid(ax)
     save(fig, "fig3_luad_volcano", trace, source=source, up=int(up.sum()), down=int(down.sum()),
          labeled=labeled)
     return {"up": int(up.sum()), "down": int(down.sum()), "genes": len(deg), "source": source,
@@ -314,10 +279,10 @@ def fig3(trace: TraceRecorder) -> dict:
 
 # ---------------------------------------------------------------- fig4 -----
 IDENTITY_TIERS = [  # (regex on the recorded identity string, label, color)
-    ("exact_Hub_InChIKey", "来源 ID 精确 + Hub InChIKey 一致", AQUA),
+    ("exact_Hub_InChIKey", "来源 ID 精确 + Hub InChIKey 一致", TEAL),
     ("Hub_stereochemistry_differs", "来源 ID 精确；Hub 立体化学不同", BLUE),
-    ("mismatch|ambiguous", "来源 ID 精确；Hub 结构不符/名称歧义", ORANGE),
-    ("no_Hub_sample", "来源 ID 精确；Hub 无样品", VIOLET),
+    ("mismatch|ambiguous", "来源 ID 精确；Hub 结构不符/名称歧义", RED),
+    ("no_Hub_sample", "来源 ID 精确；Hub 无样品", GRAY),
 ]
 
 
@@ -336,7 +301,7 @@ def fig4(trace: TraceRecorder) -> dict:
     rows = cands[::-1]  # rank 1 on top
     tiers = [identity_tier(c["identity"]) for c in rows]
     ypos = np.arange(len(rows))
-    fig, ax = plt.subplots(figsize=(11.5, 5.8))
+    fig, ax = plt.subplots(figsize=(10, 5.4))
     if scores is not None:
         vals = [float(scores.loc[c["name"], "rrf"]) for c in rows]
         ax.barh(ypos, vals, color=[t[1] for t in tiers], height=0.62)
@@ -344,8 +309,7 @@ def fig4(trace: TraceRecorder) -> dict:
             ax.text(v, yv, f" {v:.4f}", va="center", fontsize=8.5, color=INK)
         ax.set_xlabel("RRF 融合分数（负 Spearman + 上/下调基因集连接性，k=60）")
         ax.legend(handles=[Patch(facecolor=c, label=l) for _, l, c in IDENTITY_TIERS],
-                  frameon=False, fontsize=8.5, loc="upper center", ncol=2,
-                  bbox_to_anchor=(0.5, -0.12))
+                  loc="upper center", ncol=2, bbox_to_anchor=(0.5, -0.12))
         mode = "rrf_scores"
         subtitle = ""
     else:
@@ -370,11 +334,11 @@ def fig4(trace: TraceRecorder) -> dict:
         subtitle = ("\nRRF 分数文件 all_candidates.csv 未生成（需 2.46 GB EH3226 重跑），"
                     "此处按排名列出已记录证据")
     ax.set_yticks(ypos)
-    ax.set_yticklabels([f"#{c['rank']}  {c['name']}" for c in rows], fontsize=9.5)
+    ax.set_yticklabels([f"#{c['rank']}  {c['name']}" for c in rows], fontsize=9)
     ax.spines["left"].set_visible(False)
     ax.tick_params(axis="y", length=0)
-    ax.set_title("LUAD 表达逆转 Top-10（A549，10 µM，24 h）：9/10 为糖皮质激素类，10/10 证据不足"
-                 + subtitle, loc="left", fontsize=11)
+    if subtitle:
+        ax.set_title(subtitle.strip(), fontsize=9, fontweight="normal", color=INK2)
     save(fig, "fig4_luad_top10", trace, mode=mode)
     return {"mode": mode}
 
@@ -415,12 +379,12 @@ def fig5(trace: TraceRecorder) -> dict:
 
     pos = {**column(targets, 0.0, 0.05, 0.95), **column(drugs, 1.0),
            **column(pathways, 2.0, 0.2, 0.8)}
-    fig, ax = plt.subplots(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=(11, 6.6))
     for u, v, a in g.edges(data=True):
         (x1, y1), (x2, y2) = pos[u], pos[v]
         nr3c1 = "NR3C1" in (u, v)
         gr = "glucocorticoid_receptor_transcription" in (u, v)
-        color = ORANGE if nr3c1 else (AQUA if gr else MUTED)
+        color = RED if nr3c1 else (TEAL if gr else GRAY)
         ax.plot([x1, x2], [y1, y2], color=color, linewidth=1.6 if (nr3c1 or gr) else 0.9,
                 alpha=0.75, linestyle=":" if a.get("inferred") else "-", zorder=1)
     for n in drugs:
@@ -433,26 +397,24 @@ def fig5(trace: TraceRecorder) -> dict:
                 bbox={"facecolor": "white", "edgecolor": "none", "pad": 0.3, "alpha": 0.9})
     for n in targets:
         x, y = pos[n]
-        ax.scatter([x], [y], s=50 + 30 * g.degree(n), color=ORANGE if n == "NR3C1" else BLUE,
+        ax.scatter([x], [y], s=50 + 30 * g.degree(n), color=RED if n == "NR3C1" else BLUE,
                    edgecolor="white", linewidth=1, zorder=3)
         ax.text(x - 0.06, y, f"{n}（{g.degree(n)}）", ha="right", va="center", fontsize=9, color=INK)
     for n in pathways:
         x, y = pos[n]
-        ax.scatter([x], [y], s=50 + 30 * g.degree(n), marker="s", color=AQUA,
+        ax.scatter([x], [y], s=50 + 30 * g.degree(n), marker="s", color=TEAL,
                    edgecolor="white", linewidth=1, zorder=3)
         ax.text(x + 0.06, y, f"{PATHWAY_LABELS.get(n, n)}（{g.degree(n)}）", ha="left",
                 va="center", fontsize=9, color=INK)
     for x, head in ((0.0, "记录靶点（Broad 名称级注释）"), (1.0, "Top-10 候选"), (2.0, "记录通路")):
-        ax.text(x, 1.09, head, ha="center", fontsize=10.5, fontweight="bold", color=INK2)
+        ax.text(x, 1.09, head, ha="center", fontsize=10, fontweight="bold", color=INK)
     ax.set_xlim(-0.75, 2.9)
     ax.set_ylim(-0.05, 1.13)
     ax.axis("off")
     nr = g.degree("NR3C1") if "NR3C1" in g else 0
     gr_key = "glucocorticoid_receptor_transcription"
     ngr = g.degree(gr_key) if gr_key in g else 0
-    ax.set_title(f"Top-10 药物–靶点–通路网络：{nr}/10 记录靶点含 NR3C1，{ngr}/10 记录 GR 转录通路——同一机制轴\n"
-                 "仅使用 configs/luad_top10_evidence_v1.json 已记录字段；点线 = 仅母药推断；括号 = 连接候选数",
-                 loc="left", fontsize=11)
+    ax.text(1.0, -0.06, "括号内为连接的候选数；点线 = 仅由母药推断", ha="center", fontsize=8.5, color=INK2)
     save(fig, "fig5_top10_network", trace, nodes=g.number_of_nodes(), edges=g.number_of_edges(),
          nr3c1_degree=nr, gr_pathway_degree=ngr)
     return {"nr3c1": nr, "gr_pathway": ngr, "targets": targets, "pathways": pathways}
@@ -467,39 +429,89 @@ def fig6(trace: TraceRecorder) -> dict:
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5.6), gridspec_kw={"width_ratios": [1, 1.05]})
     pi, pj = np.nonzero(v == 1)
     ni, nj = np.nonzero(v == -1)
-    ax1.scatter(pj, pi, s=6, marker="s", color=BLUE, linewidths=0, label=f"+1 已知有效 ({n_pos})")
-    ax1.scatter(nj, ni, s=22, marker="x", color=RED, linewidths=1.2, label=f"−1 已知失败 ({n_neg})")
+    ax1.scatter(pj, pi, s=6, marker="s", color=NAVY, linewidths=0, label=f"+1 已知有效（{n_pos}）")
+    ax1.scatter(nj, ni, s=22, marker="x", color=RED, linewidths=1.2, label=f"−1 已知失败（{n_neg}）")
     ax1.set_xlim(-1, v.shape[1])
     ax1.set_ylim(v.shape[0], -1)
     ax1.set_xlabel(f"疾病（{v.shape[1]} 列）")
     ax1.set_ylabel(f"药物（{v.shape[0]} 行）")
-    ax1.set_title(f"关联矩阵 {v.shape[0]}×{v.shape[1]}：已知标签仅占 {density:.2%}", loc="left")
-    ax1.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.11), ncol=2,
-               fontsize=8.5, markerscale=1.5)
+    ax1.set_title(f"关联矩阵 {v.shape[0]}×{v.shape[1]}：已知标签占 {density:.2%}")
+    panel(ax1, "a", x=-0.1)
+    ax1.legend(loc="upper center", bbox_to_anchor=(0.5, -0.11), ncol=2, markerscale=1.5)
     for side in ("top", "right"):
         ax1.spines[side].set_visible(True)
     per_disease = (v == 1).sum(axis=0)
     per_drug = (v == 1).sum(axis=1)
     bins = np.arange(0, per_disease.max() + 2) - 0.5
-    ax2.hist(per_disease, bins=bins, color=BLUE, edgecolor="white", linewidth=0.8)
+    ax2.hist(per_disease, bins=bins, color=NAVY, edgecolor="white", linewidth=0.8)
     ax2.set_xlabel("每种疾病的阳性（+1）药物数")
     ax2.set_ylabel("疾病数")
     single, zero = int((per_disease == 1).sum()), int((per_disease == 0).sum())
-    ax2.set_title(f"阳性长尾：中位数 {np.median(per_disease):.0f}，{single}/{v.shape[1]} 种疾病仅 1 个阳性",
-                  loc="left")
-    ax2.grid(axis="y", color=GRID, linewidth=0.6)
-    ax2.set_axisbelow(True)
+    ax2.set_title(f"每种疾病的阳性数：中位数 {np.median(per_disease):.0f}")
+    panel(ax2, "b", x=-0.1)
+    st.grid(ax2, "y")
     ax2.text(0.97, 0.95, f"0 个阳性的疾病：{zero}\n至少 1 个阳性的药物：{int((per_drug > 0).sum())}/{v.shape[0]}\n"
              f"单病最多阳性：{per_disease.max()}", transform=ax2.transAxes, ha="right", va="top",
-             fontsize=9, color=INK2)
-    fig.suptitle("TRANSCRIPT v2.0.0 标签概况：极度稀疏且长尾", x=0.01, ha="left", fontsize=12.5,
-                 color=INK, y=1.0)
-    fig.subplots_adjust(wspace=0.25)
+             fontsize=8.5, color=INK2)
+    fig.subplots_adjust(wspace=0.28)
     stats = {"shape": list(v.shape), "pos": n_pos, "neg": n_neg, "density": round(density, 5),
              "median_pos_per_disease": float(np.median(per_disease)), "single": single,
              "zero": zero, "max": int(per_disease.max()), "drugs_with_pos": int((per_drug > 0).sum())}
     save(fig, "fig6_data_overview", trace, **stats)
     return stats
+
+
+# ---------------------------------------------------------------- fig7 -----
+def fig7(trace: TraceRecorder) -> dict:
+    src = REPO / "benchmark/results/luad_pathway_enrichment_v1.json"
+    d = json.loads(src.read_text(encoding="utf-8"))
+    hallmark = d["libraries"]["MSigDB_Hallmark_2020"]
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    shown = {}
+    for ax, letter, direction, color, title in (
+            (axes[0], "a", "up", UP, f"肿瘤上调基因（{d['signature_sizes']['up']}）"),
+            (axes[1], "b", "down", DOWN, f"肿瘤下调基因（{d['signature_sizes']['down']}）")):
+        rows = [r for r in hallmark[direction] if r.get("fdr", 1) < 0.05][:10][::-1]
+        shown[direction] = [r["term"] for r in rows[::-1]]
+        y = np.arange(len(rows))
+        ax.barh(y, [-np.log10(r["fdr"]) for r in rows], color=color, height=0.68)
+        ax.set_yticks(y, [f"{r['term']}（{r['overlap']}/{r['set_size']}）" for r in rows])
+        ax.axvline(-np.log10(0.05), color=INK2, ls="--", lw=0.9)
+        ax.set_xlabel("−log10(FDR)")
+        ax.set_title(f"Hallmark：{title}")
+        ax.tick_params(axis="y", length=0)
+        panel(ax, letter, x=-0.02 - 0.012 * max(len(t) for t in shown[direction]))
+        st.grid(ax, "x")
+    fig.subplots_adjust(wspace=0.9)
+    save(fig, "fig7_luad_pathways", trace, source=str(src.relative_to(REPO)), shown=shown)
+    return shown
+
+
+# ---------------------------------------------------------------- fig8 -----
+def fig8(trace: TraceRecorder) -> dict:
+    src = REPO / "benchmark/results/luad_pathway_reversal_v1.json"
+    d = json.loads(src.read_text(encoding="utf-8"))
+    pct = pd.DataFrame(d["top10_percentile"]).T.loc[d["top10"]]
+    order = sorted(pct.columns, key=lambda c: -d["top10_mean_percentile_by_pathway"][c])
+    pct = pct[order]
+    fig, ax = plt.subplots(figsize=(11, 5))
+    im = ax.imshow(pct.to_numpy(), cmap=st.REVERSAL_CMAP, vmin=0, vmax=1, aspect="auto")
+    ax.set_xticks(range(len(order)), [f"{c}\nn={d['pathways'][c]['n_genes']}" for c in order],
+                  rotation=30, ha="right")
+    ax.set_yticks(range(len(pct)), [f"#{i + 1} {n}" for i, n in enumerate(pct.index)])
+    for i in range(pct.shape[0]):
+        for j in range(pct.shape[1]):
+            v = pct.iat[i, j]
+            ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=7.5,
+                    color="white" if abs(v - 0.5) > 0.3 else INK)
+    for side in ("top", "right", "left", "bottom"):
+        ax.spines[side].set_visible(False)
+    ax.tick_params(length=0)
+    cb = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
+    cb.set_label("在 4,920 个 A549 药物中的反转百分位（1 = 最强）")
+    cb.outline.set_visible(False)
+    save(fig, "fig8_top10_pathway_reversal", trace, source=str(src.relative_to(REPO)), pathways=order)
+    return {"pathways": order}
 
 
 def main() -> None:
@@ -510,12 +522,13 @@ def main() -> None:
     parser.add_argument("--only", nargs="*", help="Subset of figures, e.g. fig1 fig3")
     args = parser.parse_args()
     os.chdir(REPO)
-    setup_fonts()
+    st.apply()
     trace = TraceRecorder("make_figures", REPO / "artifacts/traces")
     trace.emit("started", published=str(args.published), our_dirs=OUR_RESULT_DIRS)
     jobs = {"fig1": lambda: fig1(args.published, trace), "fig2": lambda: fig2(trace),
             "fig3": lambda: fig3(trace), "fig4": lambda: fig4(trace),
-            "fig5": lambda: fig5(trace), "fig6": lambda: fig6(trace)}
+            "fig5": lambda: fig5(trace), "fig6": lambda: fig6(trace),
+            "fig7": lambda: fig7(trace), "fig8": lambda: fig8(trace)}
     summary = {}
     try:
         for name, job in jobs.items():

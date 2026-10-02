@@ -1,36 +1,15 @@
-"""Figure 7 and Chinese doc for the LUAD pathway enrichment (reads the committed JSON)."""
+"""Chinese doc for the LUAD pathway enrichment (reads the committed JSON)."""
 import json
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 
-plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
-plt.rcParams["axes.unicode_minus"] = False
 d = json.loads(Path("benchmark/results/luad_pathway_enrichment_v1.json").read_text(encoding="utf-8"))
 H = d["libraries"]["MSigDB_Hallmark_2020"]
 K = d["libraries"]["KEGG_2021_Human"]
 sig = lambda rows, n: [r for r in rows if r.get("fdr", 1) < 0.05][:n]
 
-fig, axes = plt.subplots(1, 2, figsize=(13, 5.6))
-for ax, direction, color, title in ((axes[0], "up", "#c0392b", "肿瘤中上调基因（512）"),
-                                     (axes[1], "down", "#2c6fbb", "肿瘤中下调基因（749）")):
-    rows = sig(H[direction], 10)[::-1]
-    y = np.arange(len(rows))
-    vals = [-np.log10(r["fdr"]) for r in rows]
-    ax.barh(y, vals, color=color, alpha=0.85)
-    ax.set_yticks(y, [f"{r['term']}  ({r['overlap']}/{r['set_size']})" for r in rows], fontsize=10)
-    ax.axvline(-np.log10(0.05), color="#555", ls="--", lw=1)
-    ax.set_xlabel("−log10(FDR)")
-    ax.set_title(f"MSigDB Hallmark：{title}", fontsize=12)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-fig.suptitle("GSE32863 LUAD 疾病签名通路富集（超几何检验，BH 校正；虚线 FDR=0.05）", fontsize=13)
-fig.tight_layout()
-for ext in ("png", "svg"):
-    fig.savefig(f"docs/figures/fig7_luad_pathways.{ext}", dpi=200, bbox_inches="tight")
+# Figure 7 is drawn by scripts/make_figures.py --only fig7 (shared style).
 
 def tab(rows):
     out = ["| 通路 | 重叠/集合 | 富集倍数 | FDR | 代表基因 |", "|---|---:|---:|---:|---|"]

@@ -16,10 +16,13 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Polygon
 
-plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
-plt.rcParams["axes.unicode_minus"] = False
-NAVY, TEAL, RED, INK, MUTED = "#112B3C", "#087E78", "#9E493D", "#183042", "#5B6B75"
-FILL = {"llm": "#E3F1EF", "code": "#E8EDF2", "tool": "#F4EFE6", "out": "#F2E7E4", "user": NAVY}
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts import figure_style as st  # noqa: E402
+from scripts.figure_style import FILL, INK, NAVY, RED, TEAL  # noqa: E402
+
+MUTED = st.INK2
 OUT = Path("docs/figures")
 
 
@@ -62,8 +65,6 @@ def architecture() -> None:
     ms = multi["planners"]["deepseek_v2:deepseek-flash"]["summary"]
     fig, ax = plt.subplots(figsize=(15, 9.2))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    ax.text(0.5, 0.995, "系统架构：LLM 只负责理解与编排，数值计算交给确定性工具，代码做最终校验", ha="center",
-            va="top", fontsize=14, weight="bold", color=NAVY)
     legend(ax, 0.29, 0.935)
     for y, name in ((0.81, "交互层"), (0.625, "编排层"), (0.43, "工具层"), (0.235, "校验层"), (0.075, "输出层")):
         label(ax, 0.006, y, name, color=MUTED, size=10, weight="bold", rotation=90, va="center")
@@ -125,9 +126,7 @@ def architecture() -> None:
         "RECeSS 官方 Runner 只读取分数矩阵 · 标签仅在评分器内使用", kind="out", title_color=RED)
     arrow(ax, (0.26, y4), (0.26, y5 + h5))
     arrow(ax, (0.75, y4), (0.75, y5 + h5))
-    fig.savefig(OUT / "fig9_architecture.png", dpi=200, bbox_inches="tight")
-    fig.savefig(OUT / "fig9_architecture.svg", bbox_inches="tight")
-    plt.close(fig)
+    st.save(fig, OUT, "fig9_architecture")
 
 
 def diamond(ax, cx, cy, w, h, text):
@@ -143,9 +142,7 @@ def workflow() -> None:
     up, down = enr["signature_sizes"]["up"], enr["signature_sizes"]["down"]
     fig, ax = plt.subplots(figsize=(15, 10.5))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    ax.text(0.5, 0.995, "端到端流程：从自然语言请求到肺腺癌候选药物证据报告", ha="center", va="top",
-            fontsize=14, weight="bold", color=NAVY)
-    legend(ax, 0.575, 0.948)
+    legend(ax, 0.575, 0.968)
     W, H, DW, DH = 0.16, 0.095, 0.15, 0.105
     col = [0.02, 0.22, 0.42, 0.62, 0.82]
     cx = [c + W / 2 for c in col]
@@ -215,12 +212,11 @@ def workflow() -> None:
 
     ax.text(0.71, 0.06, "任一步失败：带着已完成产物回到第 2 步重新规划（≤3 轮）\n全程写入链式轨迹；LLM 不接触数值计算；Strict 模式只允许 rank_transcriptome", ha="center", va="center", fontsize=9.3, color=NAVY, linespacing=1.5,
             bbox={"boxstyle": "round,pad=0.5", "fc": "#F3F6F8", "ec": "#C9D2D8"})
-    fig.savefig(OUT / "fig10_workflow.png", dpi=200, bbox_inches="tight")
-    fig.savefig(OUT / "fig10_workflow.svg", bbox_inches="tight")
-    plt.close(fig)
+    st.save(fig, OUT, "fig10_workflow")
 
 
 if __name__ == "__main__":
+    st.apply()
     architecture()
     workflow()
     print("wrote fig9_architecture and fig10_workflow")

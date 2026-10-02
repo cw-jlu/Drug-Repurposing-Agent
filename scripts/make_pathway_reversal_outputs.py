@@ -1,32 +1,15 @@
-"""Figure 8 and Chinese doc for the Top-10 pathway reversal (reads the committed JSON)."""
+"""Chinese doc for the Top-10 pathway reversal (reads the committed JSON)."""
 import json
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
-plt.rcParams["axes.unicode_minus"] = False
 d = json.loads(Path("benchmark/results/luad_pathway_reversal_v1.json").read_text(encoding="utf-8"))
 pct = pd.DataFrame(d["top10_percentile"]).T.loc[d["top10"]]
 order = sorted(pct.columns, key=lambda c: -d["top10_mean_percentile_by_pathway"][c])
 pct = pct[order]
-fig, ax = plt.subplots(figsize=(12, 5.4))
-im = ax.imshow(pct.to_numpy(), cmap="RdBu_r", vmin=0, vmax=1, aspect="auto")
-ax.set_xticks(range(len(order)), [f"{c}\nn={d['pathways'][c]['n_genes']}" for c in order], rotation=30, ha="right", fontsize=9)
-ax.set_yticks(range(len(pct)), [f"#{i+1} {n}" for i, n in enumerate(pct.index)], fontsize=10)
-for i in range(pct.shape[0]):
-    for j in range(pct.shape[1]):
-        v = pct.iat[i, j]
-        ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=8, color="white" if abs(v - 0.5) > 0.35 else "black")
-cb = fig.colorbar(im, ax=ax, fraction=0.03); cb.set_label("在 4,920 个 A549 药物中的反转百分位")
-ax.set_title("Top-10 候选对 LUAD 显著 Hallmark 通路的反转（1 = 最强反转；注意：与排序共用同一疾病签名，非独立验证）", fontsize=11)
-fig.tight_layout()
-for ext in ("png", "svg"):
-    fig.savefig(f"docs/figures/fig8_top10_pathway_reversal.{ext}", dpi=200, bbox_inches="tight")
+# Figure 8 is drawn by scripts/make_figures.py --only fig8 (shared style).
 
 mean = d["top10_mean_percentile_by_pathway"]
 rows = ["| 通路（方向） | landmark 基因数 | Top-10 平均百分位 |", "|---|---:|---:|"]
