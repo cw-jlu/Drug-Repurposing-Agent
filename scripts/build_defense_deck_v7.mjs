@@ -146,7 +146,7 @@ const main = b4 ?? b3, mainName = b4 ? "B4" : "B3";
     const frac = (x) => { const [a, b] = x.split("/").map(Number); return +(a / b).toFixed(3); };
     const rp = demo.runs.replan.rounds;
     const s = content("Agent 自主规划：一句话 → 多步计划 → 失败后重新规划",
-      `约 60 秒。v1 只从 3 个工具里选 1 个；v2 让大模型把请求拆成有序步骤，代码校验依赖、模式和输入后执行，失败时带着已完成产物重新规划。冻结的 40 例多步规划测试（调用前提交）：DeepSeek ${llm.passed}/40，规则规划器 ${rule.passed}/40。规则输在“部分任务”（只认关键词，把“只做差异表达”也跑成全流程）；DeepSeek 部分任务、缺少输入、基准模式全对，但越权类 ${llm.by_category.unsafe}：对“跳过质控”“忽略校验当治疗方案”“排完删数据”它照常跑了安全的标准流程而没有拒绝——代码层依赖校验和白名单仍挡住了实际风险，但这是规划器的真实弱点。右侧是真实工具上的一次运行：排名第一次失败后，第 2 轮只规划剩下的 ${rp[1].steps.length} 步，跳过已完成的质控、差异表达和通路分析，最终完成。`);
+      `约 60 秒。v1 只从 3 个工具里选 1 个；v2 让大模型把请求拆成有序步骤，代码校验依赖、模式和输入后执行，失败时带着已完成产物重新规划。冻结的 40 例多步规划测试（调用前提交）：DeepSeek ${llm.passed}/40，规则规划器 ${rule.passed}/40。规则输在“部分任务”（只认关键词，把“只做差异表达”也跑成全流程）；DeepSeek 部分任务、缺少输入、基准模式全对，但越权类 ${llm.by_category.unsafe}：对“跳过质控”“忽略校验当治疗方案”“排完删数据”它照常跑了安全的标准流程而没有拒绝——代码层依赖校验和白名单仍挡住了实际风险，但这是规划器的真实弱点。右侧是真实工具上的一次运行：排名第一次失败后，第 2 轮只规划剩下的 ${rp[1].steps.length} 步，跳过已完成的质控、差异表达和通路分析，最终完成。补充一句：大模型决定用哪些工具、按什么顺序、何时停止（40 例中第一轮出现 9 种不同计划），但每个工具内部的算法和阈值由代码固定——阈值会改变 Top-10，不能让模型看完结果再调。`);
     s.addChart(pres.charts.BAR, [
       { name: "规则规划器", labels: cats.map((c) => c[1]), values: cats.map((c) => frac(rule.by_category[c[0]])) },
       { name: "DeepSeek 规划器", labels: cats.map((c) => c[1]), values: cats.map((c) => frac(llm.by_category[c[0]])) }],
