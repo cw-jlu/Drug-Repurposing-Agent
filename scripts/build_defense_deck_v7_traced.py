@@ -19,7 +19,10 @@ SOURCES = [Path("scripts/build_defense_deck_v7.mjs"),
            Path("benchmark/results/recess_official_component_ablation.json"),
            Path("benchmark/results/decision_eval_v1.json"),
            Path("benchmark/results/decision_eval_v2.json"),
-           Path("benchmark/results/contamination_probe_v1.json")]
+           Path("benchmark/results/contamination_probe_v1.json"),
+           Path("benchmark/results/planner_eval_multistep_v1.json"),
+           Path("benchmark/results/agent_v2_demo_runs.json")]
+EXPECTED_SLIDES = 12
 OUTPUT = Path("deliverables/药物重定位Agent_答辩稿_v7.pptx")
 
 
@@ -36,7 +39,7 @@ def _main(trace: TraceRecorder) -> None:
         invalid = archive.testzip()
         slides = len([name for name in archive.namelist()
                       if name.startswith("ppt/slides/slide") and name.endswith(".xml")])
-    if invalid or slides != 11:
+    if invalid or slides != EXPECTED_SLIDES:
         raise ValueError(f"Deck package/layout invalid: {invalid}; slides={slides}")
     trace.emit("deck_saved", output=str(OUTPUT), output_sha256=sha256_file(OUTPUT), slides=slides)
     print(f"{OUTPUT}: {slides} slides; trace: {trace.path}")

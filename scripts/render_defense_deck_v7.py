@@ -12,6 +12,7 @@ from drug_repurposing_agent.trace import TraceRecorder, traced_run
 
 DECK = Path("deliverables/药物重定位Agent_答辩稿_v7.pptx")
 OUTPUT = Path("artifacts/slide_build_v7")
+EXPECTED_SLIDES = 12
 
 
 def _main(trace: TraceRecorder) -> None:
@@ -23,8 +24,8 @@ def _main(trace: TraceRecorder) -> None:
     try:
         presentation = app.Presentations.Open(str(source), ReadOnly=True, WithWindow=False)
         count = presentation.Slides.Count
-        if count != 11:
-            raise ValueError(f"Expected 11 slides, got {count}")
+        if count != EXPECTED_SLIDES:
+            raise ValueError(f"Expected {EXPECTED_SLIDES} slides, got {count}")
         for slide in presentation.Slides:
             target = (OUTPUT / f"slide-{slide.SlideIndex:02d}.png").resolve()
             slide.Export(str(target), "PNG", 1600, 900)
@@ -34,8 +35,8 @@ def _main(trace: TraceRecorder) -> None:
         if presentation is not None:
             presentation.Close()
         app.Quit()
-    sheet = Image.new("RGB", (1600, 2700), "white")
-    for index in range(11):
+    sheet = Image.new("RGB", (1600, 450 * ((EXPECTED_SLIDES + 1) // 2)), "white")
+    for index in range(EXPECTED_SLIDES):
         with Image.open(OUTPUT / f"slide-{index + 1:02d}.png") as slide_image:
             thumb = slide_image.convert("RGB").resize((800, 450))
             sheet.paste(thumb, ((index % 2) * 800, (index // 2) * 450))
@@ -43,8 +44,8 @@ def _main(trace: TraceRecorder) -> None:
     sheet.save(sheet_path)
     trace.emit("contact_sheet_saved", output=str(sheet_path),
                output_sha256=sha256_file(sheet_path))
-    trace.emit("render_completed", slides=11)
-    print(f"Rendered 11 slides; trace: {trace.path}")
+    trace.emit("render_completed", slides=EXPECTED_SLIDES)
+    print(f"Rendered {EXPECTED_SLIDES} slides; trace: {trace.path}")
 
 
 if __name__ == "__main__":
