@@ -33,7 +33,7 @@ def available_inputs() -> tuple[str, ...]:
     return tuple(have)
 
 
-def real_backend(output: Path, mode: Mode) -> callable:
+def real_backend(output: Path, mode: Mode, live_review: bool = False, max_review_calls: int = 60) -> callable:
     trace = TraceRecorder("agent_v2_tools", output / "traces")
 
     def qc(_: dict) -> dict:
@@ -96,12 +96,43 @@ def real_backend(output: Path, mode: Mode) -> callable:
     def review(a: dict) -> dict:
         top10 = a["ranking"]["ranks"].index[:10].tolist()
         frozen = json.loads(REVIEW.read_text(encoding="utf-8"))
+        if live_review:
+            return live(top10, frozen)
         if [c["name"] for c in frozen["candidates"]] != top10:
             raise ToolError("Top-10 differs from the frozen review; a live multi-agent review is not enabled")
         tiers = {c["name"]: c["tier"] for c in frozen["candidates"]}
         return {"tiers": tiers, "summary": {"source": "frozen multi_agent_review_v1 (reused)",
                                             "tier_counts": frozen["tier_counts"],
                                             "rejected_citations": frozen["citation_validation"]["rejected_quoted_items"]}}
+
+    def live(top10: list[str], frozen: dict) -> dict:
+        """Run the multi-agent review now (PubMed + DeepSeek) for candidates with evidence records."""
+        from .deepseek import local_api_key
+        from .llm_calls import CallStats, TracedToolCaller
+        from .multi_agent_review import AbstractPubMedClient, MultiAgentReviewer
+        records = {c["name"]: c for c in json.loads(EVIDENCE.read_text(encoding="utf-8"))["candidates"]}
+        missing = [n for n in top10 if n not in records]
+        if missing:
+            raise ToolError(f"no evidence identity record for {missing}; live review refused")
+        key = local_api_key()
+        trace.add_secret(key)
+        stats = CallStats()
+        reviewer = MultiAgentReviewer(TracedToolCaller(key, stats=stats), AbstractPubMedClient(), trace)
+        results = []
+        for name in top10:
+            if stats.as_dict()["attempts"] + 3 > max_review_calls:
+                raise ToolError("live review call budget would be exceeded")
+            results.append(reviewer.review(records[name]))
+        tiers = {r["name"]: r["tier"] for r in results}
+        frozen_tiers = {c["name"]: c["tier"] for c in frozen["candidates"]}
+        rejected = sum(r["rejected_claims"]["support"] + r["rejected_claims"]["contradiction"] for r in results)
+        proposed = sum(r["proposed_claims"]["support"] + r["proposed_claims"]["contradiction"] for r in results)
+        calls = stats.as_dict()
+        return {"tiers": tiers, "results": results,
+                "summary": {"source": "live multi-agent review (PubMed + DeepSeek)", "calls": calls["attempts"],
+                            "tier_counts": {t: list(tiers.values()).count(t) for t in sorted(set(tiers.values()))},
+                            "agrees_with_frozen": sum(tiers[n] == frozen_tiers.get(n) for n in tiers),
+                            "proposed_quoted_items": proposed, "rejected_quoted_items": rejected}}
 
     def report(a: dict) -> dict:
         body = {"top10": a["ranking"]["summary"]["top10"],
