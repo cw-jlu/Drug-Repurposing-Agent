@@ -1,0 +1,125 @@
+{
+  "description": "Agent v2 real run with a live multi-agent literature review (PubMed + deepseek-flash), compared with the frozen 2026-09-28 review.",
+  "question": "请为肺腺癌筛选候选药物，查文献并给出证据报告",
+  "planner": "deepseek_v2:deepseek-flash",
+  "status": "completed",
+  "steps": [
+    [
+      "qc_disease_cohort",
+      "ok"
+    ],
+    [
+      "differential_expression",
+      "ok"
+    ],
+    [
+      "pathway_enrichment",
+      "ok"
+    ],
+    [
+      "rank_candidates",
+      "ok"
+    ],
+    [
+      "audit_candidates",
+      "ok"
+    ],
+    [
+      "review_literature",
+      "ok"
+    ],
+    [
+      "build_report",
+      "ok"
+    ]
+  ],
+  "live_summary": {
+    "source": "live multi-agent review (PubMed + DeepSeek)",
+    "calls": 26,
+    "tier_counts": {
+      "CONFLICTING": 2,
+      "INSUFFICIENT_EVIDENCE": 7,
+      "PROMISING_BUT_INCOMPLETE": 1
+    },
+    "agrees_with_frozen": 7,
+    "proposed_quoted_items": 66,
+    "rejected_quoted_items": 17
+  },
+  "per_candidate": [
+    {
+      "rank": 1,
+      "name": "hydrocortisone",
+      "live_tier": "CONFLICTING",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": false
+    },
+    {
+      "rank": 2,
+      "name": "beclomethasone-dipropionate",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 3,
+      "name": "clocortolone-pivalate",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 4,
+      "name": "mometasone",
+      "live_tier": "PROMISING_BUT_INCOMPLETE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": false
+    },
+    {
+      "rank": 5,
+      "name": "flumetasone",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 6,
+      "name": "BRD-K84203638",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 7,
+      "name": "hydrocortisone-hemisuccinate",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 8,
+      "name": "fluorometholone",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    },
+    {
+      "rank": 9,
+      "name": "fluticasone",
+      "live_tier": "CONFLICTING",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": false
+    },
+    {
+      "rank": 10,
+      "name": "diflorasone",
+      "live_tier": "INSUFFICIENT_EVIDENCE",
+      "frozen_tier": "INSUFFICIENT_EVIDENCE",
+      "same": true
+    }
+  ],
+  "comparability_notes": [
+    "The reviewer gained citation-scope checks after the frozen run (commit 288621c), so rejected-quote counts are not like-for-like (live 17/66 vs frozen 0/65).",
+    "PubMed content and LLM outputs change between runs; one live run per date.",
+    "No candidate reached SUPPORTED in either run."
+  ]
+}
