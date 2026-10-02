@@ -18,7 +18,7 @@ def _main(trace: TraceRecorder) -> None:
     pdf = Path("artifacts/report_render_v5/药物重定位Agent_课程设计报告_v5.pdf")
     pages = sorted(Path("artifacts/report_render_v5").glob("page-*.png"))
     slides = sorted(Path("artifacts/slide_build_v7").glob("slide-*.png"))
-    if len(pages) != 11 or len(slides) != 12 or len(fitz.open(pdf)) != 11:
+    if len(pages) != 12 or len(slides) != 12 or len(fitz.open(pdf)) != 12:
         raise RuntimeError("Rendered page/slide count differs from expected layout")
     with zipfile.ZipFile(report) as archive:
         if archive.testzip():
@@ -34,7 +34,7 @@ def _main(trace: TraceRecorder) -> None:
     result = {"report_sha256": sha256_file(report), "deck_sha256": sha256_file(deck),
               "report_pages": len(pages), "deck_slides": len(slides),
               "native_editable_charts": charts,
-              "visual_review": "All eleven rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after unifying the ten figures in one paper-style theme and adding the planner-scope paragraph; report pages 4, 5, 6, 8 and 10 and slides 3, 4, 5, 7 and 10 re-checked.",
+              "visual_review": "All twelve rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after adding section 5.2 (what the LLM adds, rule vs LLM table); report pages 10-12 and slide 12 re-checked.",
               "page_png_sha256": {str(path): sha256_file(path) for path in pages},
               "slide_png_sha256": {str(path): sha256_file(path) for path in slides}}
     output = Path("artifacts/reports/current_deliverables_qa.json")
