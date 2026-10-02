@@ -261,7 +261,7 @@ Nadeau--Bengio 校正检验，B4 − BNNR 的差值（+0.0122）p = 0.066，95\%
 {[}-0.0008, +0.0251{]} 跨 0，随机拆分的领先不显著；global NDCG 与 HR@10
 上 BNNR 更强（见 \texttt{docs/\allowbreak{}benchmark\_\allowbreak{}stats\_\allowbreak{}v1.\allowbreak{}md}）。
 
-\pandocbounded{\includegraphics[keepaspectratio,alt={图 1 TRANSCRIPT 官方 100 种子 NS-AUC 分布（本项目方法高亮）}]{docs/figures/fig1_nsauc_boxplot.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 1 TRANSCRIPT 官方 RECeSS 流程下每个种子的 NS-AUC 分布。(a) 随机拆分；(b) 弱相关拆分。各方法按中位数排序，右侧数字为中位数；灰色为作者发布的 11 个模型，彩色为本项目 B2、B3、B4；虚线为 0.5。}]{docs/figures/fig1_nsauc_boxplot.png}}
 
 随后，五个疾病分区的 15 次 DeepSeek
 决策在任何分区结果之前冻结并通过逐响应 trace
@@ -294,9 +294,9 @@ NR3C1/糖皮质激素受体转录。hydrocortisone 有 A549
 诱导；类别级研究也报告化疗保护、干性与免疫治疗背景下的不利信号。其余多数候选没有药物特异
 LUAD 疗效证据。十个候选均保持``证据不足''。
 
-\pandocbounded{\includegraphics[keepaspectratio,alt={图 2 GSE32863 配对差异表达火山图（FDR\textless0.05，\textbar log2FC\textbar≥1）}]{docs/figures/fig3_luad_volcano.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 2 GSE32863 肺腺癌 57 对配对差异表达火山图。虚线为预设阈值 FDR \textless{} 0.05 与 \textbar log2FC\textbar{} ≥ 1；红色为肿瘤上调（512），蓝色为肿瘤下调（749）；标注各方向 \textbar log2FC\textbar{} 最大的 8 个基因。}]{docs/figures/fig3_luad_volcano.png}}
 
-\pandocbounded{\includegraphics[keepaspectratio,alt={图 3 LUAD Top-10 候选的药物---靶点---通路网络（仅使用已记录的靶点与通路）}]{docs/figures/fig5_top10_network.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 3 LUAD Top-10 候选的药物---靶点---通路网络。只使用 configs/luad\_top10\_evidence\_v1.json 中已记录的靶点与通路；8/10 记录靶点含 NR3C1（红），8/10 记录 GR 转录调控通路（绿），指向同一机制轴。括号内为连接的候选数，点线为仅由母药推断。}]{docs/figures/fig5_top10_network.png}}
 
 \subsubsection{4.1 LLM
 知识污染探针}\label{41-llm-ux77e5ux8bc6ux6c61ux67d3ux63a2ux9488}
@@ -399,7 +399,7 @@ NF-kB、KRAS Signaling Up、Epithelial Mesenchymal
 Transition、Inflammatory Response、Xenobiotic Metabolism
 为主，更可能反映正常肺组织中免疫与间质成分在肿瘤块中的相对减少（\texttt{docs/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}enrichment.\allowbreak{}md}）。
 
-\pandocbounded{\includegraphics[keepaspectratio,alt={图 4 LUAD 疾病签名的 Hallmark 通路富集}]{docs/figures/fig7_luad_pathways.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 4 LUAD 疾病签名的 MSigDB Hallmark 通路富集（超几何检验，BH 校正）。(a) 肿瘤上调基因；(b) 肿瘤下调基因。括号内为重叠基因数/通路基因数，虚线为 FDR = 0.05。}]{docs/figures/fig7_luad_pathways.png}}
 
 在 Top-10 的通路层面反转中（规则预先提交），共 8 条显著 Hallmark
 通路有至少 5 个 LINCS landmark 签名基因。Top-10 平均反转百分位最高的是
@@ -410,7 +410,7 @@ Glycolysis (肿瘤上调)（0.98）、Hypoxia (肿瘤下调)（0.95）、E2F Tar
 Top-10
 与通路基因来自同一疾病签名，这一结果只说明反转由哪些程序驱动，不是独立验证（\texttt{docs/\allowbreak{}luad\_\allowbreak{}pathway\_\allowbreak{}reversal.\allowbreak{}md}）。
 
-\pandocbounded{\includegraphics[keepaspectratio,alt={图 5 Top-10 候选在显著 Hallmark 通路上的反转百分位}]{docs/figures/fig8_top10_pathway_reversal.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={图 5 Top-10 候选在显著 Hallmark 通路上的反转百分位（在 4,920 个 A549 药物中，1 为最强反转；n 为参与计算的 landmark 基因数）。Top-10 与通路基因来自同一疾病签名，因此本图不是独立验证。}]{docs/figures/fig8_top10_pathway_reversal.png}}
 
 阈值敏感性分析（12 种设定）表明，FDR 阈值不起作用，而
 \textbar log2FC\textbar{} 阈值决定 Top-10 的面貌：预设的
@@ -451,11 +451,12 @@ clocortolone-pivalate。因此``糖皮质激素主导''是严格签名下的结�
 系统包含自然语言 Planner、允许列表工具 Schema、表达数据读取与
 QC、差异表达、排序、RECeSS 适配器、药物身份核对、文献分诊、证据账本和
 LUAD 案例打包器。Planner
-只接收模式和可用输入名称，不接收原始矩阵、文件路径或 Benchmark
-标签；DeepSeek
-返回的调用还须经过工具名、参数、输入和模式权限验证，不可用工具会失效关闭到人工复核。全部状态写入
-\texttt{agent\_\allowbreak{}run.\allowbreak{}json}。可选 Jev
-适配器仍没有真实凭据或结果。项目另提供 Streamlit
+只接收模式和可用输入名称，不接收原始矩阵、文件路径或 Benchmark 标签；v1
+中 DeepSeek 返回的调用须经过工具名、参数、输入和模式权限验证；v2
+中多步计划须逐步通过白名单、模式、依赖与外部输入校验，不合法或执行失败时反馈给大模型重新规划（≤3
+轮），不可用工具会失效关闭到人工复核。全部状态写入
+\texttt{agent\_\allowbreak{}run.\allowbreak{}json} 或 \texttt{agent\_\allowbreak{}v2\_\allowbreak{}run.\allowbreak{}json}。Jev
+适配器已经实测（见 4.2 节）。项目另提供 Streamlit
 演示界面（\texttt{app/\allowbreak{}demo.\allowbreak{}py}），可运行或回放 Agent、查看 LUAD 证据卡与
 Benchmark 表；答辩图表由 \texttt{scripts/\allowbreak{}make\_\allowbreak{}figures.\allowbreak{}py}
 从已提交结果重建。
@@ -486,6 +487,13 @@ Agent 文献审阅、报告），加上基准排名与安全停止共 9
 7 步并复现冻结结果；人为让排名第一次失败后，第 2 轮只规划剩余 4
 步并完成。另用真实工具重跑 7 个代表性冻结用例，6/7
 通过，与模拟后端一致，``跳过质控''一例仍未拒绝（\texttt{docs/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}md}）。
+
+需要说明的是，大模型决定的是``用哪些工具、按什么顺序、何时停止、失败后补哪几步''，40
+例中第一轮共出现 9
+种不同的计划；每个工具内部的算法与阈值、工具之间的依赖则由代码固定，计划中的参数字段不被真实工具读取。这是有意的设计：阈值敏感性分析表明
+\textbar log2FC\textbar{} 阈值会改变
+Top-10，让大模型在看到结果后调阈值等于事后调参；此前让大模型挑选方法也比固定
+B2 低 0.11 NS-AUC。
 
 \subsection{6.
 局限与后续工作}\label{6-ux5c40ux9650ux4e0eux540eux7eedux5de5ux4f5c}

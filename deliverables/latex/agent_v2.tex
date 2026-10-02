@@ -189,6 +189,55 @@ v2：多步规划、依赖校验与有限重规划}\label{agent-v2ux591aux6b65ux
 \texttt{288621c}），而 PubMed
 内容和大模型输出也会随时间变化。结论``候选不能作为治疗建议''不变；分级本身存在运行间差异，应视为文献线索而非稳定结论。
 
+\subsection{什么由大模型决定，什么是固定的}\label{ux4ec0ux4e48ux7531ux5927ux6a21ux578bux51b3ux5b9aux4ec0ux4e48ux662fux56faux5b9aux7684}
+
+\textbf{由大模型决定（随请求变化）}：调用哪些工具、按什么顺序、做到哪一步停下、失败后补哪几步。冻结
+40 例中，DeepSeek 第一轮给出了 9 种不同的计划：完整 7 步流程 21
+例，其余包括只做质控、质控 → 差异表达、质控 → 差异表达 →
+通路、不查文献的 5
+步流程、只做基准排名、直接转人工等。缺少药物签名时，它先完成质控、差异表达和通路分析，再转人工；排名失败后的第
+2 轮只规划剩余步骤。
+
+\textbf{固定的（由代码决定）}：
+
+\begin{itemize}
+\tightlist
+\item
+  每个工具内部的算法与参数：配对检验、FDR \textless{} 0.05 且
+  \textbar log2FC\textbar{} ≥ 1 的签名阈值、反转打分与 RRF 融合（k =
+  60）、Hallmark/KEGG 富集方法都写在代码里；
+\item
+  工具之间的依赖关系，以及每个模式允许哪些工具；
+\item
+  工具集合本身：只有 9 个，大模型不能新增工具或执行自己写的代码。
+\end{itemize}
+
+计划格式中每一步虽然有 \texttt{arguments}
+字段，但真实后端（\texttt{luad\_\allowbreak{}tools\_\allowbreak{}v2.\allowbreak{}py}）\textbf{不读取它}，所以大模型无法改动阈值或方法。它也看不到中间的科学结果（排名、通路），只看到哪些产物已完成以及失败原因。
+
+\textbf{为什么这样设计}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  阈值会改变结论。阈值敏感性分析（\texttt{docs/\allowbreak{}luad\_\allowbreak{}threshold\_\allowbreak{}sensitivity.\allowbreak{}md}）显示，把
+  \textbar log2FC\textbar{} 从 1 放宽到 0.58，Top-10 与冻结结果只重合
+  3--4
+  个。如果让大模型在看到结果后挑阈值，就等于事后调参，结果也不可复现。
+\item
+  让大模型挑方法并没有带来更好的结果：五分区方法选择实验中，大模型所选方法比固定
+  B2 平均低 0.11
+  NS-AUC（\texttt{docs/\allowbreak{}method\_\allowbreak{}selection\_\allowbreak{}partition\_\allowbreak{}v2.\allowbreak{}md}）。
+\item
+  固定参数才能让``同一请求 → 同一排名''成立；Agent
+  可重复性实验中所有完成的运行输出同一排名矩阵（\texttt{docs/\allowbreak{}agent\_\allowbreak{}repeatability.\allowbreak{}md}）。
+\end{enumerate}
+
+一句话：\textbf{固定的是``积木''，大模型决定``怎么拼''。}
+若以后要开放参数，只应开放不改变科学结论的少量选项（如报告中展示的
+Top-K），由代码限定取值范围，并在新的冻结用例集上重新评估。
+
 \subsection{局限}\label{ux5c40ux9650}
 
 \begin{itemize}
