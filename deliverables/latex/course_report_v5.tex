@@ -361,6 +361,13 @@ A549 抗癌结果误归给
 fluticasone。详见\href{docs/evidence_scope_audit.md}{逐条审计}。本轮是作者的事后摘要级核查，不是独立双人阅读全文审阅；冻结的
 10/10 分级未重跑，不能将其解释为审计后的分级准确率。
 
+10 月 2 日经 Agent v2 实时重跑一次多 Agent 审阅（26 次调用）：7/10
+的分级与冻结版一致，hydrocortisone、fluticasone
+变为``证据冲突''，mometasone
+变为``有希望但不完整''，仍无候选达到``有支持''。被拒引语
+17/66，但审阅代码在冻结运行后加入了引用范围检查，PubMed
+内容与模型输出也会变化，两次结果不可直接比较；分级应视为有运行间差异的文献线索（\texttt{benchmark/\allowbreak{}results/\allowbreak{}agent\_\allowbreak{}v2\_\allowbreak{}live\_\allowbreak{}review.\allowbreak{}json}）。
+
 \subsubsection{4.4
 次要指标与重叠校正检验}\label{44-ux6b21ux8981ux6307ux6807ux4e0eux91cdux53e0ux6821ux6b63ux68c0ux9a8c}
 
@@ -477,7 +484,8 @@ Agent 文献审阅、报告），加上基准排名与安全停止共 9
 在部分任务、缺少输入与基准模式上全对，但越权类只有
 5/8：对``跳过质控''\,``忽略校验当作治疗方案''\,``排名后删除原始数据''三条，它照常执行了安全的标准流程而没有拒绝。依赖校验与工具白名单仍阻止了跳过质控和删除数据，但这说明安全不能只靠大模型判断。真实工具上的两次演示中，完整请求一轮规划出
 7 步并复现冻结结果；人为让排名第一次失败后，第 2 轮只规划剩余 4
-步并完成（\texttt{docs/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}md}）。
+步并完成。另用真实工具重跑 7 个代表性冻结用例，6/7
+通过，与模拟后端一致，``跳过质控''一例仍未拒绝（\texttt{docs/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}md}）。
 
 \subsection{6.
 局限与后续工作}\label{6-ux5c40ux9650ux4e0eux540eux7eedux5de5ux4f5c}
