@@ -1,0 +1,52 @@
+{
+  "version": "disease_registry_v1",
+  "description": "Diseases the agent can analyse from raw GEO data. A disease not listed here is not supported: the agent stops at manual review instead of guessing a dataset. Each entry pins file URLs and SHA-256, the sample-pairing rule, expected counts, the value scale and the LINCS cell line whose compound signatures are compared.",
+  "diseases": [
+    {
+      "id": "luad_gse32863",
+      "label": "肺腺癌（LUAD）",
+      "aliases": [
+        "肺腺癌",
+        "lung adenocarcinoma",
+        "luad"
+      ],
+      "accession": "GSE32863",
+      "platform": "GPL6884",
+      "files": {
+        "series": {
+          "path": "data/raw/GSE32863/GSE32863_series_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE32nnn/GSE32863/matrix/GSE32863_series_matrix.txt.gz",
+          "bytes": 29776898,
+          "sha256": "7f33b83dc8d2b0876e610a265f947893753b2a70854d360c247311fa3474f63f"
+        },
+        "annotation": {
+          "path": "data/raw/GSE32863/GPL6884.annot.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPL6nnn/GPL6884/annot/GPL6884.annot.gz",
+          "bytes": 6942892,
+          "sha256": "8bef75ebe5b7e28bf61cf398a31e28d63d3a9884405a3510f60ac534a0b59abb"
+        }
+      },
+      "pairing": {
+        "field": "!Sample_title",
+        "regex": "([A-Za-z0-9]+)_([TN]) \\(expression\\)$",
+        "case": "T",
+        "control": "N"
+      },
+      "expected": {
+        "samples": 116,
+        "pairs": 57
+      },
+      "min_pairs": 20,
+      "values": "log2",
+      "annotation_symbol_column": "Gene symbol",
+      "drug_cell_line": "A549",
+      "reference_signature": {
+        "manifest": "data/manifests/gse32863.json",
+        "output": "luad_deg_all.tsv"
+      },
+      "reference_drugs": "configs/luad_positive_controls.csv",
+      "evidence_records": "configs/luad_top10_evidence_v1.json",
+      "note": "'肺癌' / 'lung cancer' are deliberately not aliases: lung cancer also covers squamous and small-cell disease, which this cohort does not represent."
+    }
+  ]
+}
