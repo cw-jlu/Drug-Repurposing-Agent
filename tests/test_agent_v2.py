@@ -82,7 +82,7 @@ def test_rule_planner_fetches_a_registered_disease_that_is_not_downloaded():
 
 def test_available_inputs_depend_on_the_registered_disease_in_the_question():
     from drug_repurposing_agent.luad_tools_v2 import available_inputs
-    other = available_inputs("请为乳腺癌筛选候选药物")
+    other = available_inputs("请为胃癌筛选候选药物")
     assert "registered_disease" not in other and "disease_series" not in other
     assert "registered_disease" in available_inputs("请为肺腺癌筛选候选药物")
 

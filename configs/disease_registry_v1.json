@@ -1,6 +1,6 @@
 {
   "version": "disease_registry_v1",
-  "description": "Diseases the agent can analyse from raw GEO data. A disease not listed here is not supported: the agent stops at manual review instead of guessing a dataset. Each entry pins file URLs and SHA-256, the sample-pairing rule, expected counts, the value scale and the LINCS cell line whose compound signatures are compared.",
+  "description": "Diseases the agent can analyse from raw GEO data. A disease not listed here is not supported: the agent stops at manual review instead of guessing a dataset. Each entry pins file URLs and SHA-256, the sample-pairing rule, expected counts, the value scale and the LINCS cell line whose compound signatures are compared, and the literature-review configuration.",
   "diseases": [
     {
       "id": "luad_gse32863",
@@ -46,7 +46,55 @@
       },
       "reference_drugs": "configs/luad_positive_controls.csv",
       "evidence_records": "configs/luad_top10_evidence_v1.json",
-      "note": "'肺癌' / 'lung cancer' are deliberately not aliases: lung cancer also covers squamous and small-cell disease, which this cohort does not represent."
+      "note": "'肺癌' / 'lung cancer' are deliberately not aliases: lung cancer also covers squamous and small-cell disease, which this cohort does not represent.",
+      "literature": {
+        "preset": "luad_v1"
+      }
+    },
+    {
+      "id": "brca_gse15852",
+      "label": "乳腺癌（BRCA）",
+      "aliases": [
+        "乳腺癌",
+        "breast cancer",
+        "breast carcinoma"
+      ],
+      "accession": "GSE15852",
+      "platform": "GPL96",
+      "files": {
+        "series": {
+          "path": "data/raw/GSE15852/GSE15852_series_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE15nnn/GSE15852/matrix/GSE15852_series_matrix.txt.gz",
+          "bytes": 6920473,
+          "sha256": "bdc0536b99a25c99917fc082288545431ac4917dd8d6b2fe15d5e6ae0fab2788"
+        },
+        "annotation": {
+          "path": "data/raw/GSE15852/GPL96.annot.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPLnnn/GPL96/annot/GPL96.annot.gz",
+          "bytes": 4522748,
+          "sha256": "88e0b22362bac779eb220b3b185c80faa6510a92b9358eaad159a561ab4351c4"
+        }
+      },
+      "pairing": {
+        "field": "!Sample_title",
+        "regex": "(BC\\d+)([NT])$",
+        "case": "T",
+        "control": "N"
+      },
+      "expected": {
+        "samples": 86,
+        "pairs": 43
+      },
+      "min_pairs": 20,
+      "values": "auto",
+      "annotation_symbol_column": "Gene symbol",
+      "drug_cell_line": "MCF7",
+      "reference_drugs": "configs/breast_reference_drugs.csv",
+      "literature": {
+        "disease": "breast cancer",
+        "pubmed_terms": "(\"breast cancer\"[Title/Abstract] OR \"breast carcinoma\"[Title/Abstract] OR \"breast neoplasms\"[MeSH Terms] OR MCF7[Title/Abstract] OR MCF-7[Title/Abstract])"
+      },
+      "note": "Malaysian cohort, 43 tumour/normal pairs on HG-U133A (deposited values are not log-scaled; log2 applied by the GEO2R rule). MCF7 is ER-positive, so the drug side does not represent HER2-enriched or triple-negative disease. No frozen literature review or identity audit exists for this disease: literature review runs live only."
     }
   ]
 }

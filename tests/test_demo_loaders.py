@@ -145,7 +145,7 @@ def test_v2_archived_runs_render_as_plan_and_step_rows():
 
 def test_v2_rule_run_for_unregistered_disease_stops_without_tools(tmp_path, monkeypatch):
     monkeypatch.chdir(dd.ROOT)
-    report = dd.run_v2("请为乳腺癌筛选候选药物", "rule", output_root=tmp_path)
+    report = dd.run_v2("请为胃癌筛选候选药物", "rule", output_root=tmp_path)
     assert report["status"] == "manual_review_required" and report["_disease"] is None
     assert [e["tool"] for e in report["executed"]] == ["manual_review"]
 

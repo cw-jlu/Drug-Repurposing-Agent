@@ -52,7 +52,8 @@ def test_resolve_disease_uses_registry_aliases_only():
     reg = load_registry()
     assert resolve_disease("请为肺腺癌筛选候选药物", reg)["id"] == "luad_gse32863"
     assert resolve_disease("Find candidates for LUAD", reg)["id"] == "luad_gse32863"
-    assert resolve_disease("请为乳腺癌筛选候选药物", reg) is None
+    assert resolve_disease("请为乳腺癌筛选候选药物", reg)["id"] == "brca_gse15852"
+    assert resolve_disease("请为胃癌筛选候选药物", reg) is None
     assert resolve_disease("请为肺癌筛选候选药物", reg) is None      # deliberately not an alias
 
 
@@ -106,3 +107,12 @@ def test_luad_signature_reproduces_the_frozen_manifest():
     entry = load_registry()["luad_gse32863"]
     _, summary = signature(entry, cohort(entry))
     assert (summary["up"], summary["down"], summary["matches_frozen_signature"]) == (512, 749, True)
+
+
+@pytest.mark.skipif(not files_ready(load_registry()["brca_gse15852"]), reason="GSE15852 raw files not present")
+def test_breast_entry_pairs_43_patients_and_reproduces_the_feasibility_signature():
+    entry = load_registry()["brca_gse15852"]
+    samples = cohort(entry)
+    _, summary = signature(entry, samples)
+    assert samples.included.sum() == 86 and (summary["up"], summary["down"]) == (115, 193)
+    assert "log2 applied" in summary["value_scale"]

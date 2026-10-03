@@ -9,7 +9,8 @@ repository's scripts/ and evals/ packages, so the command must run from the
 repository root. Every tool returns {"summary": {...}, ...artefact data} and
 raises on failure; the executor records it. The literature tool reuses the frozen
 multi-agent review when the Top-10 matches it and refuses otherwise, so a demo run
-never triggers unplanned paid model calls; the reviewer is LUAD-specific.
+never triggers unplanned paid model calls. Other registered diseases have no frozen
+review: their literature review runs live only, with the registry's review config.
 """
 
 from __future__ import annotations
@@ -142,12 +143,16 @@ def real_backend(output: Path, mode: Mode, disease: dict | None = None, live_rev
         return {"summary": summary}
 
     def review(a: dict) -> dict:
-        if need_disease()["id"] != LUAD_ID:
-            raise ToolError("the multi-agent literature reviewer is LUAD-specific; not available for this disease")
+        entry = need_disease()
+        if not entry.get("literature"):
+            raise ToolError("no literature-review configuration for this disease in the registry")
         top10 = a["ranking"]["ranks"].index[:10].tolist()
-        frozen = json.loads(REVIEW.read_text(encoding="utf-8"))
         if live_review:
-            return live(top10, frozen)
+            return live(top10, entry)
+        if entry["id"] != LUAD_ID:
+            raise ToolError(f"no frozen literature review exists for {entry['label']}; "
+                            "it can only run live (PubMed + DeepSeek), which is not enabled")
+        frozen = json.loads(REVIEW.read_text(encoding="utf-8"))
         if [c["name"] for c in frozen["candidates"]] != top10:
             raise ToolError("Top-10 differs from the frozen review; a live multi-agent review is not enabled")
         tiers = {c["name"]: c["tier"] for c in frozen["candidates"]}
@@ -155,34 +160,48 @@ def real_backend(output: Path, mode: Mode, disease: dict | None = None, live_rev
                                             "tier_counts": frozen["tier_counts"],
                                             "rejected_citations": frozen["citation_validation"]["rejected_quoted_items"]}}
 
-    def live(top10: list[str], frozen: dict) -> dict:
-        """Run the multi-agent review now (PubMed + DeepSeek) for candidates with evidence records."""
+    def live(top10: list[str], entry: dict) -> dict:
+        """Run the multi-agent review now (PubMed + DeepSeek) with the disease's review config.
+
+        LUAD candidates must have identity records (the frozen evidence file); for other
+        diseases each candidate is reviewed by its LINCS name and marked as not identity-audited.
+        """
         from .deepseek import local_api_key
         from .llm_calls import CallStats, TracedToolCaller
-        from .multi_agent_review import AbstractPubMedClient, MultiAgentReviewer
-        evidence = Path(need_disease()["evidence_records"])
-        records = {c["name"]: c for c in json.loads(evidence.read_text(encoding="utf-8"))["candidates"]}
-        missing = [n for n in top10 if n not in records]
-        if missing:
-            raise ToolError(f"no evidence identity record for {missing}; live review refused")
+        from .multi_agent_review import AbstractPubMedClient, MultiAgentReviewer, review_config
+        config = review_config(entry["literature"])
+        if entry.get("evidence_records"):
+            records = {c["name"]: c for c in
+                       json.loads(Path(entry["evidence_records"]).read_text(encoding="utf-8"))["candidates"]}
+            missing = [n for n in top10 if n not in records]
+            if missing:
+                raise ToolError(f"no evidence identity record for {missing}; live review refused")
+        else:
+            records = {n: {"rank": i, "name": n, "pathways": [],
+                           "identity": "not identity-audited: LINCS compound name only"}
+                       for i, n in enumerate(top10, 1)}
         key = local_api_key()
         trace.add_secret(key)
         stats = CallStats()
-        reviewer = MultiAgentReviewer(TracedToolCaller(key, stats=stats), AbstractPubMedClient(), trace)
+        reviewer = MultiAgentReviewer(TracedToolCaller(key, stats=stats), AbstractPubMedClient(), trace,
+                                      config=config)
         results = []
         for name in top10:
             if stats.as_dict()["attempts"] + 3 > max_review_calls:
                 raise ToolError("live review call budget would be exceeded")
             results.append(reviewer.review(records[name]))
         tiers = {r["name"]: r["tier"] for r in results}
-        frozen_tiers = {c["name"]: c["tier"] for c in frozen["candidates"]}
+        frozen_tiers = ({c["name"]: c["tier"] for c in json.loads(REVIEW.read_text(encoding="utf-8"))["candidates"]}
+                        if entry["id"] == LUAD_ID else {})
         rejected = sum(r["rejected_claims"]["support"] + r["rejected_claims"]["contradiction"] for r in results)
         proposed = sum(r["proposed_claims"]["support"] + r["proposed_claims"]["contradiction"] for r in results)
         calls = stats.as_dict()
         return {"tiers": tiers, "results": results,
-                "summary": {"source": "live multi-agent review (PubMed + DeepSeek)", "calls": calls["attempts"],
+                "summary": {"source": "live multi-agent review (PubMed + DeepSeek)", "disease": config.disease,
+                            "calls": calls["attempts"],
                             "tier_counts": {t: list(tiers.values()).count(t) for t in sorted(set(tiers.values()))},
-                            "agrees_with_frozen": sum(tiers[n] == frozen_tiers.get(n) for n in tiers),
+                            "agrees_with_frozen": (sum(tiers[n] == frozen_tiers.get(n) for n in tiers)
+                                                   if frozen_tiers else "no frozen review for this disease"),
                             "proposed_quoted_items": proposed, "rejected_quoted_items": rejected}}
 
     def report(a: dict) -> dict:
