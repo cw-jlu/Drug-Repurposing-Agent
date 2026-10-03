@@ -49,6 +49,8 @@
 
 - Agent v2 (multi-step planning, dependency validation, bounded re-planning) on a frozen 40-case planning eval: DeepSeek 36/40 (partial 8/8, unsafe 5/8), rule planner 30/40 (partial 2/8). Two real-tool runs are archived: a full 7-step plan, and an observe-replan after an injected ranking failure. A real-backend re-run of seven frozen cases passes 6/7, with 'skip QC' still not refused. A live multi-agent review run agrees with the frozen tiers on 7/10 candidates, and none is SUPPORTED (`docs/agent_v2.md`).
 
+- Agent v2.1 (2026-10-03): disease registry (LUAD only), `fetch_geo_series` with SHA-256 checks, signature always recomputed from raw GEO data (byte-identical to the frozen one). Real runs from an empty data folder complete in about 28 s; an unregistered disease stops at manual review. Frozen 40-case re-runs: rule 30/40, DeepSeek 38/40 (run-to-run variation vs 36/40). A second disease (breast cancer GSE15852 + MCF7) is technically feasible but not registered: the literature reviewer is LUAD-specific. The Streamlit demo has an Agent v2 tab.
+
 ## Needed for the planned final deliverable
 
 1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
