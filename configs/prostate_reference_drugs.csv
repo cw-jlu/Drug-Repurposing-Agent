@@ -1,0 +1,14 @@
+drug_name,control_group,source_note
+enzalutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+apalutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+darolutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+bicalutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+flutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+nilutamide,androgen receptor antagonist,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+abiraterone,CYP17 inhibitor,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+docetaxel,taxane chemotherapy,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+cabazitaxel,taxane chemotherapy,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+mitoxantrone,anthracenedione chemotherapy,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+estramustine,estrogen-mustard chemotherapy,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+olaparib,PARP inhibitor,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+rucaparib,PARP inhibitor,Standard-of-care prostate cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed

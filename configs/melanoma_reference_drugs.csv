@@ -1,0 +1,12 @@
+drug_name,control_group,source_note
+vemurafenib,BRAF inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+dabrafenib,BRAF inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+encorafenib,BRAF inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+trametinib,MEK inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+cobimetinib,MEK inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+binimetinib,MEK inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+dacarbazine,alkylating chemotherapy,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+temozolomide,alkylating chemotherapy,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+imatinib,KIT inhibitor,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+paclitaxel,taxane chemotherapy,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+carboplatin,platinum chemotherapy,Standard-of-care melanoma drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed

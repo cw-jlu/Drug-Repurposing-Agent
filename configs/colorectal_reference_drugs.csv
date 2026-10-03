@@ -1,0 +1,12 @@
+drug_name,control_group,source_note
+fluorouracil,fluoropyrimidine chemotherapy,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+capecitabine,fluoropyrimidine chemotherapy,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+oxaliplatin,platinum chemotherapy,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+irinotecan,topoisomerase I inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+trifluridine,nucleoside analogue chemotherapy,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+raltitrexed,thymidylate synthase inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+regorafenib,multikinase inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+fruquintinib,VEGFR inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+encorafenib,BRAF inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+sotorasib,KRAS G12C inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
+adagrasib,KRAS G12C inhibitor,Standard-of-care colorectal cancer drug class; small molecules only (LINCS has no antibodies); list written 2026-10-03 before any rank for this disease was computed
