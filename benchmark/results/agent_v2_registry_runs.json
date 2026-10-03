@@ -1,7 +1,7 @@
 {
   "eval_name": "agent_v2_registry_runs",
   "registry": "configs/disease_registry_v1.json",
-  "note": "Archive the agent v2.1 registry demonstrations (real tools) into one result file.\n\nRuns summarised (made with scripts/run_agent_v2.py on 2026-10-03):\n  fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the\n      agent had to download them from NCBI, verify SHA-256 and recompute the signature;\n  unregistered_demo_deepseek - a breast-cancer request made BEFORE breast cancer was registered.\nAfter breast cancer (GSE15852 + MCF7) was registered (2026-10-03):\n  brca_live_deepseek - GSE15852 files moved aside first; download, live literature review\n      (PubMed + DeepSeek, breast-cancer review config); a real PubMed SSL timeout made the\n      first review attempt fail and the planner re-planned the remaining two steps;\n  brca_nolive_deepseek - same request without live review (no frozen breast review exists);\n  luad_regression_rule - LUAD after the change (frozen-review reuse path);\n  gastric_unregistered_deepseek - an unregistered disease.\n",
+  "note": "Archive the agent v2.1 registry demonstrations (real tools) into one result file.\n\nRuns summarised (made with scripts/run_agent_v2.py on 2026-10-03):\n  fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the\n      agent had to download them from NCBI, verify SHA-256 and recompute the signature;\n  unregistered_demo_deepseek - a breast-cancer request made BEFORE breast cancer was registered.\nAfter breast cancer (GSE15852 + MCF7) was registered (2026-10-03):\n  brca_live_deepseek - GSE15852 files moved aside first; download, live literature review\n      (PubMed + DeepSeek, breast-cancer review config); a real PubMed SSL timeout made the\n      first review attempt fail and the planner re-planned the remaining two steps;\n  brca_nolive_deepseek - same request without live review (no frozen breast review exists);\n  luad_regression_rule - LUAD after the change (frozen-review reuse path);\n  gastric_unregistered_deepseek - an unregistered disease.\nAfter colorectal, prostate and melanoma were pre-registered (v2.3):\n  crc_live_deepseek / prad_live_deepseek / skcm_live_deepseek - DeepSeek planning with a live\n      literature review using each disease's review config (data had been downloaded by the\n      registry validation run, so fetch found verified cached files).\n",
   "runs": {
     "fetch_demo_rule": {
       "question": "请为肺腺癌筛选候选药物并给出证据报告",
@@ -690,7 +690,442 @@
         }
       ],
       "source_sha256": "518a72d6957ddd0fd6e7041bc7daae4b0c90ddc49a83593527741ab40d0d30c2"
+    },
+    "crc_live_deepseek": {
+      "question": "请为结直肠癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "disease_series",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE32323",
+            "files": {
+              "series": "cached_verified",
+              "annotation": "cached_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "结直肠癌（CRC）",
+            "accession": "GSE32323",
+            "design": "paired",
+            "samples": 44,
+            "included": 34,
+            "pairs": 17,
+            "excluded": 10
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 20844,
+            "design": "paired",
+            "pairs": 17,
+            "value_scale": "auto: already log scale (GEO2R rule)",
+            "up": 1189,
+            "down": 1103,
+            "source": "data/raw/GSE32323/GSE32323_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "E2F Targets",
+              "G2-M Checkpoint",
+              "Myc Targets V1",
+              "Myc Targets V2",
+              "Mitotic Spindle"
+            ],
+            "down": [
+              "Estrogen Response Early",
+              "Estrogen Response Late",
+              "Hypoxia",
+              "Xenobiotic Metabolism",
+              "TNF-alpha Signaling via NF-kB"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "HT29",
+            "drugs": 1607,
+            "top10": [
+              "BRD-K39597586",
+              "phorbol-12-myristate-13-acetate",
+              "BRD-K49111930",
+              "BRD-K45627302",
+              "thapsigargin",
+              "BMS-754807",
+              "BMS-536924",
+              "AS-605240",
+              "BRD-K80169513",
+              "KUC111109N"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": null,
+            "measured_controls": 0,
+            "reference_drugs_listed": 11,
+            "reference_drugs": "only 0 of 11 reference drugs have a signature in this cell line; recovery statistic not computed"
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "live multi-agent review (PubMed + DeepSeek)",
+            "disease": "colorectal cancer",
+            "calls": 15,
+            "tier_counts": {
+              "CONFLICTING": 3,
+              "INSUFFICIENT_EVIDENCE": 7
+            },
+            "agrees_with_frozen": "no frozen review for this disease",
+            "proposed_quoted_items": 42,
+            "rejected_quoted_items": 11
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\crc_live_deepseek\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "9cffa20e7c9dcc7badb5209996c9aab5a31484a02ccfc8d47dd500bde3d1fd8e"
+    },
+    "prad_live_deepseek": {
+      "question": "请为前列腺癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "disease_series",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE46602",
+            "files": {
+              "series": "cached_verified",
+              "annotation": "cached_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "前列腺癌（PRAD）",
+            "accession": "GSE46602",
+            "design": "unpaired",
+            "samples": 50,
+            "included": 50,
+            "tumor": 36,
+            "normal": 14,
+            "excluded": 0
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 20844,
+            "design": "unpaired",
+            "tumor": 36,
+            "normal": 14,
+            "value_scale": "auto: already log scale (GEO2R rule)",
+            "up": 480,
+            "down": 837,
+            "source": "data/raw/GSE46602/GSE46602_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "G2-M Checkpoint",
+              "Myc Targets V2",
+              "E2F Targets",
+              "Mitotic Spindle"
+            ],
+            "down": [
+              "Hypoxia",
+              "Estrogen Response Early",
+              "Apoptosis",
+              "UV Response Dn",
+              "TNF-alpha Signaling via NF-kB"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "VCAP",
+            "drugs": 6126,
+            "top10": [
+              "BRD-A43126523",
+              "BRD-K73610817",
+              "BRD-A47816767",
+              "PAC-1",
+              "BRD-K95138506",
+              "BRD-K61717269",
+              "BRD-K81795824",
+              "BRD-K95196255",
+              "NSC-3852",
+              "BRD-K72615639"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": null,
+            "measured_controls": 8,
+            "reference_drugs_listed": 13,
+            "measured_names": [
+              "abiraterone",
+              "bicalutamide",
+              "docetaxel",
+              "enzalutamide",
+              "flutamide",
+              "nilutamide",
+              "olaparib",
+              "rucaparib"
+            ],
+            "mean_percentile": 0.586,
+            "permutation_p": 0.8
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "live multi-agent review (PubMed + DeepSeek)",
+            "disease": "prostate cancer",
+            "calls": 3,
+            "tier_counts": {
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "agrees_with_frozen": "no frozen review for this disease",
+            "proposed_quoted_items": 11,
+            "rejected_quoted_items": 0
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\prad_live_deepseek\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "a1041590cb095809221bb150772e41149dca6d62d37a2781866c061560e092f2"
+    },
+    "skcm_live_deepseek": {
+      "question": "请为黑色素瘤筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "disease_series",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE15605",
+            "files": {
+              "series": "cached_verified",
+              "annotation": "cached_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "黑色素瘤（SKCM）",
+            "accession": "GSE15605",
+            "design": "unpaired",
+            "samples": 74,
+            "included": 62,
+            "tumor": 46,
+            "normal": 16,
+            "excluded": 12
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 17944,
+            "design": "unpaired",
+            "tumor": 46,
+            "normal": 16,
+            "value_scale": "auto: already log scale (GEO2R rule)",
+            "up": 1274,
+            "down": 1677,
+            "source": "data/raw/GSE15605/GSE15605_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "Interferon Alpha Response",
+              "Epithelial Mesenchymal Transition",
+              "Interferon Gamma Response",
+              "Complement",
+              "TNF-alpha Signaling via NF-kB"
+            ],
+            "down": [
+              "Estrogen Response Late",
+              "Estrogen Response Early",
+              "KRAS Signaling Dn",
+              "Myogenesis",
+              "Cholesterol Homeostasis"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "A375",
+            "drugs": 1968,
+            "top10": [
+              "trichostatin-a",
+              "NVP-AUY922",
+              "dabrafenib",
+              "pevonedistat",
+              "BRD-K49669601",
+              "vorinostat",
+              "TL-HRAS-24",
+              "GDC-0879",
+              "MW-SHH-61",
+              "vemurafenib"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": null,
+            "measured_controls": 3,
+            "reference_drugs_listed": 11,
+            "measured_names": [
+              "dabrafenib",
+              "temozolomide",
+              "vemurafenib"
+            ],
+            "mean_percentile": 0.318,
+            "permutation_p": 0.148
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "live multi-agent review (PubMed + DeepSeek)",
+            "disease": "melanoma",
+            "calls": 22,
+            "tier_counts": {
+              "CONFLICTING": 4,
+              "INSUFFICIENT_EVIDENCE": 3,
+              "PROMISING_BUT_INCOMPLETE": 1,
+              "SUPPORTED": 2
+            },
+            "agrees_with_frozen": "no frozen review for this disease",
+            "proposed_quoted_items": 78,
+            "rejected_quoted_items": 20
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\skcm_live_deepseek\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "2f8842aecfdca550c48846313153465c796b14c02b1a3b9739c022dd84136ba6"
     }
   },
-  "trace_file": "artifacts\\traces\\20261003T081051545899Z_agent_v2_registry_runs_27c9029c261f4b88866ccec1e5402723.jsonl"
+  "trace_file": "artifacts\\traces\\20261003T124607873922Z_agent_v2_registry_runs_5d0088ea7f8a4d17b0f06c1066e17820.jsonl"
 }

@@ -11,6 +11,10 @@ After breast cancer (GSE15852 + MCF7) was registered (2026-10-03):
   brca_nolive_deepseek - same request without live review (no frozen breast review exists);
   luad_regression_rule - LUAD after the change (frozen-review reuse path);
   gastric_unregistered_deepseek - an unregistered disease.
+After colorectal, prostate and melanoma were pre-registered (v2.3):
+  crc_live_deepseek / prad_live_deepseek / skcm_live_deepseek - DeepSeek planning with a live
+      literature review using each disease's review config (data had been downloaded by the
+      registry validation run, so fetch found verified cached files).
 """
 
 from __future__ import annotations
@@ -23,7 +27,8 @@ from drug_repurposing_agent.trace import TraceRecorder, traced_run
 
 RUNS = Path("artifacts/agent_v2_runs")
 NAMES = ("fetch_demo_rule", "fetch_demo_deepseek", "unregistered_demo_deepseek", "brca_live_deepseek",
-         "brca_nolive_deepseek", "luad_regression_rule", "gastric_unregistered_deepseek")
+         "brca_nolive_deepseek", "luad_regression_rule", "gastric_unregistered_deepseek",
+         "crc_live_deepseek", "prad_live_deepseek", "skcm_live_deepseek")
 OUTPUT = Path("benchmark/results/agent_v2_registry_runs.json")
 
 
