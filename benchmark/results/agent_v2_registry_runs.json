@@ -1,0 +1,278 @@
+{
+  "eval_name": "agent_v2_registry_runs",
+  "registry": "configs/disease_registry_v1.json",
+  "note": "Archive the agent v2.1 registry demonstrations (real tools) into one result file.\n\nRuns summarised (made with scripts/run_agent_v2.py on 2026-10-03):\n  fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the\n      agent had to download them from NCBI, verify SHA-256 and recompute the signature;\n  unregistered_demo_deepseek - a request for a disease that is not in the registry.\n",
+  "runs": {
+    "fetch_demo_rule": {
+      "question": "请为肺腺癌筛选候选药物并给出证据报告",
+      "planner": "rule_v2",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE32863",
+            "files": {
+              "series": "downloaded_verified",
+              "annotation": "downloaded_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "肺腺癌（LUAD）",
+            "accession": "GSE32863",
+            "samples": 116,
+            "included": 114,
+            "pairs": 57,
+            "excluded": 2
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 19404,
+            "pairs": 57,
+            "value_scale": "log2 as deposited",
+            "up": 512,
+            "down": 749,
+            "source": "data/raw/GSE32863/GSE32863_series_matrix.txt.gz (recomputed from the raw GEO series matrix)",
+            "matches_frozen_signature": true
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "A549",
+            "drugs": 4920,
+            "top10": [
+              "hydrocortisone",
+              "beclomethasone-dipropionate",
+              "clocortolone-pivalate",
+              "mometasone",
+              "flumetasone",
+              "BRD-K84203638",
+              "hydrocortisone-hemisuccinate",
+              "fluorometholone",
+              "fluticasone",
+              "diflorasone"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": true,
+            "measured_controls": 5,
+            "mean_percentile": 0.362,
+            "permutation_p": 0.145
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "frozen multi_agent_review_v1 (reused)",
+            "tier_counts": {
+              "SUPPORTED": 0,
+              "PROMISING_BUT_INCOMPLETE": 0,
+              "CONFLICTING": 0,
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "rejected_citations": 0
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\fetch_demo_rule\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "e1636e12f99cbe3736bb13b3a1fa230ba87a577404f67c9d4e55097e2978c00d"
+    },
+    "fetch_demo_deepseek": {
+      "question": "请为肺腺癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE32863",
+            "files": {
+              "series": "downloaded_verified",
+              "annotation": "downloaded_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "肺腺癌（LUAD）",
+            "accession": "GSE32863",
+            "samples": 116,
+            "included": 114,
+            "pairs": 57,
+            "excluded": 2
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 19404,
+            "pairs": 57,
+            "value_scale": "log2 as deposited",
+            "up": 512,
+            "down": 749,
+            "source": "data/raw/GSE32863/GSE32863_series_matrix.txt.gz (recomputed from the raw GEO series matrix)",
+            "matches_frozen_signature": true
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "Estrogen Response Late",
+              "G2-M Checkpoint",
+              "Glycolysis",
+              "E2F Targets",
+              "KRAS Signaling Up"
+            ],
+            "down": [
+              "TNF-alpha Signaling via NF-kB",
+              "KRAS Signaling Up",
+              "Epithelial Mesenchymal Transition",
+              "Inflammatory Response",
+              "Xenobiotic Metabolism"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "A549",
+            "drugs": 4920,
+            "top10": [
+              "hydrocortisone",
+              "beclomethasone-dipropionate",
+              "clocortolone-pivalate",
+              "mometasone",
+              "flumetasone",
+              "BRD-K84203638",
+              "hydrocortisone-hemisuccinate",
+              "fluorometholone",
+              "fluticasone",
+              "diflorasone"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": true,
+            "measured_controls": 5,
+            "mean_percentile": 0.362,
+            "permutation_p": 0.145
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "frozen multi_agent_review_v1 (reused)",
+            "tier_counts": {
+              "SUPPORTED": 0,
+              "PROMISING_BUT_INCOMPLETE": 0,
+              "CONFLICTING": 0,
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "rejected_citations": 0
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\fetch_demo_deepseek\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "f608657ab0488b40205db5188dcabd702d5bed29f63f04452208a8284f39395b"
+    },
+    "unregistered_demo_deepseek": {
+      "question": "请为乳腺癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "manual_review_required",
+      "available_inputs": [
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "manual_review"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "manual_review",
+          "status": "stopped",
+          "reason": "乳腺癌不在工具注册表中（仅支持 LUAD/GSE32863，A549 细胞系），fetch_geo_series 无法获取其 GEO series matrix，因此无法构建队列、差异表达签名与候选药物排序。请确认是否改为已注册的 LUAD，或提供乳腺癌的注册/数据支持。"
+        }
+      ],
+      "source_sha256": "629467e61895165be840a7a1f55c97a0f6af3649d8d99116c823a5866f52151b"
+    }
+  },
+  "trace_file": "artifacts\\traces\\20261003T074304305944Z_agent_v2_registry_runs_fbd6995247de43e4b0e9e6293bd633e4.jsonl"
+}
