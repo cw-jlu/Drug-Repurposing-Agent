@@ -1,7 +1,7 @@
 {
   "eval_name": "agent_v2_registry_runs",
   "registry": "configs/disease_registry_v1.json",
-  "note": "Archive the agent v2.1 registry demonstrations (real tools) into one result file.\n\nRuns summarised (made with scripts/run_agent_v2.py on 2026-10-03):\n  fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the\n      agent had to download them from NCBI, verify SHA-256 and recompute the signature;\n  unregistered_demo_deepseek - a request for a disease that is not in the registry.\n",
+  "note": "Archive the agent v2.1 registry demonstrations (real tools) into one result file.\n\nRuns summarised (made with scripts/run_agent_v2.py on 2026-10-03):\n  fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the\n      agent had to download them from NCBI, verify SHA-256 and recompute the signature;\n  unregistered_demo_deepseek - a breast-cancer request made BEFORE breast cancer was registered.\nAfter breast cancer (GSE15852 + MCF7) was registered (2026-10-03):\n  brca_live_deepseek - GSE15852 files moved aside first; download, live literature review\n      (PubMed + DeepSeek, breast-cancer review config); a real PubMed SSL timeout made the\n      first review attempt fail and the planner re-planned the remaining two steps;\n  brca_nolive_deepseek - same request without live review (no frozen breast review exists);\n  luad_regression_rule - LUAD after the change (frozen-review reuse path);\n  gastric_unregistered_deepseek - an unregistered disease.\n",
   "runs": {
     "fetch_demo_rule": {
       "question": "请为肺腺癌筛选候选药物并给出证据报告",
@@ -272,7 +272,425 @@
         }
       ],
       "source_sha256": "629467e61895165be840a7a1f55c97a0f6af3649d8d99116c823a5866f52151b"
+    },
+    "brca_live_deepseek": {
+      "question": "请为乳腺癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ],
+        [
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE15852",
+            "files": {
+              "series": "downloaded_verified",
+              "annotation": "downloaded_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "乳腺癌（BRCA）",
+            "accession": "GSE15852",
+            "samples": 86,
+            "included": 86,
+            "pairs": 43,
+            "excluded": 0
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 12502,
+            "pairs": 43,
+            "value_scale": "auto: log2 applied (GEO2R rule); values <= 0 set missing",
+            "up": 115,
+            "down": 193,
+            "source": "data/raw/GSE15852/GSE15852_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "E2F Targets",
+              "G2-M Checkpoint",
+              "Estrogen Response Early",
+              "Estrogen Response Late"
+            ],
+            "down": [
+              "Adipogenesis",
+              "Fatty Acid Metabolism",
+              "Epithelial Mesenchymal Transition",
+              "Myogenesis",
+              "Apoptosis"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "MCF7",
+            "drugs": 6231,
+            "top10": [
+              "BRD-K01896723",
+              "CGP-60474",
+              "PD-168077",
+              "PIK-75",
+              "camptothecin",
+              "PHA-793887",
+              "BMS-345541",
+              "belinostat",
+              "WT-171",
+              "mitomycin-c"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": null,
+            "measured_controls": 16,
+            "mean_percentile": 0.363,
+            "permutation_p": 0.029
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "failed"
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "live multi-agent review (PubMed + DeepSeek)",
+            "disease": "breast cancer",
+            "calls": 21,
+            "tier_counts": {
+              "CONFLICTING": 1,
+              "INSUFFICIENT_EVIDENCE": 6,
+              "PROMISING_BUT_INCOMPLETE": 3
+            },
+            "agrees_with_frozen": "no frozen review for this disease",
+            "proposed_quoted_items": 62,
+            "rejected_quoted_items": 23
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\brca_live_deepseek\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "724e83150c0498f20940ac5069caa2d6956ed145b2fcff4c8e1df1a38528416a"
+    },
+    "brca_nolive_deepseek": {
+      "question": "请为乳腺癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "disease_series",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "fetch_geo_series",
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ],
+        [
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "fetch_geo_series",
+          "status": "ok",
+          "summary": {
+            "accession": "GSE15852",
+            "files": {
+              "series": "cached_verified",
+              "annotation": "cached_verified"
+            }
+          }
+        },
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "乳腺癌（BRCA）",
+            "accession": "GSE15852",
+            "samples": 86,
+            "included": 86,
+            "pairs": 43,
+            "excluded": 0
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 12502,
+            "pairs": 43,
+            "value_scale": "auto: log2 applied (GEO2R rule); values <= 0 set missing",
+            "up": 115,
+            "down": 193,
+            "source": "data/raw/GSE15852/GSE15852_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+          }
+        },
+        {
+          "tool": "pathway_enrichment",
+          "status": "ok",
+          "summary": {
+            "up": [
+              "E2F Targets",
+              "G2-M Checkpoint",
+              "Estrogen Response Early",
+              "Estrogen Response Late"
+            ],
+            "down": [
+              "Adipogenesis",
+              "Fatty Acid Metabolism",
+              "Epithelial Mesenchymal Transition",
+              "Myogenesis",
+              "Apoptosis"
+            ]
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "MCF7",
+            "drugs": 6231,
+            "top10": [
+              "BRD-K01896723",
+              "CGP-60474",
+              "PD-168077",
+              "PIK-75",
+              "camptothecin",
+              "PHA-793887",
+              "BMS-345541",
+              "belinostat",
+              "WT-171",
+              "mitomycin-c"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": null,
+            "measured_controls": 16,
+            "mean_percentile": 0.363,
+            "permutation_p": 0.029
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "failed"
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\brca_nolive_deepseek\\candidate_report.json",
+            "evidence_included": false
+          }
+        }
+      ],
+      "source_sha256": "fea4b3eb998121f0f5b7d314c52b6da7170c44332ceaf70e62af6ed35907d03c"
+    },
+    "luad_regression_rule": {
+      "question": "请为肺腺癌筛选候选药物并给出证据报告",
+      "planner": "rule_v2",
+      "status": "completed",
+      "available_inputs": [
+        "registered_disease",
+        "disease_series",
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "qc_disease_cohort",
+          "status": "ok",
+          "summary": {
+            "disease": "肺腺癌（LUAD）",
+            "accession": "GSE32863",
+            "samples": 116,
+            "included": 114,
+            "pairs": 57,
+            "excluded": 2
+          }
+        },
+        {
+          "tool": "differential_expression",
+          "status": "ok",
+          "summary": {
+            "genes": 19404,
+            "pairs": 57,
+            "value_scale": "log2 as deposited",
+            "up": 512,
+            "down": 749,
+            "source": "data/raw/GSE32863/GSE32863_series_matrix.txt.gz (recomputed from the raw GEO series matrix)",
+            "matches_frozen_signature": true
+          }
+        },
+        {
+          "tool": "rank_candidates",
+          "status": "ok",
+          "summary": {
+            "cell_line": "A549",
+            "drugs": 4920,
+            "top10": [
+              "hydrocortisone",
+              "beclomethasone-dipropionate",
+              "clocortolone-pivalate",
+              "mometasone",
+              "flumetasone",
+              "BRD-K84203638",
+              "hydrocortisone-hemisuccinate",
+              "fluorometholone",
+              "fluticasone",
+              "diflorasone"
+            ]
+          }
+        },
+        {
+          "tool": "audit_candidates",
+          "status": "ok",
+          "summary": {
+            "top10_matches_frozen_identity_audit": true,
+            "measured_controls": 5,
+            "mean_percentile": 0.362,
+            "permutation_p": 0.145
+          }
+        },
+        {
+          "tool": "review_literature",
+          "status": "ok",
+          "summary": {
+            "source": "frozen multi_agent_review_v1 (reused)",
+            "tier_counts": {
+              "SUPPORTED": 0,
+              "PROMISING_BUT_INCOMPLETE": 0,
+              "CONFLICTING": 0,
+              "INSUFFICIENT_EVIDENCE": 10
+            },
+            "rejected_citations": 0
+          }
+        },
+        {
+          "tool": "build_report",
+          "status": "ok",
+          "summary": {
+            "report": "artifacts\\agent_v2_runs\\luad_regression_rule\\candidate_report.json",
+            "evidence_included": true
+          }
+        }
+      ],
+      "source_sha256": "027e5d604df7709e1829f5e1c77211423281a312fbe7e09ec8fa20c6bf3c6005"
+    },
+    "gastric_unregistered_deepseek": {
+      "question": "请为胃癌筛选候选药物并给出证据报告",
+      "planner": "deepseek_v2:deepseek-flash",
+      "status": "manual_review_required",
+      "available_inputs": [
+        "drug_signatures",
+        "items",
+        "users"
+      ],
+      "plans": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "pathway_enrichment",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ],
+        [
+          "rank_transcriptome",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ],
+        [
+          "rank_transcriptome",
+          "manual_review"
+        ]
+      ],
+      "executed": [
+        {
+          "tool": "rank_transcriptome",
+          "status": "ok",
+          "summary": {
+            "status": "completed",
+            "manifest": "artifacts\\agent_v2_runs\\gastric_unregistered_deepseek\\expression_ranking\\manifest.json"
+          }
+        },
+        {
+          "tool": "manual_review",
+          "status": "stopped",
+          "reason": "Gastric-cancer candidate screening and evidence report require the registered disease cohort series (disease_series), which is not available; qc_disease_cohort and all downstream signature-dependent steps (differential_expression, pathway_enrichment, rank_candidates, audit_candidates, review_literat"
+        }
+      ],
+      "source_sha256": "518a72d6957ddd0fd6e7041bc7daae4b0c90ddc49a83593527741ab40d0d30c2"
     }
   },
-  "trace_file": "artifacts\\traces\\20261003T074304305944Z_agent_v2_registry_runs_fbd6995247de43e4b0e9e6293bd633e4.jsonl"
+  "trace_file": "artifacts\\traces\\20261003T081051545899Z_agent_v2_registry_runs_27c9029c261f4b88866ccec1e5402723.jsonl"
 }

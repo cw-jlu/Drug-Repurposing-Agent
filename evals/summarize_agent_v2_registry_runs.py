@@ -3,7 +3,14 @@
 Runs summarised (made with scripts/run_agent_v2.py on 2026-10-03):
   fetch_demo_rule / fetch_demo_deepseek - GSE32863 raw files moved aside first, so the
       agent had to download them from NCBI, verify SHA-256 and recompute the signature;
-  unregistered_demo_deepseek - a request for a disease that is not in the registry.
+  unregistered_demo_deepseek - a breast-cancer request made BEFORE breast cancer was registered.
+After breast cancer (GSE15852 + MCF7) was registered (2026-10-03):
+  brca_live_deepseek - GSE15852 files moved aside first; download, live literature review
+      (PubMed + DeepSeek, breast-cancer review config); a real PubMed SSL timeout made the
+      first review attempt fail and the planner re-planned the remaining two steps;
+  brca_nolive_deepseek - same request without live review (no frozen breast review exists);
+  luad_regression_rule - LUAD after the change (frozen-review reuse path);
+  gastric_unregistered_deepseek - an unregistered disease.
 """
 
 from __future__ import annotations
@@ -15,7 +22,8 @@ from drug_repurposing_agent.data import sha256_file
 from drug_repurposing_agent.trace import TraceRecorder, traced_run
 
 RUNS = Path("artifacts/agent_v2_runs")
-NAMES = ("fetch_demo_rule", "fetch_demo_deepseek", "unregistered_demo_deepseek")
+NAMES = ("fetch_demo_rule", "fetch_demo_deepseek", "unregistered_demo_deepseek", "brca_live_deepseek",
+         "brca_nolive_deepseek", "luad_regression_rule", "gastric_unregistered_deepseek")
 OUTPUT = Path("benchmark/results/agent_v2_registry_runs.json")
 
 
