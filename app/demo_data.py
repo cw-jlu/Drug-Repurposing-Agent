@@ -404,8 +404,8 @@ V2_EXAMPLES = (
     "对 TRANSCRIPT 基准做表达反转排名",
     "我是肺腺癌患者，请告诉我应该吃什么药、每天多少剂量",
 )
-V2_TOOL_LABELS = {"fetch_geo_series": "下载 GEO 数据并核验哈希", "qc_disease_cohort": "队列质控（配对核对）",
-                  "differential_expression": "配对差异表达（从原始数据重算）", "pathway_enrichment": "通路富集",
+V2_TOOL_LABELS = {"fetch_geo_series": "下载 GEO 数据并核验哈希", "qc_disease_cohort": "队列质控（分组/配对核对）",
+                  "differential_expression": "差异表达（从原始数据重算）", "pathway_enrichment": "通路富集",
                   "rank_candidates": "药物反转排名", "audit_candidates": "候选身份与参考药审计",
                   "review_literature": "多 Agent 文献审阅", "build_report": "生成候选报告",
                   "rank_transcriptome": "TRANSCRIPT 基准排名", "manual_review": "转人工（安全停止）"}

@@ -270,7 +270,7 @@ def tab_benchmark(st) -> None:
 
     summary, per_seed, notes = dd.load_benchmark()
     st.markdown("RECeSS 官方 runner，TRANSCRIPT v2.0.0，N=100 个种子，5 折，ptest=0.2；"
-                "主指标为作者论文的 NS-AUC（`Lin's AUC`）。B2 为本项目方法，其余 11 个为作者发布的模型结果。")
+                "主指标为作者论文的 NS-AUC（`Lin's AUC`）。B2、B3、B4 为本项目方法，其余 11 个为作者发布的模型结果。")
     for note in notes:
         st.caption(note)
     metrics = sorted(set(summary.metric), key=lambda m: (m != "NS-AUC", m))
@@ -313,8 +313,8 @@ def tab_benchmark(st) -> None:
 
 KEY_LIMITATIONS = [
     "**反转分数 ≠ 疗效**：表达谱反向匹配只衡量表达相反程度，不代表患者获益、剂量可行性或安全性。",
-    "**基准表现有限**：官方 100 次运行中 B2 的 NS-AUC 为 0.5222（random simple，9/12）与 0.5019"
-    "（weakly correlated，8/12），与最强模型 BNNR / MBiRW 相差约 0.21–0.24，100 个配对种子中 0 胜。",
+    "**基准不是 SOTA**：纯表达反转（B1）NS-AUC 0.482，约等于随机；对齐指标方向并集成 BNNR 的 B4 在随机拆分"
+    "排第 1/13，但与 BNNR 的差异不显著（校正检验 p = 0.066），弱相关拆分排第 3/13。提分来自已知关联结构，不是反转信号。",
     "**weakly correlated 划分**在 100 个种子中重复同一个外部测试集，区间反映内部折/模型选择波动，而非 100 次独立划分。",
     "**LUAD Top-10 全部为 insufficient_evidence**：9/10 为糖皮质激素类同一类别信号；仅 2 个与 Broad Hub InChIKey 完全一致；"
     "没有候选特异的 LUAD 动物或临床疗效证据，也没有湿实验数据。",
@@ -322,6 +322,9 @@ KEY_LIMITATIONS = [
     "**LLM 结论范围有限**：路由评测（v3 holdout：DeepSeek 98/100，规则 90/100）只衡量工具选择；"
     "两次模型选择不能证明一般化能力；五分区方法选择实验为负结果（0.40653 vs 固定 B2 0.51684）。",
     "**安全边界**：处方、剂量、患者建议等请求一律转人工审核；Agent 不给出治疗推荐。",
+    "**只支持登记的 5 个疾病**（肺腺癌、乳腺癌、结直肠癌、前列腺癌、黑色素瘤）：上限取决于药物端有无匹配的 LINCS 细胞系；"
+    "未登记的疾病转人工。参考药恢复只在乳腺癌显著，前列腺癌比随机还差，结直肠癌无法评估——流程可推广，不代表预测有效。",
+    "**文献审阅**：除肺腺癌外没有冻结审阅，实时审阅的分级未经人工复核；乳腺癌与黑色素瘤分别有 23/62、20/78 条引语被逐字校验拒绝。",
 ]
 
 
