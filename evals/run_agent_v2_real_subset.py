@@ -16,7 +16,7 @@ from pathlib import Path
 
 from drug_repurposing_agent.agent_v2 import DeepSeekPlannerV2, RulePlannerV2, run_agent_v2
 from drug_repurposing_agent.data import sha256_file
-from drug_repurposing_agent.luad_tools_v2 import available_inputs, real_backend
+from drug_repurposing_agent.luad_tools_v2 import available_inputs, default_luad, real_backend
 from drug_repurposing_agent.trace import TraceRecorder, traced_run
 from drug_repurposing_agent.workflow import Mode
 from evals.run_planner_eval_multistep import FROZEN_SHA256, grade, load_cases
@@ -40,7 +40,7 @@ def _main(trace: TraceRecorder) -> None:
         out = Path("artifacts/agent_v2_runs/real_subset") / args.planner / cid
         planner = DeepSeekPlannerV2.from_env() if args.planner == "deepseek" else RulePlannerV2()
         report = run_agent_v2(case["question"], mode, tuple(case["available_inputs"]), planner,
-                              real_backend(out, mode), out)
+                              real_backend(out, mode, disease=default_luad()), out)
         g = grade(case, report)
         rows.append({"id": cid, "category": case["category"], "question": case["question"], **g,
                      "plans": [[s["tool"] for s in (r.get("steps") or [])] for r in report["rounds"]],

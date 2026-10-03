@@ -63,3 +63,32 @@ def test_rule_planner_full_partial_unsafe_and_benchmark():
     assert [x.tool for x in unsafe.steps] == ["manual_review"]
     bench = RulePlannerV2().plan(s("对 TRANSCRIPT 基准做排名", STRICT, ("items", "users")), tools(STRICT))
     assert [x.tool for x in bench.steps] == ["rank_transcriptome"]
+
+
+def test_fetch_step_satisfies_disease_series_and_registered_disease_is_required():
+    assert validate_plan(plan("fetch_geo_series", "qc_disease_cohort"), OPEN, ("registered_disease",), []) is None
+    assert "unavailable inputs" in validate_plan(plan("fetch_geo_series"), OPEN, ("disease_series",), [])
+    assert "not allowed" in validate_plan(plan("fetch_geo_series"), STRICT, ("registered_disease",), [])
+
+
+def test_rule_planner_fetches_a_registered_disease_that_is_not_downloaded():
+    tools = [t.public() for t in tools_for(OPEN)]
+    state = PlanningState("请为肺腺癌筛选候选药物", OPEN, ("registered_disease", "drug_signatures"))
+    steps = [s.tool for s in RulePlannerV2().plan(state, tools).steps]
+    assert steps[:2] == ["fetch_geo_series", "qc_disease_cohort"] and steps[-1] == "build_report"
+    on_disk = PlanningState("请为肺腺癌筛选候选药物", OPEN, ("registered_disease", "disease_series", "drug_signatures"))
+    assert "fetch_geo_series" not in [s.tool for s in RulePlannerV2().plan(on_disk, tools).steps]
+
+
+def test_available_inputs_depend_on_the_registered_disease_in_the_question():
+    from drug_repurposing_agent.luad_tools_v2 import available_inputs
+    other = available_inputs("请为乳腺癌筛选候选药物")
+    assert "registered_disease" not in other and "disease_series" not in other
+    assert "registered_disease" in available_inputs("请为肺腺癌筛选候选药物")
+
+
+def test_fetch_tool_is_offered_only_when_a_registered_disease_is_named():
+    names = lambda inputs: {t.name for t in tools_for(OPEN, inputs)}
+    assert "fetch_geo_series" not in names(("disease_series", "drug_signatures"))
+    assert "fetch_geo_series" in names(("registered_disease",))
+    assert "fetch_geo_series" in {t.name for t in tools_for(OPEN)}

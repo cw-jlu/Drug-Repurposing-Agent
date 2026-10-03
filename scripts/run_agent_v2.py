@@ -13,6 +13,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from drug_repurposing_agent.agent_v2 import DeepSeekPlannerV2, RulePlannerV2, ToolError, run_agent_v2
+from drug_repurposing_agent.geo_cohort import load_registry, resolve_disease
 from drug_repurposing_agent.luad_tools_v2 import available_inputs, real_backend
 from drug_repurposing_agent.workflow import Mode
 
@@ -35,8 +36,13 @@ def main() -> None:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output = args.output or Path("artifacts/agent_v2_runs") / f"{stamp}_{uuid4().hex[:8]}"
     planner = DeepSeekPlannerV2.from_env(args.model) if args.planner == "deepseek" else RulePlannerV2()
-    backend = real_backend(output, mode, live_review=args.live_review)
-    inputs = available_inputs()
+    registry = load_registry()
+    disease = resolve_disease(args.question, registry)
+    if disease is None:
+        names = "、".join(e["label"] for e in registry.values())
+        print(f"注意：请求中没有登记过的疾病（已登记：{names}），疾病分析工具不可用。")
+    backend = real_backend(output, mode, disease=disease, live_review=args.live_review)
+    inputs = available_inputs(args.question)
     if args.inputs is not None:
         wanted = [x for x in args.inputs.split(",") if x]
         unknown = [x for x in wanted if x not in inputs]
@@ -54,7 +60,8 @@ def main() -> None:
                 raise ToolError(f"injected demo failure of {step.tool}")
             return real(step, artefacts)
     report = run_agent_v2(args.question, mode, inputs, planner, backend, output)
-    print(json.dumps({"status": report["status"], "rounds": len(report["rounds"]),
+    print(json.dumps({"disease": disease["id"] if disease else None, "status": report["status"],
+                      "rounds": len(report["rounds"]),
                       "executed": [(e["tool"], e["status"]) for e in report["executed"]],
                       "output": str(output)}, ensure_ascii=False, indent=1))
 

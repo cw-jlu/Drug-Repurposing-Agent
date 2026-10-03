@@ -5,7 +5,8 @@ ordered list of tool steps. Code, not the model, checks every plan:
 
 * every tool must be in the allow-list and permitted in the current mode;
 * every step's dependencies must be produced by an earlier step or already exist;
-* every external input a step needs must be available to the executor.
+* every external input a step needs must be available to the executor or produced
+  by an earlier step (``fetch_geo_series`` produces ``disease_series``).
 
 The executor runs valid steps in order. When a plan is invalid or a step fails, the
 observation is returned to the planner, which may re-plan (completed steps keep
@@ -46,13 +47,15 @@ class ToolSpecV2:
 
 OPEN, STRICT = Mode.RESEARCH_OPEN, Mode.BENCHMARK_STRICT
 TOOLS_V2: dict[str, ToolSpecV2] = {spec.name: spec for spec in (
-    ToolSpecV2("qc_disease_cohort", "Check the LUAD tumour/normal cohort: parse GEO metadata, verify patient pairing, report included/excluded samples.",
+    ToolSpecV2("fetch_geo_series", "Download the GEO series matrix and platform annotation registered for the disease named in the request and verify their SHA-256; diseases not in the registry are not supported.",
+               (OPEN,), inputs=("registered_disease",), produces="disease_series"),
+    ToolSpecV2("qc_disease_cohort", "Check the tumour/normal cohort of the registered disease (currently LUAD, GSE32863): parse GEO metadata, verify patient pairing, report included/excluded samples.",
                (OPEN,), inputs=("disease_series",), produces="cohort"),
-    ToolSpecV2("differential_expression", "Paired tumour-vs-normal differential expression with BH correction; returns the up/down disease signature.",
+    ToolSpecV2("differential_expression", "Paired tumour-vs-normal differential expression recomputed from the raw series matrix with BH correction; returns the up/down disease signature.",
                (OPEN,), requires=("cohort",), produces="signature"),
     ToolSpecV2("pathway_enrichment", "Hallmark/KEGG over-representation of the up and down signature genes.",
                (OPEN,), requires=("signature",), produces="pathways"),
-    ToolSpecV2("rank_candidates", "Rank A549 LINCS compound signatures by reversal of the disease signature (Spearman + connectivity, RRF).",
+    ToolSpecV2("rank_candidates", "Rank LINCS compound signatures from the disease's registered cell line (A549 for LUAD) by reversal of the disease signature (Spearman + connectivity, RRF).",
                (OPEN,), inputs=("drug_signatures",), requires=("signature",), produces="ranking"),
     ToolSpecV2("audit_candidates", "Audit the Top-10: identity records and the prespecified reference-drug recovery statistic.",
                (OPEN,), requires=("ranking",), produces="audit"),
@@ -123,8 +126,14 @@ class ToolError(RuntimeError):
 Backend = Callable[[Step, dict], dict]
 
 
-def tools_for(mode: Mode) -> list[ToolSpecV2]:
-    return [t for t in TOOLS_V2.values() if mode in t.modes]
+# Tools offered to the planner only when a given input exists (a download tool is
+# pointless, and only invites invalid plans, when no registered disease is named).
+OFFERED_ONLY_WITH = {"fetch_geo_series": "registered_disease"}
+
+
+def tools_for(mode: Mode, available_inputs: tuple[str, ...] | None = None) -> list[ToolSpecV2]:
+    return [t for t in TOOLS_V2.values() if mode in t.modes and
+            (available_inputs is None or OFFERED_ONLY_WITH.get(t.name) in (None, *available_inputs))]
 
 
 def validate_plan(plan: PlanV2, mode: Mode, available_inputs: tuple[str, ...],
@@ -141,7 +150,7 @@ def validate_plan(plan: PlanV2, mode: Mode, available_inputs: tuple[str, ...],
             if i != len(plan.steps):
                 return f"step {i}: manual_review must be the last step"
             continue
-        missing_inputs = [x for x in spec.inputs if x not in available_inputs]
+        missing_inputs = [x for x in spec.inputs if x not in available_inputs and x not in have]
         if missing_inputs:
             return f"step {i}: {step.tool} needs unavailable inputs {missing_inputs}"
         missing = [r for r in spec.requires if r not in have]
@@ -165,7 +174,7 @@ def run_agent_v2(question: str, mode: Mode, available_inputs: tuple[str, ...], p
     report = {"run_id": recorder.run_id, "question": question, "mode": mode.value,
               "planner": planner.name, "available_inputs": list(available_inputs),
               "rounds": [], "executed": executed, "status": "planning"}
-    public_tools = [t.public() for t in tools_for(mode)]
+    public_tools = [t.public() for t in tools_for(mode, tuple(available_inputs))]
     recorder.emit("run_started", question=question, mode=mode.value, inputs=list(available_inputs))
     while state.round <= MAX_ROUNDS:
         started = perf_counter()
@@ -277,11 +286,13 @@ class RulePlannerV2:
                 return stop(f"{tool} failed twice")
         if any(w in q for w in ("transcript", "benchmark", "基准")) and "rank_transcriptome" in names:
             return PlanV2("benchmark", "rank the benchmark matrices", (Step("rank_transcriptome"),))
-        if not any(w in q for w in LUAD_WORDS):
-            return stop("no supported disease workflow matches the request")
+        registered = "registered_disease" in state.available_inputs
+        if not (registered or any(w in q for w in LUAD_WORDS)):
+            return stop("no registered disease matches the request")
         if "qc_disease_cohort" not in names:
-            return stop("LUAD workflow is not available in this mode")
-        chain = ["qc_disease_cohort", "differential_expression"]
+            return stop("disease workflow is not available in this mode")
+        fetch = registered and "disease_series" not in state.available_inputs
+        chain = (["fetch_geo_series"] if fetch else []) + ["qc_disease_cohort", "differential_expression"]
         if any(w in q for w in ("通路", "pathway")):
             chain.append("pathway_enrichment")
         if not any(w in q for w in ("只做差异", "only differential", "只要差异")):
@@ -290,17 +301,17 @@ class RulePlannerV2:
                 chain.append("review_literature")
             chain.append("build_report")
         steps = tuple(Step(t) for t in chain if TOOLS_V2[t].produces not in state.produced)
-        plan = PlanV2("luad", "fixed LUAD chain", steps or (Step("build_report"),))
+        plan = PlanV2("disease", "fixed disease chain", steps or (Step("build_report"),))
         if validate_plan(plan, state.mode, state.available_inputs, state.produced):
-            return stop("required inputs for the LUAD chain are unavailable")
+            return stop("required inputs for the disease chain are unavailable")
         return plan
 
 
 PLAN_SYSTEM = (
     "You are the planner of an auditable drug-repurposing research agent. Decompose the user's request "
     "into an ordered list of tool steps and submit it by calling submit_plan exactly once. Rules: use only the "
-    "listed tools; respect each tool's needs_inputs (must appear in available_inputs) and needs_previous_outputs "
-    "(must be produced by an earlier step or listed in already_produced); include only the steps the request "
+    "listed tools; respect each tool's needs_inputs (must appear in available_inputs or be produced by an earlier "
+    "step) and needs_previous_outputs (must be produced by an earlier step or listed in already_produced); include only the steps the request "
     "needs; never repeat steps whose outputs are already_produced. If the request is unsafe (patient-specific "
     "treatment or dosing, clinical publication, deleting data, skipping validation), unsupported, or cannot be "
     "executed with the available inputs, submit a single manual_review step with a short reason. If observations "

@@ -49,7 +49,7 @@ def pathway_reversal(drugs: pd.DataFrame, deg: pd.DataFrame, library: dict[str, 
     return pd.DataFrame(scores), used
 
 
-def _load_drugs(deg: pd.DataFrame, trace: TraceRecorder) -> pd.DataFrame:
+def _load_drugs(deg: pd.DataFrame, trace: TraceRecorder, cell_line: str = "A549") -> pd.DataFrame:
     import h5py
     gene_info = pd.read_csv("data/raw/GSE92742/GSE92742_Broad_LINCS_gene_info.txt.gz", sep="\t")
     landmark = gene_info.loc[gene_info.pr_is_lm == 1].copy()
@@ -58,8 +58,8 @@ def _load_drugs(deg: pd.DataFrame, trace: TraceRecorder) -> pd.DataFrame:
         assay = h5["assay"]
         columns = [x.decode().rstrip("\0") for x in h5["colnames"][0]]
         rows = [x.decode().rstrip("\0") for x in h5["rownames"][0]]
-        selected = [(i, v.removesuffix("__A549__trt_cp")) for i, v in enumerate(columns)
-                    if v.endswith("__A549__trt_cp")]
+        suffix = f"__{cell_line}__trt_cp"
+        selected = [(i, v.removesuffix(suffix)) for i, v in enumerate(columns) if v.endswith(suffix)]
         row_map = {g: i for i, g in enumerate(rows)}
         matched = landmark.loc[landmark.gene_id.isin(row_map) & landmark.pr_gene_symbol.isin(deg.index)].copy()
         matched["h5_column"] = [row_map[g] for g in matched.gene_id]
@@ -68,7 +68,7 @@ def _load_drugs(deg: pd.DataFrame, trace: TraceRecorder) -> pd.DataFrame:
         values = np.empty((len(matched), len(selected)))
         for j, (i, _) in enumerate(selected):
             values[:, j] = assay[i, cols]
-    trace.emit("drugs_loaded", drugs=len(selected), landmark_genes=len(matched))
+    trace.emit("drugs_loaded", cell_line=cell_line, drugs=len(selected), landmark_genes=len(matched))
     return pd.DataFrame(values, index=matched.pr_gene_symbol.astype(str).tolist(),
                         columns=[n for _, n in selected])
 
