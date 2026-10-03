@@ -1,4 +1,9 @@
-"""Multi-agent literature triage for the frozen LUAD Top-10 (not efficacy evidence).
+"""Multi-agent literature triage of a Top-10 (not efficacy evidence).
+
+The disease is configurable (``ReviewConfig``): PubMed disease filter, the disease
+label shown to the agents, the agents' system prompts and an optional drug-class
+contradiction search. ``LUAD_REVIEW`` keeps the exact prompts and queries of the
+frozen LUAD review; ``review_config`` builds a config from a registry entry.
 
 Pipeline per candidate:
   1. Literature Agent  - PubMed (E-utilities) records for drug + LUAD/NSCLC/A549; proposes
@@ -201,12 +206,12 @@ def _shape_lit(arguments: dict) -> dict:
     return arguments
 
 
-def _shape_critic(arguments: dict) -> dict:
+def _shape_critic(arguments: dict, issues: tuple[str, ...] = CHALLENGE_ISSUES) -> dict:
     if not isinstance(arguments.get("challenges"), list) or not isinstance(
             arguments.get("contradicting_evidence"), list):
         raise ValueError("critic output must contain two lists")
     for row in arguments["challenges"]:
-        if row.get("verdict") not in CHALLENGE_VERDICTS or row.get("issue") not in CHALLENGE_ISSUES:
+        if row.get("verdict") not in CHALLENGE_VERDICTS or row.get("issue") not in issues:
             raise ValueError("invalid challenge")
     for row in arguments["contradicting_evidence"]:
         if row.get("category") not in CONTRA_CATEGORIES:
@@ -271,6 +276,49 @@ COORD_SYSTEM = ("You are the Coordinator Agent. Assign exactly one literature-tr
                 "claims. Call submit_tier once. This tier is literature triage, not efficacy.")
 
 
+# Disease-neutral templates for diseases other than the frozen LUAD review.
+LIT_TEMPLATE = ("You are the Literature Agent. Propose up to 6 claims that SUPPORT studying the "
+                "candidate drug for {disease}, each tied to one PMID and an exact quote from that "
+                "record's abstract. Mark scope=candidate only when the quote is about this exact "
+                "drug; class for findings about the drug's pharmacological class; other_drug "
+                "otherwise. Return an empty list if the records do not support the drug. "
+                "Call submit_supporting_claims once. " + SAFETY)
+COORD_TEMPLATE = COORD_SYSTEM.replace("LUAD/NSCLC antitumor findings", "{disease} antitumor findings")
+
+
+@dataclass(frozen=True)
+class ReviewConfig:
+    disease: str                          # label shown to the agents
+    pubmed_terms: str                     # PubMed disease filter ANDed with the drug name
+    lit_system: str
+    critic_system: str
+    coord_system: str
+    issues: tuple[str, ...] = CHALLENGE_ISSUES
+    class_query: str | None = None        # optional drug-class contradiction search ...
+    class_trigger: str | None = None      # ... used when a candidate pathway contains this word
+
+    def critic_schema(self) -> dict:
+        schema = json.loads(json.dumps(CRITIC_SCHEMA))
+        schema["properties"]["challenges"]["items"]["properties"]["issue"]["enum"] = list(self.issues)
+        return schema
+
+
+LUAD_REVIEW = ReviewConfig("lung adenocarcinoma / NSCLC", LUNG_TERMS, LIT_SYSTEM, CRITIC_SYSTEM, COORD_SYSTEM,
+                           CHALLENGE_ISSUES, CLASS_CONTRA_QUERY, "glucocorticoid")
+
+
+def review_config(spec: dict) -> ReviewConfig:
+    """Config from a registry entry's ``literature`` block; preset luad_v1 = the frozen LUAD review."""
+    if spec.get("preset") == "luad_v1":
+        return LUAD_REVIEW
+    disease, terms = spec["disease"], spec["pubmed_terms"]
+    if not disease or not terms.startswith("(") or not terms.endswith(")"):
+        raise ValueError("literature config needs a disease label and a parenthesised PubMed filter")
+    issues = tuple("not_disease_specific" if i == "not_luad_specific" else i for i in CHALLENGE_ISSUES)
+    return ReviewConfig(disease, terms, LIT_TEMPLATE.format(disease=disease), CRITIC_SYSTEM,
+                        COORD_TEMPLATE.format(disease=disease), issues)
+
+
 def _records_view(records: dict[str, dict], limit: int = 2500) -> list[dict]:
     return [{"pmid": r["pmid"], "title": r["title"], "year": r["year"],
              "publication_types": r["publication_types"], "abstract": r["abstract"][:limit]}
@@ -294,7 +342,9 @@ class ReviewCounters:
 class MultiAgentReviewer:
     def __init__(self, caller: TracedToolCaller, pubmed: AbstractPubMedClient | None,
                  trace: TraceRecorder, model: str = "deepseek-flash",
-                 support_retmax: int = 8, critic_retmax: int = 8, class_retmax: int = 5):
+                 support_retmax: int = 8, critic_retmax: int = 8, class_retmax: int = 5,
+                 config: ReviewConfig = LUAD_REVIEW):
+        self.config = config
         self.caller = caller
         self.pubmed = pubmed
         self.trace = trace
@@ -315,16 +365,16 @@ class MultiAgentReviewer:
 
     def class_records(self) -> tuple[dict, dict]:
         if self._class_cache is None:
-            self._class_cache = self.retrieve(CLASS_CONTRA_QUERY, self.class_retmax)
+            self._class_cache = self.retrieve(self.config.class_query, self.class_retmax)
         return self._class_cache
 
     # agents ----------------------------------------------------------------
     def literature_agent(self, candidate: dict, records: dict) -> list[dict]:
         if not records:
             return []
-        user = json.dumps({"candidate": candidate["name"], "disease": "lung adenocarcinoma / NSCLC",
+        user = json.dumps({"candidate": candidate["name"], "disease": self.config.disease,
                            "records": _records_view(records)}, ensure_ascii=False)
-        out = self.caller.call(tool_payload(self.model, LIT_SYSTEM, user, "submit_supporting_claims",
+        out = self.caller.call(tool_payload(self.model, self.config.lit_system, user, "submit_supporting_claims",
                                             "Supporting claims with PMID and verbatim quote.",
                                             LIT_SCHEMA, max_tokens=1500),
                                "submit_supporting_claims", _shape_lit)
@@ -333,15 +383,16 @@ class MultiAgentReviewer:
     def critic_agent(self, candidate: dict, supports: list[dict], records: dict) -> dict:
         if not supports and not records:
             return {"challenges": [], "contradicting_evidence": []}
-        user = json.dumps({"candidate": candidate["name"], "disease": "lung adenocarcinoma / NSCLC",
+        user = json.dumps({"candidate": candidate["name"], "disease": self.config.disease,
                            "supporting_claims": [{k: s[k] for k in ("claim_id", "claim", "pmid",
                                                                    "quote", "evidence_type", "scope")}
                                                  for s in supports],
                            "critic_records": _records_view(records)}, ensure_ascii=False)
-        out = self.caller.call(tool_payload(self.model, CRITIC_SYSTEM, user, "submit_critique",
+        issues = self.config.issues
+        out = self.caller.call(tool_payload(self.model, self.config.critic_system, user, "submit_critique",
                                             "Challenges and contradicting evidence.",
-                                            CRITIC_SCHEMA, max_tokens=2000),
-                               "submit_critique", _shape_critic)
+                                            self.config.critic_schema(), max_tokens=2000),
+                               "submit_critique", lambda arguments: _shape_critic(arguments, issues))
         return out["arguments"]
 
     def coordinator_agent(self, candidate: dict, supports: list[dict], challenges: list[dict],
@@ -358,7 +409,7 @@ class MultiAgentReviewer:
             arguments["key_pmids"] = [p for p in arguments["key_pmids"] if p in allowed]
             return arguments
 
-        out = self.caller.call(tool_payload(self.model, COORD_SYSTEM, user, "submit_tier",
+        out = self.caller.call(tool_payload(self.model, self.config.coord_system, user, "submit_tier",
                                             "One literature-triage tier with rationale.",
                                             COORD_SCHEMA, max_tokens=500), "submit_tier", shape)
         return out["arguments"]
@@ -369,10 +420,11 @@ class MultiAgentReviewer:
         term = search_term(name)
         counters = ReviewCounters()
         support_search, support_records = self.retrieve(
-            f'"{term}"[Title/Abstract] AND {LUNG_TERMS}', self.support_retmax)
+            f'"{term}"[Title/Abstract] AND {self.config.pubmed_terms}', self.support_retmax)
         critic_search, critic_records = self.retrieve(
-            f'"{term}"[Title/Abstract] AND {LUNG_TERMS} AND {NEGATIVE_TERMS}', self.critic_retmax)
-        class_used = "glucocorticoid" in " ".join(candidate.get("pathways", []))
+            f'"{term}"[Title/Abstract] AND {self.config.pubmed_terms} AND {NEGATIVE_TERMS}', self.critic_retmax)
+        trigger = self.config.class_trigger
+        class_used = bool(trigger and self.config.class_query) and trigger in " ".join(candidate.get("pathways", []))
         if class_used:
             _, class_recs = self.class_records()
             critic_records = {**class_recs, **critic_records}

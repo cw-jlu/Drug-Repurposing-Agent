@@ -184,3 +184,57 @@ def test_invalid_tool_output_is_retried_then_accepted(tmp_path: Path, monkeypatc
     decision = reviewer.coordinator_agent(CANDIDATE, [], [], [])
     assert decision["tier"] == "INSUFFICIENT_EVIDENCE"
     assert stats.as_dict() == {**stats.as_dict(), "attempts": 2, "successes": 1, "failures": 1}
+
+
+def test_luad_review_config_keeps_the_frozen_prompts_and_schema():
+    from drug_repurposing_agent import multi_agent_review as m
+    c = m.review_config({"preset": "luad_v1"})
+    assert c is m.LUAD_REVIEW
+    assert (c.lit_system, c.critic_system, c.coord_system) == (m.LIT_SYSTEM, m.CRITIC_SYSTEM, m.COORD_SYSTEM)
+    assert c.pubmed_terms == m.LUNG_TERMS and c.class_query == m.CLASS_CONTRA_QUERY
+    assert c.critic_schema() == m.CRITIC_SCHEMA
+
+
+def test_review_config_for_another_disease_is_neutral():
+    from drug_repurposing_agent import multi_agent_review as m
+    c = m.review_config({"disease": "breast cancer", "pubmed_terms": '("breast cancer"[Title/Abstract])'})
+    for text in (c.lit_system, c.coord_system):
+        assert "breast cancer" in text and "lung" not in text.lower() and "LUAD" not in text
+    assert "glucocorticoid" not in c.lit_system and c.class_query is None
+    assert "not_disease_specific" in c.critic_schema()["properties"]["challenges"]["items"]["properties"]["issue"]["enum"]
+    import pytest
+    with pytest.raises(ValueError):
+        m.review_config({"disease": "x", "pubmed_terms": "no parentheses"})
+
+
+def test_configured_disease_reaches_queries_prompts_and_critic_schema(tmp_path: Path, monkeypatch):
+    from drug_repurposing_agent.multi_agent_review import review_config
+    monkeypatch.setenv("DRUG_AGENT_TRACE_DIR", str(tmp_path / "provider"))
+    config = review_config({"disease": "breast cancer", "pubmed_terms": '("breast cancer"[Title/Abstract])'})
+    responses = {
+        "submit_supporting_claims": {"claims": [
+            {"claim": "GR-dependent CYP3A5 induction", "pmid": "111",
+             "quote": "Beclomethasone dipropionate induced CYP3A5 mRNA in A549 cells.",
+             "evidence_type": "in_vitro", "scope": "candidate"}]},
+        "submit_critique": {"challenges": [{"claim_id": "S1", "verdict": "weakened",
+                                            "issue": "not_disease_specific", "rationale": "lung cells"}],
+                            "contradicting_evidence": []},
+        "submit_tier": {"tier": "INSUFFICIENT_EVIDENCE", "rationale": "Wrong tissue.", "key_pmids": ["111"]}}
+    seen = []
+    base, _ = scripted_transport(responses)
+
+    def transport(payload):
+        seen.append(payload)
+        return base(payload)
+    pubmed = FakePubMed(RECORDS)
+    queries = []
+    pubmed.search_ids = lambda term, retmax=8: queries.append(term) or {"query": term, "total_hits": 1,
+                                                                         "ids": list(RECORDS)}
+    caller = TracedToolCaller(None, transport=transport, backoff_seconds=0)
+    reviewer = MultiAgentReviewer(caller, pubmed, TraceRecorder("mar_test", tmp_path), config=config)
+    result = reviewer.review({**CANDIDATE, "pathways": ["glucocorticoid_receptor_transcription"]})
+    assert all('("breast cancer"[Title/Abstract])' in q for q in queries) and len(queries) == 2
+    assert seen[0]["messages"][0]["content"] == config.lit_system
+    assert json.loads(seen[0]["messages"][1]["content"])["disease"] == "breast cancer"
+    assert result["critic_challenges"][0]["issue"] == "not_disease_specific"
+    assert result["retrieval"]["class_level_contradiction_search_used"] is False
