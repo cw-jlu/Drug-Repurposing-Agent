@@ -373,6 +373,89 @@ GSE15852 原始文件移走）：
 例在新工具描述下重跑}（\texttt{planner\_\allowbreak{}eval\_\allowbreak{}multistep\_\allowbreak{}v1\_\allowbreak{}3.\allowbreak{}json}）：规则规划器
 30/40，DeepSeek 38/40，未通过的两例与 v1.2 相同。
 
+\subsection{v2.3：预先登记 5
+个疾病，用时才下载（2026-10-03）}\label{v23ux9884ux5148ux767bux8bb0-5-ux4e2aux75beux75c5ux7528ux65f6ux624dux4e0bux8f7d2026-10-03}
+
+\textbf{做法}：下载之前的工作全部在登记时做完，Agent
+只在请求需要时才下载数据。
+
+\begin{itemize}
+\tightlist
+\item
+  登记时只读取 GEO series matrix 的文件头，用来确定分组规则和样本数；
+\item
+  文件大小和 SHA-256 由 \texttt{scripts/\allowbreak{}pin\_\allowbreak{}geo\_\allowbreak{}files.\allowbreak{}py}
+  算出：边下载边算哈希，算完即丢弃，本地不保存数据；
+\item
+  参考药清单在计算任何名次之前单独提交。
+\end{itemize}
+
+为了支持更多数据集，新增了不配对的两组比较（Welch t
+检验，\texttt{unpaired\_\allowbreak{}deg}），配对规则也可以用命名分组。
+
+\textbf{为什么是这 5
+个}：药物端只有少数肿瘤细胞系有上千个化合物（A549、MCF7、VCAP/PC3、A375、HT29），所以只登记能匹配上细胞系的疾病。
+
+\begin{itemize}
+\tightlist
+\item
+  肝癌没有登记：HEPG2 只有 222 个化合物，HUH7 只有 114 个。
+\item
+  结直肠癌原计划用 GSE44076（98 对），但它的平台 GPL13667 在 GEO
+  上没有注释文件（SOFT 文件有 6 GB），因此改用 GSE32323（17 对，GPL570
+  平台）。
+\end{itemize}
+
+\textbf{端到端验证}（\texttt{benchmark/\allowbreak{}results/\allowbreak{}registry\_\allowbreak{}validation\_\allowbreak{}v1.\allowbreak{}json}）：规则规划器，不做文献审阅，不调用任何模型。三个新疾病开始时本地没有任何数据文件，由
+Agent 现场下载并核验哈希，每个约 10 秒完成。
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}>{\raggedright\arraybackslash}p{0.1800\textwidth}@{}}
+\toprule\noalign{}
+疾病 & GEO / 设计 & 药物细胞系 & 签名（上调/下调） & 参考药恢复 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+肺腺癌 & GSE32863 / 配对 57 对 & A549 & 512 / 749 & 5/11 可测，百分位
+0.362，p = 0.145 \\
+乳腺癌 & GSE15852 / 配对 43 对 & MCF7 & 115 / 193 & 16/20 可测，百分位
+0.363，p = 0.029 \\
+结直肠癌 & GSE32323 / 配对 17 对 & HT29 & 1189 / 1103 & 0/11
+可测，无法计算 \\
+前列腺癌 & GSE46602 / 不配对 36 vs 14 & VCAP & 480 / 837 & 8/13
+可测，百分位 0.586，p = 0.8 \\
+黑色素瘤 & GSE15605 / 不配对 46 vs 16 & A375 & 1274 / 1677 & 3/11
+可测，百分位 0.318，p = 0.148 \\
+\end{longtable}
+}
+
+\textbf{怎么读这张表}：参考药恢复只有乳腺癌显著。
+
+\begin{itemize}
+\tightlist
+\item
+  前列腺癌的参考药排名比随机还差（百分位 0.586）；
+\item
+  结直肠癌的 11 个参考药在 HT29 中都没有签名；
+\item
+  黑色素瘤的 Top-10 里有 dabrafenib 和 vemurafenib，但 A375 本身携带
+  BRAF V600E，BRAF
+  抑制剂在这个细胞系上的转录反应本来就强，这不能说明它们反转了疾病签名。
+\end{itemize}
+
+这些都是单次运行的描述性结果，不能当作预测能力的证据。验证中还发现并修复了一个问题：参考药一个都测不到时，审计原先会报
+p = 0.0，现在会写明无法计算。
+
+\textbf{DeepSeek 规划 +
+实时文献审阅}（三个新疾病，\texttt{agent\_\allowbreak{}v2\_\allowbreak{}registry\_\allowbreak{}runs.\allowbreak{}json}）：结直肠癌：完成，15
+次调用，42 条引语中 11 条被拒，分级 有冲突 3、证据不足
+7；前列腺癌：完成，3 次调用，11 条引语中 0 条被拒，分级 证据不足
+10；黑色素瘤：完成，22 次调用，78 条引语中 20 条被拒，分级 有冲突
+4、证据不足 3、有希望但不完整 1、有支持 2（两个``有支持''是 dabrafenib
+和
+vemurafenib，本就是获批的黑色素瘤药，这是文献确认已知药物，不是新发现）。这些分级都没有经过人工复核。
+
 \subsection{局限}\label{ux5c40ux9650}
 
 \begin{itemize}
@@ -380,7 +463,8 @@ GSE15852 原始文件移走）：
 \item
   模拟后端只检验规划与恢复逻辑，不检验科学结果。
 \item
-  只能分析登记表中的疾病（目前是肺腺癌和乳腺癌）；乳腺癌没有冻结的文献审阅，也没有候选身份审计；不能自动检索
+  只能分析登记表中的 5
+  个疾病（肺腺癌、乳腺癌、结直肠癌、前列腺癌、黑色素瘤），上限取决于药物端有无匹配的细胞系；除肺腺癌外都没有冻结的文献审阅和候选身份审计；不能自动检索
   GEO
   来为任意疾病挑选数据集，因为分组规则和数据质量都需要人工核对后才能登记。
 \item
