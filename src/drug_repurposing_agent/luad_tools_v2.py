@@ -81,9 +81,13 @@ def real_backend(output: Path, mode: Mode, disease: dict | None = None, live_rev
         except CohortError as exc:
             raise ToolError(str(exc)) from exc
         included = int(samples.included.sum())
+        kept = samples.loc[samples.included, "condition"]
+        groups = ({"pairs": included // 2} if entry.get("design", "paired") == "paired" else
+                  {"tumor": int((kept == "Tumor").sum()), "normal": int((kept == "Normal").sum())})
         return {"samples": samples, "summary": {"disease": entry["label"], "accession": entry["accession"],
-                                                "samples": len(samples), "included": included,
-                                                "pairs": included // 2, "excluded": len(samples) - included}}
+                                                "design": entry.get("design", "paired"), "samples": len(samples),
+                                                "included": included, **groups,
+                                                "excluded": len(samples) - included}}
 
     def deg(a: dict) -> dict:
         try:

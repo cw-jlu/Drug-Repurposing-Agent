@@ -1,8 +1,10 @@
 """Registry-driven GEO cohorts: download, verify, pair, and build a disease signature.
 
 A disease is supported only if it has an entry in ``configs/disease_registry_v1.json``:
-GEO accession, pinned file URLs and SHA-256, a sample-pairing rule, expected
-counts, the value scale and the LINCS cell line used for drug signatures.
+GEO accession, pinned file URLs and SHA-256, the design and its sample rule
+(``paired``: a regex giving patient and tumour/normal code; ``unpaired``: case and
+control regexes on one metadata field, other samples excluded), expected counts,
+the value scale and the LINCS cell line used for drug signatures.
 Unregistered diseases are not guessed: ``resolve_disease`` returns None and the
 agent stops at manual review. Everything here is deterministic; no model is involved.
 """
@@ -20,7 +22,7 @@ import urllib.request
 import numpy as np
 import pandas as pd
 
-from .differential_expression import paired_deg
+from .differential_expression import paired_deg, unpaired_deg
 
 REGISTRY = Path("configs/disease_registry_v1.json")
 USER_AGENT = "drug-repurposing-agent/0.2 (course project; contact via GitHub cw-jlu)"
@@ -103,19 +105,49 @@ def _header(path: Path, marker: str, fields: tuple[str, ...]) -> tuple[int, dict
 
 
 def cohort(entry: dict) -> pd.DataFrame:
-    """Pair samples with the registry rule; fail if counts differ from the registry."""
-    rule = entry["pairing"]
+    """Assign samples to tumour/normal with the registry rule; fail if counts differ from the registry."""
+    design = entry.get("design", "paired")
+    rule = entry["pairing"] if design == "paired" else entry["groups"]
     _, meta = _header(Path(entry["files"]["series"]["path"]), "!series_matrix_table_begin",
                       ("!Sample_geo_accession", rule["field"]))
     accessions, labels = meta.get("!Sample_geo_accession", []), meta.get(rule["field"], [])
     if not accessions or len(accessions) != len(labels):
-        raise CohortError("sample accessions and pairing field do not line up")
+        raise CohortError("sample accessions and the rule's metadata field do not line up")
+    if design == "paired":
+        samples = _paired_samples(rule, accessions, labels)
+        complete = samples.loc[samples.included, "patient_id"].nunique()
+        expected = entry.get("expected", {})
+        if expected.get("pairs") is not None and complete != expected["pairs"]:
+            raise CohortError(f"expected {expected['pairs']} complete pairs, found {complete}")
+        if complete < entry.get("min_pairs", 10):
+            raise CohortError(f"only {complete} complete pairs")
+    elif design == "unpaired":
+        samples = _unpaired_samples(rule, accessions, labels)
+        counts = samples.loc[samples.included, "condition"].value_counts()
+        expected = entry.get("expected", {})
+        for group, key in (("Tumor", "case"), ("Normal", "control")):
+            n = int(counts.get(group, 0))
+            if expected.get(key) is not None and n != expected[key]:
+                raise CohortError(f"expected {expected[key]} {key} samples, found {n}")
+            if n < entry.get("min_per_group", 5):
+                raise CohortError(f"only {n} {key} samples")
+    else:
+        raise CohortError(f"unknown design {design!r}")
+    if entry.get("expected", {}).get("samples") is not None and len(samples) != entry["expected"]["samples"]:
+        raise CohortError(f"expected {entry['expected']['samples']} samples, GEO lists {len(samples)}")
+    return samples
+
+
+def _paired_samples(rule: dict, accessions: list[str], labels: list[str]) -> pd.DataFrame:
     rows = []
     for accession, label in zip(accessions, labels):
         m = re.search(rule["regex"], label)
-        code = m.group(2) if m else None
+        if m and "patient" in m.re.groupindex:
+            patient, code = m.group("patient"), m.group("code")
+        else:
+            patient, code = (m.group(1), m.group(2)) if m else (None, None)
         condition = {rule["case"]: "Tumor", rule["control"]: "Normal"}.get(code)
-        rows.append({"sample_id": accession, "title": label, "patient_id": m.group(1) if m else None,
+        rows.append({"sample_id": accession, "title": label, "patient_id": patient if condition else None,
                      "condition": condition})
     samples = pd.DataFrame(rows)
     parsed = samples.condition.notna()
@@ -126,14 +158,21 @@ def cohort(entry: dict) -> pd.DataFrame:
     complete = counts.index[(counts.Tumor == 1) & (counts.Normal == 1)]
     samples["included"] = samples.patient_id.isin(complete) & parsed
     samples["reason"] = np.where(samples.included, "complete_pair",
-                                 np.where(parsed, "no_matching_pair", "unparsed_label"))
-    expected = entry.get("expected", {})
-    if expected.get("samples") is not None and len(samples) != expected["samples"]:
-        raise CohortError(f"expected {expected['samples']} samples, GEO lists {len(samples)}")
-    if expected.get("pairs") is not None and len(complete) != expected["pairs"]:
-        raise CohortError(f"expected {expected['pairs']} complete pairs, found {len(complete)}")
-    if len(complete) < entry.get("min_pairs", 10):
-        raise CohortError(f"only {len(complete)} complete pairs")
+                                 np.where(parsed, "no_matching_pair", "not_in_comparison"))
+    return samples
+
+
+def _unpaired_samples(rule: dict, accessions: list[str], labels: list[str]) -> pd.DataFrame:
+    rows = []
+    for accession, label in zip(accessions, labels):
+        case, control = re.search(rule["case"], label), re.search(rule["control"], label)
+        if case and control:
+            raise CohortError(f"label matches both groups: {label!r}")
+        condition = "Tumor" if case else ("Normal" if control else None)
+        rows.append({"sample_id": accession, "title": label, "patient_id": None, "condition": condition})
+    samples = pd.DataFrame(rows)
+    samples["included"] = samples.condition.notna()
+    samples["reason"] = np.where(samples.included, "in_comparison", "not_in_comparison")
     return samples
 
 
@@ -176,8 +215,15 @@ def signature(entry: dict, samples: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     # One probe per gene, chosen without using tumour/normal labels.
     selected = (mapped.sort_values([symbol_col, "probe_iqr", "probe_id"], ascending=[True, False, True])
                 .drop_duplicates(symbol_col).set_index(symbol_col))
-    deg = paired_deg(selected[included], samples.loc[samples.included, ["sample_id", "patient_id", "condition"]])
-    summary = {"genes": len(deg), "pairs": len(included) // 2, "value_scale": scale_note,
+    design = entry.get("design", "paired")
+    if design == "paired":
+        deg = paired_deg(selected[included], samples.loc[samples.included, ["sample_id", "patient_id", "condition"]])
+        groups = {"pairs": len(included) // 2}
+    else:
+        part = samples.loc[samples.included, ["sample_id", "condition"]]
+        deg = unpaired_deg(selected[included], part, entry.get("min_per_group", 5))
+        groups = {"tumor": int((part.condition == "Tumor").sum()), "normal": int((part.condition == "Normal").sum())}
+    summary = {"genes": len(deg), "design": design, **groups, "value_scale": scale_note,
                "up": int((deg.included_default & (deg.direction == "up")).sum()),
                "down": int((deg.included_default & (deg.direction == "down")).sum()),
                "source": f"{series.as_posix()} (recomputed from the raw GEO series matrix)"}

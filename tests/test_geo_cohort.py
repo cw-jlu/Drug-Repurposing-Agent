@@ -116,3 +116,30 @@ def test_breast_entry_pairs_43_patients_and_reproduces_the_feasibility_signature
     _, summary = signature(entry, samples)
     assert samples.included.sum() == 86 and (summary["up"], summary["down"]) == (115, 193)
     assert "log2 applied" in summary["value_scale"]
+
+
+def test_unpaired_design_uses_case_and_control_rules(tmp_path):
+    series, annot = _toy_files(n_pairs=6, unpaired=True)
+    entry = _entry(tmp_path, series, annot, design="unpaired",
+                   groups={"field": "!Sample_title", "case": r"_T$", "control": r"_N$"},
+                   expected={"case": 7, "control": 6})
+    Path(entry["files"]["series"]["path"]).write_bytes(series)
+    Path(entry["files"]["annotation"]["path"]).write_bytes(annot)
+    samples = cohort(entry)
+    assert samples.included.sum() == 13 and set(samples.condition.dropna()) == {"Tumor", "Normal"}
+    deg, summary = signature(entry, samples)
+    assert (summary["design"], summary["tumor"], summary["normal"]) == ("unpaired", 7, 6)
+    assert {f"GENE{g}" for g in range(5)} <= set(deg.loc[deg.included_default, "gene_symbol"])
+    with pytest.raises(CohortError, match="expected 9 case"):
+        cohort({**entry, "expected": {"case": 9}})
+    with pytest.raises(CohortError, match="both groups"):
+        cohort({**entry, "groups": {"field": "!Sample_title", "case": "P", "control": "_N$"}})
+
+
+def test_paired_rule_accepts_named_groups(tmp_path):
+    series, annot = _toy_files()
+    entry = _entry(tmp_path, series, annot,
+                   pairing={"field": "!Sample_title", "regex": r"(?P<patient>P\d+)_(?P<code>[TN])$",
+                            "case": "T", "control": "N"})
+    Path(entry["files"]["series"]["path"]).write_bytes(series)
+    assert cohort(entry).included.sum() == 8
