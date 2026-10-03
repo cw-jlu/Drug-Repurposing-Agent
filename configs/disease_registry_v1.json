@@ -1,6 +1,6 @@
 {
   "version": "disease_registry_v1",
-  "description": "Diseases the agent can analyse from raw GEO data. A disease not listed here is not supported: the agent stops at manual review instead of guessing a dataset. Each entry pins file URLs and SHA-256, the sample-pairing rule, expected counts, the value scale and the LINCS cell line whose compound signatures are compared, and the literature-review configuration.",
+  "description": "Diseases the agent can analyse from raw GEO data. A disease not listed here is not supported: the agent stops at manual review instead of guessing a dataset. Each entry pins file URLs and SHA-256, the design (paired / unpaired) and its sample rule, expected counts, the value scale and the LINCS cell line whose compound signatures are compared, and the literature-review configuration.",
   "diseases": [
     {
       "id": "luad_gse32863",
@@ -95,6 +95,144 @@
         "pubmed_terms": "(\"breast cancer\"[Title/Abstract] OR \"breast carcinoma\"[Title/Abstract] OR \"breast neoplasms\"[MeSH Terms] OR MCF7[Title/Abstract] OR MCF-7[Title/Abstract])"
       },
       "note": "Malaysian cohort, 43 tumour/normal pairs on HG-U133A (deposited values are not log-scaled; log2 applied by the GEO2R rule). MCF7 is ER-positive, so the drug side does not represent HER2-enriched or triple-negative disease. No frozen literature review or identity audit exists for this disease: literature review runs live only."
+    },
+    {
+      "id": "crc_gse32323",
+      "label": "结直肠癌（CRC）",
+      "aliases": [
+        "结直肠癌",
+        "结肠癌",
+        "colorectal cancer",
+        "colon cancer"
+      ],
+      "accession": "GSE32323",
+      "platform": "GPL570",
+      "files": {
+        "series": {
+          "path": "data/raw/GSE32323/GSE32323_series_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE32nnn/GSE32323/matrix/GSE32323_series_matrix.txt.gz",
+          "bytes": 9702533,
+          "sha256": "dbe47e952ad8a70a70d3cdec355766d11f5761bf7a9d4d5094c61b7191585ee2"
+        },
+        "annotation": {
+          "path": "data/raw/GPL570/GPL570.annot.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPLnnn/GPL570/annot/GPL570.annot.gz",
+          "bytes": 8471521,
+          "sha256": "d7cd44352127b1e34f3a720ebea86093ef255a38f1612a85a2962b71bde8f394"
+        }
+      },
+      "design": "paired",
+      "pairing": {
+        "field": "!Sample_title",
+        "regex": "^patient (?P<patient>\\w+), (?P<code>cancer|normal), homogenized$",
+        "case": "cancer",
+        "control": "normal"
+      },
+      "expected": {
+        "samples": 44,
+        "pairs": 17
+      },
+      "min_pairs": 10,
+      "values": "auto",
+      "annotation_symbol_column": "Gene symbol",
+      "drug_cell_line": "HT29",
+      "reference_drugs": "configs/colorectal_reference_drugs.csv",
+      "literature": {
+        "disease": "colorectal cancer",
+        "pubmed_terms": "(\"colorectal cancer\"[Title/Abstract] OR \"colon cancer\"[Title/Abstract] OR \"colorectal neoplasms\"[MeSH Terms] OR HT-29[Title/Abstract] OR HT29[Title/Abstract])"
+      },
+      "note": "17 tumour/normal pairs; the 10 cell-line samples in the series are excluded by the pairing rule. Chosen over GSE44076 (98 pairs) because GPL13667 has no GEO .annot file (its SOFT file is 6 GB). HT29 is a BRAF V600E colorectal adenocarcinoma line."
+    },
+    {
+      "id": "prad_gse46602",
+      "label": "前列腺癌（PRAD）",
+      "aliases": [
+        "前列腺癌",
+        "prostate cancer",
+        "prostate adenocarcinoma"
+      ],
+      "accession": "GSE46602",
+      "platform": "GPL570",
+      "files": {
+        "series": {
+          "path": "data/raw/GSE46602/GSE46602_series_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE46nnn/GSE46602/matrix/GSE46602_series_matrix.txt.gz",
+          "bytes": 11663959,
+          "sha256": "9cb469d8e4f06b621bc8a168b58b82eb14cc48aaf7bb53362e9cfdd0c79264f6"
+        },
+        "annotation": {
+          "path": "data/raw/GPL570/GPL570.annot.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPLnnn/GPL570/annot/GPL570.annot.gz",
+          "bytes": 8471521,
+          "sha256": "d7cd44352127b1e34f3a720ebea86093ef255a38f1612a85a2962b71bde8f394"
+        }
+      },
+      "design": "unpaired",
+      "groups": {
+        "field": "!Sample_title",
+        "case": "^Prostate cancer cells",
+        "control": "^Benign prostate glands"
+      },
+      "expected": {
+        "samples": 50,
+        "case": 36,
+        "control": 14
+      },
+      "min_per_group": 5,
+      "values": "auto",
+      "annotation_symbol_column": "Gene symbol",
+      "drug_cell_line": "VCAP",
+      "reference_drugs": "configs/prostate_reference_drugs.csv",
+      "literature": {
+        "disease": "prostate cancer",
+        "pubmed_terms": "(\"prostate cancer\"[Title/Abstract] OR \"prostatic neoplasms\"[MeSH Terms] OR VCaP[Title/Abstract])"
+      },
+      "note": "Laser-microdissected tumour (36) vs benign glands (14, four of them adjacent to cancer); unpaired. VCaP is androgen-receptor positive with TMPRSS2-ERG but derives from a metastasis."
+    },
+    {
+      "id": "skcm_gse15605",
+      "label": "黑色素瘤（SKCM）",
+      "aliases": [
+        "黑色素瘤",
+        "melanoma"
+      ],
+      "accession": "GSE15605",
+      "platform": "GPL570",
+      "files": {
+        "series": {
+          "path": "data/raw/GSE15605/GSE15605_series_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE15nnn/GSE15605/matrix/GSE15605_series_matrix.txt.gz",
+          "bytes": 18073616,
+          "sha256": "9d95c737d67dc199d406bd7315d942c4b0e0b6d9a7e9b279deb89fc73b2531fe"
+        },
+        "annotation": {
+          "path": "data/raw/GPL570/GPL570.annot.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPLnnn/GPL570/annot/GPL570.annot.gz",
+          "bytes": 8471521,
+          "sha256": "d7cd44352127b1e34f3a720ebea86093ef255a38f1612a85a2962b71bde8f394"
+        }
+      },
+      "design": "unpaired",
+      "groups": {
+        "field": "!Sample_title",
+        "case": "^Primary_melanoma",
+        "control": "^Normal_skin"
+      },
+      "expected": {
+        "samples": 74,
+        "case": 46,
+        "control": 16
+      },
+      "min_per_group": 5,
+      "values": "auto",
+      "annotation_symbol_column": "Gene symbol",
+      "drug_cell_line": "A375",
+      "reference_drugs": "configs/melanoma_reference_drugs.csv",
+      "literature": {
+        "disease": "melanoma",
+        "pubmed_terms": "(melanoma[Title/Abstract] OR \"melanoma\"[MeSH Terms] OR A375[Title/Abstract])"
+      },
+      "note": "Primary melanoma (46) vs normal skin (16); the 12 metastases are excluded. Normal skin is mostly keratinocytes, so the signature partly reflects tissue composition rather than melanocyte transformation. A375 is a BRAF V600E line."
     }
   ]
 }

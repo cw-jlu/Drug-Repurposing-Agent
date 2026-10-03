@@ -143,3 +143,24 @@ def test_paired_rule_accepts_named_groups(tmp_path):
                             "case": "T", "control": "N"})
     Path(entry["files"]["series"]["path"]).write_bytes(series)
     assert cohort(entry).included.sum() == 8
+
+
+def test_every_registry_entry_is_complete_and_consistent():
+    import re as _re
+    from drug_repurposing_agent.multi_agent_review import review_config
+    reg = load_registry()
+    assert set(reg) == {"luad_gse32863", "brca_gse15852", "crc_gse32323", "prad_gse46602", "skcm_gse15605"}
+    aliases = [a.lower() for e in reg.values() for a in e["aliases"]]
+    assert len(aliases) == len(set(aliases))
+    for e in reg.values():
+        for spec in e["files"].values():
+            assert _re.fullmatch(r"[0-9a-f]{64}", spec["sha256"]) and spec["bytes"] > 0
+            assert spec["url"].startswith("https://ftp.ncbi.nlm.nih.gov/geo/")
+        design = e.get("design", "paired")
+        assert design in ("paired", "unpaired") and ("pairing" if design == "paired" else "groups") in e
+        assert e["drug_cell_line"] and Path(e["reference_drugs"]).is_file()
+        review_config(e["literature"])
+    for q, want in (("请为结直肠癌筛选候选药物", "crc_gse32323"), ("prostate cancer", "prad_gse46602"),
+                    ("黑色素瘤", "skcm_gse15605"), ("请为胃癌筛选候选药物", None)):
+        hit = resolve_disease(q, reg)
+        assert (hit["id"] if hit else None) == want
