@@ -14,8 +14,11 @@ from pathlib import Path
 import sys
 
 APP_DIR = Path(__file__).resolve().parent
-if str(APP_DIR) not in sys.path:
-    sys.path.insert(0, str(APP_DIR))
+# The repository root must be importable too: agent v2's real tools import from
+# the repo's scripts/ and evals/ packages (Streamlit only adds app/ to sys.path).
+for _path in (APP_DIR.parent, APP_DIR):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 import demo_data as dd  # noqa: E402
 
@@ -33,6 +36,74 @@ def _rel(path: str | None) -> str:
         return str(Path(path).resolve().relative_to(dd.ROOT))
     except ValueError:
         return str(path)
+
+
+# --------------------------------------------------------------------------- tab 0 (agent v2)
+
+def render_v2(st, report: dict) -> None:
+    status = report.get("status", "planning")
+    label, kind = dd.V2_STATUS.get(status, (status, "info"))
+    cols = st.columns(3)
+    cols[0].metric("状态", label)
+    cols[1].metric("规划轮数", len(dd.v2_plan_rows(report)))
+    cols[2].metric("规划器", str(report.get("planner", "—")).split(":")[0])
+    disease = dd.v2_disease(report)
+    st.markdown(f"**请求：** {report.get('question', '')}  \n**识别到的登记疾病：** "
+                f"{disease or '无（未登记的疾病不会被猜测，疾病分析工具不可用）'}")
+    st.markdown(f"**提供给规划器的输入名称：** `{', '.join(report.get('available_inputs', [])) or '无'}`")
+    st.subheader("① 大模型/规则给出的计划（每轮）")
+    for row in dd.v2_plan_rows(report):
+        ok = row["校验"] == "通过"
+        st.markdown(f"**第 {row['轮次']} 轮**　{'✅ 校验通过' if ok else '❌ ' + row['校验']}  \n"
+                    + "　→　".join(f"`{i}` {t}" for i, t in enumerate(row["计划"].split(" → "), 1)))
+    st.subheader("② 执行过程（代码校验后依次调用工具）")
+    st.dataframe(dd.v2_step_rows(report), hide_index=True, width="stretch")
+    notify = {"ok": st.success, "warn": st.warning}.get(kind, st.error)
+    stop = [e.get("reason") for e in report.get("executed", []) if e.get("tool") == "manual_review"]
+    notify(f"**{label}**" + (f"：{stop[0]}" if stop and stop[0] else "") +
+           (f"（{report['stop_reason']}）" if report.get("stop_reason") else ""))
+    if report.get("_candidate_report"):
+        st.subheader("③ 候选报告")
+        st.json(report["_candidate_report"], expanded=False)
+    if report.get("_path"):
+        st.caption(f"运行记录：`{_rel(report['_path'])}` · Demo trace：`{_rel(report.get('_demo_trace'))}`")
+
+
+def tab_agent_v2(st) -> None:
+    st.markdown("**Agent v2：一句话 → 大模型多步规划 → 代码校验 → 真实工具执行 → 失败时重新规划（≤3 轮）。**  \n"
+                "大模型决定用哪些工具、按什么顺序、何时停止；每个工具内部的算法与阈值由代码固定。"
+                "只支持登记表中的疾病；未登记的疾病会安全停止，不会被猜测成别的数据集。")
+    st.markdown("**疾病登记表**（`configs/disease_registry_v1.json`）")
+    st.dataframe(dd.registry_rows(), hide_index=True, width="stretch")
+    source = st.radio("运行方式", ["实时运行", "回放已保存运行"], horizontal=True, key="v2_source")
+    if source == "回放已保存运行":
+        runs = dd.saved_v2_runs()
+        if not runs:
+            st.warning("没有找到已保存的 v2 运行。")
+            return
+        choice = st.selectbox("选择运行", list(runs))
+        render_v2(st, runs[choice])
+        return
+    example = st.selectbox("示例请求（可在下方修改）", dd.V2_EXAMPLES, key="v2_example")
+    question = st.text_area("自然语言请求", value=example, key=f"v2_q_{example}", height=80)
+    left, right = st.columns(2)
+    planners = ["rule"] + (["deepseek"] if dd.deepseek_v2_available() else [])
+    planner = left.radio("规划器", planners, format_func=PLANNER_LABELS.get, key="v2_planner")
+    if "deepseek" not in planners:
+        left.caption("未检测到 DeepSeek 密钥（环境变量或本地 .env），只能使用规则规划器。")
+    mode = right.selectbox("模式", list(MODE_LABELS), index=1, format_func=MODE_LABELS.get, key="v2_mode")
+    live = right.checkbox("实时联网文献审阅（PubMed + DeepSeek，约 30 次调用）", value=False,
+                          disabled="deepseek" not in planners, key="v2_live",
+                          help="不勾选时复用冻结的审阅结果，演示可复现且不产生额外调用")
+    if st.button("运行 Agent v2", type="primary"):
+        with st.spinner("Agent v2 运行中（下载/重算差异表达/排名约 30 秒）……"):
+            try:
+                st.session_state["v2_last"] = dd.run_v2(question, planner, mode, live_review=live)
+            except Exception as exc:
+                st.error(f"运行失败：{type(exc).__name__}: {exc}")
+    if st.session_state.get("v2_last"):
+        st.divider()
+        render_v2(st, st.session_state["v2_last"])
 
 
 # --------------------------------------------------------------------------- tab 1
@@ -266,15 +337,17 @@ def main() -> None:
     os.chdir(dd.ROOT)  # package code resolves data/ and artifacts/ relative to the repo root
     st.set_page_config(page_title="药物重定位 Agent 演示", page_icon="💊", layout="wide")
     st.title("💊 可审计的药物重定位 Agent")
-    st.caption("转录组反向匹配 · 白名单工具调用 · 全程 trace · 仅供研究，不构成治疗建议")
-    tabs = st.tabs(["Agent 运行", "LUAD 候选", "Benchmark", "局限性"])
+    st.caption("自然语言 → 多步规划 → 代码校验 → 真实工具 · 登记疾病自动下载 GEO 数据 · 全程 trace · 仅供研究，不构成治疗建议")
+    tabs = st.tabs(["Agent v2（多步规划）", "Agent v1（单步，旧版）", "LUAD 候选", "Benchmark", "局限性"])
     with tabs[0]:
-        tab_agent(st)
+        tab_agent_v2(st)
     with tabs[1]:
-        tab_luad(st)
+        tab_agent(st)
     with tabs[2]:
-        tab_benchmark(st)
+        tab_luad(st)
     with tabs[3]:
+        tab_benchmark(st)
+    with tabs[4]:
         tab_limitations(st)
 
 

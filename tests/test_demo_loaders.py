@@ -130,3 +130,28 @@ def test_deepseek_requires_environment_key(tmp_path, monkeypatch):
 
 def test_limitations_loaded():
     assert len(dd.load_limitations()) >= 5
+
+
+def test_v2_archived_runs_render_as_plan_and_step_rows():
+    runs = dd.saved_v2_runs()
+    fetch = next(v for k, v in runs.items() if k.endswith("fetch_demo_deepseek"))
+    plan = dd.v2_plan_rows(fetch)
+    assert len(plan) == 1 and plan[0]["计划"].startswith("下载 GEO 数据并核验哈希")
+    assert [r["工具"] for r in dd.v2_step_rows(fetch)][0] == "下载 GEO 数据并核验哈希"
+    stopped = next(v for k, v in runs.items() if k.endswith("unregistered_demo_deepseek"))
+    assert stopped["status"] == "manual_review_required"
+    assert dd.registry_rows()[0]["GEO"] == "GSE32863"
+
+
+def test_v2_rule_run_for_unregistered_disease_stops_without_tools(tmp_path, monkeypatch):
+    monkeypatch.chdir(dd.ROOT)
+    report = dd.run_v2("请为乳腺癌筛选候选药物", "rule", output_root=tmp_path)
+    assert report["status"] == "manual_review_required" and report["_disease"] is None
+    assert [e["tool"] for e in report["executed"]] == ["manual_review"]
+
+
+def test_v2_disease_label_is_recovered_for_archived_runs():
+    runs = dd.saved_v2_runs()
+    fetch = next(v for k, v in runs.items() if k.endswith("fetch_demo_rule"))
+    stopped = next(v for k, v in runs.items() if k.endswith("unregistered_demo_deepseek"))
+    assert dd.v2_disease(fetch) == "肺腺癌（LUAD）" and dd.v2_disease(stopped) is None

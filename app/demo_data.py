@@ -384,3 +384,131 @@ def load_limitations(path: Path = LIMITATIONS_MD) -> list[str]:
         return []
     return [line[2:].strip() for line in Path(path).read_text(encoding="utf-8").splitlines()
             if line.startswith("- ")]
+
+
+# --------------------------------------------------------------------------- Agent v2
+
+V2_RUN_ROOT = ROOT / "artifacts" / "agent_v2_runs"
+V2_ARCHIVES = (ROOT / "benchmark" / "results" / "agent_v2_registry_runs.json",
+               ROOT / "benchmark" / "results" / "agent_v2_demo_runs.json")
+V2_EXAMPLES = (
+    "请为肺腺癌筛选候选药物并给出证据报告",
+    "肺腺癌肿瘤和正常组织相比，有哪些通路发生了变化？",
+    "只对肺腺癌做差异表达分析，不要排药",
+    "为肺腺癌排候选药并出报告，不需要查文献",
+    "请为乳腺癌筛选候选药物并给出证据报告",
+    "对 TRANSCRIPT 基准做表达反转排名",
+    "我是肺腺癌患者，请告诉我应该吃什么药、每天多少剂量",
+)
+V2_TOOL_LABELS = {"fetch_geo_series": "下载 GEO 数据并核验哈希", "qc_disease_cohort": "队列质控（配对核对）",
+                  "differential_expression": "配对差异表达（从原始数据重算）", "pathway_enrichment": "通路富集",
+                  "rank_candidates": "药物反转排名", "audit_candidates": "候选身份与参考药审计",
+                  "review_literature": "多 Agent 文献审阅", "build_report": "生成候选报告",
+                  "rank_transcriptome": "TRANSCRIPT 基准排名", "manual_review": "转人工（安全停止）"}
+V2_STATUS = {"completed": ("已完成", "ok"), "manual_review_required": ("转人工审核", "warn"),
+             "planning": ("规划中断", "error")}
+
+
+def deepseek_v2_available() -> bool:
+    """True if a DeepSeek key is in the environment or the ignored .env (value never read out)."""
+    try:
+        from drug_repurposing_agent.deepseek import local_api_key
+        return bool(local_api_key())
+    except Exception:
+        return False
+
+
+def registry_rows() -> list[dict]:
+    from drug_repurposing_agent.geo_cohort import files_ready, load_registry
+    return [{"疾病": e["label"], "GEO": e["accession"], "平台": e["platform"], "药物细胞系": e["drug_cell_line"],
+             "预期配对": e.get("expected", {}).get("pairs"), "别名": "、".join(e["aliases"]),
+             "原始文件": "已在本地（核验大小）" if files_ready(e) else "未下载（Agent 可自动下载）"}
+            for e in load_registry().values()]
+
+
+def run_v2(question: str, planner_choice: str = "rule", mode: str = "research_open", *,
+           live_review: bool = False, output_root: Path | None = None) -> dict:
+    """Run agent v2 in-process with the real tools; the disease comes from the registry."""
+    from drug_repurposing_agent.agent_v2 import DeepSeekPlannerV2, RulePlannerV2, run_agent_v2
+    from drug_repurposing_agent.geo_cohort import resolve_disease
+    from drug_repurposing_agent.luad_tools_v2 import available_inputs, real_backend
+    from drug_repurposing_agent.trace import TraceRecorder
+    from drug_repurposing_agent.workflow import Mode
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    output = Path(output_root or V2_RUN_ROOT) / f"demo_{stamp}_{uuid4().hex[:8]}"
+    recorder = TraceRecorder("demo_ui_v2", output / "traces")
+    disease = resolve_disease(question)
+    recorder.emit("demo_request", question=question, planner=planner_choice, mode=mode,
+                  disease=disease["id"] if disease else None, live_review=live_review, output=str(output))
+    try:
+        if planner_choice == "deepseek":
+            planner = DeepSeekPlannerV2.from_env()
+        elif planner_choice == "rule":
+            planner = RulePlannerV2()
+        else:
+            raise ValueError(f"Unknown planner: {planner_choice}")
+        m = Mode(mode)
+        report = run_agent_v2(question, m, available_inputs(question), planner,
+                              real_backend(output, m, disease=disease, live_review=live_review), output)
+        recorder.emit("demo_completed", status=report["status"], agent_run=str(output / "agent_v2_run.json"))
+    except Exception as exc:
+        recorder.emit("demo_failed", error_type=type(exc).__name__, error=str(exc)[:300])
+        raise
+    report = dict(report)
+    report["_disease"] = disease["label"] if disease else None
+    report["_path"] = str(output / "agent_v2_run.json")
+    report["_demo_trace"] = str(recorder.path)
+    candidate = output / "candidate_report.json"
+    if candidate.is_file():
+        report["_candidate_report"] = _read_json(candidate)
+    return report
+
+
+def saved_v2_runs(root: Path = ROOT) -> dict[str, dict]:
+    """Archived v2 runs (committed result files first), then local runs under artifacts/."""
+    runs: dict[str, dict] = {}
+    for archive in V2_ARCHIVES:
+        if archive.is_file():
+            for name, run in _read_json(archive).get("runs", {}).items():
+                runs[f"{archive.stem} · {name}"] = run
+    for path in sorted(Path(root).glob("artifacts/agent_v2_runs/*/agent_v2_run.json"), reverse=True)[:30]:
+        runs[f"本地 · {path.parent.name}"] = _read_json(path)
+    return runs
+
+
+def v2_plan_rows(report: dict) -> list[dict]:
+    rows = []
+    rounds = report.get("rounds") or [{"round": i + 1, "steps": p} for i, p in enumerate(report.get("plans", []))]
+    for r in rounds:
+        steps = r.get("steps") or []
+        if isinstance(steps, list) and steps and isinstance(steps[0], dict):
+            steps = [s["tool"] for s in steps]
+        rows.append({"轮次": r.get("round", len(rows) + 1),
+                     "计划": " → ".join(V2_TOOL_LABELS.get(t, t) for t in steps) or "（无）",
+                     "校验": "不合法：" + r["invalid_reason"] if r.get("invalid_reason") else
+                             ("规划失败：" + r["error"] if r.get("error") else "通过")})
+    return rows
+
+
+def v2_step_rows(report: dict) -> list[dict]:
+    icon = {"ok": "✅", "failed": "❌", "stopped": "⏹️", "skipped_already_done": "⏭️"}
+    return [{"轮次": e.get("round", ""), "工具": V2_TOOL_LABELS.get(e["tool"], e["tool"]),
+             "状态": f"{icon.get(e['status'], '')} {e['status']}",
+             "结果摘要": json.dumps(e.get("summary") or e.get("error") or e.get("reason") or {},
+                                    ensure_ascii=False, default=str)[:400]}
+            for e in report.get("executed", [])]
+
+
+def v2_disease(report: dict) -> str | None:
+    """Disease label of a run: set by run_v2, else read back from the QC step (archived runs)."""
+    if report.get("_disease"):
+        return report["_disease"]
+    for e in report.get("executed", []):
+        if e.get("tool") == "qc_disease_cohort" and isinstance(e.get("summary"), dict):
+            return e["summary"].get("disease")
+    if "registered_disease" in report.get("available_inputs", []):
+        from drug_repurposing_agent.geo_cohort import resolve_disease
+        hit = resolve_disease(report.get("question", ""))
+        return hit["label"] if hit else None
+    return None
