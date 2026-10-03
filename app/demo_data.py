@@ -397,6 +397,9 @@ V2_EXAMPLES = (
     "只对肺腺癌做差异表达分析，不要排药",
     "为肺腺癌排候选药并出报告，不需要查文献",
     "请为乳腺癌筛选候选药物并给出报告",
+    "请为结直肠癌筛选候选药物并分析通路，不查文献",
+    "请为前列腺癌筛选候选药物并分析通路，不查文献",
+    "请为黑色素瘤筛选候选药物并分析通路，不查文献",
     "请为胃癌筛选候选药物（未登记的疾病）",
     "对 TRANSCRIPT 基准做表达反转排名",
     "我是肺腺癌患者，请告诉我应该吃什么药、每天多少剂量",
@@ -421,8 +424,13 @@ def deepseek_v2_available() -> bool:
 
 def registry_rows() -> list[dict]:
     from drug_repurposing_agent.geo_cohort import files_ready, load_registry
+    def design(e: dict) -> str:
+        x = e.get("expected", {})
+        if e.get("design", "paired") == "paired":
+            return f"配对 {x.get('pairs')} 对"
+        return f"不配对：肿瘤 {x.get('case')} / 对照 {x.get('control')}"
     return [{"疾病": e["label"], "GEO": e["accession"], "平台": e["platform"], "药物细胞系": e["drug_cell_line"],
-             "预期配对": e.get("expected", {}).get("pairs"), "别名": "、".join(e["aliases"]),
+             "设计": design(e), "别名": "、".join(e["aliases"]),
              "原始文件": "已在本地（核验大小）" if files_ready(e) else "未下载（Agent 可自动下载）"}
             for e in load_registry().values()]
 

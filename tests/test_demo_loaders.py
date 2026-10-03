@@ -140,7 +140,8 @@ def test_v2_archived_runs_render_as_plan_and_step_rows():
     assert [r["工具"] for r in dd.v2_step_rows(fetch)][0] == "下载 GEO 数据并核验哈希"
     stopped = next(v for k, v in runs.items() if k.endswith("unregistered_demo_deepseek"))
     assert stopped["status"] == "manual_review_required"
-    assert dd.registry_rows()[0]["GEO"] == "GSE32863"
+    rows = dd.registry_rows()
+    assert rows[0]["GEO"] == "GSE32863" and len(rows) == 5 and rows[3]["设计"].startswith("不配对")
 
 
 def test_v2_rule_run_for_unregistered_disease_stops_without_tools(tmp_path, monkeypatch):
