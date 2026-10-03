@@ -141,8 +141,14 @@ def real_backend(output: Path, mode: Mode, disease: dict | None = None, live_rev
             return {"summary": summary}
         controls = pd.read_csv(entry["reference_drugs"]).drug_name.tolist()
         measured = {c: int(ranks[c]) for c in controls if c in ranks.index}
+        if len(measured) < 2:
+            summary.update({"measured_controls": len(measured), "reference_drugs_listed": len(controls),
+                            "reference_drugs": f"only {len(measured)} of {len(controls)} reference drugs have a "
+                                               f"signature in this cell line; recovery statistic not computed"})
+            return {"summary": summary}
         stats = statistics(measured, n_names=len(ranks), draws=20000)
-        summary.update({"measured_controls": len(measured), "mean_percentile": round(stats["mean_percentile"], 3),
+        summary.update({"measured_controls": len(measured), "reference_drugs_listed": len(controls),
+                        "measured_names": sorted(measured), "mean_percentile": round(stats["mean_percentile"], 3),
                         "permutation_p": round(stats["permutation_p_one_sided"], 3)})
         return {"summary": summary}
 
