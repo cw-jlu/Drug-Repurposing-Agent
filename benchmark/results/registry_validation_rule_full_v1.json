@@ -1,0 +1,435 @@
+{
+  "eval_name": "registry_validation_rule_full_v1",
+  "planner": "rule",
+  "full_request": true,
+  "note": "Validate every registry disease end to end with the real tools (rule planner, no model calls).\n\nFor each registered disease the same request is run: fetch (if needed) -> cohort QC ->\nsignature from raw data -> Hallmark pathways -> ranking with the registered cell line ->\nreference-drug audit -> report; literature review is excluded so no model is called\n(it is covered by the LUAD frozen review and the live breast-cancer run). Reference-drug\nlists were committed before any ranking for the three new diseases was computed.\n",
+  "diseases": {
+    "luad_gse32863": {
+      "label": "肺腺癌（LUAD）",
+      "accession": "GSE32863",
+      "design": "paired",
+      "cell_line": "A549",
+      "question": "请为肺腺癌筛选候选药物并给出证据报告",
+      "status": "completed",
+      "files_on_disk_before_run": true,
+      "seconds": 6.2,
+      "plan": [
+        "qc_disease_cohort",
+        "differential_expression",
+        "rank_candidates",
+        "audit_candidates",
+        "review_literature",
+        "build_report"
+      ],
+      "plans_by_round": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "review_literature",
+          "build_report"
+        ]
+      ],
+      "summaries": {
+        "qc_disease_cohort": {
+          "disease": "肺腺癌（LUAD）",
+          "accession": "GSE32863",
+          "design": "paired",
+          "samples": 116,
+          "included": 114,
+          "pairs": 57,
+          "excluded": 2
+        },
+        "differential_expression": {
+          "genes": 19404,
+          "design": "paired",
+          "pairs": 57,
+          "value_scale": "log2 as deposited",
+          "up": 512,
+          "down": 749,
+          "source": "data/raw/GSE32863/GSE32863_series_matrix.txt.gz (recomputed from the raw GEO series matrix)",
+          "matches_frozen_signature": true
+        },
+        "rank_candidates": {
+          "cell_line": "A549",
+          "drugs": 4920,
+          "top10": [
+            "hydrocortisone",
+            "beclomethasone-dipropionate",
+            "clocortolone-pivalate",
+            "mometasone",
+            "flumetasone",
+            "BRD-K84203638",
+            "hydrocortisone-hemisuccinate",
+            "fluorometholone",
+            "fluticasone",
+            "diflorasone"
+          ]
+        },
+        "audit_candidates": {
+          "top10_matches_frozen_identity_audit": true,
+          "measured_controls": 5,
+          "reference_drugs_listed": 11,
+          "measured_names": [
+            "crizotinib",
+            "docetaxel",
+            "erlotinib",
+            "gefitinib",
+            "paclitaxel"
+          ],
+          "mean_percentile": 0.362,
+          "permutation_p": 0.145
+        },
+        "review_literature": {
+          "source": "frozen multi_agent_review_v1 (reused)",
+          "tier_counts": {
+            "SUPPORTED": 0,
+            "PROMISING_BUT_INCOMPLETE": 0,
+            "CONFLICTING": 0,
+            "INSUFFICIENT_EVIDENCE": 10
+          },
+          "rejected_citations": 0
+        },
+        "build_report": {
+          "report": "artifacts\\agent_v2_runs\\registry_validation\\rule\\luad_gse32863\\candidate_report.json",
+          "evidence_included": true
+        }
+      },
+      "failures": []
+    },
+    "brca_gse15852": {
+      "label": "乳腺癌（BRCA）",
+      "accession": "GSE15852",
+      "design": "paired",
+      "cell_line": "MCF7",
+      "question": "请为乳腺癌筛选候选药物并给出证据报告",
+      "status": "completed",
+      "files_on_disk_before_run": true,
+      "seconds": 6.6,
+      "plan": [
+        "qc_disease_cohort",
+        "differential_expression",
+        "rank_candidates",
+        "audit_candidates",
+        "build_report"
+      ],
+      "plans_by_round": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "build_report"
+        ]
+      ],
+      "summaries": {
+        "qc_disease_cohort": {
+          "disease": "乳腺癌（BRCA）",
+          "accession": "GSE15852",
+          "design": "paired",
+          "samples": 86,
+          "included": 86,
+          "pairs": 43,
+          "excluded": 0
+        },
+        "differential_expression": {
+          "genes": 12502,
+          "design": "paired",
+          "pairs": 43,
+          "value_scale": "auto: log2 applied (GEO2R rule); values <= 0 set missing",
+          "up": 115,
+          "down": 193,
+          "source": "data/raw/GSE15852/GSE15852_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+        },
+        "rank_candidates": {
+          "cell_line": "MCF7",
+          "drugs": 6231,
+          "top10": [
+            "BRD-K01896723",
+            "CGP-60474",
+            "PD-168077",
+            "PIK-75",
+            "camptothecin",
+            "PHA-793887",
+            "BMS-345541",
+            "belinostat",
+            "WT-171",
+            "mitomycin-c"
+          ]
+        },
+        "audit_candidates": {
+          "top10_matches_frozen_identity_audit": null,
+          "measured_controls": 16,
+          "reference_drugs_listed": 20,
+          "measured_names": [
+            "anastrozole",
+            "capecitabine",
+            "cyclophosphamide",
+            "docetaxel",
+            "doxorubicin",
+            "epirubicin",
+            "exemestane",
+            "fulvestrant",
+            "gemcitabine",
+            "lapatinib",
+            "letrozole",
+            "neratinib",
+            "olaparib",
+            "paclitaxel",
+            "palbociclib",
+            "tamoxifen"
+          ],
+          "mean_percentile": 0.363,
+          "permutation_p": 0.029
+        },
+        "build_report": {
+          "report": "artifacts\\agent_v2_runs\\registry_validation\\rule\\brca_gse15852\\candidate_report.json",
+          "evidence_included": false
+        }
+      },
+      "failures": []
+    },
+    "crc_gse32323": {
+      "label": "结直肠癌（CRC）",
+      "accession": "GSE32323",
+      "design": "paired",
+      "cell_line": "HT29",
+      "question": "请为结直肠癌筛选候选药物并给出证据报告",
+      "status": "completed",
+      "files_on_disk_before_run": true,
+      "seconds": 2.8,
+      "plan": [
+        "qc_disease_cohort",
+        "differential_expression",
+        "rank_candidates",
+        "audit_candidates",
+        "build_report"
+      ],
+      "plans_by_round": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "build_report"
+        ]
+      ],
+      "summaries": {
+        "qc_disease_cohort": {
+          "disease": "结直肠癌（CRC）",
+          "accession": "GSE32323",
+          "design": "paired",
+          "samples": 44,
+          "included": 34,
+          "pairs": 17,
+          "excluded": 10
+        },
+        "differential_expression": {
+          "genes": 20844,
+          "design": "paired",
+          "pairs": 17,
+          "value_scale": "auto: already log scale (GEO2R rule)",
+          "up": 1189,
+          "down": 1103,
+          "source": "data/raw/GSE32323/GSE32323_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+        },
+        "rank_candidates": {
+          "cell_line": "HT29",
+          "drugs": 1607,
+          "top10": [
+            "BRD-K39597586",
+            "phorbol-12-myristate-13-acetate",
+            "BRD-K49111930",
+            "BRD-K45627302",
+            "thapsigargin",
+            "BMS-754807",
+            "BMS-536924",
+            "AS-605240",
+            "BRD-K80169513",
+            "KUC111109N"
+          ]
+        },
+        "audit_candidates": {
+          "top10_matches_frozen_identity_audit": null,
+          "measured_controls": 0,
+          "reference_drugs_listed": 11,
+          "reference_drugs": "only 0 of 11 reference drugs have a signature in this cell line; recovery statistic not computed"
+        },
+        "build_report": {
+          "report": "artifacts\\agent_v2_runs\\registry_validation\\rule\\crc_gse32323\\candidate_report.json",
+          "evidence_included": false
+        }
+      },
+      "failures": []
+    },
+    "prad_gse46602": {
+      "label": "前列腺癌（PRAD）",
+      "accession": "GSE46602",
+      "design": "unpaired",
+      "cell_line": "VCAP",
+      "question": "请为前列腺癌筛选候选药物并给出证据报告",
+      "status": "completed",
+      "files_on_disk_before_run": true,
+      "seconds": 7.0,
+      "plan": [
+        "qc_disease_cohort",
+        "differential_expression",
+        "rank_candidates",
+        "audit_candidates",
+        "build_report"
+      ],
+      "plans_by_round": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "build_report"
+        ]
+      ],
+      "summaries": {
+        "qc_disease_cohort": {
+          "disease": "前列腺癌（PRAD）",
+          "accession": "GSE46602",
+          "design": "unpaired",
+          "samples": 50,
+          "included": 50,
+          "tumor": 36,
+          "normal": 14,
+          "excluded": 0
+        },
+        "differential_expression": {
+          "genes": 20844,
+          "design": "unpaired",
+          "tumor": 36,
+          "normal": 14,
+          "value_scale": "auto: already log scale (GEO2R rule)",
+          "up": 480,
+          "down": 837,
+          "source": "data/raw/GSE46602/GSE46602_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+        },
+        "rank_candidates": {
+          "cell_line": "VCAP",
+          "drugs": 6126,
+          "top10": [
+            "BRD-A43126523",
+            "BRD-K73610817",
+            "BRD-A47816767",
+            "PAC-1",
+            "BRD-K95138506",
+            "BRD-K61717269",
+            "BRD-K81795824",
+            "BRD-K95196255",
+            "NSC-3852",
+            "BRD-K72615639"
+          ]
+        },
+        "audit_candidates": {
+          "top10_matches_frozen_identity_audit": null,
+          "measured_controls": 8,
+          "reference_drugs_listed": 13,
+          "measured_names": [
+            "abiraterone",
+            "bicalutamide",
+            "docetaxel",
+            "enzalutamide",
+            "flutamide",
+            "nilutamide",
+            "olaparib",
+            "rucaparib"
+          ],
+          "mean_percentile": 0.586,
+          "permutation_p": 0.8
+        },
+        "build_report": {
+          "report": "artifacts\\agent_v2_runs\\registry_validation\\rule\\prad_gse46602\\candidate_report.json",
+          "evidence_included": false
+        }
+      },
+      "failures": []
+    },
+    "skcm_gse15605": {
+      "label": "黑色素瘤（SKCM）",
+      "accession": "GSE15605",
+      "design": "unpaired",
+      "cell_line": "A375",
+      "question": "请为黑色素瘤筛选候选药物并给出证据报告",
+      "status": "completed",
+      "files_on_disk_before_run": true,
+      "seconds": 3.5,
+      "plan": [
+        "qc_disease_cohort",
+        "differential_expression",
+        "rank_candidates",
+        "audit_candidates",
+        "build_report"
+      ],
+      "plans_by_round": [
+        [
+          "qc_disease_cohort",
+          "differential_expression",
+          "rank_candidates",
+          "audit_candidates",
+          "build_report"
+        ]
+      ],
+      "summaries": {
+        "qc_disease_cohort": {
+          "disease": "黑色素瘤（SKCM）",
+          "accession": "GSE15605",
+          "design": "unpaired",
+          "samples": 74,
+          "included": 62,
+          "tumor": 46,
+          "normal": 16,
+          "excluded": 12
+        },
+        "differential_expression": {
+          "genes": 17944,
+          "design": "unpaired",
+          "tumor": 46,
+          "normal": 16,
+          "value_scale": "auto: already log scale (GEO2R rule)",
+          "up": 1274,
+          "down": 1677,
+          "source": "data/raw/GSE15605/GSE15605_series_matrix.txt.gz (recomputed from the raw GEO series matrix)"
+        },
+        "rank_candidates": {
+          "cell_line": "A375",
+          "drugs": 1968,
+          "top10": [
+            "trichostatin-a",
+            "NVP-AUY922",
+            "dabrafenib",
+            "pevonedistat",
+            "BRD-K49669601",
+            "vorinostat",
+            "TL-HRAS-24",
+            "GDC-0879",
+            "MW-SHH-61",
+            "vemurafenib"
+          ]
+        },
+        "audit_candidates": {
+          "top10_matches_frozen_identity_audit": null,
+          "measured_controls": 3,
+          "reference_drugs_listed": 11,
+          "measured_names": [
+            "dabrafenib",
+            "temozolomide",
+            "vemurafenib"
+          ],
+          "mean_percentile": 0.318,
+          "permutation_p": 0.148
+        },
+        "build_report": {
+          "report": "artifacts\\agent_v2_runs\\registry_validation\\rule\\skcm_gse15605\\candidate_report.json",
+          "evidence_included": false
+        }
+      },
+      "failures": []
+    }
+  },
+  "trace_file": "artifacts\\traces\\20261003T131729233780Z_registry_validation_v1_836ef4d017bd4dddba83af77ef728ccf.jsonl"
+}

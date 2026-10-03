@@ -30,7 +30,7 @@ REVIEW = ROOT / "benchmark/results/multi_agent_review_v1.json"
 LUAD_ID = "luad_gse32863"
 
 
-def available_inputs(question: str | None = None) -> tuple[str, ...]:
+def available_inputs(question: str | None = None, live_review: bool = False) -> tuple[str, ...]:
     """Inputs the executor holds for this request.
 
     With a question, disease inputs are offered only for the registered disease the
@@ -47,6 +47,9 @@ def available_inputs(question: str | None = None) -> tuple[str, ...]:
         entries = [entry] if entry else []
         if entry:
             have.append("registered_disease")
+            if entry["id"] != LUAD_ID and not live_review:
+                # no frozen review exists for this disease and live review is off
+                have.append("no_literature_review")
     if any(files_ready(e) for e in entries):
         have.append("disease_series")
     if DRUG_H5.is_file():
@@ -221,7 +224,9 @@ def real_backend(output: Path, mode: Mode, disease: dict | None = None, live_rev
                 "signature": a.get("signature", {}).get("summary", "not computed"),
                 "pathways": a.get("pathways", {}).get("summary", "not computed"),
                 "audit": a.get("audit", {}).get("summary", "not computed"),
-                "evidence": a.get("evidence", {}).get("tiers", "literature review not run"),
+                "evidence": a.get("evidence", {}).get("tiers", (
+                    "literature review not run" if entry["id"] == LUAD_ID or live_review else
+                    "literature review not available: no frozen review for this disease and live review not enabled")),
                 "boundary": "transcriptomic research hypotheses only; not treatment advice"}
         path = output / "candidate_report.json"
         path.write_text(json.dumps(body, indent=2, ensure_ascii=False, default=str) + "\n", encoding="utf-8")

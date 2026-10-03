@@ -127,13 +127,22 @@ Backend = Callable[[Step, dict], dict]
 
 
 # Tools offered to the planner only when a given input exists (a download tool is
-# pointless, and only invites invalid plans, when no registered disease is named).
+# pointless, and only invites invalid plans, when no registered disease is named) ...
 OFFERED_ONLY_WITH = {"fetch_geo_series": "registered_disease"}
+# ... and tools withheld when the executor marks them as unable to run. Without a frozen
+# review and with live review off, the literature tool can only fail; whether the
+# planner then skipped it, retried or stopped varied by run, so code decides instead.
+WITHHELD_IF = {"review_literature": "no_literature_review"}
+
+
+def _offered(name: str, available_inputs: tuple[str, ...]) -> bool:
+    return (OFFERED_ONLY_WITH.get(name) in (None, *available_inputs)
+            and WITHHELD_IF.get(name) not in available_inputs)
 
 
 def tools_for(mode: Mode, available_inputs: tuple[str, ...] | None = None) -> list[ToolSpecV2]:
     return [t for t in TOOLS_V2.values() if mode in t.modes and
-            (available_inputs is None or OFFERED_ONLY_WITH.get(t.name) in (None, *available_inputs))]
+            (available_inputs is None or _offered(t.name, available_inputs))]
 
 
 def validate_plan(plan: PlanV2, mode: Mode, available_inputs: tuple[str, ...],
@@ -146,6 +155,8 @@ def validate_plan(plan: PlanV2, mode: Mode, available_inputs: tuple[str, ...],
             return f"step {i}: unknown tool {step.tool!r}"
         if mode not in spec.modes:
             return f"step {i}: {step.tool} is not allowed in {mode.value} mode"
+        if WITHHELD_IF.get(step.tool) in available_inputs:
+            return f"step {i}: {step.tool} cannot run here ({WITHHELD_IF[step.tool]})"
         if step.tool == "manual_review":
             if i != len(plan.steps):
                 return f"step {i}: manual_review must be the last step"
@@ -297,7 +308,8 @@ class RulePlannerV2:
             chain.append("pathway_enrichment")
         if not any(w in q for w in ("只做差异", "only differential", "只要差异")):
             chain += ["rank_candidates", "audit_candidates"]
-            if not any(w in q for w in ("不查文献", "不要文献", "no literature", "without literature")):
+            if not any(w in q for w in ("不查文献", "不要文献", "no literature", "without literature")) and \
+                    "no_literature_review" not in state.available_inputs:
                 chain.append("review_literature")
             chain.append("build_report")
         steps = tuple(Step(t) for t in chain if TOOLS_V2[t].produces not in state.produced)

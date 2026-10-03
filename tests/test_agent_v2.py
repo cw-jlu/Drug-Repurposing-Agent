@@ -92,3 +92,21 @@ def test_fetch_tool_is_offered_only_when_a_registered_disease_is_named():
     assert "fetch_geo_series" not in names(("disease_series", "drug_signatures"))
     assert "fetch_geo_series" in names(("registered_disease",))
     assert "fetch_geo_series" in {t.name for t in tools_for(OPEN)}
+
+
+def test_literature_tool_is_withheld_when_it_cannot_run():
+    marked = ("registered_disease", "disease_series", "drug_signatures", "no_literature_review")
+    assert "review_literature" not in {t.name for t in tools_for(OPEN, marked)}
+    assert "cannot run" in validate_plan(plan("qc_disease_cohort", "differential_expression", "rank_candidates",
+                                              "review_literature"), OPEN, marked, [])
+    tools = [t.public() for t in tools_for(OPEN, marked)]
+    steps = [s.tool for s in RulePlannerV2().plan(PlanningState("请为乳腺癌筛选候选药物并给出证据报告", OPEN, marked),
+                                                  tools).steps]
+    assert "review_literature" not in steps and steps[-1] == "build_report"
+
+
+def test_available_inputs_mark_missing_literature_review():
+    from drug_repurposing_agent.luad_tools_v2 import available_inputs
+    assert "no_literature_review" in available_inputs("请为乳腺癌筛选候选药物")
+    assert "no_literature_review" not in available_inputs("请为乳腺癌筛选候选药物", live_review=True)
+    assert "no_literature_review" not in available_inputs("请为肺腺癌筛选候选药物")
