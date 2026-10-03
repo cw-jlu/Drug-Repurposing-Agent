@@ -34,7 +34,7 @@ def _main(trace: TraceRecorder) -> None:
     result = {"report_sha256": sha256_file(report), "deck_sha256": sha256_file(deck),
               "report_pages": len(pages), "deck_slides": len(slides),
               "native_editable_charts": charts,
-              "visual_review": "All twelve rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after adding section 5.3 (registered diseases, GEO download) and the 10-tool architecture figure; report pages 11-12 and slides 4 and 12 re-checked.",
+              "visual_review": "All twelve rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after registering breast cancer (section 5.3 rewritten, slide 12 limitations row); report page 11 and slide 12 re-checked.",
               "page_png_sha256": {str(path): sha256_file(path) for path in pages},
               "slide_png_sha256": {str(path): sha256_file(path) for path in slides}}
     output = Path("artifacts/reports/current_deliverables_qa.json")
