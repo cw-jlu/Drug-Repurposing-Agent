@@ -1,0 +1,21 @@
+drug_name,control_group,source_note
+tamoxifen,selective estrogen receptor modulator,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+fulvestrant,selective estrogen receptor degrader,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+letrozole,aromatase inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+anastrozole,aromatase inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+exemestane,aromatase inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+palbociclib,CDK4/6 inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+ribociclib,CDK4/6 inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+abemaciclib,CDK4/6 inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+lapatinib,HER2 tyrosine kinase inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+neratinib,HER2 tyrosine kinase inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+alpelisib,PI3K-alpha inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+olaparib,PARP inhibitor,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+doxorubicin,anthracycline chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+epirubicin,anthracycline chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+cyclophosphamide,alkylating chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+paclitaxel,taxane chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+docetaxel,taxane chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+capecitabine,antimetabolite chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+eribulin,microtubule inhibitor chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
+gemcitabine,antimetabolite chemotherapy,Standard-of-care breast cancer drug class; list written 2026-10-03 before any reference-drug rank was computed
