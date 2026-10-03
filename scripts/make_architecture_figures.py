@@ -100,8 +100,8 @@ def architecture() -> None:
 
     # Row 3: tools
     y3, h3 = 0.33, 0.2
-    tools = [(0.04, 0.28, "LUAD 工具链（仅 Open，带依赖）",
-              "qc_disease_cohort → differential_expression\n→ pathway_enrichment / rank_candidates\n→ audit_candidates → build_report\n每个工具声明输入、依赖与产物", "tool", RED),
+    tools = [(0.04, 0.28, "疾病工具链（登记疾病，仅 Open）",
+              "fetch_geo_series（下载并核验哈希）→ qc_disease_cohort\n→ differential_expression（原始数据重算）\n→ pathway_enrichment / rank_candidates\n→ audit_candidates → build_report", "tool", RED),
              (0.36, 0.28, "review_literature（多 Agent）",
               "文献 Agent：PubMed 检索 + 原文引语\n批评 Agent：独立检索反对证据\n协调者：给出证据分级", "llm", TEAL),
              (0.68, 0.29, "rank_transcriptome · manual_review",
@@ -151,7 +151,7 @@ def workflow() -> None:
     # Row 1: request -> plan -> check -> inputs -> (stop)
     y1 = 0.80; m1 = y1 + H / 2
     box(ax, col[0], y1, W, H, "1. 自然语言请求", "“请为肺腺癌筛选候选药物”", kind="user", size=10)
-    box(ax, col[1], y1, W, H, "2. Planner 多步规划", "LLM 一次提交有序步骤\n（9 个工具，带依赖）", kind="llm", title_color=TEAL, size=10)
+    box(ax, col[1], y1, W, H, "2. Planner 多步规划", "LLM 一次提交有序步骤\n（10 个工具，带依赖）", kind="llm", title_color=TEAL, size=10)
     diamond(ax, cx[2], m1, DW, DH, "3. 计划通过校验？\n白名单/模式/依赖/输入")
     diamond(ax, cx[3], m1, DW, DH, "4. 计划是否为\n安全停止？")
     box(ax, col[4], y1, W, H, "转人工并记录", "manual_review_required\n写明原因", kind="out", title_color=RED, size=10)
@@ -169,7 +169,7 @@ def workflow() -> None:
     label(ax, cx[3] + 0.006, lane12 + 0.012, "否：按计划依次执行（示例为完整 LUAD 计划）", color=TEAL)
 
     # Row 2: data -> DEG -> pathways -> drug signatures -> scoring
-    row2 = [T("5. 疾病数据质控", "GSE32863：核实 57 对\n肿瘤/正常，排除 2 份", "tool", RED),
+    row2 = [T("5. 获取并质控疾病数据", "登记表；缺失则下载并核验哈希\nGSE32863：57 对，排除 2 份", "tool", RED),
             T("6. 配对差异表达", f"配对检验 + BH 校正\n上调 {up} / 下调 {down}", "tool", RED),
             T("7. 通路富集", "Hallmark/KEGG\n增殖、糖酵解↑；炎症↓", "tool", RED),
             T("8. 药物扰动签名", "LINCS A549，10 µM，24 h\n4,920 个药 × 961 基因", "tool", RED),
