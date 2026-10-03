@@ -584,7 +584,11 @@ V600E
 2（两个``有支持''是 dabrafenib 和
 vemurafenib，本就是获批的黑色素瘤药，这是文献确认已知药物，不是新发现）；这些分级均未经人工复核。冻结
 40 例在新版本上重跑，规则规划器仍为 30/40，DeepSeek 为 38/40（原
-36/40，差异属于逐次运行波动）（\texttt{docs/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}md}）。
+36/40，差异属于逐次运行波动）。默认规划器改为 DeepSeek
+之前做了检查：不开实时审阅时，对 5
+个疾病提完整的``证据报告''请求，只完成了 3/5。文献工具失败后，DeepSeek
+有时跳过文献，有时直接转人工，有时重试后转人工，表现并不稳定。因此改为由代码判断：拿不到文献审阅时，不向规划器提供文献工具，报告写明原因。修复后
+DeepSeek 与规则规划器均为 5/5 完成（\texttt{docs/\allowbreak{}agent\_\allowbreak{}v2.\allowbreak{}md}）。
 
 \subsection{6.
 局限与后续工作}\label{6-ux5c40ux9650ux4e0eux540eux7eedux5de5ux4f5c}
