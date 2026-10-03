@@ -34,7 +34,7 @@ def _main(trace: TraceRecorder) -> None:
     result = {"report_sha256": sha256_file(report), "deck_sha256": sha256_file(deck),
               "report_pages": len(pages), "deck_slides": len(slides),
               "native_editable_charts": charts,
-              "visual_review": "All thirteen rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after pre-registering five diseases (section 5.3 table, slide 12 limitations row); report pages 11-12 and slide 12 re-checked.",
+              "visual_review": "All thirteen rendered report pages (Word) and all twelve rendered slides (PowerPoint) inspected after adding figure 6 (fig11, five-disease overview) and the updated architecture figure; report page 12 and slides 4 and 12 re-checked.",
               "page_png_sha256": {str(path): sha256_file(path) for path in pages},
               "slide_png_sha256": {str(path): sha256_file(path) for path in slides}}
     output = Path("artifacts/reports/current_deliverables_qa.json")
