@@ -1,10 +1,10 @@
-"""Paired tumor/normal differential expression for an already normalized matrix."""
+"""Tumor/normal differential expression (paired or unpaired) for an already normalized matrix."""
 
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from scipy.stats import ttest_rel
+from scipy.stats import ttest_ind, ttest_rel
 
 
 def _bh_adjust(p_values: np.ndarray) -> np.ndarray:
@@ -61,5 +61,38 @@ def paired_deg(expression: pd.DataFrame, samples: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame({"gene_symbol": expression.index.astype(str),
                          "log2FC": effects, "p_value": p_values, "fdr": fdr,
                          "n_pairs": len(ids),
+                         "direction": np.where(effects > 0, "up", np.where(effects < 0, "down", "flat")),
+                         "included_default": (fdr < 0.05) & (np.abs(effects) >= 1)})
+
+
+def unpaired_deg(expression: pd.DataFrame, samples: pd.DataFrame, min_per_group: int = 5) -> pd.DataFrame:
+    """Two-group (Welch) tumor-minus-normal log2FC, p, and BH FDR for unpaired designs.
+
+    ``samples`` needs sample_id and condition (Tumor/Normal); the output has the same
+    columns as ``paired_deg`` except n_tumor/n_normal instead of n_pairs.
+    """
+    if not {"sample_id", "condition"}.issubset(samples.columns):
+        raise ValueError("Sample manifest must include sample_id and condition")
+    if expression.empty or expression.index.has_duplicates or expression.columns.has_duplicates:
+        raise ValueError("Expression matrix is empty or has duplicate IDs")
+    if samples["sample_id"].duplicated().any() or set(samples["sample_id"]) != set(expression.columns):
+        raise ValueError("Expression sample IDs differ from manifest")
+    if set(samples["condition"]) != {"Tumor", "Normal"}:
+        raise ValueError("Conditions must be Tumor and Normal")
+    tumor_ids = samples.loc[samples.condition == "Tumor", "sample_id"].tolist()
+    normal_ids = samples.loc[samples.condition == "Normal", "sample_id"].tolist()
+    if min(len(tumor_ids), len(normal_ids)) < min_per_group:
+        raise ValueError(f"At least {min_per_group} samples per group are needed")
+    tumor = expression[tumor_ids].to_numpy(dtype=float)
+    normal = expression[normal_ids].to_numpy(dtype=float)
+    if not (np.isfinite(tumor).all() and np.isfinite(normal).all()):
+        raise ValueError("Expression matrix contains NaN or Inf")
+    effects = tumor.mean(axis=1) - normal.mean(axis=1)
+    p_values = ttest_ind(tumor, normal, axis=1, equal_var=False).pvalue
+    p_values = np.where(np.isfinite(p_values), p_values, 1.0)
+    fdr = _bh_adjust(p_values)
+    return pd.DataFrame({"gene_symbol": expression.index.astype(str),
+                         "log2FC": effects, "p_value": p_values, "fdr": fdr,
+                         "n_tumor": len(tumor_ids), "n_normal": len(normal_ids),
                          "direction": np.where(effects > 0, "up", np.where(effects < 0, "down", "flat")),
                          "included_default": (fdr < 0.05) & (np.abs(effects) >= 1)})

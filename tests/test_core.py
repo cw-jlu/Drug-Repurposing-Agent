@@ -248,3 +248,21 @@ def test_paired_deg_matches_patient_pairs_and_rejects_missing_pair():
     assert result.loc[0, "n_pairs"] == 3
     with pytest.raises(ValueError, match="exactly one"):
         paired_deg(expression.drop(columns="n3"), samples.iloc[:-1])
+
+
+def test_unpaired_deg_finds_planted_shift_and_checks_groups():
+    import numpy as np
+    import pandas as pd
+    import pytest
+    from drug_repurposing_agent.differential_expression import unpaired_deg
+    rng = np.random.default_rng(1)
+    ids = [f"S{i}" for i in range(14)]
+    cond = ["Tumor"] * 8 + ["Normal"] * 6
+    values = rng.normal(8, 0.3, (20, 14))
+    values[:3, :8] += 2.0
+    expr = pd.DataFrame(values, index=[f"G{i}" for i in range(20)], columns=ids)
+    deg = unpaired_deg(expr, pd.DataFrame({"sample_id": ids, "condition": cond}))
+    assert set(deg.loc[deg.included_default, "gene_symbol"]) == {"G0", "G1", "G2"}
+    assert (deg.n_tumor.iloc[0], deg.n_normal.iloc[0]) == (8, 6)
+    with pytest.raises(ValueError, match="per group"):
+        unpaired_deg(expr.iloc[:, 4:], pd.DataFrame({"sample_id": ids[4:], "condition": cond[4:]}), min_per_group=5)
