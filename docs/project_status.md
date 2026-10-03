@@ -51,6 +51,8 @@
 
 - Agent v2.1 (2026-10-03): disease registry (LUAD; breast cancer added in v2.2), `fetch_geo_series` with SHA-256 checks, signature always recomputed from raw GEO data (byte-identical to the frozen one). Real runs from an empty data folder complete in about 28 s; an unregistered disease stops at manual review. Frozen 40-case re-runs: rule 30/40, DeepSeek 38/40 (run-to-run variation vs 36/40). v2.2: breast cancer (GSE15852 + MCF7) registered and the literature review made configurable (LUAD keeps the frozen prompts). Breast run from an empty data folder: reference-drug recovery p = 0.029 (16/20 measured; list committed before ranks), live review 21 calls with 23/62 quotes rejected; frozen 40 cases rule 30/40, DeepSeek 38/40. The Streamlit demo has an Agent v2 tab.
 
+- v2.3: five pre-registered diseases (LUAD, breast, colorectal GSE32323/HT29, prostate GSE46602/VCAP, melanoma GSE15605/A375); entries prepared from streamed headers and hashes without storing data; unpaired designs supported; all five validated end to end from empty data folders (`benchmark/results/registry_validation_v1.json`). Reference-drug recovery is significant only for breast cancer.
+
 ## Needed for the planned final deliverable
 
 1. Perform an actual timed rehearsal of the nine-slide deck against the approximately 10-minute limit, using `docs/defense_rehearsal_10min.md`, and add a demo video only if the instructor requests one. The reviewed course PDF requires GitHub code and an approximately 10-minute presentation, but does not prescribe a separate report, demo video, cover, or page count.
