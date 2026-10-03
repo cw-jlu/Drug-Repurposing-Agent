@@ -87,8 +87,8 @@ def tab_agent_v2(st) -> None:
     example = st.selectbox("示例请求（可在下方修改）", dd.V2_EXAMPLES, key="v2_example")
     question = st.text_area("自然语言请求", value=example, key=f"v2_q_{example}", height=80)
     left, right = st.columns(2)
-    planners = ["rule"] + (["deepseek"] if dd.deepseek_v2_available() else [])
-    planner = left.radio("规划器", planners, format_func=PLANNER_LABELS.get, key="v2_planner")
+    planners = (["deepseek"] if dd.deepseek_v2_available() else []) + ["rule"]
+    planner = left.radio("规划器（默认 DeepSeek）", planners, format_func=PLANNER_LABELS.get, key="v2_planner")
     if "deepseek" not in planners:
         left.caption("未检测到 DeepSeek 密钥（环境变量或本地 .env），只能使用规则规划器。")
     mode = right.selectbox("模式", list(MODE_LABELS), index=1, format_func=MODE_LABELS.get, key="v2_mode")

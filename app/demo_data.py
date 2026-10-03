@@ -435,7 +435,7 @@ def registry_rows() -> list[dict]:
             for e in load_registry().values()]
 
 
-def run_v2(question: str, planner_choice: str = "rule", mode: str = "research_open", *,
+def run_v2(question: str, planner_choice: str = "deepseek", mode: str = "research_open", *,
            live_review: bool = False, output_root: Path | None = None) -> dict:
     """Run agent v2 in-process with the real tools; the disease comes from the registry."""
     from drug_repurposing_agent.agent_v2 import DeepSeekPlannerV2, RulePlannerV2, run_agent_v2
@@ -458,7 +458,7 @@ def run_v2(question: str, planner_choice: str = "rule", mode: str = "research_op
         else:
             raise ValueError(f"Unknown planner: {planner_choice}")
         m = Mode(mode)
-        report = run_agent_v2(question, m, available_inputs(question), planner,
+        report = run_agent_v2(question, m, available_inputs(question, live_review=live_review), planner,
                               real_backend(output, m, disease=disease, live_review=live_review), output)
         recorder.emit("demo_completed", status=report["status"], agent_run=str(output / "agent_v2_run.json"))
     except Exception as exc:

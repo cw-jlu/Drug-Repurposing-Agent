@@ -1,7 +1,10 @@
 """Run agent v2 end to end: natural-language request -> multi-step plan -> validated execution.
 
 Example (repository root):
-    python -m scripts.run_agent_v2 --question "请为肺腺癌筛选候选药物并给出证据报告" --planner deepseek
+    python -m scripts.run_agent_v2 --question "请为肺腺癌筛选候选药物并给出证据报告"
+
+The DeepSeek planner is the default; without a DeepSeek key (environment or ignored
+.env) the run falls back to the rule planner and says so. ``--planner rule`` forces it.
 """
 
 from __future__ import annotations
@@ -22,7 +25,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--question", required=True)
     parser.add_argument("--mode", choices=[m.value for m in Mode], default=Mode.RESEARCH_OPEN.value)
-    parser.add_argument("--planner", choices=["rule", "deepseek"], default="rule")
+    parser.add_argument("--planner", choices=["rule", "deepseek"], default="deepseek")
     parser.add_argument("--model", default=None)
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--live-review", action="store_true",
@@ -35,14 +38,21 @@ def main() -> None:
     mode = Mode(args.mode)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output = args.output or Path("artifacts/agent_v2_runs") / f"{stamp}_{uuid4().hex[:8]}"
-    planner = DeepSeekPlannerV2.from_env(args.model) if args.planner == "deepseek" else RulePlannerV2()
+    if args.planner == "deepseek":
+        try:
+            planner = DeepSeekPlannerV2.from_env(args.model)
+        except ValueError:
+            print("注意：没有找到 DeepSeek 密钥，改用规则规划器（--planner rule）。")
+            planner = RulePlannerV2()
+    else:
+        planner = RulePlannerV2()
     registry = load_registry()
     disease = resolve_disease(args.question, registry)
     if disease is None:
         names = "、".join(e["label"] for e in registry.values())
         print(f"注意：请求中没有登记过的疾病（已登记：{names}），疾病分析工具不可用。")
     backend = real_backend(output, mode, disease=disease, live_review=args.live_review)
-    inputs = available_inputs(args.question)
+    inputs = available_inputs(args.question, live_review=args.live_review)
     if args.inputs is not None:
         wanted = [x for x in args.inputs.split(",") if x]
         unknown = [x for x in wanted if x not in inputs]
