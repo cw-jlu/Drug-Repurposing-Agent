@@ -1,6 +1,6 @@
 # 答辩图表
 
-fig1–fig8 由 `python scripts/make_figures.py [--published <RECeSS benchmark-results 目录>]` 重新生成，fig9–fig10 由 `python scripts/make_architecture_figures.py` 生成（PNG dpi 300 + SVG）；`make_figures.py` 每次运行在 `artifacts/traces/` 写入 trace。
+fig1–fig8 与 fig11 由 `python scripts/make_figures.py [--published <RECeSS benchmark-results 目录>]` 重新生成，fig9–fig10 由 `python scripts/make_architecture_figures.py` 生成（PNG dpi 300 + SVG）；`make_figures.py` 每次运行在 `artifacts/traces/` 写入 trace。
 
 **统一风格**（`scripts/figure_style.py`）：所有图共用一套配色（与答辩 PPT 一致）、同一字体与字号；颜色含义固定——肿瘤上调 = 红、下调 = 蓝；B2 = 红、B3 = 蓝、B4 = 绿，RECeSS 公开模型 = 灰；反转热图以 0.5 为中点，红 = 不反转、绿 = 强反转。图内不放结论性大标题，多面板图标 a/b，结论与注意事项写在报告和 PPT 的图注中。
 
@@ -15,3 +15,4 @@ fig1–fig8 由 `python scripts/make_figures.py [--published <RECeSS benchmark-r
 
 - **fig9_architecture** — 系统架构（Agent v2）：交互层（自然语言请求 → Planner 多步规划 → 计划校验 → 决策门控）、执行状态机与“失败/计划不合法 → 观察 → 重新规划（≤3 轮）”回路、工具层（LUAD 工具链、review_literature 多 Agent、rank_transcriptome 与 manual_review）、确定性 Validator 与隔离的外部评测。组件与状态名取自 `src/drug_repurposing_agent/agent.py` 与 `agent_v2.py`。要点：LLM 只负责理解与编排，数值计算交给确定性工具，代码做最终校验。
 - **fig10_workflow** — 肺腺癌端到端流程图（18 步；计划校验失败或任一步失败回到第 2 步重新规划，安全停止、引用不合格、低置信度转人工等分支），数字取自已提交的结果文件。要点：每个可能出错的环节都有明确的停止或转人工出口。
+- **fig11_registry_overview** — 5 个登记疾病的端到端验证：(a) 从原始 GEO 数据重算的上调/下调基因数；(b) 预先登记参考药的平均名次百分位与置换 p 值。来源：`benchmark/results/registry_validation_v1.json`。要点：流程能在 5 个疾病上从下载跑到报告；参考药恢复只有乳腺癌显著，前列腺癌比随机还差，结直肠癌无法评估。

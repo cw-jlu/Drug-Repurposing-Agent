@@ -514,6 +514,65 @@ def fig8(trace: TraceRecorder) -> dict:
     return {"pathways": order}
 
 
+# ---------------------------------------------------------------- fig11 ----
+REGISTRY_SHORT = {"luad_gse32863": "肺腺癌", "brca_gse15852": "乳腺癌", "crc_gse32323": "结直肠癌",
+                  "prad_gse46602": "前列腺癌", "skcm_gse15605": "黑色素瘤"}
+
+
+def fig11(trace: TraceRecorder) -> dict:
+    src = REPO / "benchmark/results/registry_validation_v1.json"
+    rows = json.loads(src.read_text(encoding="utf-8"))["diseases"]
+    ids = [d for d in REGISTRY_SHORT if d in rows][::-1]
+    labels = []
+    for d in ids:
+        s = rows[d]["summaries"]["differential_expression"]
+        n = f"{s['pairs']} 对" if s["design"] == "paired" else f"{s['tumor']} vs {s['normal']}"
+        labels.append(f"{REGISTRY_SHORT[d]}\n{rows[d]['accession']} · {n} · {rows[d]['cell_line']}")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.6), sharey=True,
+                                   gridspec_kw={"width_ratios": [1.15, 1]})
+    y = np.arange(len(ids))
+    up = [rows[d]["summaries"]["differential_expression"]["up"] for d in ids]
+    down = [rows[d]["summaries"]["differential_expression"]["down"] for d in ids]
+    ax1.barh(y, up, color=UP, height=0.6, label="上调")
+    ax1.barh(y, [-v for v in down], color=DOWN, height=0.6, label="下调")
+    for yi, u, dn in zip(y, up, down):
+        ax1.text(u + 30, yi, str(u), va="center", fontsize=8.5, color=INK)
+        ax1.text(-dn - 30, yi, str(dn), va="center", ha="right", fontsize=8.5, color=INK)
+    lim = max(max(up), max(down)) * 1.3
+    ax1.set_xlim(-lim, lim)
+    ax1.axvline(0, color=INK2, lw=0.8)
+    ax1.set_yticks(y, labels)
+    ax1.tick_params(axis="y", length=0)
+    ax1.set_xlabel("差异基因数（FDR < 0.05 且 |log2FC| ≥ 1）")
+    ax1.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{abs(int(v))}"))
+    ax1.set_title("疾病签名（从原始 GEO 数据重算）")
+    ax1.legend(loc="upper right")
+    panel(ax1, "a", x=-0.42)
+    st.grid(ax1, "x")
+    stats = {}
+    for yi, d in zip(y, ids):
+        a = rows[d]["summaries"]["audit_candidates"]
+        stats[d] = {k: a.get(k) for k in ("measured_controls", "reference_drugs_listed", "mean_percentile", "permutation_p")}
+        if "mean_percentile" not in a:
+            ax2.text(0.5, yi, f"参考药在该细胞系中无签名（0/{a['reference_drugs_listed']}）", ha="center",
+                     va="center", fontsize=8.5, color=INK2)
+            continue
+        sig = a["permutation_p"] < 0.05
+        ax2.scatter(a["mean_percentile"], yi, s=70, color=TEAL if sig else GRAY, edgecolor=INK, linewidth=0.6, zorder=3)
+        ax2.text(a["mean_percentile"] + 0.025, yi + 0.2,
+                 f"{a['measured_controls']}/{a['reference_drugs_listed']} 可测，p = {a['permutation_p']:.3f}",
+                 fontsize=8.5, color=INK if sig else INK2)
+    ax2.axvline(0.5, color=INK2, ls="--", lw=0.9)
+    ax2.set_xlim(0, 1)
+    ax2.set_xlabel("参考药平均名次百分位（越小越靠前；虚线 = 随机）")
+    ax2.set_title("预先登记参考药的恢复")
+    panel(ax2, "b", x=-0.03)
+    st.grid(ax2, "x")
+    fig.subplots_adjust(wspace=0.08)
+    save(fig, "fig11_registry_overview", trace, source=str(src.relative_to(REPO)), stats=stats)
+    return stats
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--published", type=Path,
@@ -528,7 +587,7 @@ def main() -> None:
     jobs = {"fig1": lambda: fig1(args.published, trace), "fig2": lambda: fig2(trace),
             "fig3": lambda: fig3(trace), "fig4": lambda: fig4(trace),
             "fig5": lambda: fig5(trace), "fig6": lambda: fig6(trace),
-            "fig7": lambda: fig7(trace), "fig8": lambda: fig8(trace)}
+            "fig7": lambda: fig7(trace), "fig8": lambda: fig8(trace), "fig11": lambda: fig11(trace)}
     summary = {}
     try:
         for name, job in jobs.items():

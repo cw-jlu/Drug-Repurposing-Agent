@@ -100,10 +100,10 @@ def architecture() -> None:
 
     # Row 3: tools
     y3, h3 = 0.33, 0.2
-    tools = [(0.04, 0.28, "疾病工具链（登记疾病，仅 Open）",
+    tools = [(0.04, 0.28, "疾病工具链（5 个登记疾病，仅 Open）",
               "fetch_geo_series（下载并核验哈希）→ qc_disease_cohort\n→ differential_expression（原始数据重算）\n→ pathway_enrichment / rank_candidates\n→ audit_candidates → build_report", "tool", RED),
              (0.36, 0.28, "review_literature（多 Agent）",
-              "文献 Agent：PubMed 检索 + 原文引语\n批评 Agent：独立检索反对证据\n协调者：给出证据分级", "llm", TEAL),
+              "文献 Agent：PubMed 检索 + 原文引语\n批评 Agent：独立检索反对证据\n协调者：给出证据分级\n检索式与提示词按登记疾病配置", "llm", TEAL),
              (0.68, 0.29, "rank_transcriptome · manual_review",
               "基准排名（Strict + Open），不读任何标签\nB2 / B3 / B4 适配 RECeSS 官方 Runner\nmanual_review：不安全或无法执行时停止", "tool", RED)]
     for x, w, t, b, k, c in tools:
