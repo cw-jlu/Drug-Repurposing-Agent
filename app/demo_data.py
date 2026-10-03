@@ -404,6 +404,19 @@ V2_EXAMPLES = (
     "对 TRANSCRIPT 基准做表达反转排名",
     "我是肺腺癌患者，请告诉我应该吃什么药、每天多少剂量",
 )
+# Short labels for the example buttons -> the full request typed into the box.
+V2_EXAMPLE_LABELS = {
+    "肺腺癌 · 完整报告": "请为肺腺癌筛选候选药物并给出证据报告",
+    "肺腺癌 · 只看通路": "肺腺癌肿瘤和正常组织相比，有哪些通路发生了变化？",
+    "肺腺癌 · 只做差异": "只对肺腺癌做差异表达分析，不要排药",
+    "乳腺癌": "请为乳腺癌筛选候选药物并给出证据报告",
+    "结直肠癌": "请为结直肠癌筛选候选药物并给出证据报告",
+    "前列腺癌": "请为前列腺癌筛选候选药物并给出证据报告",
+    "黑色素瘤": "请为黑色素瘤筛选候选药物并给出证据报告",
+    "胃癌（未登记）": "请为胃癌筛选候选药物并给出证据报告",
+    "TRANSCRIPT 基准": "对 TRANSCRIPT 基准做表达反转排名",
+    "越权：问剂量": "我是肺腺癌患者，请告诉我应该吃什么药、每天多少剂量",
+}
 V2_TOOL_LABELS = {"fetch_geo_series": "下载 GEO 数据并核验哈希", "qc_disease_cohort": "队列质控（分组/配对核对）",
                   "differential_expression": "差异表达（从原始数据重算）", "pathway_enrichment": "通路富集",
                   "rank_candidates": "药物反转排名", "audit_candidates": "候选身份与参考药审计",
@@ -521,3 +534,97 @@ def v2_disease(report: dict) -> str | None:
         hit = resolve_disease(report.get("question", ""))
         return hit["label"] if hit else None
     return None
+
+
+# --------------------------------------------------------------------------- UI helpers (v2 front end)
+
+V2_TIER_LABELS = {"SUPPORTED": ("有支持", "ok"), "PROMISING_BUT_INCOMPLETE": ("有希望但不完整", "info"),
+                  "CONFLICTING": ("有冲突", "warn"), "INSUFFICIENT_EVIDENCE": ("证据不足", "muted")}
+V2_STEP_STATUS = {"ok": "完成", "failed": "失败", "stopped": "转人工", "skipped_already_done": "已完成（跳过）",
+                  "not_run": "未执行"}
+
+
+def v2_pipeline(report: dict) -> list[dict]:
+    """Each planning round with its steps and the status each step actually reached.
+
+    Executed entries are matched to planned steps in order, so this also works for
+    archived runs whose executed entries carry no round number.
+    """
+    rounds = report.get("rounds") or [{"round": i + 1, "steps": p} for i, p in enumerate(report.get("plans", []))]
+    executed = list(report.get("executed", []))
+    k, out = 0, []
+    for i, r in enumerate(rounds, 1):
+        steps = r.get("steps") or []
+        names = [s["tool"] if isinstance(s, dict) else s for s in steps]
+        rows = []
+        for name in names:
+            status = "not_run"
+            if not r.get("invalid_reason") and k < len(executed) and executed[k]["tool"] == name:
+                status = executed[k]["status"]
+                k += 1
+            rows.append({"tool": name, "label": V2_TOOL_LABELS.get(name, name), "status": status})
+        out.append({"round": r.get("round", i), "invalid_reason": r.get("invalid_reason"),
+                    "error": r.get("error"), "rationale": r.get("rationale", ""), "steps": rows})
+    return out
+
+
+def v2_outputs(report: dict) -> dict:
+    """Scientific outputs of a run, from the step summaries (live or archived)."""
+    ok = {e["tool"]: e.get("summary") or {} for e in report.get("executed", []) if e.get("status") == "ok"}
+    cand = report.get("_candidate_report") or {}
+    evidence = cand.get("evidence")
+    review = ok.get("review_literature", {})
+    return {"cohort": ok.get("qc_disease_cohort"), "signature": ok.get("differential_expression"),
+            "pathways": ok.get("pathway_enrichment"), "ranking": ok.get("rank_candidates"),
+            "audit": ok.get("audit_candidates"), "review": review or None,
+            "tiers": evidence if isinstance(evidence, dict) else None,
+            "evidence_note": evidence if isinstance(evidence, str) else None,
+            "fetch": ok.get("fetch_geo_series"), "benchmark": ok.get("rank_transcriptome")}
+
+
+def headline_kpis() -> list[tuple[str, str, str]]:
+    """(value, label, note) for the header cards, read from committed files."""
+    from drug_repurposing_agent.agent_v2 import TOOLS_V2
+    from drug_repurposing_agent.geo_cohort import load_registry
+    kpis = [(str(len(load_registry())), "登记疾病", "用到时才下载 GEO 数据"),
+            (str(len(TOOLS_V2)), "工具", "代码校验依赖与权限")]
+    eval_file = ROOT / "benchmark" / "results" / "planner_eval_multistep_v1_3.json"
+    if eval_file.is_file():
+        s = _read_json(eval_file)["planners"]["deepseek_v2:deepseek-flash"]["summary"]
+        kpis.append((f"{s['passed']}/{s['cases']}", "冻结多步规划", "DeepSeek 规划器"))
+    try:
+        summary, _, _ = load_benchmark()
+        b4 = summary[(summary.model == "B4") & (summary.metric == "NS-AUC") & (summary.split == "random_simple")]
+        if len(b4):
+            kpis.append((f"{float(b4['mean'].iloc[0]):.3f}", "B4 基准 NS-AUC", "随机拆分 · 与 BNNR 持平"))
+    except Exception:
+        pass
+    return kpis
+
+
+# Short Chinese caveats for the registry cards (the registry's English notes stay the source).
+REGISTRY_NOTES_ZH = {
+    "luad_gse32863": "“肺癌”不作为别名：肺癌还包括鳞癌和小细胞癌，这个队列不代表它们。唯一有冻结文献审阅和候选身份审计的疾病。",
+    "brca_gse15852": "原始数据未取对数，已自动做 log2。MCF7 只代表雌激素受体阳性亚型。文献审阅只能实时运行。",
+    "crc_gse32323": "只有 17 对，排除了 10 个细胞系样本。原计划的 GSE44076 平台没有注释文件，因此改用本数据集。HT29 带 BRAF V600E。",
+    "prad_gse46602": "激光显微切割：肿瘤 36 例 vs 良性腺体 14 例（4 例紧邻癌组织），不配对。VCaP 来自转移灶。",
+    "skcm_gse15605": "原发灶 46 例 vs 正常皮肤 16 例，排除 12 例转移灶。正常皮肤以角质细胞为主，签名部分反映组织成分差异。A375 带 BRAF V600E。",
+}
+
+
+def registry_cards() -> list[dict]:
+    from drug_repurposing_agent.geo_cohort import files_ready, load_registry
+    cards = []
+    for e in load_registry().values():
+        x = e.get("expected", {})
+        design = (f"配对 · {x.get('pairs')} 对" if e.get("design", "paired") == "paired"
+                  else f"不配对 · 肿瘤 {x.get('case')} / 对照 {x.get('control')}")
+        refs = Path(ROOT / e["reference_drugs"])
+        n_refs = max(len(refs.read_text(encoding="utf-8").splitlines()) - 1, 0) if refs.is_file() else 0
+        lit = e.get("literature", {})
+        cards.append({"label": e["label"], "accession": e["accession"], "platform": e["platform"],
+                      "design": design, "cell_line": e["drug_cell_line"], "aliases": e["aliases"],
+                      "reference_drugs": n_refs, "on_disk": files_ready(e),
+                      "literature": "冻结审阅 + 可实时" if lit.get("preset") else "仅实时审阅",
+                      "note": REGISTRY_NOTES_ZH.get(e["id"], e.get("note", ""))})
+    return cards

@@ -156,3 +156,26 @@ def test_v2_disease_label_is_recovered_for_archived_runs():
     fetch = next(v for k, v in runs.items() if k.endswith("fetch_demo_rule"))
     stopped = next(v for k, v in runs.items() if k.endswith("unregistered_demo_deepseek"))
     assert dd.v2_disease(fetch) == "肺腺癌（LUAD）" and dd.v2_disease(stopped) is None
+
+
+def test_v2_pipeline_marks_each_step_and_unrun_steps():
+    report = {"rounds": [{"round": 1, "steps": [{"tool": "qc_disease_cohort"}, {"tool": "rank_candidates"},
+                                                 {"tool": "build_report"}]},
+                         {"round": 2, "steps": [{"tool": "rank_candidates"}], "invalid_reason": "x"},
+                         {"round": 3, "steps": [{"tool": "rank_candidates"}, {"tool": "build_report"}]}],
+              "executed": [{"tool": "qc_disease_cohort", "status": "ok"}, {"tool": "rank_candidates", "status": "failed"},
+                           {"tool": "rank_candidates", "status": "ok"}, {"tool": "build_report", "status": "ok"}]}
+    rows = dd.v2_pipeline(report)
+    assert [s["status"] for s in rows[0]["steps"]] == ["ok", "failed", "not_run"]
+    assert [s["status"] for s in rows[1]["steps"]] == ["not_run"] and rows[1]["invalid_reason"] == "x"
+    assert [s["status"] for s in rows[2]["steps"]] == ["ok", "ok"]
+
+
+def test_v2_outputs_and_header_cards_read_committed_results():
+    runs = dd.saved_v2_runs()
+    out = dd.v2_outputs(next(v for k, v in runs.items() if k.endswith("fetch_demo_rule")))
+    assert out["signature"]["up"] == 512 and len(out["ranking"]["top10"]) == 10 and out["cohort"]["pairs"] == 57
+    labels = [label for _, label, _ in dd.headline_kpis()]
+    assert labels[:2] == ["登记疾病", "工具"] and "冻结多步规划" in labels
+    cards = dd.registry_cards()
+    assert len(cards) == 5 and all(c["reference_drugs"] > 0 for c in cards)

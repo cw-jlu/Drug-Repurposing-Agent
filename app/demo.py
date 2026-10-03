@@ -8,6 +8,7 @@ Importing this module does not start the UI; Streamlit executes it as
 
 from __future__ import annotations
 
+import html
 import json
 import os
 from pathlib import Path
@@ -38,72 +39,250 @@ def _rel(path: str | None) -> str:
         return str(path)
 
 
-# --------------------------------------------------------------------------- tab 0 (agent v2)
+# --------------------------------------------------------------------------- style
+
+# Palette shared with the deck and the paper figures (scripts/figure_style.py).
+CSS = """
+<style>
+:root { --navy:#112B3C; --ink:#183042; --muted:#5B6B75; --teal:#087E78; --red:#9E493D;
+        --amber:#B9862E; --line:#DDE3E6; --sand:#EEF3F2; }
+.block-container { padding-top: 1.6rem; max-width: 1240px; }
+h1, h2, h3 { color: var(--navy); letter-spacing: 0; }
+.hero-sub { color: var(--muted); margin: -0.4rem 0 1rem 0; }
+.kpis { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin: 0 0 1.2rem 0; }
+.kpi { border:1px solid var(--line); border-radius:12px; padding:12px 16px; background:#fff; }
+.kpi .v { font-size:1.7rem; font-weight:700; color:var(--navy); line-height:1.2; }
+.kpi .l { color:var(--ink); font-size:.9rem; font-weight:600; }
+.kpi .n { color:var(--muted); font-size:.78rem; }
+.banner { border-radius:12px; padding:12px 16px; margin:6px 0 14px 0; border-left:6px solid; color:var(--ink); }
+.banner.ok { background:#E3F1EF; border-color:var(--teal); }
+.banner.warn { background:#F6EEDC; border-color:var(--amber); }
+.banner.error { background:#F2E7E4; border-color:var(--red); }
+.banner b { color:var(--navy); }
+.round { margin: 4px 0 12px 0; }
+.round .head { font-size:.9rem; color:var(--muted); margin-bottom:6px; }
+.flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.chip { padding:5px 11px; border-radius:999px; font-size:.85rem; border:1px solid; white-space:nowrap; }
+.chip small { opacity:.75; margin-left:4px; }
+.chip.ok { background:#E3F1EF; border-color:var(--teal); color:#065F5A; }
+.chip.skipped_already_done { background:#F4F6F7; border-color:#B9C2C7; color:var(--muted); }
+.chip.failed { background:#F2E7E4; border-color:var(--red); color:#7A3329; }
+.chip.stopped { background:#F6EEDC; border-color:var(--amber); color:#7A5A1E; }
+.chip.not_run { background:#fff; border-color:#C9D2D8; color:#8A979F; border-style:dashed; }
+.arrow { color:#B9C2C7; }
+.tag { display:inline-block; padding:2px 9px; margin:2px 4px 2px 0; border-radius:6px; font-size:.82rem;
+       background:var(--sand); color:var(--ink); }
+.tag.up { background:#F2E7E4; color:#7A3329; } .tag.down { background:#E2ECF4; color:#22506F; }
+.tag.ok { background:#E3F1EF; color:#065F5A; } .tag.info { background:#E2ECF4; color:#22506F; }
+.tag.warn { background:#F6EEDC; color:#7A5A1E; } .tag.muted { background:#F4F6F7; color:var(--muted); }
+.card { border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:#fff; height:100%; }
+.card h4 { margin:0 0 4px 0; color:var(--navy); font-size:1.05rem; }
+.card .meta { color:var(--muted); font-size:.85rem; margin-bottom:6px; }
+.card .note { color:var(--muted); font-size:.8rem; margin-top:8px; }
+</style>
+"""
+
+
+def _e(text: object) -> str:
+    """Escape report text before it goes into raw HTML."""
+    return html.escape(str(text), quote=True)
+
+
+def kpi_cards(st) -> None:
+    cells = "".join(f'<div class="kpi"><div class="v">{_e(v)}</div><div class="l">{_e(l)}</div>'
+                    f'<div class="n">{_e(n)}</div></div>' for v, l, n in dd.headline_kpis())
+    st.markdown(f'<div class="kpis">{cells}</div>', unsafe_allow_html=True)
+
+
+# --------------------------------------------------------------------------- tab: agent v2
+
+def _banner(st, report: dict) -> None:
+    status = report.get("status", "planning")
+    label, kind = dd.V2_STATUS.get(status, (status, "error"))
+    disease = dd.v2_disease(report)
+    stop = [e.get("reason") for e in report.get("executed", []) if e.get("tool") == "manual_review"]
+    detail = stop[0] if stop and stop[0] else report.get("stop_reason", "")
+    rounds = len(dd.v2_pipeline(report))
+    planner = str(report.get("planner", "—")).split(":")[0]
+    if not disease and status != "completed":
+        names = "、".join(c["label"] for c in dd.registry_cards())
+        detail = f"请求中没有识别到登记疾病（已登记：{names}），疾病分析工具不可用。" + (
+            f"规划器说明：{detail}" if detail else "")
+    st.markdown(
+        f'<div class="banner {kind}"><b>{_e(label)}</b>　·　疾病：{_e(disease or "未识别到登记疾病")}'
+        f'　·　规划器：{_e(planner)}　·　规划 {rounds} 轮'
+        + (f'<br><span style="font-size:.88rem">{_e(detail)}</span>' if detail else "")
+        + f'<br><span style="font-size:.85rem;color:#5B6B75">请求：{_e(report.get("question", ""))}</span></div>',
+        unsafe_allow_html=True)
+
+
+def _pipeline(st, report: dict) -> None:
+    for r in dd.v2_pipeline(report):
+        if r["invalid_reason"]:
+            head = f"第 {r['round']} 轮 · 计划被代码校验拒绝：{_e(r['invalid_reason'])}"
+        elif r["error"]:
+            head = f"第 {r['round']} 轮 · 规划器调用失败：{_e(r['error'])}"
+        else:
+            head = f"第 {r['round']} 轮 · 校验通过"
+        chips = '<span class="arrow">→</span>'.join(
+            f'<span class="chip {s["status"]}">{_e(s["label"])}<small>{_e(dd.V2_STEP_STATUS.get(s["status"], s["status"]))}</small></span>'
+            for s in r["steps"]) or '<span class="chip not_run">（空计划）</span>'
+        st.markdown(f'<div class="round"><div class="head">{head}</div><div class="flow">{chips}</div></div>',
+                    unsafe_allow_html=True)
+
+
+def _tags(items, kind: str = "") -> str:
+    return "".join(f'<span class="tag {kind}">{_e(x)}</span>' for x in items)
+
+
+def _outputs(st, report: dict) -> None:
+    out = dd.v2_outputs(report)
+    if not any(out[k] for k in ("cohort", "signature", "ranking", "benchmark")):
+        st.info("这次运行没有产生分析结果（未执行任何分析工具）。")
+        return
+    cols = st.columns(4)
+    coh, sig, rk, au = out["cohort"] or {}, out["signature"] or {}, out["ranking"] or {}, out["audit"] or {}
+    if coh:
+        n = f"{coh['pairs']} 对" if "pairs" in coh else f"{coh.get('tumor')} vs {coh.get('normal')}"
+        cols[0].metric("纳入样本", n, help=f"共 {coh.get('samples')} 个样本，排除 {coh.get('excluded')} 个")
+    if sig:
+        cols[1].metric("差异基因 上调 / 下调", f"{sig.get('up')} / {sig.get('down')}",
+                       help="FDR < 0.05 且 |log2FC| ≥ 1，从原始 GEO 数据重算")
+    if rk:
+        cols[2].metric("排名化合物", f"{rk.get('drugs'):,}", help=f"LINCS {rk.get('cell_line')} 细胞系")
+    if au:
+        if "permutation_p" in au:
+            cols[3].metric("参考药检验 p", f"{au['permutation_p']:.3f}",
+                           help=f"{au.get('measured_controls')}/{au.get('reference_drugs_listed', '?')} 个预先登记的参考药可测；"
+                                f"平均名次百分位 {au.get('mean_percentile')}（0.5 = 随机）")
+        else:
+            cols[3].metric("参考药检验", "无法计算", help=str(au.get("reference_drugs", "")))
+    if out["fetch"]:
+        files = out["fetch"].get("files", {})
+        st.caption("数据：" + "，".join(f"{k} {'已下载并核验哈希' if v.startswith('downloaded') else '本地已核验'}"
+                                      for k, v in files.items()))
+    if out["pathways"]:
+        st.markdown("**Hallmark 通路**　" + _tags(out["pathways"].get("up", []), "up")
+                    + _tags(out["pathways"].get("down", []), "down"), unsafe_allow_html=True)
+        st.caption("红色：肿瘤中上调基因富集的通路；蓝色：下调基因富集的通路")
+    if rk.get("top10"):
+        tiers = out["tiers"] or {}
+        measured = set(au.get("measured_names", []))
+        rows = []
+        for i, name in enumerate(rk["top10"], 1):
+            row = {"排名": i, "化合物": name}
+            if tiers:
+                tier = tiers.get(name)
+                row["文献分级"] = dd.V2_TIER_LABELS.get(tier, (tier or "—", ""))[0]
+            if measured:
+                row["预先登记的参考药"] = "是" if name in measured else ""
+            rows.append(row)
+        st.markdown("**Top-10 候选**（研究假设，不是用药建议）")
+        st.dataframe(rows, hide_index=True, width="stretch",
+                     column_config={"排名": st.column_config.NumberColumn(width="small")})
+        if out["evidence_note"]:
+            note = out["evidence_note"]
+            note = ("该疾病没有冻结的文献审阅，且未开启实时审阅，因此没有做文献审阅（可在右侧打开“实时联网文献审阅”）"
+                    if note.startswith("literature review not available") else
+                    "这次请求没有做文献审阅" if note == "literature review not run" else note)
+            st.caption(f"文献：{note}")
+        elif out["review"] and not tiers:
+            counts = out["review"].get("tier_counts", {})
+            st.markdown("**文献分级汇总**　" + _tags(
+                f"{dd.V2_TIER_LABELS.get(k, (k, ''))[0]} {v}" for k, v in counts.items() if v), unsafe_allow_html=True)
+    if out["benchmark"]:
+        st.markdown(f"**基准排名**：{_e(out['benchmark'].get('status'))}，结果清单 `{_e(out['benchmark'].get('manifest'))}`")
+
 
 def render_v2(st, report: dict) -> None:
-    status = report.get("status", "planning")
-    label, kind = dd.V2_STATUS.get(status, (status, "info"))
-    cols = st.columns(3)
-    cols[0].metric("状态", label)
-    cols[1].metric("规划轮数", len(dd.v2_plan_rows(report)))
-    cols[2].metric("规划器", str(report.get("planner", "—")).split(":")[0])
-    disease = dd.v2_disease(report)
-    st.markdown(f"**请求：** {report.get('question', '')}  \n**识别到的登记疾病：** "
-                f"{disease or '无（未登记的疾病不会被猜测，疾病分析工具不可用）'}")
-    st.markdown(f"**提供给规划器的输入名称：** `{', '.join(report.get('available_inputs', [])) or '无'}`")
-    st.subheader("① 大模型/规则给出的计划（每轮）")
-    for row in dd.v2_plan_rows(report):
-        ok = row["校验"] == "通过"
-        st.markdown(f"**第 {row['轮次']} 轮**　{'✅ 校验通过' if ok else '❌ ' + row['校验']}  \n"
-                    + "　→　".join(f"`{i}` {t}" for i, t in enumerate(row["计划"].split(" → "), 1)))
-    st.subheader("② 执行过程（代码校验后依次调用工具）")
-    st.dataframe(dd.v2_step_rows(report), hide_index=True, width="stretch")
-    notify = {"ok": st.success, "warn": st.warning}.get(kind, st.error)
-    stop = [e.get("reason") for e in report.get("executed", []) if e.get("tool") == "manual_review"]
-    notify(f"**{label}**" + (f"：{stop[0]}" if stop and stop[0] else "") +
-           (f"（{report['stop_reason']}）" if report.get("stop_reason") else ""))
-    if report.get("_candidate_report"):
-        st.subheader("③ 候选报告")
-        st.json(report["_candidate_report"], expanded=False)
-    if report.get("_path"):
-        st.caption(f"运行记录：`{_rel(report['_path'])}` · Demo trace：`{_rel(report.get('_demo_trace'))}`")
+    _banner(st, report)
+    st.markdown("##### 规划与执行")
+    _pipeline(st, report)
+    t1, t2, t3, t4 = st.tabs(["结论摘要", "规划理由", "执行记录", "原始记录"])
+    with t1:
+        _outputs(st, report)
+    with t2:
+        for r in dd.v2_pipeline(report):
+            if r["rationale"]:
+                st.markdown(f"**第 {r['round']} 轮**：{r['rationale']}")
+        if not any(r["rationale"] for r in dd.v2_pipeline(report)):
+            st.caption("该运行没有保存规划理由（规则规划器或归档摘要）。")
+        st.caption("提供给规划器的输入名称：" + ", ".join(report.get("available_inputs", [])))
+    with t3:
+        st.dataframe(dd.v2_step_rows(report), hide_index=True, width="stretch")
+    with t4:
+        if report.get("_path"):
+            st.caption(f"运行记录：`{_rel(report['_path'])}` · Demo trace：`{_rel(report.get('_demo_trace'))}`")
+        st.json({k: v for k, v in report.items() if not k.startswith("_")}, expanded=False)
 
 
 def tab_agent_v2(st) -> None:
-    st.markdown("**Agent v2：一句话 → 大模型多步规划 → 代码校验 → 真实工具执行 → 失败时重新规划（≤3 轮）。**  \n"
-                "大模型决定用哪些工具、按什么顺序、何时停止；每个工具内部的算法与阈值由代码固定。"
-                "只支持登记表中的疾病；未登记的疾病会安全停止，不会被猜测成别的数据集。")
-    st.markdown("**疾病登记表**（`configs/disease_registry_v1.json`）")
-    st.dataframe(dd.registry_rows(), hide_index=True, width="stretch")
-    source = st.radio("运行方式", ["实时运行", "回放已保存运行"], horizontal=True, key="v2_source")
+    st.markdown("一句话描述需求，Agent 会规划步骤、经代码校验后调用真实工具执行。"
+                "只分析**登记表中的 5 个疾病**；其他疾病会安全转人工。")
+    source = st.segmented_control("运行方式", ["实时运行", "回放已保存运行"], default="实时运行",
+                                  key="v2_source", label_visibility="collapsed")
     if source == "回放已保存运行":
         runs = dd.saved_v2_runs()
         if not runs:
             st.warning("没有找到已保存的 v2 运行。")
             return
-        choice = st.selectbox("选择运行", list(runs))
+        choice = st.selectbox("选择运行", list(runs), key="v2_replay")
+        st.divider()
         render_v2(st, runs[choice])
         return
-    example = st.selectbox("示例请求（可在下方修改）", dd.V2_EXAMPLES, key="v2_example")
-    question = st.text_area("自然语言请求", value=example, key=f"v2_q_{example}", height=80)
-    left, right = st.columns(2)
-    planners = (["deepseek"] if dd.deepseek_v2_available() else []) + ["rule"]
-    planner = left.radio("规划器（默认 DeepSeek）", planners, format_func=PLANNER_LABELS.get, key="v2_planner")
-    if "deepseek" not in planners:
-        left.caption("未检测到 DeepSeek 密钥（环境变量或本地 .env），只能使用规则规划器。")
-    mode = right.selectbox("模式", list(MODE_LABELS), index=1, format_func=MODE_LABELS.get, key="v2_mode")
-    live = right.checkbox("实时联网文献审阅（PubMed + DeepSeek，约 30 次调用）", value=False,
-                          disabled="deepseek" not in planners, key="v2_live",
-                          help="不勾选时复用冻结的审阅结果，演示可复现且不产生额外调用")
-    if st.button("运行 Agent v2", type="primary"):
-        with st.spinner("Agent v2 运行中（下载/重算差异表达/排名约 30 秒）……"):
+    labels = list(dd.V2_EXAMPLE_LABELS)
+    example = st.pills("示例请求（点击填入）", labels, key="v2_example", default=labels[0])
+    text = dd.V2_EXAMPLE_LABELS.get(example, "")
+    left, right = st.columns([3, 2], gap="large")
+    with left:
+        question = st.text_area("自然语言请求（可修改）", value=text, key=f"v2_q_{example}", height=150)
+    with right:
+        st.markdown("**设置**")
+        planners = (["deepseek"] if dd.deepseek_v2_available() else []) + ["rule"]
+        planner = st.segmented_control("规划器", planners, default=planners[0], key="v2_planner",
+                                       format_func={"deepseek": "DeepSeek（默认）", "rule": "规则（离线）"}.get)
+        if "deepseek" not in planners:
+            st.caption("未检测到 DeepSeek 密钥，只能使用规则规划器。")
+        live = st.toggle("实时联网文献审阅", value=False, disabled="deepseek" not in planners, key="v2_live",
+                         help="PubMed + DeepSeek，约 20–30 次调用、3–4 分钟；关闭时肺腺癌复用冻结审阅，其他疾病不做文献审阅")
+        with st.expander("高级设置"):
+            mode = st.selectbox("模式", list(MODE_LABELS), index=1, format_func=MODE_LABELS.get, key="v2_mode")
+        run = st.button("运行 Agent", type="primary", width="stretch", disabled=not (question or "").strip())
+    if run:
+        with st.status("Agent 运行中：规划 → 校验 → 下载/质控 → 差异表达 → 排名 → 报告 …", expanded=False) as box:
             try:
-                st.session_state["v2_last"] = dd.run_v2(question, planner, mode, live_review=live)
+                st.session_state["v2_last"] = dd.run_v2(question, planner or planners[0], mode, live_review=live)
+                box.update(label="运行结束", state="complete")
             except Exception as exc:
+                box.update(label=f"运行失败：{type(exc).__name__}", state="error")
                 st.error(f"运行失败：{type(exc).__name__}: {exc}")
     if st.session_state.get("v2_last"):
         st.divider()
         render_v2(st, st.session_state["v2_last"])
+
+
+# --------------------------------------------------------------------------- tab: registry
+
+def tab_registry(st) -> None:
+    st.markdown("每个疾病在登记时已固定 GEO 文件地址与 SHA-256、样本分组规则、药物细胞系、参考药清单和文献检索配置；"
+                "数据只在 Agent 需要时下载。上限取决于药物端是否有匹配的 LINCS 细胞系。")
+    cards = dd.registry_cards()
+    for i in range(0, len(cards), 3):
+        cols = st.columns(3)
+        for col, c in zip(cols, cards[i:i + 3]):
+            disk = '<span class="tag ok">本地已有</span>' if c["on_disk"] else '<span class="tag muted">用到时下载</span>'
+            col.markdown(
+                f'<div class="card"><h4>{_e(c["label"])}</h4>'
+                f'<div class="meta">{_e(c["accession"])} · {_e(c["platform"])} · 药物端 {_e(c["cell_line"])}</div>'
+                f'<span class="tag">{_e(c["design"])}</span><span class="tag">参考药 {c["reference_drugs"]} 个</span>'
+                f'<span class="tag">{_e(c["literature"])}</span>{disk}'
+                f'<div class="note">别名：{_e("、".join(c["aliases"]))}<br>{_e(c["note"])}</div></div>',
+                unsafe_allow_html=True)
+    fig = dd.ROOT / "docs" / "figures" / "fig11_registry_overview.png"
+    if fig.is_file():
+        st.markdown("##### 端到端验证结果")
+        st.image(str(fig), width="stretch",
+                 caption="(a) 从原始 GEO 数据重算的疾病签名；(b) 预先登记参考药的平均名次百分位（虚线 = 随机）。单次运行，描述性结果。")
 
 
 # --------------------------------------------------------------------------- tab 1
@@ -291,7 +470,7 @@ def tab_benchmark(st) -> None:
     bars = base.mark_bar().encode(
         x=alt.X("mean:Q", title=f"{metric} 均值 ± SD"),
         color=alt.Color("组别:N", scale=alt.Scale(domain=["本项目", "已发表模型"],
-                                                  range=["#e4572e", "#8da0cb"])),
+                                                  range=["#087E78", "#B9C2C7"])),
         tooltip=["model", alt.Tooltip("mean:Q", format=".4f"), alt.Tooltip("sd:Q", format=".4f")])
     errors = base.mark_errorbar().encode(x="low:Q", x2="high:Q")
     rule = alt.Chart().mark_rule(strokeDash=[4, 4], color="gray").encode(x=alt.datum(0.5))
@@ -339,19 +518,24 @@ def main() -> None:
 
     os.chdir(dd.ROOT)  # package code resolves data/ and artifacts/ relative to the repo root
     st.set_page_config(page_title="药物重定位 Agent 演示", page_icon="💊", layout="wide")
-    st.title("💊 可审计的药物重定位 Agent")
-    st.caption("自然语言 → 多步规划 → 代码校验 → 真实工具 · 登记疾病自动下载 GEO 数据 · 全程 trace · 仅供研究，不构成治疗建议")
-    tabs = st.tabs(["Agent v2（多步规划）", "Agent v1（单步，旧版）", "LUAD 候选", "Benchmark", "局限性"])
+    st.markdown(CSS, unsafe_allow_html=True)
+    st.title("可审计的药物重定位 Agent")
+    st.markdown('<div class="hero-sub">自然语言请求 → 大模型多步规划 → 代码校验 → 真实工具执行 → 全程可追溯 · '
+                '仅供研究，不构成治疗建议</div>', unsafe_allow_html=True)
+    kpi_cards(st)
+    tabs = st.tabs(["Agent 运行", "疾病登记表", "LUAD 候选", "Benchmark", "局限性", "Agent v1（旧版）"])
     with tabs[0]:
         tab_agent_v2(st)
     with tabs[1]:
-        tab_agent(st)
+        tab_registry(st)
     with tabs[2]:
         tab_luad(st)
     with tabs[3]:
         tab_benchmark(st)
     with tabs[4]:
         tab_limitations(st)
+    with tabs[5]:
+        tab_agent(st)
 
 
 if __name__ == "__main__":
